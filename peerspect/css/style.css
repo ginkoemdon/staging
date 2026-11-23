@@ -341,19 +341,14 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
 }
 .tags li.sun { background: var(--sun); border-color: var(--sun); }
 
-/* Featured / prototype cards — rounded, shadowed, like Webflow */
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 1rem 0 0; }
-/* Nov 23 2026: prototypes two by two. The grid was auto-fitting
-   three or four cards across on a wide monitor, which felt
-   overwhelming. Now it is one column on phones and two columns
-   from tablet up, so each card gets more room and the grid reads
-   as rows of two. This rule must sit AFTER the base .cards rule
-   above: same specificity, so the later rule wins. An earlier
-   version sat before it and was silently overridden, which is
-   why the live site did not change. */
-@media (min-width: 760px) {
-  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
-}
+/* Featured / prototype cards — rounded, shadowed, like Webflow.
+   Nov 23 2026: one card per row, like Ginko's Webflow site.
+   Two by two was tried first, but on a wide monitor the cards
+   got so wide the 16:9 illustrations were cropped, and the grid
+   still felt overwhelming. One column, capped at 880px and
+   centred, keeps each illustration at its real 16:9 ratio and
+   reads calmly, one prototype at a time. */
+.cards { display: grid; grid-template-columns: 1fr; gap: 2rem; max-width: 880px; margin: 1rem auto 0; }
 .card {
   display: block; background: var(--cream); color: inherit;
   border-radius: 24px; overflow: hidden; text-decoration: none;
