@@ -90,8 +90,15 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
    (1.5rem up to 4rem), so the hero and cards expand with the
    monitor. Text lines stay capped for readability. */
 .wrap { max-width: 1440px; margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 4rem); }
+/* Nov 23 2026: prototypes two by two. The grid was auto-fitting
+   three or four cards across on a wide monitor, which felt
+   overwhelming. Now it is one column on phones and two columns
+   from tablet up, so each card gets more room and the grid reads
+   as rows of two. */
+@media (min-width: 760px) {
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
+}
 @media (min-width: 1200px) {
-  .cards { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
   .hero { padding: 4.5rem 0 3rem; }
 }
 
