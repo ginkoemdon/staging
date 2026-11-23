@@ -341,14 +341,44 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
 }
 .tags li.sun { background: var(--sun); border-color: var(--sun); }
 
-/* Featured / prototype cards — rounded, shadowed, like Webflow.
-   Nov 23 2026: one card per row, like Ginko's Webflow site.
-   Two by two was tried first, but on a wide monitor the cards
-   got so wide the 16:9 illustrations were cropped, and the grid
-   still felt overwhelming. One column, capped at 880px and
-   centred, keeps each illustration at its real 16:9 ratio and
-   reads calmly, one prototype at a time. */
-.cards { display: grid; grid-template-columns: 1fr; gap: 2rem; max-width: 880px; margin: 1rem auto 0; }
+/* Featured Works rows — copied from Ginko's Webflow portfolio
+   (mindfullydesign.webflow.io), own code, same values, Nov 23 2026.
+   Webflow: .casestudy-rows is a flex column with a 12rem row gap;
+   each .case-study-block is a grid 2.75fr 1fr, image left, text
+   card right, the card overlapping the image by -77px;
+   .cs-thumbnail-img is width 100%, border-radius 8px, shadow
+   0 20px 24px -4px rgba(0,0,0,.08), 0 8px 8px -4px rgba(0,0,0,.03);
+   the card holds a muted year, title, description, a link button
+   with a chevron, then a top-line divider with pill tags.
+   Two changes from Webflow, on purpose: the row gap is 6rem not
+   12rem, so eight rows do not make an endless page; and the image
+   keeps its natural height (no fixed height), so the 16:9
+   illustrations are never cropped. On tablet and below the rows
+   stack, image on top, card below, no overlap, as in Webflow. */
+.casestudy-rows { display: flex; flex-direction: column; row-gap: 6rem; margin: 1rem 0 0; }
+.case-study-block { display: grid; grid-template-columns: 2.75fr 1fr; gap: 16px; align-items: center; }
+.img-wrapper { width: 100%; }
+.img-wrapper a { display: block; }
+.cs-thumbnail-img { width: 100%; height: auto; display: block; border-radius: 8px; box-shadow: 0 20px 24px -4px rgba(0,0,0,.08), 0 8px 8px -4px rgba(0,0,0,.03); }
+.cs-thumnbail-card { margin-left: -77px; position: relative; }
+.ch_card { background: var(--cream); border-radius: 24px; border: 1px solid rgba(59,52,47,.08); box-shadow: 0 12px 30px rgba(59,52,47,.12); }
+.ch_card:hover { box-shadow: 0 16px 36px rgba(59,52,47,.18); }
+.card-content { display: flex; flex-direction: column; padding: 1.5rem; }
+.card-content .tag-item.is-trans { align-self: flex-end; background: transparent; border: 0; padding: .25rem .5rem; font-size: .875rem; font-weight: 600; }
+.card-content .text-style-muted { opacity: .6; }
+.portfolio-card_heading { margin-bottom: .5rem; }
+.card-content .text-size-medium { color: var(--muted); margin: 0; }
+.card-content .margin-vertical.margin-medium { margin: 1rem 0; }
+.button.is-link.is-icon { display: inline-flex; align-items: center; gap: .25rem; font-weight: 600; color: var(--tangerine-text); text-decoration: none; }
+.button.is-link.is-icon:hover { text-decoration: underline; }
+.card-content .padding-top.padding-small.top-line { padding-top: 1rem; border-top: 1px solid rgba(59,52,47,.15); }
+.list-of-tags { display: flex; gap: .5rem; flex-wrap: wrap; }
+.list-of-tags .tag-item { background: var(--sun); border: 1px solid #000; border-radius: 20px; padding: .25rem .5rem; font-size: .875rem; font-weight: 600; }
+@media (max-width: 991px) {
+  .case-study-block { grid-template-columns: 1fr; }
+  .cs-thumnbail-card { margin-left: 0; }
+  .casestudy-rows { row-gap: 4rem; }
+}
 .card {
   display: block; background: var(--cream); color: inherit;
   border-radius: 24px; overflow: hidden; text-decoration: none;
