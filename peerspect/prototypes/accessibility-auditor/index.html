@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Accessibility Auditor — Ginko's Prototype Playground</title>
+  <meta name="description" content="AI Accessibility Auditor — scan a sample page, review each suggested fix, and approve or reject it. Human-in-the-loop, sample data only." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <style>
+    /* Auditor-only styles — shared branding comes from ../../css/style.css */
+    .score-panel {
+      background: var(--cream); border-radius: 24px; padding: 1.5rem;
+      box-shadow: 0 12px 30px rgba(59,52,47,0.12); border: 1px solid rgba(59,52,47,0.08);
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; align-items: start;
+    }
+    .score-num { font-family: "Krona One", sans-serif; font-size: 2.4rem; line-height: 1; margin: 0.25rem 0; }
+    .score-num small { font-size: 1rem; color: var(--muted); }
+    .score-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rust-text); margin: 0; }
+    .score-bar { height: 12px; background: var(--egg); border-radius: 999px; overflow: hidden; margin-top: 0.5rem; }
+    .score-bar span { display: block; height: 100%; width: 42%; background: var(--tangerine); transition: width 0.4s; }
+    .score-bar span.good { background: var(--forest); }
+    .counts { font-size: 0.95rem; color: var(--muted); margin: 0; line-height: 1.8; }
+    .counts strong { color: var(--earth); }
+    /* Mock page to audit */
+    .mock-frame { border: 2px solid var(--earth); border-radius: 24px; overflow: hidden; background: #fff; margin-top: 1rem; }
+    .mock-head { background: var(--earth); color: #fff; padding: 0.75rem 1.25rem; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em; }
+    .mock-body { padding: 1.5rem; }
+    .mock-body h1 { font-size: 1.6rem; margin: 0 0 0.5rem; }
+    .mock-body h3.mock-h3 { font-family: "Krona One", sans-serif; font-size: 1.05rem; margin: 1.25rem 0 0.5rem; }
+    .mock-body h3.mock-h3.fixed { font-size: 1.25rem; }
+    .mock-low { color: #bbb; font-size: 1rem; margin: 0 0 1rem; }
+    .mock-low.fixed { color: var(--earth); }
+    .mock-img { width: 100%; max-width: 420px; height: 140px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, var(--sun), var(--tangerine)); color: var(--brown); font-weight: 600; margin: 0 0 1rem; }
+    .mock-img.fixed { outline: 3px solid var(--forest); outline-offset: 3px; }
+    .mock-img figcaption { font-size: 0.8rem; color: var(--muted); margin-top: 0.35rem; }
+    .mock-row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin: 1rem 0; }
+    .mock-icon-btn { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--earth); background: #fff; font-size: 1.2rem; cursor: pointer; }
+    .mock-icon-btn.fixed { background: var(--forest); color: #fff; border-color: var(--forest); }
+    .mock-input { padding: 0.7rem 0.9rem; border: 2px solid var(--earth); border-radius: 8px; font-family: "Poppins", sans-serif; font-size: 1rem; min-width: 220px; }
+    .mock-input.fixed { border-color: var(--forest); }
+    .mock-label { display: none; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .mock-label.fixed { display: block; }
+    .mock-tiny { font-size: 10px; color: var(--muted); margin: 1rem 0; }
+    .mock-tiny.fixed { font-size: 1rem; }
+    .mock-link { color: var(--forest); }
+    .mock-status { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600; }
+    .mock-dot { width: 12px; height: 12px; border-radius: 50%; background: #c0392b; display: inline-block; }
+    .mock-status-text { display: none; }
+    .mock-status.fixed .mock-status-text { display: inline; }
+    .mock-fixed-note { display: none; font-size: 0.8rem; font-weight: 600; color: var(--forest); }
+    .fixed .mock-fixed-note, .mock-fixed-note.fixed { display: inline; }
+    /* Issues */
+    .issue {
+      background: var(--cream); border-radius: 20px; padding: 1.25rem 1.5rem; margin: 1rem 0;
+      border: 1px solid rgba(59,52,47,0.12); box-shadow: 0 8px 20px rgba(59,52,47,0.08);
+    }
+    .issue.decided-approved { border-color: var(--forest); background: #f2f7f5; }
+    .issue.decided-rejected { border-color: var(--rust-text); opacity: 0.85; }
+    .issue.decided-skipped { opacity: 0.7; }
+    .issue-top { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; margin-bottom: 0.5rem; }
+    .sev { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 999px; padding: 0.3rem 0.75rem; color: #fff; }
+    .sev-high { background: #a93226; }
+    .sev-medium { background: var(--tangerine); }
+    .sev-low { background: var(--forest); }
+    .wcag { font-size: 0.8rem; font-weight: 600; color: var(--rust-text); }
+    .issue h3 { margin: 0 0 0.4rem; }
+    .issue p { margin: 0.35rem 0; color: var(--muted); }
+    .issue p strong { color: var(--earth); }
+    .issue code { background: var(--egg); padding: 0.1rem 0.4rem; border-radius: 6px; font-size: 0.88rem; }
+    .issue-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1rem; }
+    .issue-actions button {
+      font-family: "Poppins", sans-serif; font-weight: 600; font-size: 0.9rem;
+      padding: 0.6rem 1.1rem; border-radius: 999px; cursor: pointer; border: 2px solid var(--earth);
+      background: #fff; color: var(--earth);
+    }
+    .issue-actions button:hover:not(:disabled) { background: var(--sun); }
+    .issue-actions button:disabled { opacity: 0.45; cursor: default; }
+    .issue-actions .approve { background: var(--forest); border-color: var(--forest); color: #fff; }
+    .issue-actions .approve:hover:not(:disabled) { background: var(--forest); }
+    .issue-actions .reject { background: #fff; border-color: #a93226; color: #a93226; }
+    .decision { font-weight: 700; margin-top: 0.75rem; }
+    .decision.approved { color: var(--forest); }
+    .decision.rejected { color: #a93226; }
+    .decision.skipped { color: var(--muted); }
+    .summary-box { background: var(--cream); border-radius: 24px; padding: 1.5rem; border: 2px solid var(--forest); margin-top: 1.5rem; }
+    .summary-box ul { line-height: 1.8; color: var(--muted); }
+    .summary-box ul strong { color: var(--earth); }
+    .hidden { display: none; }
+    .audit-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.25rem; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <!-- Nav — style copied from Webflow (mindfullydesign.webflow.io), own simple JS, no Webflow JS.
+       Services / About / Resumé are placeholder buttons for now, mirroring the original Webflow menu. -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="logo" href="../../index.html" aria-label="Ginko's Prototype Playground — home">
+        <img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/67b6998f1db3d0b64a9c19e6_apple-touch-icon.png" loading="lazy" width="32" alt="" class="logo-g" />
+        <img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" class="logo-img" />
+      </a>
+      <button class="menu-button" type="button" aria-label="Menu" aria-expanded="false">
+        <span class="menu-icon1"><span class="menu-icon1_line-top"></span><span class="menu-icon1_line-middle"></span><span class="menu-icon1_line-bottom"></span></span>
+      </button>
+      <nav class="nav-links" aria-label="Main">
+        <div class="nav-dropdown">
+          <button class="nav-link nav-toggle" type="button" aria-expanded="false" aria-haspopup="true">Prototypes <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.55806 6.29544C2.46043 6.19781 2.46043 6.03952 2.55806 5.94189L3.44195 5.058C3.53958 4.96037 3.69787 4.96037 3.7955 5.058L8.00001 9.26251L12.2045 5.058C12.3021 4.96037 12.4604 4.96037 12.5581 5.058L13.4419 5.94189C13.5396 6.03952 13.5396 6.19781 13.4419 6.29544L8.17678 11.5606C8.07915 11.6582 7.92086 11.6582 7.82323 11.5606L2.55806 6.29544Z" fill="currentColor"/></svg></button>
+          <div class="nav-dropdown-list">
+            <a class="nav-dropdown-link" href="../peerspect/index.html"><span class="thumb sun">P</span><span><strong>PEERSPECT</strong><span>One of Ginko's prototypes — details to come.</span></span></a>
+            <a class="nav-dropdown-link" href="../kate-ai/index.html"><span class="thumb">AI</span><span><strong>AI prototype for Kate</strong><span>The AI prototype Ginko is putting together for Kate.</span></span></a>
+            <a class="nav-dropdown-link" href="../index.html"><span class="thumb">All</span><span><strong>All prototypes</strong><span>See every prototype subpage in one place.</span></span></a>
+          </div>
+        </div>
+        <a class="nav-link" href="https://mindfullydesign.webflow.io/#offerings">Services</a>
+        <a class="nav-link" href="https://mindfullydesign.webflow.io/about">About</a>
+        <a class="nav-link" href="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/67aea44f506169a16be6fd36_95d3807660de7d4d3415709f6ff2e4eb_Ginko%20Emdon%20-%20Product%20Designer%20-%20Resume%20-%202025.pdf">Resumé</a>
+        <a class="flower-button" href="https://mindfullydesign.webflow.io/" target="_blank" rel="noopener"><span class="button-line-left"></span><span class="button-inner-text">Ginko's Portfolio</span><span class="button-line-right"></span></a>
+      </nav>
+    </div>
+  </header>
+  <div class="wrap">
+
+    <main id="main">
+      <section class="product-shell" style="--product-accent: #1d5c3a;" aria-labelledby="product-title">
+        <p><a class="back" href="../../index.html">← Back to Ginko's Prototype Playground</a></p>
+        <div class="product-head">
+          <span class="product-mark" aria-hidden="true">✓</span>
+          <div>
+            <p class="product-meta">AI Accessibility Auditor · A product by Ginko · 2026</p>
+            <h1 id="product-title">AI Accessibility Auditor</h1>
+            <p class="product-tagline">Check a page for access barriers, in plain language. The AI suggests fixes, you approve or reject each one — nothing is fixed without you.</p>
+          </div>
+        </div>
+        <div class="how-to">
+          <h2>How to use this product</h2>
+          <ol>
+            <li><strong>Run the audit</strong> — press “Run audit” to scan the sample page below. It lists the 8 issues it finds, each with a WCAG reference.</li>
+            <li><strong>You decide</strong> — approve, reject or skip each fix. Approving one applies it to the sample page live, and raises the score.</li>
+            <li><strong>Check the rest</strong> — some things need a real person and a screen reader. The summary lists exactly what is still unchecked.</li>
+          </ol>
+          <p style="margin:.5rem 0 0; color: var(--muted);">Sample data only. No backend, no external AI calls, no real page is scanned, and nothing you do here is sent anywhere. This demo does not certify WCAG conformance.</p>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-label">Score</p>
+        <h2>Before vs after</h2>
+        <div class="score-panel" aria-live="polite">
+          <div>
+            <p class="score-label">Score before audit</p>
+            <p class="score-num">42<small> / 100</small></p>
+            <p class="counts">The sample page, as it is now.</p>
+          </div>
+          <div>
+            <p class="score-label">Score after your approvals</p>
+            <p class="score-num"><span id="scoreAfter">42</span><small> / 100</small></p>
+            <div class="score-bar" aria-hidden="true"><span id="scoreBar"></span></div>
+            <p class="counts" id="scoreNote">Approve fixes to raise the score. Rejected and skipped fixes add nothing.</p>
+          </div>
+          <div>
+            <p class="score-label">Progress</p>
+            <p class="score-num"><span id="reviewedCount">0</span><small> / 8 reviewed</small></p>
+            <p class="counts" id="countsText"><strong>0</strong> approved · <strong>0</strong> rejected · <strong>0</strong> skipped</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-label">Sample page to audit</p>
+        <h2>A mock landing page, with issues on purpose</h2>
+        <p style="color: var(--muted);">This is the page the auditor will scan. Every problem below is deliberate. Try the audit, then approve a fix and watch this mock change.</p>
+
+        <div class="mock-frame" aria-label="Sample page to audit">
+          <div class="mock-head">SAMPLE — Bloom Studio · mock landing page</div>
+          <div class="mock-body">
+            <h1>Welcome to Bloom Studio</h1>
+            <p class="mock-low" id="mockContrast">Sign up now for our newsletter and get 10% off your first order. <span class="mock-fixed-note" id="noteContrast">✓ Fixed: dark text, 7:1 contrast.</span></p>
+            <figure style="margin: 0;">
+              <div class="mock-img" id="mockImg" role="img" aria-label="">Photo of a bright studio</div>
+              <figcaption id="mockImgCaption">Image: no alt text yet — a screen reader hears nothing here. <span class="mock-fixed-note" id="noteImg">✓ Fixed: alt text added.</span></figcaption>
+            </figure>
+            <h3 class="mock-h3" id="mockHeading">Our services <span class="mock-fixed-note" id="noteHeading">✓ Fixed: now a proper H2.</span></h3>
+            <p class="mock-tiny" id="mockTiny">Small print: delivery in 3–5 days. Returns within 30 days. <span class="mock-fixed-note" id="noteTiny">✓ Fixed: now 16px.</span></p>
+            <div class="mock-row">
+              <button class="mock-icon-btn" id="mockBtn" type="button" aria-label="Book a call">→</button>
+              <span style="color: var(--muted); font-size: 0.9rem;">Icon-only button, no name. <span class="mock-fixed-note" id="noteBtn">✓ Fixed: now labelled “Book a call”.</span></span>
+            </div>
+            <div>
+              <label class="mock-label" id="mockLabel" for="mockEmail">Email address</label>
+              <input class="mock-input" id="mockEmail" type="email" placeholder="Enter your email" />
+              <span class="mock-fixed-note" id="noteLabel">✓ Fixed: visible label added.</span>
+            </div>
+            <p style="margin-top: 1rem;">Want to know more? <a class="mock-link" id="mockLink" href="#">click here</a> <span class="mock-fixed-note" id="noteLink">✓ Fixed: link now says what it goes to.</span></p>
+            <p class="mock-status" id="mockStatus"><span class="mock-dot" aria-hidden="true"></span><span class="mock-status-text">Error: your email is missing.</span><span class="mock-fixed-note" id="noteStatus">✓ Fixed: status now has text, not colour only.</span></p>
+          </div>
+        </div>
+
+        <div class="audit-actions">
+          <button class="btn btn-primary" id="runAudit" type="button">Run audit</button>
+          <button class="btn btn-secondary" id="resetAudit" type="button">Reset demo</button>
+        </div>
+        <p id="auditHint" style="color: var(--muted);">Press “Run audit” to see the 8 sample issues.</p>
+      </section>
+
+      <section id="issuesSection" class="hidden">
+        <p class="section-label">Audit results</p>
+        <h2>8 issues found — you decide each one</h2>
+        <p style="color: var(--muted);">High issues cost the most points. Approving a fix applies it to the mock page above and raises your score.</p>
+        <div id="issuesList"></div>
+      </section>
+
+      <section id="summarySection" class="hidden" aria-live="polite">
+        <p class="section-label">Summary</p>
+        <h2>What you decided</h2>
+        <div class="summary-box">
+          <p><strong>Final score: <span id="finalScore">42</span> / 100</strong> (started at 42 / 100)</p>
+          <p id="summaryCounts"></p>
+          <h3>Approved fixes</h3>
+          <ul id="approvedList"></ul>
+          <h3>Rejected — not applied</h3>
+          <ul id="rejectedList"></ul>
+          <h3>Skipped — decide later</h3>
+          <ul id="skippedList"></ul>
+          <h3>Still needs a human designer to check</h3>
+          <ul>
+            <li><strong>Screen-reader test:</strong> run the fixed page with VoiceOver or NVDA — an audit cannot hear what a screen reader actually announces.</li>
+            <li><strong>Keyboard-only walkthrough:</strong> Tab through the whole page. Check focus is visible, in a sensible order, and never gets trapped.</li>
+            <li><strong>Alt text meaning:</strong> the auditor can check alt text exists, but only a person can tell if it actually describes the image well.</li>
+            <li><strong>Real users:</strong> test with people with low vision and people who use assistive tech, on their own devices and settings.</li>
+            <li><strong>Rejected items:</strong> anything you rejected above still needs a designer decision — either a different fix, or a documented reason it is OK as it is.</li>
+          </ul>
+          <p style="color: var(--muted);">This is a prototype with sample data. It does not certify WCAG conformance.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer id="footer" class="footer-component">
+      <div class="footer-top">
+        <a href="../../index.html" class="footer-logo" aria-label="Ginko — home"><img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" /></a>
+        <div class="footer-email">
+          <div class="footer-email-label">Hit my line</div>
+          <div class="footer-block">
+            <button class="email-copy" type="button" data-email="mindfullydesign@gmail.com" aria-label="Copy email to clipboard"><span class="email-text">mindfullydesign@gmail.com</span><svg class="copy-icon" width="24" height="24" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="6.20312" y="7.20386" width="16.7972" height="16.7972" fill="transparent" stroke="#0F0602" stroke-width="2"/><rect x="1" y="1.99878" width="16.7972" height="16.7972" fill="#c9c972" stroke="#0F0602" stroke-width="2"/></svg></button>
+            <a class="footer-social" href="https://www.linkedin.com/in/ginkoemdon/" target="_blank" rel="noopener" aria-label="Visit my LinkedIn profile"><img loading="lazy" src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/673c129627b8d3c81d9be887_6491a87dcdb57d5bee063ee7_linkedin-logo-white.svg" alt="Ginko Emdon's LinkedIn profile" /></a>
+          </div>
+        </div>
+      </div>
+      <hr class="footer-divider" />
+      <div class="footer-copyright">
+        <p>made mindfully<br />© 2026 Ginko Emdon</p>
+      </div>
+      <div class="footer-thankyou">
+        <p>✿ thank you for your cyber frolick ✿</p>
+      </div>
+    </footer>
+  </div>
+  <script>
+  (function(){var h=document.querySelector('.nav');var b=document.querySelector('.menu-button');if(b&&h){b.addEventListener('click',function(){var o=h.classList.toggle('nav-open');b.setAttribute('aria-expanded',o);});}document.querySelectorAll('.nav-toggle').forEach(function(t){t.addEventListener('click',function(e){e.stopPropagation();var d=t.closest('.nav-dropdown');var o=d.classList.toggle('open');t.setAttribute('aria-expanded',o);});});document.addEventListener('click',function(e){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){if(!d.contains(e.target)){d.classList.remove('open');d.querySelector('.nav-toggle').setAttribute('aria-expanded','false');}});});document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open');});}});document.querySelectorAll('.email-copy').forEach(function(btn){btn.addEventListener('click',function(){var email=btn.getAttribute('data-email');var label=btn.querySelector('.email-text');function done(){if(label){label.textContent='Copied!';setTimeout(function(){label.textContent=email;},2000);}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(email).then(done);}else{var ta=document.createElement('textarea');ta.value=email;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);done();}});});})();
+
+  /* --- AI Accessibility Auditor demo: sample data only, client-side --- */
+  var ISSUES = [
+    { id: "contrast", sev: "High", points: 10, wcag: "WCAG 1.4.3 Contrast (Minimum) · AA",
+      title: "Low colour contrast on the intro text",
+      where: "Mock page · “Sign up now…” paragraph — light grey (#bbb) on white, about 1.9:1.",
+      fix: "Darken the text to earth #3b342f on white. That is about 7:1 — passes AA and AAA.",
+      apply: function(){ document.getElementById("mockContrast").classList.add("fixed"); document.getElementById("noteContrast").classList.add("fixed"); },
+      undo: function(){ document.getElementById("mockContrast").classList.remove("fixed"); document.getElementById("noteContrast").classList.remove("fixed"); } },
+    { id: "alt", sev: "High", points: 10, wcag: "WCAG 1.1.1 Non-text Content · A",
+      title: "Hero image has no alt text",
+      where: "Mock page · studio photo — the image has an empty alt attribute, so a screen reader skips it entirely.",
+      fix: "Add alt text: “Bright studio with plants, a work table and large windows.” Keep it short and descriptive.",
+      apply: function(){ var el=document.getElementById("mockImg"); el.classList.add("fixed"); el.setAttribute("aria-label","Bright studio with plants, a work table and large windows"); document.getElementById("mockImgCaption").firstChild.textContent = "Image: alt text added — “Bright studio with plants, a work table and large windows.” "; document.getElementById("noteImg").classList.add("fixed"); },
+      undo: function(){ var el=document.getElementById("mockImg"); el.classList.remove("fixed"); el.setAttribute("aria-label",""); document.getElementById("mockImgCaption").firstChild.textContent = "Image: no alt text yet — a screen reader hears nothing here. "; document.getElementById("noteImg").classList.remove("fixed"); } },
+    { id: "button", sev: "High", points: 10, wcag: "WCAG 4.1.2 Name, Role, Value · A",
+      title: "Icon-only button has no accessible name",
+      where: "Mock page · round “→” button — no text and no aria-label, so a screen reader announces just “button”.",
+      fix: "Give it a name: aria-label=\"Book a call\". Keep the arrow as a visual, not the only label.",
+      apply: function(){ var el=document.getElementById("mockBtn"); el.classList.add("fixed"); el.setAttribute("aria-label","Book a call"); el.setAttribute("title","Book a call"); document.getElementById("noteBtn").classList.add("fixed"); },
+      undo: function(){ var el=document.getElementById("mockBtn"); el.classList.remove("fixed"); el.removeAttribute("aria-label"); el.removeAttribute("title"); document.getElementById("noteBtn").classList.remove("fixed"); } },
+    { id: "heading", sev: "Medium", points: 6, wcag: "WCAG 1.3.1 Info and Relationships · A",
+      title: "Heading level skipped — H1 straight to H3",
+      where: "Mock page · “Our services” is an H3, with no H2 before it. Screen-reader users navigate by headings, so the outline is broken.",
+      fix: "Change it to an H2, and keep the visual size with CSS if needed. Structure first, styling second.",
+      apply: function(){ document.getElementById("mockHeading").classList.add("fixed"); document.getElementById("noteHeading").classList.add("fixed"); },
+      undo: function(){ document.getElementById("mockHeading").classList.remove("fixed"); document.getElementById("noteHeading").classList.remove("fixed"); } },
+    { id: "label", sev: "Medium", points: 6, wcag: "WCAG 3.3.2 Labels or Instructions · A",
+      title: "Email field has a placeholder only — no label",
+      where: "Mock page · email input — placeholder text disappears when you type, and is not a label for assistive tech.",
+      fix: "Add a visible <label> for the field: “Email address”. Keep the placeholder as a hint, not a replacement.",
+      apply: function(){ document.getElementById("mockLabel").classList.add("fixed"); document.getElementById("mockEmail").classList.add("fixed"); document.getElementById("noteLabel").classList.add("fixed"); },
+      undo: function(){ document.getElementById("mockLabel").classList.remove("fixed"); document.getElementById("mockEmail").classList.remove("fixed"); document.getElementById("noteLabel").classList.remove("fixed"); } },
+    { id: "link", sev: "Medium", points: 6, wcag: "WCAG 2.4.4 Link Purpose (In Context) · A",
+      title: "Vague link text — “click here”",
+      where: "Mock page · “Want to know more? click here” — out of context, a screen-reader user hears only “click here” and has no idea where it goes.",
+      fix: "Rewrite the link so it makes sense alone: “Read the accessibility statement”.",
+      apply: function(){ var el=document.getElementById("mockLink"); el.textContent="Read the accessibility statement"; document.getElementById("noteLink").classList.add("fixed"); },
+      undo: function(){ var el=document.getElementById("mockLink"); el.textContent="click here"; document.getElementById("noteLink").classList.remove("fixed"); } },
+    { id: "colour", sev: "Medium", points: 6, wcag: "WCAG 1.4.1 Use of Color · A",
+      title: "Error status shown by colour only",
+      where: "Mock page · a red dot is the only sign something is wrong. Someone who cannot tell red from green misses it completely.",
+      fix: "Add text as well as colour: “Error: your email is missing.”, plus an icon. Never use colour alone to mean something.",
+      apply: function(){ document.getElementById("mockStatus").classList.add("fixed"); document.getElementById("noteStatus").classList.add("fixed"); },
+      undo: function(){ document.getElementById("mockStatus").classList.remove("fixed"); document.getElementById("noteStatus").classList.remove("fixed"); } },
+    { id: "textsize", sev: "Low", points: 4, wcag: "WCAG 1.4.4 Resize Text · AA",
+      title: "Small print is fixed at 10px",
+      where: "Mock page · delivery / returns note is set to 10px. It is hard to read, and does not scale well when text is enlarged.",
+      fix: "Set body copy to at least 16px (1rem) and use relative units, so text can be resized to 200% without breaking the layout.",
+      apply: function(){ document.getElementById("mockTiny").classList.add("fixed"); document.getElementById("noteTiny").classList.add("fixed"); },
+      undo: function(){ document.getElementById("mockTiny").classList.remove("fixed"); document.getElementById("noteTiny").classList.remove("fixed"); } }
+  ];
+  var BASE_SCORE = 42;
+  var decisions = {}; // id -> "approved" | "rejected" | "skipped"
+
+  function esc(s){ return s; }
+  function renderIssues(){
+    var list = document.getElementById("issuesList");
+    list.innerHTML = "";
+    ISSUES.forEach(function(issue){
+      var d = decisions[issue.id];
+      var card = document.createElement("article");
+      card.className = "issue" + (d ? " decided-" + d : "");
+      card.id = "issue-" + issue.id;
+      card.innerHTML =
+        '<div class="issue-top"><span class="sev sev-' + issue.sev.toLowerCase() + '">' + issue.sev + ' · +' + issue.points + ' pts</span>' +
+        '<span class="wcag">' + issue.wcag + '</span></div>' +
+        '<h3>' + issue.title + '</h3>' +
+        '<p>' + issue.where + '</p>' +
+        '<p><strong>Suggested fix:</strong> ' + issue.fix + '</p>' +
+        '<div class="issue-actions">' +
+        '<button type="button" class="approve" data-id="' + issue.id + '" data-decision="approved"' + (d ? ' disabled' : '') + '>Approve fix</button>' +
+        '<button type="button" class="reject" data-id="' + issue.id + '" data-decision="rejected"' + (d ? ' disabled' : '') + '>Reject</button>' +
+        '<button type="button" data-id="' + issue.id + '" data-decision="skipped"' + (d ? ' disabled' : '') + '>Skip</button>' +
+        '</div>' +
+        (d ? '<p class="decision ' + d + '">' + (d === "approved" ? "✓ Approved — fix applied to the mock page above." : d === "rejected" ? "✕ Rejected — fix not applied." : "— Skipped — decide later.") + '</p>' : '');
+      list.appendChild(card);
+    });
+    list.querySelectorAll("button[data-decision]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        decide(btn.getAttribute("data-id"), btn.getAttribute("data-decision"));
+      });
+    });
+  }
+  function score(){
+    var total = BASE_SCORE;
+    ISSUES.forEach(function(i){ if (decisions[i.id] === "approved") total += i.points; });
+    return Math.min(100, total);
+  }
+  function updateScore(){
+    var s = score();
+    document.getElementById("scoreAfter").textContent = s;
+    var bar = document.getElementById("scoreBar");
+    bar.style.width = s + "%";
+    bar.className = s >= 80 ? "good" : "";
+    var reviewed = Object.keys(decisions).length;
+    var approved = 0, rejected = 0, skipped = 0;
+    Object.keys(decisions).forEach(function(k){ if (decisions[k]==="approved") approved++; else if (decisions[k]==="rejected") rejected++; else skipped++; });
+    document.getElementById("reviewedCount").textContent = reviewed;
+    document.getElementById("countsText").innerHTML = "<strong>" + approved + "</strong> approved · <strong>" + rejected + "</strong> rejected · <strong>" + skipped + "</strong> skipped";
+    document.getElementById("scoreNote").textContent = reviewed === 0
+      ? "Approve fixes to raise the score. Rejected and skipped fixes add nothing."
+      : reviewed < ISSUES.length
+        ? "Score so far: " + s + " / 100. " + (ISSUES.length - reviewed) + " issue(s) still to review."
+        : "All " + ISSUES.length + " issues reviewed. Final score: " + s + " / 100.";
+    if (reviewed === ISSUES.length) showSummary();
+  }
+  function decide(id, decision){
+    if (decisions[id]) return;
+    decisions[id] = decision;
+    var issue = ISSUES.filter(function(i){ return i.id === id; })[0];
+    if (decision === "approved" && issue.apply) issue.apply();
+    renderIssues();
+    updateScore();
+  }
+  function showSummary(){
+    var approved = ISSUES.filter(function(i){ return decisions[i.id]==="approved"; });
+    var rejected = ISSUES.filter(function(i){ return decisions[i.id]==="rejected"; });
+    var skipped = ISSUES.filter(function(i){ return decisions[i.id]==="skipped"; });
+    function li(items, emptyText){
+      if (!items.length) return "<li>" + emptyText + "</li>";
+      return items.map(function(i){ return "<li><strong>" + i.title + "</strong> — " + i.sev + " · " + i.wcag + "</li>"; }).join("");
+    }
+    document.getElementById("finalScore").textContent = score();
+    document.getElementById("summaryCounts").textContent = approved.length + " approved · " + rejected.length + " rejected · " + skipped.length + " skipped, out of " + ISSUES.length + " issues.";
+    document.getElementById("approvedList").innerHTML = li(approved, "None approved.");
+    document.getElementById("rejectedList").innerHTML = li(rejected, "None rejected.");
+    document.getElementById("skippedList").innerHTML = li(skipped, "None skipped.");
+    document.getElementById("summarySection").classList.remove("hidden");
+    document.getElementById("summarySection").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  function resetDemo(){
+    ISSUES.forEach(function(i){ if (i.undo) i.undo(); });
+    decisions = {};
+    document.getElementById("issuesSection").classList.add("hidden");
+    document.getElementById("summarySection").classList.add("hidden");
+    document.getElementById("issuesList").innerHTML = "";
+    document.getElementById("auditHint").textContent = "Press “Run audit” to see the 8 sample issues.";
+    updateScore();
+  }
+  document.getElementById("runAudit").addEventListener("click", function(){
+    renderIssues();
+    document.getElementById("issuesSection").classList.remove("hidden");
+    document.getElementById("auditHint").textContent = "Audit complete — 8 sample issues found. Review each one below.";
+    updateScore();
+    document.getElementById("issuesSection").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  document.getElementById("resetAudit").addEventListener("click", resetDemo);
+  updateScore();
+  </script>
+</body>
+</html>

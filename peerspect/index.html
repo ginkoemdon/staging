@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ginko's Prototype Playground</title>
+  <meta name="description" content="Ginko's Prototype Playground — Dismantling barriers, building belonging. Prototypes in progress." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <!-- Nav — style copied from Webflow (mindfullydesign.webflow.io), own simple JS, no Webflow JS.
+       Logo, 4.5rem bar, blur, Krona One menu, 1px underline, flower button.
+       Services / About / Resumé are placeholder buttons for now, mirroring the original Webflow menu. -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="logo" href="./index.html" aria-label="Ginko's Prototype Playground — home">
+        <img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/67b6998f1db3d0b64a9c19e6_apple-touch-icon.png" loading="lazy" width="32" alt="" class="logo-g" />
+        <img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" class="logo-img" />
+      </a>
+      <button class="menu-button" type="button" aria-label="Menu" aria-expanded="false">
+        <span class="menu-icon1"><span class="menu-icon1_line-top"></span><span class="menu-icon1_line-middle"></span><span class="menu-icon1_line-bottom"></span></span>
+      </button>
+      <nav class="nav-links" aria-label="Main">
+        <div class="nav-dropdown">
+          <button class="nav-link nav-toggle" type="button" aria-expanded="false" aria-haspopup="true">Prototypes <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.55806 6.29544C2.46043 6.19781 2.46043 6.03952 2.55806 5.94189L3.44195 5.058C3.53958 4.96037 3.69787 4.96037 3.7955 5.058L8.00001 9.26251L12.2045 5.058C12.3021 4.96037 12.4604 4.96037 12.5581 5.058L13.4419 5.94189C13.5396 6.03952 13.5396 6.19781 13.4419 6.29544L8.17678 11.5606C8.07915 11.6582 7.92086 11.6582 7.82323 11.5606L2.55806 6.29544Z" fill="currentColor"/></svg></button>
+          <div class="nav-dropdown-list">
+            <a class="nav-dropdown-link" href="./prototypes/peerspect/index.html"><span class="thumb sun">P</span><span><strong>PEERSPECT</strong><span>One of Ginko's prototypes — details to come.</span></span></a>
+            <a class="nav-dropdown-link" href="./prototypes/kate-ai/index.html"><span class="thumb">AI</span><span><strong>AI prototype for Kate</strong><span>The AI prototype Ginko is putting together for Kate.</span></span></a>
+            <a class="nav-dropdown-link" href="./prototypes/alt-text-studio/index.html"><span class="thumb">AL</span><span><strong>Alt-Text Studio</strong><span>AI drafts alt text, with confidence and a WCAG check.</span></span></a>
+            <a class="nav-dropdown-link" href="./prototypes/plain-language-gov/index.html"><span class="thumb">PL</span><span><strong>Plain-Language Government AI</strong><span>Dense policy rewritten plainly, with unsure bits flagged.</span></span></a>
+            <a class="nav-dropdown-link" href="./prototypes/co-design-synthesis/index.html"><span class="thumb">CO</span><span><strong>Co-Design Synthesis</strong><span>Workshop notes grouped into themes, traced to speakers.</span></span></a>
+            <a class="nav-dropdown-link" href="./prototypes/voice-first-low-vision/index.html"><span class="thumb">VO</span><span><strong>Voice-First AI for Low Vision</strong><span>Speak, listen, confirm — built for low vision.</span></span></a>
+            <a class="nav-dropdown-link" href="./prototypes/accessibility-auditor/index.html"><span class="thumb">AU</span><span><strong>AI Accessibility Auditor</strong><span>Audit a page, approve fixes, watch the score rise.</span></span></a>
+            <a class="nav-dropdown-link" href="./prototypes/consent-research/index.html"><span class="thumb">CO</span><span><strong>Consent-Aware Research Assistant</strong><span>Synthesis that links every insight, respects consent.</span></span></a>
+            <a class="nav-dropdown-link" href="./prototypes/index.html"><span class="thumb">All</span><span><strong>All prototypes</strong><span>See every prototype subpage in one place.</span></span></a>
+          </div>
+        </div>
+        <a class="nav-link" href="https://mindfullydesign.webflow.io/#offerings">Services</a>
+        <a class="nav-link" href="https://mindfullydesign.webflow.io/about">About</a>
+        <a class="nav-link" href="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/67aea44f506169a16be6fd36_95d3807660de7d4d3415709f6ff2e4eb_Ginko%20Emdon%20-%20Product%20Designer%20-%20Resume%20-%202025.pdf">Resumé</a>
+        <a class="flower-button" href="https://mindfullydesign.webflow.io/" target="_blank" rel="noopener"><span class="button-line-left"></span><span class="button-inner-text">Ginko's Portfolio</span><span class="button-line-right"></span></a>
+      </nav>
+    </div>
+  </header>
+  <div class="wrap">
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">Ginko's Prototype Playground</p>
+        <h1>Dismantling barriers, <span class="valued">building belonging</span>.</h1>
+        <p class="lede">Prototypes in progress — test them, break them, rebuild them.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#prototypes">Explore the prototypes ↓</a>
+        </div>
+      </section>
+
+      <section id="prototypes">
+        <p class="section-label">Featured Works</p>
+        <h2>Prototypes</h2>
+        <div class="cards">
+          <a class="card" href="./prototypes/peerspect/index.html">
+            <div class="card-media sun"><img src="assets/illustrations/peerspect.svg" alt="" loading="lazy" /></div>
+            <div class="card-body">
+              <p class="meta">2026 · Prototype</p>
+              <h3>PEERSPECT</h3>
+              <p>One of Ginko's prototypes — details to come.</p>
+              <span class="cta">View prototype</span>
+            </div>
+          </a>
+
+          <a class="card" href="./prototypes/kate-ai/index.html">
+            <div class="card-media"><img src="assets/illustrations/kate-ai.svg" alt="" loading="lazy" /></div>
+            <div class="card-body">
+              <p class="meta">2026 · AI Prototype</p>
+              <h3>AI prototype for Kate</h3>
+              <p>The AI prototype Ginko is putting together for Kate.</p>
+              <span class="cta">View prototype</span>
+            </div>
+          </a>
+
+          <a class="card" href="./prototypes/alt-text-studio/index.html">
+            <div class="card-media sun"><img src="assets/illustrations/alt-text-studio.svg" alt="" loading="lazy" /></div>
+            <div class="card-body">
+              <p class="meta">2026 · AI Prototype</p>
+              <h3>Alt-Text Studio</h3>
+              <p>AI drafts alt text, with confidence and a WCAG check.</p>
+              <span class="cta">View prototype</span>
+            </div>
+          </a>
+
+          <a class="card" href="./prototypes/plain-language-gov/index.html">
+            <div class="card-media"><img src="assets/illustrations/plain-language-gov.svg" alt="" loading="lazy" /></div>
+            <div class="card-body">
+              <p class="meta">2026 · AI Prototype</p>
+              <h3>Plain-Language Government AI</h3>
+              <p>Dense policy rewritten plainly, with unsure bits flagged.</p>
+              <span class="cta">View prototype</span>
+            </div>
+          </a>
+
+          <a class="card" href="./prototypes/co-design-synthesis/index.html">
+            <div class="card-media lizard"><img src="assets/illustrations/co-design-synthesis.svg" alt="" loading="lazy" /></div>
+            <div class="card-body">
+              <p class="meta">2026 · AI Prototype</p>
+              <h3>Co-Design Synthesis</h3>
+              <p>Workshop notes grouped into themes, traced to speakers.</p>
+              <span class="cta">View prototype</span>
+            </div>
+          </a>
+
+          <a class="card" href="./prototypes/voice-first-low-vision/index.html">
+            <div class="card-media"><img src="assets/illustrations/voice-first-low-vision.svg" alt="" loading="lazy" /></div>
+            <div class="card-body">
+              <p class="meta">2026 · AI Prototype</p>
+              <h3>Voice-First AI for Low Vision</h3>
+              <p>Speak, listen, confirm — built for low vision.</p>
+              <span class="cta">View prototype</span>
+            </div>
+          </a>
+
+          <a class="card" href="./prototypes/accessibility-auditor/index.html">
+            <div class="card-media sun"><img src="assets/illustrations/accessibility-auditor.svg" alt="" loading="lazy" /></div>
+            <div class="card-body">
+              <p class="meta">2026 · AI Prototype</p>
+              <h3>AI Accessibility Auditor</h3>
+              <p>Audit a page, approve fixes, watch the score rise.</p>
+              <span class="cta">View prototype</span>
+            </div>
+          </a>
+
+          <a class="card" href="./prototypes/consent-research/index.html">
+            <div class="card-media"><img src="assets/illustrations/consent-research.svg" alt="" loading="lazy" /></div>
+            <div class="card-body">
+              <p class="meta">2026 · AI Prototype</p>
+              <h3>Consent-Aware Research Assistant</h3>
+              <p>Synthesis that links every insight, respects consent.</p>
+              <span class="cta">View prototype</span>
+            </div>
+          </a>
+
+          <a class="card" href="./prototypes/index.html">
+            <div class="card-media lizard"><img src="assets/illustrations/all-prototypes.svg" alt="" loading="lazy" /></div>
+            <div class="card-body">
+              <p class="meta">In progress</p>
+              <h3>All prototypes</h3>
+              <p>See every prototype subpage in one place.</p>
+              <span class="cta">See all prototypes</span>
+            </div>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer id="footer" class="footer-component">
+      <div class="footer-top">
+        <a href="./index.html" class="footer-logo" aria-label="Ginko — home"><img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" /></a>
+        <div class="footer-email">
+          <div class="footer-email-label">Hit my line</div>
+          <div class="footer-block">
+            <button class="email-copy" type="button" data-email="mindfullydesign@gmail.com" aria-label="Copy email to clipboard"><span class="email-text">mindfullydesign@gmail.com</span><svg class="copy-icon" width="24" height="24" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="6.20312" y="7.20386" width="16.7972" height="16.7972" fill="transparent" stroke="#0F0602" stroke-width="2"/><rect x="1" y="1.99878" width="16.7972" height="16.7972" fill="#c9c972" stroke="#0F0602" stroke-width="2"/></svg></button>
+            <a class="footer-social" href="https://www.linkedin.com/in/ginkoemdon/" target="_blank" rel="noopener" aria-label="Visit my LinkedIn profile"><img loading="lazy" src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/673c129627b8d3c81d9be887_6491a87dcdb57d5bee063ee7_linkedin-logo-white.svg" alt="Ginko Emdon's LinkedIn profile" /></a>
+          </div>
+        </div>
+      </div>
+      <hr class="footer-divider" />
+      <div class="footer-copyright">
+        <p>made mindfully<br />© 2026 Ginko Emdon</p>
+      </div>
+      <div class="footer-thankyou">
+        <p>✿ thank you for your cyber frolick ✿</p>
+      </div>
+    </footer>
+  </div>
+  <script>
+  (function(){var h=document.querySelector('.nav');var b=document.querySelector('.menu-button');if(b&&h){b.addEventListener('click',function(){var o=h.classList.toggle('nav-open');b.setAttribute('aria-expanded',o);});}document.querySelectorAll('.nav-toggle').forEach(function(t){t.addEventListener('click',function(e){e.stopPropagation();var d=t.closest('.nav-dropdown');var o=d.classList.toggle('open');t.setAttribute('aria-expanded',o);});});document.addEventListener('click',function(e){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){if(!d.contains(e.target)){d.classList.remove('open');d.querySelector('.nav-toggle').setAttribute('aria-expanded','false');}});});document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open');});}});document.querySelectorAll('.email-copy').forEach(function(btn){btn.addEventListener('click',function(){var email=btn.getAttribute('data-email');var label=btn.querySelector('.email-text');function done(){if(label){label.textContent='Copied!';setTimeout(function(){label.textContent=email;},2000);}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(email).then(done);}else{var ta=document.createElement('textarea');ta.value=email;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);done();}});});})();
+  </script>
+</body>
+</html>

@@ -1,5 +1,13 @@
 {
-  "experiments": [],
+  "experiments": [
+    {
+      "name": "peerspect",
+      "branch": "experiment/peerspect",
+      "description": "PEERSPECT \u2014 your guide to how places actually feel",
+      "upstream_sha": "36b0db0ee898f401566d9cc5102cc4be9c271b41",
+      "staged": "2026-11-23"
+    }
+  ],
   "upstream": "ginkoemdon/ginkoemdon.github.io",
   "upstream_branch": "main"
 }
