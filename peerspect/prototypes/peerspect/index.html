@@ -104,7 +104,6 @@
     .web-wrap .cs-step { font-weight:600; color:#184b44; }
     .web-wrap .cs-dot { display:inline-block; width:.75rem; height:.75rem; border-radius:50%; margin-right:.5rem; vertical-align:middle; }
     .web-wrap .cs-cta { text-align:center; padding:1.5rem 0 .5rem; }
-    .web-wrap .cs-sources { font-size:.9rem; color:#49433d; border-top:1px solid #3b342f; padding-top:1rem; margin-top:2rem; }
     /* Clubhouse style, concise for a hiring manager to skim.
        Short sections, bold statements, cards with tags, no long
        paragraphs. Site branding only here, no app colours. */
@@ -135,16 +134,21 @@
       .web-wrap .cs-glance li { grid-template-columns:1fr; gap:2px; }
       .web-wrap .cs-title { font-size:1.6rem; }
     }
-    /* Playground footer, same content as the Playground home page. */
-    .pg-footer { margin-top:2rem; padding:2rem 0 1rem; color:#49433d; font-size:.9rem; font-family:"Poppins", system-ui, sans-serif; }
+    /* Playground footer, same content as the Playground home page.
+       Fix, Nov 23 2026: it was broken because it sat outside the
+       main wrap, so it stretched edge to edge with no side padding,
+       while the case study above it is 1080px centred with 1.5rem
+       padding. Give it the same wrap, so logo, email, divider and
+       copyright line up with the content above. */
+    .pg-footer { max-width:1080px; margin:2rem auto 0; padding:2rem 1.5rem 1rem; box-sizing:border-box; color:#49433d; font-size:.9rem; font-family:"Poppins", system-ui, sans-serif; min-width:0; }
     .pg-footer a { color:#3b342f; }
     .pg-footer-top { display:grid; grid-template-columns:1fr 1fr; column-gap:4vw; align-items:start; padding-bottom:2rem; }
     .pg-footer-logo img { width:144px; max-height:3.5rem; display:block; }
     .pg-footer-email { display:flex; flex-direction:column; gap:1rem; align-items:flex-start; }
     .pg-footer-email-label { font-size:.75rem; font-weight:600; color:#3b342f; }
     .pg-footer-block { display:flex; gap:2rem; align-items:center; flex-wrap:wrap; }
-    .pg-email-copy { color:#000; background:transparent; border:2px solid #3b342f; border-radius:4px; height:2.5rem; padding:.5rem 1rem; display:inline-flex; align-items:center; gap:.75rem; font-family:"Poppins", sans-serif; font-size:1rem; cursor:pointer; }
-    .pg-email-copy:hover { background:#f8c05e; }
+    .pg-email-copy { color:#000; background:transparent; border:2px solid #3b342f; border-radius:4px; min-height:2.5rem; height:auto; padding:.5rem 1rem; display:inline-flex; align-items:center; gap:.75rem; font-family:"Poppins", sans-serif; font-size:1rem; cursor:pointer; overflow-wrap:anywhere; max-width:100%; }
+    .pg-email-copy:hover { background:#f2c14e; }
     .pg-footer-social { width:4em; height:4em; padding:1em; display:flex; justify-content:center; align-items:center; text-decoration:none; }
     .pg-footer-social img { width:2em; height:auto; filter:invert(1); display:block; }
     .pg-footer-divider { background:#3b342f; width:100%; height:1px; border:0; margin:0; }
@@ -359,7 +363,137 @@
        Then the fit line, bold teal. Then facts, label bold.
        Then colour-coded tags, then the quiet proof line, then
        one primary action. Bookmark is a quiet text action below it. */
-    #view-app #focus-card { padding:20px; }
+    #view-app #focus-card { padding:28px 24px; }
+    /* Full palette in the app, Nov 23 2026: not just teal.
+       Access is pine, Sensory is honey/amber, Environment is
+       teal-tint, Context is amber, Inclusion is teal, Menu is pine.
+       Chips, group headers, nav and bars each carry their own
+       colour, so the app feels alive, not two-colour. */
+    #view-app .onboard-group[data-group="access"] summary { border-left:6px solid #2f5d3e; border-radius:12px 0 0 12px; }
+    #view-app .onboard-group[data-group="sensory"] summary { border-left:6px solid #f2c14e; border-radius:12px 0 0 12px; }
+    #view-app .onboard-group[data-group="environment"] summary { border-left:6px solid #8ecdc0; border-radius:12px 0 0 12px; }
+    #view-app .onboard-group[data-group="context"] summary { border-left:6px solid #8a4a08; border-radius:12px 0 0 12px; }
+    #view-app .onboard-group[data-group="inclusion"] summary { border-left:6px solid #14665a; border-radius:12px 0 0 12px; }
+    #view-app .onboard-group[data-group="menu"] summary { border-left:6px solid #2f5d3e; border-radius:12px 0 0 12px; }
+    #view-app .onboard-group[data-group="sensory"] .ps-chip[aria-pressed="true"] { background:#8a4a08; border-color:#8a4a08; color:#fff; }
+    #view-app .onboard-group[data-group="access"] .ps-chip[aria-pressed="true"] { background:#2f5d3e; border-color:#2f5d3e; color:#fff; }
+    #view-app .onboard-group[data-group="environment"] .ps-chip[aria-pressed="true"] { background:#f2c14e; border-color:#f2c14e; color:#372c1f; }
+    #view-app .onboard-group[data-group="context"] .ps-chip[aria-pressed="true"] { background:#8a4a08; border-color:#8a4a08; color:#fff; }
+    #view-app .app-nav button[aria-current="page"] { box-shadow:inset 0 3px 0 #f2c14e; }
+    #view-app .ps-bar span { background:linear-gradient(90deg, #14665a, #2f5d3e, #f2c14e); }
+    #view-app .map-wrap { background:linear-gradient(180deg, #eef4ea, #e2efe8); }
+    #view-app .landing .landing-list li:nth-child(2) { border-left:6px solid #f2c14e; }
+    #view-app .landing .landing-list li:nth-child(3) { border-left:6px solid #2f5d3e; }
+    #view-app .landing .landing-list li:nth-child(4) { border-left:6px solid #8a4a08; }
+    /* Match card breathing room, Nov 23 2026: more air, and a
+       nested alignment card inside it, so you can see exactly
+       which of your filters this place matches, and which it
+       does not. The outer card is calm, the inner card does
+       the explaining. */
+    #view-app #focus-card .ps-facts { gap:12px; margin:.75rem 0; }
+    #view-app #focus-card .ps-tags { margin:16px 0; }
+    #view-app #focus-card .ps-muted { margin:.5rem 0; }
+    #view-app .align-card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px 20px; margin:16px 0; box-shadow:0 1px 3px rgba(26,43,38,.08); }
+    #view-app .align-card h4 { margin:0 0 .5rem; color:var(--pine); font-size:1rem; }
+    #view-app .align-card ul { list-style:none; padding:0; margin:0; display:grid; gap:8px; }
+    #view-app .align-card li { display:flex; gap:8px; align-items:baseline; }
+    #view-app .align-card .align-dot { flex:0 0 auto; width:.7rem; height:.7rem; border-radius:50%; display:inline-block; }
+    #view-app .align-card .align-dot.yes { background:#2f5d3e; }
+    #view-app .align-card .align-dot.no { background:var(--line); border:1px solid var(--muted); }
+    /* Responsive web app, Nov 23 2026: the prototype adapts to
+       what you open it on. On a phone it stays the phone app,
+       max 560px, one column, bottom nav. On a laptop / wide
+       screen (900px and up) it becomes a web app: up to 1080px
+       wide, Discover shows the match card beside the full list,
+       Map shows the map beside the list, Onboarding shows its
+       groups in two columns, and Place detail reads in two
+       columns. No separate build, same app, same state. The
+       embedded preview in the case study always stays
+       phone-sized, so it fits beside the screen cards. */
+    @media (min-width:900px) {
+      #view-app:not(.embedded) .app-wrap, #view-app:not(.embedded) .app { max-width:1080px; }
+      #view-app:not(.embedded) .app-wrap { padding:32px 32px 24px; }
+      /* Gap fix, Nov 23 2026: the old grid put the heading in row 1
+         and the list in row 2, so row 2 only started once the tall
+         match card in row 1 ended, leaving a big empty gap under
+         "All places". Now each side is one column wrapper, so the
+         list starts at the top, beside the match card, with no gap. */
+      #view-app:not(.embedded) #view-list { display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); column-gap:24px; align-items:start; }
+      #view-app:not(.embedded) #view-list .discover-main { grid-column:1; min-width:0; }
+      #view-app:not(.embedded) #view-list .discover-side { grid-column:2; min-width:0; }
+      #view-app:not(.embedded) #view-list .discover-side h3 { margin-top:0; }
+      #view-app:not(.embedded) #view-list .discover-side #compact-list { margin-top:0; }
+      #view-app:not(.embedded) #view-map { display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); column-gap:24px; align-items:start; }
+      #view-app:not(.embedded) #view-map .map-wrap { grid-column:1; }
+      #view-app:not(.embedded) #view-map p.ps-muted { grid-column:1; }
+      #view-app:not(.embedded) #view-map #map-distance-list { grid-column:2; grid-row:1 / span 2; margin-top:0; }
+      #view-app:not(.embedded) #priority-groups { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px; align-items:start; }
+      #view-app:not(.embedded) #priority-groups .onboard-group { margin-bottom:0; }
+      #view-app:not(.embedded) .ps-kv { grid-template-columns:minmax(0,1fr) minmax(0,1fr); column-gap:32px; }
+      #view-app:not(.embedded) .landing { max-width:640px; margin:0 auto; }
+      #view-app:not(.embedded) .app-nav { max-width:1080px; }
+      #view-app:not(.embedded) .app-nav button { font-size:.85rem; min-height:64px; }
+    }
+    #view-app.embedded .app-wrap, #view-app.embedded .app { max-width:560px; }
+    /* Preview size switcher, Nov 23 2026: right by the sun/moon
+       icon, Auto / Desktop / Phone. Auto follows the device,
+       Desktop forces the web layout, Phone forces the phone
+       layout, so you can preview both sizes on one device.
+       Active button is never colour alone: stroke, outline
+       and underline, like the other active states. Hidden in
+       the embedded case study preview, which always stays
+       phone-sized to fit beside the screen cards. */
+    #view-app .view-size-toggle { display:flex; background:var(--line-soft); border-radius:999px; padding:3px; gap:2px; }
+    #view-app .view-size-toggle button { border:0; background:none; border-radius:999px; padding:8px 10px; min-height:40px; font-weight:600; font-size:.85rem; color:var(--muted); cursor:pointer; }
+    #view-app .view-size-toggle button[aria-pressed="true"] { background:var(--card); color:var(--teal-dark); border:2px solid var(--teal); outline:2px solid var(--ink); outline-offset:-2px; text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:2px; font-weight:700; }
+    #view-app.embedded .view-size-toggle { display:none; }
+    @media (max-width:560px) { #view-app .view-size-toggle button { padding:6px 7px; font-size:.8rem; } }
+    /* Force Desktop: same web layout as the 900px media query,
+       but by class, so it works even on a narrow screen. */
+    #view-app.force-web:not(.embedded) { overflow-x:auto; }
+    #view-app.force-web:not(.embedded) .app-wrap, #view-app.force-web:not(.embedded) .app { width:1080px; max-width:1080px; }
+    #view-app.force-web:not(.embedded) .app-wrap { padding:32px 32px 24px; }
+    #view-app.force-web:not(.embedded) #view-list { display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); column-gap:24px; align-items:start; }
+    #view-app.force-web:not(.embedded) #view-list .discover-main { grid-column:1; min-width:0; }
+    #view-app.force-web:not(.embedded) #view-list .discover-side { grid-column:2; min-width:0; }
+    #view-app.force-web:not(.embedded) #view-list .discover-side h3 { margin-top:0; }
+    #view-app.force-web:not(.embedded) #view-list .discover-side #compact-list { margin-top:0; }
+    #view-app.force-web:not(.embedded) #view-map { display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); column-gap:24px; align-items:start; }
+    #view-app.force-web:not(.embedded) #view-map .map-wrap { grid-column:1; }
+    #view-app.force-web:not(.embedded) #view-map p.ps-muted { grid-column:1; }
+    #view-app.force-web:not(.embedded) #view-map #map-distance-list { grid-column:2; grid-row:1 / span 2; margin-top:0; }
+    #view-app.force-web:not(.embedded) #priority-groups { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px; align-items:start; }
+    #view-app.force-web:not(.embedded) #priority-groups .onboard-group { margin-bottom:0; }
+    #view-app.force-web:not(.embedded) .ps-kv { grid-template-columns:minmax(0,1fr) minmax(0,1fr); column-gap:32px; }
+    #view-app.force-web:not(.embedded) .landing { max-width:640px; margin:0 auto; }
+    #view-app.force-web:not(.embedded) .app-nav { max-width:1080px; }
+    #view-app.force-web:not(.embedded) .app-nav button { font-size:.85rem; min-height:64px; }
+    /* Force Phone: undo the wide media query, even on a laptop,
+       so the app goes back to the single-column phone layout. */
+    #view-app.force-phone:not(.embedded) .app-wrap, #view-app.force-phone:not(.embedded) .app { max-width:560px; }
+    #view-app.force-phone:not(.embedded) #view-list { display:block; }
+    #view-app.force-phone:not(.embedded) #view-map { display:block; }
+    #view-app.force-phone:not(.embedded) #priority-groups { display:block; }
+    #view-app.force-phone:not(.embedded) .ps-kv { grid-template-columns:minmax(0,1fr); }
+    #view-app.force-phone:not(.embedded) .app-nav button { font-size:.72rem; min-height:60px; }
+    /* Accessible active states, Nov 23 2026: never colour alone.
+       Every selected or active control also gets a stroke, a
+       check, an underline, or a shape change, so it reads for
+       colour-blind users and in greyscale. Keyboard focus gets
+       a thick visible outline in both themes. */
+    #view-app :focus-visible { outline:3px solid var(--focus); outline-offset:2px; border-radius:8px; }
+    #view-app .ps-chip[aria-pressed="true"] { border-width:3px; outline:2px solid var(--ink); outline-offset:1px; }
+    #view-app .ps-chip[aria-pressed="true"]::before { content:"\2713  "; font-weight:700; }
+    #view-app .view-toggle button[aria-pressed="true"] { border:2px solid var(--teal); outline:2px solid var(--ink); outline-offset:-2px; text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:2px; }
+    #view-app .app-nav button[aria-current="page"] { border:2px solid var(--teal); outline:2px solid var(--ink); outline-offset:-2px; text-decoration:underline; text-underline-offset:4px; font-weight:700; }
+    #view-app .dots button[aria-current="true"] { width:20px; border-radius:999px; border-width:3px; outline:2px solid var(--ink); outline-offset:1px; }
+    #view-app .rate-btn[aria-pressed="true"] { border-width:3px; outline:2px solid var(--ink); outline-offset:1px; }
+    #view-app .rate-btn[aria-pressed="true"]::before { content:"\2713  "; }
+    #view-app .ps-answer[aria-pressed="true"], #view-app .ps-answer[aria-checked="true"] { border-width:3px; outline:2px solid var(--ink); outline-offset:1px; }
+    #view-app .map-pin.align { outline:3px solid #f2c14e; box-shadow:0 0 0 2px #1a2b26, 0 2px 6px rgba(0,0,0,.3); }
+    #view-app .onboard-group[open ] summary { border-bottom:2px solid var(--teal); }
+    #view-app .onboard-group[open ] .group-chev { display:inline-block; transform:rotate(180deg); }
+    #view-app .ps-btn:active { outline:3px solid var(--focus); outline-offset:2px; }
     #view-app #focus-card h3 { font-size:1.4rem; line-height:1.2; margin:.25rem 0 .1rem; color:var(--teal-dark); }
     #view-app .focus-top { display:flex; justify-content:space-between; gap:12px; align-items:baseline; margin:0 0 .25rem; }
     #view-app .focus-top .dist-line { margin:0; font-weight:700; color:var(--teal-dark); }
@@ -430,7 +564,41 @@
     #view-web .web-wrap .cs-screen-body { padding:1.5rem; }
     #view-web .web-wrap .cs-screen-body p { margin:.25rem 0 .75rem; }
     #view-web .web-wrap .cs-screen-link { font-weight:600; color:#8a4a08; background:none; border:0; padding:0; min-height:44px; text-align:left; }
+    #view-web .web-wrap .cs-use { border-top:6px solid #14665a; }
+    #view-web .web-wrap .cs-use.use-access { border-top-color:#2f5d3e; }
+    #view-web .web-wrap .cs-use.use-sensory { border-top-color:#f2c14e; }
+    #view-web .web-wrap .cs-use.use-menu { border-top-color:#8a4a08; }
+    #view-web .web-wrap .cs-use.use-here { border-top-color:#14665a; }
+    #view-web .web-wrap .cs-use.use-biz { border-top-color:#2f5d3e; }
+    #view-web .web-wrap .cs-use-when { font-weight:700; color:#8a4a08; margin:0 0 .25rem; }
+    #view-web .web-wrap .cs-hifi-layout { display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:24px; align-items:start; }
+    #view-web .web-wrap .cs-hifi-layout .cs-screen-grid { grid-template-columns:minmax(0,1fr); margin:0; }
+    #view-web .web-wrap .cs-hifi-layout .cs-live { position:sticky; top:16px; margin:0; max-height:760px; overflow-y:auto; }
+    #view-web .web-wrap .cs-screen.is-active { outline:3px solid #f2c14e; outline-offset:2px; }
+    @media (max-width:900px) {
+      #view-web .web-wrap .cs-hifi-layout { grid-template-columns:minmax(0,1fr); }
+      #view-web .web-wrap .cs-hifi-layout .cs-live { position:static; max-height:none; }
+      #view-web .web-wrap .cs-hifi-layout .cs-screen-grid { grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); }
+    }
     #view-web .web-wrap .cs-screen-link::after { content:" \2192"; }
+    /* Live preview, Nov 23 2026: the High fidelity cards open the
+       real prototype screens right here in the case study, not a
+       screenshot and not a link out. The app node is moved into
+       the preview slot (see showPreview in the script), so the
+       screens you see are the live app, with its real buttons,
+       filters and bottom nav. */
+    #view-web .web-wrap .cs-live { border:2px solid #14665a; border-radius:24px; background:#fdfbf7; box-shadow:0 8px 24px rgba(26,43,38,.12); padding:1.25rem 1.25rem 0; margin:1.5rem 0; overflow:hidden; min-width:0; }
+    #view-web .web-wrap .cs-live-head { display:flex; gap:1rem; align-items:center; flex-wrap:wrap; justify-content:space-between; padding-bottom:1rem; }
+    #view-web .web-wrap .cs-live-head strong { font-family:"Krona One", sans-serif; color:#14665a; font-size:1.05rem; }
+    #view-web .web-wrap .cs-live-actions { display:flex; gap:.75rem; flex-wrap:wrap; }
+    #view-web .web-wrap .cs-live-actions button { min-height:44px; border-radius:999px; padding:.6rem 1rem; font-weight:600; cursor:pointer; }
+    #view-web .web-wrap .cs-live-full { background:#14665a; border:2px solid #14665a; color:#fff; }
+    #view-web .web-wrap .cs-live-close { background:transparent; border:2px solid #3b342f; color:#3b342f; }
+    #live-preview-slot #view-app { display:block; }
+    #view-app.embedded { max-height:640px; overflow-y:auto; border-top:1px solid #e3e0d8; }
+    #view-app.embedded .app-wrap { max-width:560px; padding:20px 16px 24px; }
+    #view-app.embedded .app-nav { position:sticky; bottom:0; left:0; right:0; max-width:none; margin:0; }
+    #view-app.embedded .app-header { position:sticky; top:0; z-index:5; background:var(--bg); }
     #view-web .web-wrap .cs-swatch { display:inline-block; width:1rem; height:1rem; border-radius:50%; vertical-align:middle; margin-right:.4rem; border:1px solid rgba(59,52,47,.2); }
     #view-web .web-wrap .cs-kit-type { font-family:"Krona One", sans-serif; }
     @media (max-width:640px) {
@@ -465,6 +633,26 @@
     @media (max-width:600px) {
       #view-web .web-wrap .cs-context, #view-web .web-wrap .cs-grid4, #view-web .web-wrap .cs-beforeafter { grid-template-columns:minmax(0,1fr); }
       #view-web .web-wrap .cs-glance li { grid-template-columns:minmax(0,1fr); }
+    }
+
+    /* Visual case study, Nov 23 2026: show, do not explain.
+       Star vs factors diagram, factor bars, process timeline. */
+    #view-web .web-wrap .cs-visual { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:1rem 0; }
+    #view-web .web-wrap .cs-stars { font-size:2rem; letter-spacing:.2rem; color:#8a4a08; line-height:1; margin:.5rem 0; }
+    #view-web .web-wrap .cs-factor { display:grid; grid-template-columns:7rem 1fr auto; gap:12px; align-items:center; padding:8px 0; border-bottom:1px solid #e3e0d8; }
+    #view-web .web-wrap .cs-factor:last-child { border-bottom:0; }
+    #view-web .web-wrap .cs-factor .cs-bar { height:12px; background:#e3e0d8; border-radius:999px; overflow:hidden; }
+    #view-web .web-wrap .cs-factor .cs-bar span { display:block; height:100%; background:#14665a; }
+    #view-web .web-wrap .cs-factor .cs-bar span.honey { background:#f2c14e; }
+    #view-web .web-wrap .cs-factor .cs-bar span.pine { background:#2f5d3e; }
+    #view-web .web-wrap .cs-factor .cs-bar span.amber { background:#8a4a08; }
+    #view-web .web-wrap .cs-timeline { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:16px; margin:1rem 0; list-style:none; padding:0; }
+    #view-web .web-wrap .cs-timeline li { background:#fafafa; border:1px solid rgba(59,52,47,.08); border-radius:24px; padding:1.5rem; box-shadow:0 12px 30px rgba(59,52,47,.12); }
+    #view-web .web-wrap .cs-num { display:grid; place-items:center; width:2.5rem; height:2.5rem; border-radius:50%; background:#14665a; color:#fff; font-family:"Krona One", sans-serif; font-size:1rem; margin-bottom:.75rem; }
+    #view-web .web-wrap .cs-num.honey { background:#f2c14e; color:#372c1f; }
+    #view-web .web-wrap .cs-num.pine { background:#2f5d3e; }
+    @media (max-width:600px) {
+      #view-web .web-wrap .cs-visual, #view-web .web-wrap .cs-timeline { grid-template-columns:minmax(0,1fr); }
     }
   </style>
 </head>
@@ -508,65 +696,68 @@
       <section aria-labelledby="cs-tldr">
         <h2 id="cs-tldr">TL;DR</h2>
         <p class="cs-subtitle">Filter places by how they feel, not by stars, with a peer layer on Google Maps.</p>
-        <div class="cs-tldr">
-          <p>PEERSPECT adds a peer layer to Google Maps listings. Concept prototype, November 2026. Sample Montreal places only. No live Google data or testing yet.</p>
-        </div>
+        <div class="cs-tldr"><p>Concept prototype, November 2026. Sample Montreal places only. No live Google data or testing yet.</p></div>
       </section>
 
       <section aria-labelledby="cs-glance">
         <h2 id="cs-glance">At a glance</h2>
         <p class="cs-subtitle">Designed by Ginko, with Muse, in November 2026, as a mobile-first prototype.</p>
-        <div class="cs-card">
-          <ul class="cs-glance">
-            <li><strong>Role</strong><span>Product designer, Ginko Emdon</span></li>
-            <li><strong>Team</strong><span>Ginko, with Muse (Wynn, AI collaborator)</span></li>
-            <li><strong>Type</strong><span>Mobile-first web app prototype</span></li>
-            <li><strong>Status</strong><span>In progress, November 2026</span></li>
-            <li><strong>Tools</strong><span>HTML, CSS, JavaScript, sample data. Google Places API planned, not yet connected.</span></li>
-          </ul>
-        </div>
+        <div class="cs-card"><ul class="cs-glance">
+          <li><strong>Role</strong><span>Product designer, Ginko Emdon</span></li>
+          <li><strong>Team</strong><span>Ginko, with Muse (Wynn, AI collaborator)</span></li>
+          <li><strong>Type</strong><span>Mobile-first web app prototype</span></li>
+          <li><strong>Status</strong><span>In progress, November 2026</span></li>
+          <li><strong>Tools</strong><span>HTML, CSS, JavaScript, sample data. Google Places API planned, not yet connected.</span></li>
+        </ul></div>
       </section>
 
       <section aria-labelledby="cs-context">
         <h2 id="cs-context">Context</h2>
         <p class="cs-subtitle">A peer layer on Google Maps, so you can tell how a place feels before you go.</p>
         <div class="cs-context">
-          <div class="cs-card"><h3>What</h3><p>Experiential filters on Google Maps and Business listings, not reviews.</p></div>
+          <div class="cs-card"><h3>What</h3><p>Experiential filters on Google Maps listings, not reviews.</p></div>
           <div class="cs-card"><h3>Who</h3><p>Disabled and neurodiverse people first. Useful for everyone.</p></div>
           <div class="cs-card"><h3>When</h3><p>Concept and prototype, November 2026.</p></div>
-          <div class="cs-card"><h3>How</h3><p>Anonymous peer check-ins, one tap at a time. Google Places API planned, not scraping.</p></div>
+          <div class="cs-card"><h3>How</h3><p>Anonymous peer check-ins, one tap at a time.</p></div>
         </div>
       </section>
 
       <section aria-labelledby="cs-problem">
         <h2 id="cs-problem">Problem</h2>
         <p class="cs-subtitle">Reviews give stars, not how a place feels, so people cannot tell if it fits today.</p>
-        <p>A five star rating is a judgement, not a description. It hides the things that decide whether a visit works: light, sound, crowding, access, how staff treat you, and whether you can see the menu before you go.</p>
-        <p>That gap matters most for disabled and neurodiverse people, and it costs businesses visitors they never hear from. Stars do not explain why someone did not come back.</p>
-        <p>So the question was not how to write better reviews. It was how to make an experience visible, in a form people can use in seconds.</p>
+        <div class="cs-visual">
+          <div class="cs-card"><h3>What stars show</h3><p class="cs-stars" aria-label="Five out of five stars">&#9733;&#9733;&#9733;&#9733;&#9733;</p><p>One number. No light, sound, crowding, or access.</p></div>
+          <div class="cs-card"><h3>What people need</h3>
+            <div class="cs-factor"><strong>Sound</strong><span class="cs-bar"><span style="width:35%"></span></span><span>Quiet</span></div>
+            <div class="cs-factor"><strong>Light</strong><span class="cs-bar"><span class="honey" style="width:70%"></span></span><span>Bright</span></div>
+            <div class="cs-factor"><strong>Crowding</strong><span class="cs-bar"><span class="pine" style="width:25%"></span></span><span>Calm</span></div>
+            <div class="cs-factor"><strong>Access</strong><span class="cs-bar"><span class="amber" style="width:100%"></span></span><span>Step-free</span></div>
+          </div>
+        </div>
+        <p>A star is a judgement, not a description. That gap costs disabled and neurodiverse people a wasted trip, and costs businesses visitors they never hear from.</p>
       </section>
 
       <section aria-labelledby="cs-solution">
         <h2 id="cs-solution">Solution</h2>
-        <p class="cs-subtitle">Four filter groups, tailored to today, with live peer reports on top.</p>
-        <div class="cs-card cs-feature"><h3>Onboarding</h3><p>What matters today? Open a category, pick what fits, save as a profile.</p><ul class="cs-tags"><li>Access</li><li>Sensory</li><li>Context</li></ul></div>
-        <div class="cs-card cs-feature"><h3>Discover, map and list</h3><p>Distance and transport shown. Map view and list view. Nearest first.</p><ul class="cs-tags"><li>Mobility</li><li>Distance</li></ul></div>
-        <div class="cs-card cs-feature"><h3>Place detail</h3><p>How it feels, through the day. Menu preview and a prep list of what to order.</p><ul class="cs-tags"><li>Low vision</li><li>Anxiety</li></ul></div>
-        <div class="cs-card cs-feature"><h3>I am here check-in</h3><p>One simple question at a time, anonymous. Answers fit the question.</p><ul class="cs-tags"><li>Low effort</li><li>Anonymous</li></ul></div>
-        <div class="cs-card cs-feature"><h3>Business insights</h3><p>A calm visual dashboard, not raw data. Gentle, pre-written suggestions.</p><ul class="cs-tags"><li>Business owners</li></ul></div>
-        <p><strong>Access:</strong> step-free entry, seating, restrooms. <strong>Sensory:</strong> lighting and sound, including what the sound is, plus crowding and smell. <strong>Environment:</strong> how it feels to be there, temperature, air, cleanliness, outdoor space, dogs welcome, and the place's personality, artsy, retro, nostalgic, bohemian, maximalist. <strong>Context:</strong> why you are going, co-working, a quiet chat, socialising, online meetings. <strong>Inclusion:</strong> pronouns respected, and language, French, English, Spanish, Arabic, Italian, Haitian Creole, and Mandarin separately, ASL, ordering in ASL or in writing, hearing loop. Menu now includes dietary needs: gluten-free, vegan, lactose-free, halal, kosher, vegetarian, and cultural food options.</p>
+        <p class="cs-subtitle">Five moments, not five features. Each one is a real situation, and what PEERSPECT does in it.</p>
+        <div class="cs-card cs-feature cs-use use-access"><p class="cs-use-when">I need a quiet place to work</p><h3>Find a place that fits today</h3><p>You pick quiet, low sensory, and co-working. You see only places that fit, nearest first, with distance and how to get there.</p><ul class="cs-tags"><li>Quiet nook</li><li>Low sensory</li><li>Co-working</li></ul></div>
+        <div class="cs-card cs-feature cs-use use-sensory"><p class="cs-use-when">Can I actually get in?</p><h3>Check access before you go</h3><p>Step-free entry, restrooms, seating, and vision access are up front, not buried in reviews. If it is not step-free, you know before you leave.</p><ul class="cs-tags"><li>Step-free</li><li>Accessible restroom</li><li>Vision access</li></ul></div>
+        <div class="cs-card cs-feature cs-use use-menu"><p class="cs-use-when">I want to decide before I go</p><h3>See the menu, then arrive ready</h3><p>Preview the menu online, check dietary needs, and build a prep list. Order ahead, call, or take out, so you are not deciding on the spot.</p><ul class="cs-tags"><li>Menu preview</li><li>Dietary needs</li><li>Order ahead</li></ul></div>
+        <div class="cs-card cs-feature cs-use use-here"><p class="cs-use-when">I am here now, is it still calm?</p><h3>Check in, in one tap</h3><p>One simple question at a time, anonymous, while you are there. Your answer helps the next person, and theirs helps you.</p><ul class="cs-tags"><li>One question</li><li>Anonymous</li><li>Live</li></ul></div>
+        <div class="cs-card cs-feature cs-use use-biz"><p class="cs-use-when">I run a place, what should I change?</p><h3>See what to fix, without raw data</h3><p>A calm visual dashboard shows patterns and gentle suggestions, like a quiet hour or clearer menu access. No names, no raw data to dissect.</p><ul class="cs-tags"><li>Visual patterns</li><li>Gentle suggestions</li><li>Private</li></ul></div>
+        <p>Underneath all five: four groups, <strong>Access, Sensory, Environment, Context</strong>, plus Inclusion and Menu.</p>
       </section>
 
       <section aria-labelledby="cs-process">
         <h2 id="cs-process">Process</h2>
         <p class="cs-subtitle">I started from a lived question, then let the design prove itself in the app, one decision at a time.</p>
-        <ol>
-          <li><span class="cs-step">Start with the question, not a feature list.</span> I could not tell from reviews whether a place would work for me that day. That became the brief, and every later choice had to answer it.</li>
-          <li><span class="cs-step">Name the mental model first.</span> A star collapses a whole experience into one number. I broke it into groups people already think in, Access, Sensory, Environment, and Context, so each factor gets its own line. Aesthetic is one part of Environment, not the whole of it.</li>
-          <li><span class="cs-step">Design visually, one decision at a time.</span> I asked for one question at a time, and for options I could see, not just read about. Seeing a choice made it easier to know what felt right.</li>
-          <li><span class="cs-step">Let the language do the work.</span> When a check-in offered Yes or Not really for how the sound was, the words were wrong, not the user. I split sound into how loud it is and what it is, music, talking, or machines.</li>
-          <li><span class="cs-step">Build the brand as a system, not a look.</span> PEERSPECT needed its own world, so I set palette, type, spacing, and content rules together, with accessibility as a rule, not a check at the end.</li>
-          <li><span class="cs-step">Break it in the app, then fix the frame.</span> The first version felt like a page on my site, and scrolled badly. I rebuilt it as a case study first, then the app fullscreen, so the frame disappears and the product feels like its own world.</li>
+        <ol class="cs-timeline">
+          <li><span class="cs-num">1</span><h3>Ask the question</h3><p>I could not tell from reviews if a place would work for me that day.</p></li>
+          <li><span class="cs-num honey">2</span><h3>Name the model</h3><p>One star became four groups: Access, Sensory, Environment, Context.</p></li>
+          <li><span class="cs-num pine">3</span><h3>See it, don&apos;t list it</h3><p>One question at a time, options I could see, not just read.</p></li>
+          <li><span class="cs-num">4</span><h3>Fix the words</h3><p>Yes or Not really did not answer how loud it was. Sound became level plus type.</p></li>
+          <li><span class="cs-num honey">5</span><h3>Build the system</h3><p>Palette, type, spacing, and content rules together. Accessibility as a rule.</p></li>
+          <li><span class="cs-num pine">6</span><h3>Break it, fix it</h3><p>The first version felt like a page on my site. I rebuilt the frame so the app feels like its own world.</p></li>
         </ol>
       </section>
 
@@ -574,9 +765,9 @@
         <h2 id="cs-decisions">Key decisions</h2>
         <p class="cs-subtitle">Four choices that kept the design simple, customisable, anonymous, and visual.</p>
         <p class="cs-note">Tap a card to open it.</p>
-        <details class="cs-card"><summary>Groups, not one long list</summary><p>A long list creates overload. Groups are easier to scan and remember.</p></details>
-        <details class="cs-card"><summary>No pick limit</summary><p>A three-pick limit worked against agency. Accessibility means customisability, so people decide what is tailored to them.</p></details>
-        <details class="cs-card"><summary>Anonymous prompts, not named reviews</summary><p>Low effort and safer, with peer confirmation for trust. No names, no scrutiny.</p></details>
+        <details class="cs-card"><summary>Four groups, not one long list</summary><p>A long list creates overload. Four groups are easier to scan.</p></details>
+        <details class="cs-card"><summary>No pick limit</summary><p>A three-pick limit worked against agency. Accessibility means customisability.</p></details>
+        <details class="cs-card"><summary>Anonymous prompts, not named reviews</summary><p>Low effort and safer, with peer confirmation for trust.</p></details>
         <details class="cs-card"><summary>Visual dashboard, not raw data</summary><p>Owners see patterns and suggestions, never who said what.</p></details>
       </section>
 
@@ -595,21 +786,34 @@
 
       <section aria-labelledby="cs-hifi">
         <h2 id="cs-hifi">High fidelity designs</h2>
-        <p class="cs-subtitle">Seven screens, landing to business, all in one prototype.</p>
-        <p class="cs-note">Tap a screen to open it in the prototype.</p>
+        <p class="cs-subtitle">Seven screens, live below. Tap one and use it right here.</p>
+        <p class="cs-note">This is the real prototype, not a screenshot. Pick a screen on the left, use it live on the right, or open it fullscreen.</p>
+        <div class="cs-hifi-layout">
         <div class="cs-screen-grid">
-          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Onboarding</div><div class="cs-screen-body"><h3>Onboarding</h3><p>What matters today? Open a category, pick what fits, save as a profile.</p><button class="cs-screen-link" type="button" data-open-prototype>Try this screen</button></div></article>
-          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Discover</div><div class="cs-screen-body"><h3>Discover</h3><p>Map view and list view, distance and transport, nearest first.</p><button class="cs-screen-link" type="button" data-open-prototype>Try this screen</button></div></article>
-          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Place detail</div><div class="cs-screen-body"><h3>Place detail</h3><p>How it feels through the day, menu preview, prep list.</p><button class="cs-screen-link" type="button" data-open-prototype>Try this screen</button></div></article>
-          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">I am here</div><div class="cs-screen-body"><h3>I am here</h3><p>One simple question at a time, anonymous, while at a place.</p><button class="cs-screen-link" type="button" data-open-prototype>Try this screen</button></div></article>
-          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Business</div><div class="cs-screen-body"><h3>Business</h3><p>Calm visual dashboard, gentle pre-written suggestions.</p><button class="cs-screen-link" type="button" data-open-prototype>Try this screen</button></div></article>
+          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Landing</div><div class="cs-screen-body"><h3>Landing</h3><p>Your guide to how places actually feel.</p><button class="cs-screen-link" type="button" data-preview-screen="landing">Show this screen</button></div></article>
+          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Onboarding</div><div class="cs-screen-body"><h3>Onboarding</h3><p>What matters today? Pick as many as you like.</p><button class="cs-screen-link" type="button" data-preview-screen="onboard">Show this screen</button></div></article>
+          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Discover</div><div class="cs-screen-body"><h3>Discover</h3><p>Map and list views, distance and transport.</p><button class="cs-screen-link" type="button" data-preview-screen="discover">Show this screen</button></div></article>
+          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Place detail</div><div class="cs-screen-body"><h3>Place detail</h3><p>How it feels through the day, menu preview.</p><button class="cs-screen-link" type="button" data-preview-screen="place">Show this screen</button></div></article>
+          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Saved</div><div class="cs-screen-body"><h3>Saved</h3><p>Profiles, bookmarks and your prep list, by place.</p><button class="cs-screen-link" type="button" data-preview-screen="saved">Show this screen</button></div></article>
+          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">I am here</div><div class="cs-screen-body"><h3>I am here</h3><p>One question at a time, anonymous.</p><button class="cs-screen-link" type="button" data-preview-screen="here">Show this screen</button></div></article>
+          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Business</div><div class="cs-screen-body"><h3>Business</h3><p>Calm visual dashboard, gentle suggestions.</p><button class="cs-screen-link" type="button" data-preview-screen="business">Show this screen</button></div></article>
+        </div>
+        <div class="cs-live" id="live-preview">
+          <div class="cs-live-head">
+            <strong>Live preview: <span id="live-preview-name">Discover</span></strong>
+            <div class="cs-live-actions">
+              <button class="cs-live-full" id="live-preview-full" type="button">Open fullscreen</button>
+            </div>
+          </div>
+          <div id="live-preview-slot"></div>
+        </div>
         </div>
       </section>
 
       <section aria-labelledby="cs-testing">
         <h2 id="cs-testing">Testing and impact</h2>
         <p class="cs-subtitle">Not yet measured, and that is honest, here is what to test next.</p>
-        <p>No user testing, no metrics, none claimed here. Next: is onboarding clear, are the groups intuitive, do check-ins feel low effort, does the business dashboard read clearly.</p>
+        <p>No user testing, no metrics, none claimed here. Next: is onboarding clear, are four groups intuitive, do check-ins feel low effort.</p>
       </section>
 
       <section aria-labelledby="cs-before-after">
@@ -617,27 +821,25 @@
         <p class="cs-subtitle">Before, you guessed from stars. After, you match a place to today.</p>
         <div class="cs-beforeafter">
           <div class="cs-card cs-before"><h3>Before</h3><p>Five stars. Read 20 reviews. Guess about light, sound, and access.</p></div>
-          <div class="cs-card cs-after"><h3>After</h3><p>Groups, one factor per line. Match today. Prep list ready.</p></div>
+          <div class="cs-card cs-after"><h3>After</h3><p>Four groups, one factor per line. Match today. Prep list ready.</p></div>
         </div>
       </section>
 
       <section aria-labelledby="cs-outcomes">
-        <h2 id="cs-outcomes">Next steps and learnings</h2>
+        <h2 id="cs-outcomes">Next steps</h2>
         <p class="cs-subtitle">Test it, connect live Google data, and test trust, while staying anonymous.</p>
         <ul>
           <li>Test onboarding, groups, check-ins, and the business dashboard.</li>
           <li>Build the live Google Places API connection, with real peer data.</li>
-          <li>Test the trust layer: credible, while staying anonymous.</li>
-          <li>What I learned: a tidy limit can work against agency, and agency and autonomy go hand in hand with customisability.</li>
+          <li>What I learned: a tidy limit can work against agency, and agency goes hand in hand with customisability.</li>
         </ul>
       </section>
 
       <div class="cs-cta">
         <p><button class="ps-btn" id="see-prototype-2" type="button">See prototype</button></p>
-        <p class="cs-muted">The prototype opens fullscreen. Tap &times;, or press Esc, to return here.</p>
+        <p class="cs-muted">The prototype opens fullscreen. Use the back button to return here.</p>
       </div>
       <p class="cs-links"><a href="colour-palettes.html">Colour palettes</a> &middot; <a href="content-standards.html">Content standards</a> &middot; <a href="logo-exploration.html">Logo exploration</a></p>
-      <p class="cs-sources">Sources: Structure follows Sarah Doody, UX Portfolio Formula, and Nielsen Norman Group guidance on scannable case studies. <a href="https://storage.designlab.com/submissions_pdf/35e3e994.pdf">Sarah Doody template (PDF)</a></p>
     </main>
     <footer class="pg-footer">
       <div class="pg-footer-top">
@@ -667,6 +869,11 @@
     <div class="app-header">
       <span class="app-mark">PEERSPECT</span>
       <span class="spacer"></span>
+      <div class="view-size-toggle" role="group" aria-label="Preview size">
+        <button type="button" data-view-size="auto" aria-pressed="true">Auto</button>
+        <button type="button" data-view-size="web" aria-pressed="false">Desktop</button>
+        <button type="button" data-view-size="phone" aria-pressed="false">Phone</button>
+      </div>
       <button class="theme-toggle" type="button" data-theme-btn aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">☾</span></button>
       <button class="app-close" id="close-app" type="button" aria-label="Close prototype and return to case study">&times;</button>
     </div>
@@ -753,6 +960,7 @@
             <ul class="compact-list" id="map-distance-list"></ul>
           </div>
           <div id="view-list">
+          <div class="discover-main">
           <article class="ps-card" id="focus-card" aria-live="polite"></article>
           <div class="dots" id="place-dots" role="group" aria-label="Choose a place"></div>
           <div class="step">
@@ -760,8 +968,11 @@
             <span class="ps-muted" id="place-count"></span>
             <button class="ps-btn" id="next-place" type="button">Next →</button>
           </div>
+          </div>
+          <div class="discover-side">
           <h3>All places, nearest first</h3>
           <ul class="compact-list" id="compact-list"></ul>
+          </div>
           </div>
           <details>
             <summary>How the data would work</summary>
@@ -1010,6 +1221,7 @@
     GROUPS.forEach(function(g, gi){
       var det = document.createElement("details");
       det.className = "onboard-group";
+      det.dataset.group = g.name.toLowerCase();
       if(gi === 0) det.open = true;
       var sum = document.createElement("summary");
       var nameSpan = document.createElement("span"); nameSpan.textContent = g.name;
@@ -1178,7 +1390,7 @@
         '<p class="focus-top"><span class="ps-match">' + matchText + '</span><span class="dist-line">' + p.distLabel + '</span></p>' +
         '<h3>' + p.name + '</h3>' +
         '<p class="ps-muted" style="margin:.2rem 0;">' + p.type + ' · ' + p.area + ' · ' + p.transport + '</p>' +
-        (align ? '<p class="fit-line">This fits today — ' + align.text.replace(/^This fits today: /, "") + '</p>' : '') +
+        (function(){ if(!activeFilters.size) return ""; var rows = Array.from(activeFilters).map(function(f){ var ok = p.tags.indexOf(f) >= 0; return '<li><span class="align-dot ' + (ok ? "yes" : "no") + '" aria-hidden="true"></span><span>' + (ok ? "✓ " : "— ") + (FILTER_LABELS[f]||f) + '</span></li>'; }).join(""); return '<div class="align-card"><h4>Why this fits today</h4><ul>' + rows + '</ul><p class="ps-muted" style="margin:.5rem 0 0;">' + (align ? align.text : "No strong match yet, this place matches " + s.matches.length + " of " + activeFilters.size + " of your filters.") + '</p></div>'; })() +
         '<ul class="ps-facts"><li><strong>Lighting:</strong> ' + p.lighting + '</li><li><strong>Sound:</strong> ' + (p.soundLevel||'') + ' — ' + p.sound + '</li><li><strong>What you will hear:</strong> ' + (p.soundSources||[]).join("; ") + '</li><li><strong>Crowd:</strong> ' + p.crowding + '</li></ul>' +
         '<ul class="ps-tags">' + shownTags.map(function(t){ return '<li class="'+tagClass(t)+'">'+(FILTER_LABELS[t]||t)+'</li>'; }).join("") + '</ul>' +
         '<p class="ps-muted">Confirmed by ' + p.confirmed + ' peers · Anonymous</p>' +
@@ -1439,14 +1651,75 @@
        Expand view: fullscreen when available, wide layout otherwise. */
     var viewWeb = $("view-web"), viewApp = $("view-app");
     var appShown = false;
+    /* Preview size, Nov 23 2026: Auto / Desktop / Phone, by the
+       theme icon. Auto follows the screen width (the 900px media
+       query), Desktop forces the web layout, Phone forces the
+       phone layout. Saved, so your choice sticks. */
+    var viewSizeBtns = Array.prototype.slice.call(document.querySelectorAll("[data-view-size]"));
+    var savedViewSize = "auto";
+    try { savedViewSize = localStorage.getItem("peerspect-view-size-v1") || "auto"; } catch(e){}
+    if(savedViewSize !== "web" && savedViewSize !== "phone") savedViewSize = "auto";
+    function applyViewSize(mode){
+      viewApp.classList.toggle("force-web", mode === "web");
+      viewApp.classList.toggle("force-phone", mode === "phone");
+      viewSizeBtns.forEach(function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-view-size") === mode ? "true" : "false"); });
+      try { localStorage.setItem("peerspect-view-size-v1", mode); } catch(e){}
+    }
+    viewSizeBtns.forEach(function(b){ b.addEventListener("click", function(){ applyViewSize(b.getAttribute("data-view-size")); }); });
+    applyViewSize(savedViewSize);
+    /* Live preview in the case study, Nov 23 2026: move the real
+       app node into the preview slot in High fidelity, so the
+       screens are live there, not screenshots. Restore it to its
+       original place before going fullscreen or back to the web. */
+    var livePreview = $("live-preview"), liveSlot = $("live-preview-slot"), liveName = $("live-preview-name");
+    var appHomeParent = viewApp.parentNode, appHomeNext = viewApp.nextSibling;
+    function restoreApp(){
+      if(viewApp.classList.contains("embedded")){
+        viewApp.classList.remove("embedded");
+        appHomeParent.insertBefore(viewApp, appHomeNext);
+      }
+      /* Do not hide the live preview here: it is always present
+         in High fidelity. showWeb re-embeds Discover into it. */
+    }
+    function showPreview(name, opts){
+      opts = opts || {};
+      if(name === "place" && !currentPlace) showPlace(PLACES[0].id);
+      livePreview.hidden = false;
+      liveSlot.appendChild(viewApp);
+      viewApp.classList.add("embedded");
+      viewApp.hidden = false;
+      appShown = true;
+      var label = document.querySelector('[data-preview-screen="' + name + '"]');
+      document.querySelectorAll(".cs-screen").forEach(function(c){ c.classList.remove("is-active"); });
+      if(label){ var card = label.closest(".cs-screen"); if(card) card.classList.add("is-active"); liveName.textContent = card ? card.querySelector("h3").textContent : name; }
+      showScreen(name);
+      if(!opts.noScroll) livePreview.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+    /* The live preview is always there in High fidelity, so load
+       Discover into it on page load, without scrolling the page. */
+    if(livePreview && liveSlot) showPreview("discover", {noScroll:true});
+    function closePreview(){
+      restoreApp();
+      viewApp.hidden = true;
+      var hifi = $("cs-hifi");
+      if(hifi) hifi.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+    document.querySelectorAll("[data-preview-screen]").forEach(function(b){ b.addEventListener("click", function(){ showPreview(b.getAttribute("data-preview-screen")); }); });
+    var liveClose = $("live-preview-close"); if(liveClose) liveClose.addEventListener("click", closePreview);
+    var liveFull = $("live-preview-full"); if(liveFull) liveFull.addEventListener("click", function(){ showApp(); });
     function showWeb(){
+      restoreApp();
       viewApp.hidden = true; viewWeb.hidden = false;
       if(document.fullscreenElement) document.exitFullscreen().catch(function(){});
       document.body.classList.remove("expanded");
       document.body.classList.remove("fs-mode");
       window.scrollTo(0,0);
+      /* Put the live preview back, so the embeds are there again
+         when you return to the case study. */
+      if(livePreview && liveSlot) showPreview("discover", {noScroll:true});
     }
     function showApp(){
+      restoreApp();
       viewWeb.hidden = true; viewApp.hidden = false;
       if(!appShown){ appShown = true; showScreen("landing"); }
       window.scrollTo(0,0);
