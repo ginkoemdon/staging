@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>staging · ginkoemdon.github.io</title>
+  <meta name="description" content="Staging previews for Ginko's Prototype Playground. Experiments under review, not the live site." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --egg: #e3e0d8; --earth: #3b342f; --brown: #372c1f; --sun: #f8c05e; --forest: #184b44; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--egg); color: var(--earth); font-family: Poppins, sans-serif; line-height: 1.6; }
+    main { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+    .tag { display: inline-block; padding: 0.2em 0.7em; background: var(--forest); color: #fff; font-family: "Krona One", sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 999px; }
+    h1 { font-family: "Krona One", sans-serif; font-size: 2rem; line-height: 1.2; margin: 1rem 0 0.5rem; }
+    a { color: var(--forest); }
+    code { background: rgba(59, 52, 47, 0.08); padding: 0.1em 0.35em; border-radius: 4px; }
+    ul.previews { list-style: none; padding: 0; margin-top: 1.5rem; }
+    ul.previews li { padding: 1rem 0; border-top: 1px solid rgba(59, 52, 47, 0.35); }
+    ul.previews p { color: rgba(59, 52, 47, 0.8); margin: 0.3rem 0 0; }
+    .empty { background: #fff; border: 1px solid rgba(59, 52, 47, 0.25); border-radius: 12px; padding: 1rem 1.25rem; }
+    footer { margin-top: 3rem; color: rgba(59, 52, 47, 0.75); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p><span class="tag">staging</span></p>
+    <h1>Experiment staging</h1>
+    <p>
+      Previews for <a href="https://ginkoemdon.github.io/">ginkoemdon.github.io</a> — Ginko's Prototype Playground.
+      Everything here is an experiment under review, not the live site, and
+      nothing here is indexed.
+    </p>
+    <p>
+      Each experiment lives in a folder named after it: branch
+      <code>experiment/&lt;name&gt;</code> in <code>ginkoemdon/ginkoemdon.github.io</code>
+      maps to <code>staging/&lt;name&gt;/</code> here.
+      On Ginko's ship call, the verified build here is promoted to the live site.
+    </p>
+    <!-- EXPERIMENTS:START -->
+    <ul class="previews">
+    </ul>
+    <p class="empty">No experiments staged yet. The first experiment will appear here once it is staged — see <a href="https://github.com/ginkoemdon/staging#readme">the staging README</a> for how to stage, sync, promote, and cut one.</p>
+    <!-- EXPERIMENTS:END -->
+    <footer>
+      <p>The live site is at <a href="https://ginkoemdon.github.io/">ginkoemdon.github.io</a>.</p>
+      <p>Upstream: <a href="https://github.com/ginkoemdon/ginkoemdon.github.io">ginkoemdon/ginkoemdon.github.io</a> (production, branch <code>main</code>). Staging repo: <a href="https://github.com/ginkoemdon/staging">ginkoemdon/staging</a>.</p>
+    </footer>
+  </main>
+</body>
+</html>
