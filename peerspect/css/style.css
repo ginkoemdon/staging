@@ -362,7 +362,12 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
 }
 .card:hover { box-shadow: 0 16px 36px rgba(59, 52, 47, 0.18); transform: translateY(-2px); }
 .card-media {
-  height: 180px; display: grid; place-items: center;
+  /* Nov 23 2026: keep the illustration ratio intact. The SVGs are
+     800x450 (16:9). The media box was a fixed 180px tall, so on a
+     wide two-across card (~640px) the box was ~3.5:1 and
+     object-fit: cover cropped the top and bottom off. Now the box
+     is 16:9 at any width, so the whole illustration shows. */
+  aspect-ratio: 16 / 9; display: grid; place-items: center;
   font-family: "Krona One", sans-serif; font-size: 1.4rem; color: #fff;
   background: linear-gradient(135deg, var(--forest), var(--rust));
 }
