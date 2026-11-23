@@ -51,7 +51,7 @@ git push --force-with-lease
 `sync.sh` re-exports the experiment branch into `<name>/` and records
 the new upstream SHA in `experiments.json`.
 
-There is also automation: `.github/workflows/sync-tenants.yml`
+There is also automation, ready to enable: `workflows/sync-tenants.yml`
 runs daily and on demand. It re-exports every tenant listed in
 `experiments.json` from its `experiment/<name>` branch, so a tenant
 that was rebased on latest `main` in the production repo picks up
@@ -59,6 +59,13 @@ those upstream changes here automatically. It does **not** rebase
 branches itself — rebasing writes to the production repo, and that
 step stays manual, with Ginko's say-so, so nothing is force-pushed
 by a robot.
+
+Note: the workflow file lives in `workflows/`, not
+`.github/workflows/`, for now. Pushing a workflow file needs a
+GitHub token with the `workflow` scope, and the current `gh` login
+does not have it (push was refused for that reason). To enable it,
+either move the file to `.github/workflows/` in the GitHub web UI,
+or re-authenticate `gh` with the `workflow` scope and push it.
 
 To check which tenants are behind `main` without changing anything:
 
@@ -99,7 +106,7 @@ git push origin --delete experiment/<name>   # in the production repo
   reads this list.
 - `scripts/stage.sh`, `scripts/sync.sh`, `scripts/remove.sh` —
   the local workflow, using the `gh` CLI.
-- `.github/workflows/sync-tenants.yml` — daily / on-demand re-export
+- `workflows/sync-tenants.yml` (enable by moving it to `.github/workflows/`) — daily / on-demand re-export
   of all tenants from their experiment branches.
 
 ## Pages setup
