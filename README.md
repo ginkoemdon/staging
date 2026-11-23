@@ -8,6 +8,13 @@ one correction: Ben's staging is **not a subdomain**. It is a GitHub Pages
 project site, served as a subpath: `benemdon.github.io/staging/`.
 Ginko's works the same way: `ginkoemdon.github.io/staging/`.
 
+## Ginko's words
+
+Ginko says **"push to preview"** to put a change on this preview site,
+and **"push to main"** when she is happy with it and wants it live.
+"Push to preview" = stage it here. "Push to main" = promote it to
+`ginkoemdon.github.io`. Always ask her first before pushing to main.
+
 ## How it works
 
 - Production is `ginkoemdon/ginkoemdon.github.io`, branch `main`.
