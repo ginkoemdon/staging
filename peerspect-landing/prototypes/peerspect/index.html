@@ -748,6 +748,33 @@
     #view-app .ps-tags li.tag-context { background:#8a4a08; border-color:#8a4a08; color:#fff; font-weight:700; }
     #view-app .ps-tags li.tag-inclusion { background:#8ecdc0; border-color:#8ecdc0; color:#372c1f; font-weight:700; }
     #view-app .ps-tags li.tag-menu { background:#2f5d3e; border-color:#2f5d3e; color:#fff; font-weight:700; }
+    /* Uniform match tags, Nov 24 2026: Ginko said the different
+       colours on every label looked messy, a lot. All tags are now
+       the same neutral pill (same background, border and dark text
+       in both themes), and the group colour lives only in a small
+       dot inside the tag. The dot is an extra cue only; the filter
+       text stays, so nothing relies on colour alone. Dot colours
+       use the theme variables, so they stay visible in dark mode
+       too (hardcoded pine/teal/amber would vanish on the dark tag
+       background). This block sits after both per-group colour
+       blocks above, same selectors, so it wins. The landing pillar
+       tags share this component, so they get the same uniform
+       pill and dot. Muted dashed "Not matched here" tags were
+       already neutral, so they are unchanged. */
+    #view-app .ps-tags li.tag-access, #view-app .ps-tags li.tag-sensory,
+    #view-app .ps-tags li.tag-env, #view-app .ps-tags li.tag-context,
+    #view-app .ps-tags li.tag-inclusion, #view-app .ps-tags li.tag-menu,
+    #view-app .ps-tags span.tag-access, #view-app .ps-tags span.tag-sensory,
+    #view-app .ps-tags span.tag-env, #view-app .ps-tags span.tag-context,
+    #view-app .ps-tags span.tag-inclusion, #view-app .ps-tags span.tag-menu { background:var(--tag-bg); border:1px solid var(--line); color:var(--ink); font-weight:700; }
+    #view-app .ps-tags li[class*="tag-"], #view-app .ps-tags span[class*="tag-"] { display:inline-flex; align-items:center; gap:6px; }
+    .tag-dot, #view-app .tag-dot { flex:0 0 auto; width:.65rem; height:.65rem; border-radius:50%; display:inline-block; box-shadow:0 0 0 1px rgba(26,43,38,.25); }
+    #view-app .ps-tags li.tag-access .tag-dot, #view-app .ps-tags span.tag-access .tag-dot { background:var(--pine); }
+    #view-app .ps-tags li.tag-sensory .tag-dot, #view-app .ps-tags span.tag-sensory .tag-dot { background:var(--honey); }
+    #view-app .ps-tags li.tag-env .tag-dot, #view-app .ps-tags span.tag-env .tag-dot { background:var(--teal); }
+    #view-app .ps-tags li.tag-context .tag-dot, #view-app .ps-tags span.tag-context .tag-dot { background:var(--amber); }
+    #view-app .ps-tags li.tag-inclusion .tag-dot, #view-app .ps-tags span.tag-inclusion .tag-dot { background:var(--teal-tint); }
+    #view-app .ps-tags li.tag-menu .tag-dot, #view-app .ps-tags span.tag-menu .tag-dot { background:var(--pine); }
     #view-app .discover-filters { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:12px 16px; }
     #view-app .discover-filters summary { font-weight:700; color:var(--teal-dark); min-height:44px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; list-style:none; }
     #view-app .discover-filters summary::-webkit-details-marker { display:none; }
@@ -1166,7 +1193,7 @@
           <p><strong>Your guide to how places actually feel.</strong></p>
         </div>
         <div class="screen-scroll">
-          <ul class="ps-tags"><li class="tag-access">Access</li><li class="tag-sensory">Sensory</li><li class="tag-env">Environment</li><li class="tag-context">Context</li></ul>
+          <ul class="ps-tags"><li class="tag-access"><span class="tag-dot" aria-hidden="true"></span>Access</li><li class="tag-sensory"><span class="tag-dot" aria-hidden="true"></span>Sensory</li><li class="tag-env"><span class="tag-dot" aria-hidden="true"></span>Environment</li><li class="tag-context"><span class="tag-dot" aria-hidden="true"></span>Context</li></ul>
           <p>Peer reports, anonymous, one question at a time.</p>
           <p class="ps-muted">Demo: sample Montreal establishments only.</p>
         </div>
@@ -1691,8 +1718,10 @@
       return null;
     }
     /* Match display, Nov 23 2026: a compact "5 of 5" score plus the
-       matched filters as oval tags (per-group colours via tagClass,
-       text label and a tick on every tag, so never colour alone).
+       matched filters as oval tags (uniform neutral pill, group
+       colour only as a small dot via tagClass, text label and a
+       tick on every tag, so never colour alone). Nov 24 2026:
+       tags went uniform with a dot, the full colours looked messy.
        Matched tags are capped at 4, with an "and N more" muted tag.
        matchScore() is the count regardless of the alignment
        threshold; alignmentFor() still decides whether a place
@@ -1707,7 +1736,7 @@
       var shown = m.matched.slice(0,4);
       var open = inline ? '<span role="listitem" class="' : '<li class="';
       var close = inline ? '</span>' : '</li>';
-      var out = shown.map(function(f){ return open + tagClass(f) + '">✓ ' + (FILTER_LABELS[f]||f) + close; }).join("");
+      var out = shown.map(function(f){ return open + tagClass(f) + '"><span class="tag-dot" aria-hidden="true"></span>✓ ' + (FILTER_LABELS[f]||f) + close; }).join("");
       if(m.matched.length > 4) out += open + 'tag-missed">and ' + (m.matched.length-4) + ' more' + close;
       return out;
     }
@@ -1801,7 +1830,7 @@
         '<p class="ps-muted" style="margin:.2rem 0;">' + p.type + ' · ' + p.area + ' · ' + p.transport + '</p>' +
         (function(){ if(!activeFilters.size) return ""; var m = matchScore(p); var matchedTags = m.matched.length ? '<ul class="ps-tags match-tags" aria-label="Filters this place matches">' + matchTagItems(m, false) + '</ul>' : '<p class="ps-muted">None of your filters matched here yet.</p>'; var missed = m.unmatched.length ? '<p class="align-missed-label">Not matched here</p><ul class="ps-tags match-tags" aria-label="Filters this place does not match">' + m.unmatched.map(function(f){ return '<li class="tag-missed">— ' + (FILTER_LABELS[f]||f) + '</li>'; }).join("") + '</ul>' : ""; return '<div class="align-card"><h4>Why this matches <span class="align-count">' + m.count + ' of ' + m.total + '</span></h4>' + matchedTags + missed + (align ? '' : '<p class="align-summary">No strong match yet — ' + m.count + ' of ' + m.total + ' of your filters.</p>') + '</div>'; })() +
         '<ul class="ps-facts"><li><strong>Lighting:</strong> ' + p.lighting + '</li><li><strong>Sound:</strong> ' + (p.soundLevel||'') + ' — ' + p.sound + '</li><li><strong>What you will hear:</strong> ' + (p.soundSources||[]).join("; ") + '</li><li><strong>Crowd:</strong> ' + p.crowding + '</li></ul>' +
-        '<ul class="ps-tags">' + shownTags.map(function(t){ return '<li class="'+tagClass(t)+'">'+(FILTER_LABELS[t]||t)+'</li>'; }).join("") + '</ul>' +
+        '<ul class="ps-tags">' + shownTags.map(function(t){ return '<li class="'+tagClass(t)+'"><span class="tag-dot" aria-hidden="true"></span>'+(FILTER_LABELS[t]||t)+'</li>'; }).join("") + '</ul>' +
         '<p class="ps-muted">Confirmed by ' + p.confirmed + ' peers · Anonymous</p>' +
         '<p><button class="ps-btn" id="focus-open" type="button">Open place</button></p>' +
         '<p><button class="ps-btn ps-btn-secondary" id="focus-bm" type="button">' + (bookmarks.has(p.id)?"★ Bookmarked":"☆ Bookmark") + '</button></p>';
