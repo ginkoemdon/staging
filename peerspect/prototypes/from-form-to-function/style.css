@@ -45,7 +45,8 @@ button, input, select { min-height: 44px; }
 /* Theme toggle, immediately left of the X (header rule, all prototypes):
    moon icon in light mode, sun icon in dark mode. */
 .theme-toggle, .app-close { width: 48px; height: 48px; min-width: 48px; min-height: 48px; display: grid; place-items: center; flex-shrink: 0; border-radius: 50%; border: 1px solid #d9d7d0; background: #fff; color: #0f766e; cursor: pointer; padding: 0; text-decoration: none; }
-.theme-toggle .theme-icon { font-size: 1.5rem; line-height: 1; }
+.theme-toggle .theme-icon { display: grid; place-items: center; line-height: 1; }
+.theme-toggle .theme-icon svg { width: 24px; height: 24px; display: block; }
 .app-close span { font-size: 1.75rem; line-height: 1; }
 .theme-toggle:hover, .theme-toggle:focus-visible, .app-close:hover, .app-close:focus-visible { background: #e6efec; }
 .theme-toggle:focus-visible, .app-close:focus-visible { outline: 3px solid #0f766e; outline-offset: 3px; }
