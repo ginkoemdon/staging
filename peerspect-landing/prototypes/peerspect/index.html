@@ -397,7 +397,7 @@
     .screen-foot { padding:16px 0 20px; background:var(--bg); border-top:1px solid var(--line); display:flex; gap:12px; }
     .screen-foot .ps-btn { flex:1; }
     /* Bottom nav, Nov 23 2026: stuck to the bottom of the screen at
-       all times in the app, so Today / Saved / I'm here / Business
+       all times in the app, so Discover / Saved / I'm here / Business
        are always reachable. Fixed, centred, app width, with a
        shadow so it reads as a bar, not part of the page. Content
        gets bottom padding so the bar never covers it. */
@@ -658,28 +658,11 @@
     .compact-list { list-style:none; padding:0; margin:12px 0; display:grid; gap:16px; }
     .compact-list li { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; }
     .compact-list li.align-good { border:2px solid var(--teal); background:var(--soft); }
-    /* List card, Nov 24 2026: the card is one button (name,
-       match, distance, one recent peer line) plus, beside it,
-       the descriptors dropdown. The dropdown sits outside the
-       button, so opening it never opens the place. */
+    /* List card: the card is one button, restored to the ?v=14
+       content, Nov 24 2026. Name and distance, transport and
+       area, and the matched oval tags when the place matches
+       today. The button styling stays from ?v=16. */
     .compact-list .card-open { background:none; border:0; text-align:left; width:100%; padding:0; font:inherit; color:var(--ink); cursor:pointer; display:block; }
-    .compact-list .card-open .card-top { display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
-    .compact-list .card-open .card-top strong { font-size:1.05rem; }
-    .compact-list .card-open .dist-line, .compact-list .card-open .recent-line { display:block; margin-top:4px; }
-    .compact-list .card-open .recent-line { font-style:italic; }
-    .recent-line { font-style:italic; }
-    /* List-card descriptors, Nov 24 2026: closed by default,
-       chevron flips when open, like Filters and sort. Counts
-       are peer confirmations of that report; descriptors
-       without a count come from the place's own details. */
-    .card-descriptors { margin-top:12px; border-top:1px solid var(--line); padding-top:8px; }
-    .card-descriptors summary { font-weight:700; color:var(--teal-dark); min-height:44px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; list-style:none; }
-    .card-descriptors summary::-webkit-details-marker { display:none; }
-    .card-descriptors summary::after { content:"\25BE"; font-size:1.25rem; line-height:1; color:var(--teal-dark); flex:0 0 auto; transition:transform .15s ease; }
-    .card-descriptors[open] summary::after { transform:rotate(180deg); }
-    .card-descriptors .desc-list { list-style:none; padding:0; margin:8px 0; display:grid; gap:6px; }
-    .card-descriptors .desc-list li { background:none; border:0; padding:0; margin:0; border-radius:0; }
-    .card-descriptors .desc-note { font-size:.85rem; margin:4px 0 0; }
     /* Focus card actions, Nov 24 2026: Open place and Bookmark
        share one row, side by side on desktop, stacked on phone. */
     .focus-actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
@@ -1035,11 +1018,11 @@
     #view-app .map-pin:active { filter:brightness(.88); }
     #view-app .card-open:hover strong { text-decoration:underline; text-underline-offset:3px; }
     #view-app .card-open:active strong { text-decoration:underline; }
-    #view-app .onboard-group summary:hover, #view-app .discover-filters summary:hover, #view-app .card-descriptors summary:hover, #view-app .save-preview summary:hover { background:var(--soft); border-radius:12px; }
+    #view-app .onboard-group summary:hover, #view-app .discover-filters summary:hover, #view-app .save-preview summary:hover { background:var(--soft); border-radius:12px; }
     #view-app .onboard-group .group-chev { transition:transform .18s ease; }
     #view-app .back-web:hover { background:var(--soft); border-radius:8px; }
     #view-app .dots button:hover::after { border-color:var(--teal-dark); }
-    #view-app .discover-filters[open] > *:not(summary), #view-app .onboard-group[open] > *:not(summary), #view-app .card-descriptors[open] > *:not(summary), #view-app #all-filters:not([hidden]), #view-app #view-map:not([hidden]), #view-app #view-list:not([hidden]) { animation:ps-drop-in .18s ease; }
+    #view-app .discover-filters[open] > *:not(summary), #view-app .onboard-group[open] > *:not(summary), #view-app #all-filters:not([hidden]), #view-app #view-map:not([hidden]), #view-app #view-list:not([hidden]) { animation:ps-drop-in .18s ease; }
     #view-app .ps-confirm { font-weight:700; color:var(--teal-dark); animation:ps-confirm-in .18s ease; }
     #view-app .ps-confirm::before { content:"\2713  "; font-weight:800; }
     #view-app .peer-crossed { animation:ps-confirm-in .18s ease; }
@@ -1495,10 +1478,10 @@
         </div>
       </section>
 
-      <!-- 2. DISCOVER / TODAY — one place at a time -->
+      <!-- 2. DISCOVER — one place at a time -->
       <section class="screen" id="screen-discover" aria-labelledby="places-h" hidden>
         <div class="screen-head">
-          <h2 id="places-h">Today</h2>
+          <h2 id="places-h">Discover</h2>
           <p id="tailored-note">No filters picked yet. Showing all sample places.</p>
           <div class="view-toggle" role="group" aria-label="Choose map view or list view">
             <button type="button" id="view-list-btn" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg>List view</button>
@@ -1676,7 +1659,7 @@
     </main>
 
     <nav class="app-nav" id="app-nav" aria-label="PEERSPECT" hidden>
-      <button type="button" data-screen="discover" aria-current="page"><span class="ico" aria-hidden="true">◎</span><span class="nav-label">Today</span></button>
+      <button type="button" data-screen="discover" aria-current="page"><span class="ico" aria-hidden="true">◎</span><span class="nav-label">Discover</span></button>
       <button type="button" data-screen="saved"><span class="ico" aria-hidden="true">♥</span><span class="nav-label">Saved</span></button>
       <button type="button" data-screen="here"><span class="ico" aria-hidden="true">◉</span><span class="nav-label">I'm here</span></button>
       <button type="button" data-screen="business"><span class="ico" aria-hidden="true">▦</span><span class="nav-label">Business</span></button>
@@ -2391,55 +2374,17 @@
       $("view-list-btn").setAttribute("aria-pressed", isMap ? "false" : "true");
       if(isMap) renderMap();
     }
-    /* Most recent peer report + descriptors, Nov 24 2026: the
-       list card shows one short line, the freshest peer note
-       for that place with its age, and a closed dropdown of
-       the place's most common descriptors. Counts are only
-       shown where the data supports them: the cc count on a
-       peer report is how many peers confirmed that report.
-       Place attributes (sound, lighting, crowding) have no
-       count in the data, so they are listed without one.
-       Nothing is invented. */
-    function parseReport(c){
-      var m = c.match(/^A peer reported (.+?): (.+)$/);
-      if(!m) return null;
-      var age = m[1], text = m[2].replace(/\.$/,"");
-      var mins = 1440;
-      if(/30 minutes/.test(age)) mins = 30;
-      else if(/an hour/.test(age)) mins = 60;
-      return {age:age, text:text, mins:mins};
-    }
-    function capFirst(s){ return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
-    function reportList(p){
-      var out = [];
-      (p.live||[]).forEach(function(q){
-        if(!q.c) return;
-        var r = parseReport(q.c); if(!r) return;
-        r.cc = (q.cc||0) + ((crosschecks[p.id+"|"+out.length]&&crosschecks[p.id+"|"+out.length].count)||0);
-        out.push(r);
-      });
-      return out;
-    }
-    function recentLine(p){
-      var reports = reportList(p), best = null;
-      reports.forEach(function(r){ if(!best || r.mins < best.mins) best = r; });
-      if(!best) return "";
-      return '<span class="recent-line">“' + capFirst(best.text) + '” · ' + best.age + '</span>';
-    }
-    function descriptorsHTML(p){
-      var items = "";
-      reportList(p).forEach(function(r){
-        items += '<li>' + capFirst(r.text) + ' <span class="desc-count">(' + r.cc + ')</span></li>';
-      });
-      var attrs = [];
-      if(p.sound) attrs.push(p.sound);
-      if(p.lighting) attrs.push(p.lighting.split(". ")[0]);
-      if(p.crowding) attrs.push(p.crowding.split(",")[0]);
-      attrs.forEach(function(a){ items += '<li>' + capFirst(a) + '</li>'; });
-      if(!items) return "";
-      return '<details class="card-descriptors"><summary aria-expanded="false">Most common descriptors</summary>' +
-        '<ul class="desc-list">' + items + '</ul>' +
-        '<p class="ps-muted desc-note">Counts show how many peers confirmed that report. Descriptors without a count come from this place’s own details.</p></details>';
+    /* List card, restored to the ?v=14 content, Nov 24 2026:
+       name and match, distance, transport and area, and the
+       full matched oval tags with the muted dashed "Not
+       matched here" tags on the focus card. One builder serves
+       the list view and the map side list, so the two always
+       match. The ?v=16 one-line recent peer report and "Most
+       common descriptors" dropdown are gone from these cards.
+       The em dashes in the ?v=14 strings are commas here, per
+       the ?v=17 copy rules. */
+    function listCardHTML(p, align){
+      return "<strong>" + p.name + "</strong>, " + p.distLabel + "<br/><span class='ps-muted'>" + p.transport + " · " + p.area + "</span>" + (align ? "<br/>" + matchOvalsInlineHTML(p) : "");
     }
     function renderMap(){
       var wrap = $("map-wrap"); if(!wrap) return;
@@ -2465,12 +2410,9 @@
           var p = s.place, align = alignmentFor(p);
           var li = document.createElement("li"); if(align) li.className="align-good";
           var b = document.createElement("button"); b.type="button"; b.className="card-open";
-          var m = matchScore(p);
-          b.innerHTML = "<span class=\"card-top\"><strong>" + p.name + "</strong>" + (m ? "<span class=\"match-score\">✓ " + m.count + " of " + m.total + "</span>" : "") + "</span>" +
-            "<span class=\"dist-line\">" + p.distLabel + "</span>" + recentLine(p);
+          b.innerHTML = listCardHTML(p, align);
           b.addEventListener("click", function(){ showPlace(p.id); });
           li.appendChild(b);
-          var d = document.createElement("div"); d.innerHTML = descriptorsHTML(p); if(d.firstChild) li.appendChild(d.firstChild);
           list.appendChild(li);
         });
       }
@@ -2481,12 +2423,9 @@
         var p = s.place, align = alignmentFor(p);
         var li = document.createElement("li"); if(align) li.className="align-good";
         var b = document.createElement("button"); b.type="button"; b.className="card-open";
-        var m = matchScore(p);
-        b.innerHTML = "<span class=\"card-top\"><strong>" + p.name + "</strong>" + (m ? "<span class=\"match-score\">✓ " + m.count + " of " + m.total + "</span>" : "") + "</span>" +
-          "<span class=\"dist-line\">" + p.distLabel + "</span>" + recentLine(p);
+        b.innerHTML = listCardHTML(p, align);
         b.addEventListener("click", function(){ showPlace(p.id); });
         li.appendChild(b);
-        var d = document.createElement("div"); d.innerHTML = descriptorsHTML(p); if(d.firstChild) li.appendChild(d.firstChild);
         ul.appendChild(li);
       });
     }
@@ -2497,17 +2436,24 @@
       var align = alignmentFor(p);
       card.className = "ps-card" + (align ? " align-good" : "");
       var matchText = activeFilters.size===0 ? "No filters picked yet" : '<span class="match-score">✓ ' + s.matches.length + ' of ' + activeFilters.size + '</span>';
-      var recent = recentLine(p);
-      /* Focus card, Nov 24 2026: same five things as every list
-         card — name, match, distance, one recent peer line, the
-         descriptors dropdown. The matched tags, facts, and
-         confirmed line moved to place detail, one tap away.
-         Open place and Bookmark share one action row. */
+      var shownTags = (s.matches.length ? s.matches : p.tags).slice(0,3);
+      /* Focus card, restored to the ?v=14 content, Nov 24 2026:
+         match and distance, type, area and transport, the
+         "Why this matches" card with the full matched oval tags
+         and the muted dashed "Not matched here" tags, the facts,
+         tag pills, and the confirmed line. The ?v=16 one-line
+         single-line peer note and descriptors dropdown
+         are gone. Open place and Bookmark keep the
+         shared action row. Em dashes in the ?v=14 strings are
+         commas here, per the ?v=17 copy rules. */
       card.innerHTML =
-        '<h3>' + p.name + '</h3>' +
         '<p class="focus-top"><span class="ps-match">' + matchText + '</span><span class="dist-line">' + p.distLabel + '</span></p>' +
-        (recent ? '<p>' + recent + '</p>' : '') +
-        descriptorsHTML(p) +
+        '<h3>' + p.name + '</h3>' +
+        '<p class="ps-muted" style="margin:.2rem 0;">' + p.type + ' · ' + p.area + ' · ' + p.transport + '</p>' +
+        (function(){ if(!activeFilters.size) return ""; var m = matchScore(p); var matchedTags = m.matched.length ? '<ul class="ps-tags match-tags" aria-label="Filters this place matches">' + matchTagItems(m, false) + '</ul>' : '<p class="ps-muted">None of your filters matched here yet.</p>'; var missed = m.unmatched.length ? '<p class="align-missed-label">Not matched here</p><ul class="ps-tags match-tags" aria-label="Filters this place does not match">' + m.unmatched.map(function(f){ return '<li class="tag-missed">' + (FILTER_LABELS[f]||f) + '</li>'; }).join("") + '</ul>' : ""; return '<div class="align-card"><h4>Why this matches <span class="align-count">' + m.count + ' of ' + m.total + '</span></h4>' + matchedTags + missed + (align ? '' : '<p class="align-summary">No strong match yet, ' + m.count + ' of ' + m.total + ' of your filters.</p>') + '</div>'; })() +
+        '<ul class="ps-facts"><li><strong>Lighting:</strong> ' + p.lighting + '</li><li><strong>Sound:</strong> ' + (p.soundLevel||'') + ', ' + p.sound + '</li><li><strong>What you will hear:</strong> ' + (p.soundSources||[]).join("; ") + '</li><li><strong>Crowd:</strong> ' + p.crowding + '</li></ul>' +
+        '<ul class="ps-tags">' + shownTags.map(function(t){ return '<li class="'+tagClass(t)+'">'+(FILTER_LABELS[t]||t)+'</li>'; }).join("") + '</ul>' +
+        '<p class="ps-muted">Confirmed by ' + p.confirmed + ' peers · Anonymous</p>' +
         '<div class="focus-actions"><button class="ps-btn" id="focus-open" type="button">Open place</button>' +
         '<button class="ps-btn ps-btn-secondary" id="focus-bm" type="button">' + (bookmarks.has(p.id)?"★ Bookmarked":"☆ Bookmark") + '</button></div>';
       $("focus-open").addEventListener("click", function(){ showPlace(p.id); });
@@ -3533,8 +3479,7 @@
        reports its open state, so the chevron is never the only
        cue. Native details elements do not set aria-expanded on
        their own; the toggle listener below keeps it in step,
-       including for descriptors dropdowns built later by the
-       list code. */
+       including for dropdowns built later. */
     document.querySelectorAll("#view-app details").forEach(function(d){
       var s = d.querySelector("summary"); if(s) s.setAttribute("aria-expanded", d.open ? "true" : "false");
     });
