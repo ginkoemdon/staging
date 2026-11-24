@@ -661,6 +661,31 @@
     #view-app.embedded .app-header { position:sticky; top:0; z-index:5; background:var(--bg); }
     #view-web .web-wrap .cs-swatch { display:inline-block; width:1rem; height:1rem; border-radius:50%; vertical-align:middle; margin-right:.4rem; border:1px solid rgba(59,52,47,.2); }
     #view-web .web-wrap .cs-kit-type { font-family:"Poppins", sans-serif; }
+    /* Branding and UI kit, Nov 23 2026: visual, not a paragraph.
+       Type specimen at real sizes, colour blocks you can see,
+       components as they actually look, and the spacing scale.
+       Proper gaps: 20px between kit blocks, 16px inside cards. */
+    #view-web .web-wrap .kit-grid { display:grid; gap:20px; margin:1rem 0; }
+    #view-web .web-wrap .kit-card { background:#fafafa; border:1px solid rgba(59,52,47,.08); border-radius:24px; padding:20px; box-shadow:0 12px 30px rgba(59,52,47,.12); }
+    #view-web .web-wrap .kit-card h3 { color:#14665a; margin:0 0 12px; }
+    #view-web .web-wrap .kit-label { font-size:.8rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#8a4a08; margin:16px 0 4px; }
+    #view-web .web-wrap .kit-label:first-child { margin-top:0; }
+    #view-web .web-wrap .kit-h1 { font-family:"Atkinson Hyperlegible", system-ui, sans-serif; font-size:1.6rem; line-height:1.25; font-weight:700; color:#0e4a40; margin:0; }
+    #view-web .web-wrap .kit-h2 { font-family:"Atkinson Hyperlegible", system-ui, sans-serif; font-size:1.3rem; line-height:1.25; font-weight:700; color:#0e4a40; margin:0; }
+    #view-web .web-wrap .kit-body { font-family:"Inter", system-ui, sans-serif; font-size:1rem; line-height:1.6; color:#3b342f; margin:0; }
+    #view-web .web-wrap .kit-colours { display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin:0; }
+    #view-web .web-wrap .kit-swatch { border:1px solid rgba(59,52,47,.12); border-radius:16px; overflow:hidden; background:#fff; }
+    #view-web .web-wrap .kit-swatch .kit-block { height:72px; }
+    #view-web .web-wrap .kit-swatch p { margin:0; padding:12px; font-size:.9rem; line-height:1.45; }
+    #view-web .web-wrap .kit-swatch strong { display:block; font-size:1rem; }
+    #view-web .web-wrap .kit-components { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:8px 0; }
+    #view-web .web-wrap .kit-chip { display:inline-block; border:2px solid #14665a; background:#14665a; color:#fff; border-radius:12px; padding:9px 13px; font-weight:700; font-size:.95rem; }
+    #view-web .web-wrap .kit-space { display:grid; gap:12px; margin:8px 0 0; }
+    #view-web .web-wrap .kit-space-row { display:grid; grid-template-columns:6rem 1fr auto; gap:12px; align-items:center; }
+    #view-web .web-wrap .kit-space-bar { height:12px; background:#14665a; border-radius:999px; }
+    @media (max-width:600px) {
+      #view-web .web-wrap .kit-space-row { grid-template-columns:4.5rem 1fr auto; }
+    }
     @media (max-width:640px) {
       #view-web .web-wrap h1.cs-title { font-size:2rem; }
       #view-web .web-wrap h2 { font-size:1.5rem; }
@@ -753,21 +778,17 @@
       <p class="cs-tagline">Your guide to how places actually feel.</p>
       <p><button class="ps-btn" id="see-prototype" type="button">See prototype</button></p>
 
-      <section aria-labelledby="cs-tldr">
-        <h2 id="cs-tldr">TL;DR</h2>
-        <p class="cs-subtitle">Filter establishments and businesses by how they feel, not by stars, before you go.</p>
-        <div class="cs-tldr"><p>Concept prototype, November 2026. Sample Montreal establishments only. No live listing data or testing yet.</p></div>
-      </section>
-
       <section aria-labelledby="cs-glance">
         <h2 id="cs-glance">At a glance</h2>
-        <p class="cs-subtitle">Designed by Ginko, with Muse, in November 2026, as a mobile-first prototype.</p>
+        <p class="cs-subtitle">Filter establishments by how they feel, not by stars, before you go. Designed by Ginko, with Muse, in November 2026, as a mobile-first prototype.</p>
         <div class="cs-card"><ul class="cs-glance">
           <li><strong>Role</strong><span>Product designer, Ginko Emdon</span></li>
           <li><strong>Team</strong><span>Ginko, with Muse (Wynn, AI collaborator)</span></li>
+          <li><strong>Who</strong><span>Disabled and neurodiverse people first, and the business owners who serve them. Useful for everyone.</span></li>
           <li><strong>Type</strong><span>Mobile-first web app prototype</span></li>
           <li><strong>Status</strong><span>In progress, November 2026</span></li>
-          <li><strong>Tools</strong><span>HTML, CSS, JavaScript, sample data. Business listings could come from Google Places API, not yet connected.</span></li>
+          <li><strong>Scope</strong><span>Concept prototype. Sample Montreal establishments only. No live listing data, no user testing yet.</span></li>
+          <li><strong>Tools</strong><span>HTML, CSS, JavaScript, sample data. Google Places API, not yet connected.</span></li>
         </ul></div>
       </section>
 
@@ -776,7 +797,7 @@
         <p class="cs-subtitle">A peer layer on business listings, so you can tell how an establishment feels before you go.</p>
         <div class="cs-context">
           <div class="cs-card"><h3>What</h3><p>Experiential filters on establishment and business listings, not reviews.</p></div>
-          <div class="cs-card"><h3>Who</h3><p>Disabled and neurodiverse people first. Useful for everyone.</p></div>
+          <div class="cs-card"><h3>Who</h3><p>Disabled and neurodiverse people first, and business owners who want to understand them. Useful for everyone.</p></div>
           <div class="cs-card"><h3>When</h3><p>Concept and prototype, November 2026.</p></div>
           <div class="cs-card"><h3>How</h3><p>Anonymous peer check-ins, one tap at a time.</p></div>
         </div>
@@ -799,13 +820,11 @@
 
       <section aria-labelledby="cs-solution">
         <h2 id="cs-solution">Solution</h2>
-        <p class="cs-subtitle">Five moments, not five features. Each one is a real situation, and what PEERSPECT does in it.</p>
-        <div class="cs-card cs-feature cs-use use-access"><p class="cs-deliverable">Discover</p><p class="cs-use-when">I need a quiet place to work</p><h3>Find a place that fits today</h3><p>You pick quiet, low sensory, and co-working. You see only places that fit, nearest first, with distance and how to get there.</p><ul class="cs-tags"><li>Quiet nook</li><li>Low sensory</li><li>Co-working</li></ul></div>
-        <div class="cs-card cs-feature cs-use use-sensory"><p class="cs-deliverable">Access check</p><p class="cs-use-when">Can I actually get in?</p><h3>Check access before you go</h3><p>Step-free entry, restrooms, seating, and vision access are up front, not buried in reviews. If it is not step-free, you know before you leave.</p><ul class="cs-tags"><li>Step-free</li><li>Accessible restroom</li><li>Vision access</li></ul></div>
-        <div class="cs-card cs-feature cs-use use-menu"><p class="cs-deliverable">Menu preview</p><p class="cs-use-when">I want to decide before I go</p><h3>See the menu, then arrive ready</h3><p>Preview the menu online, check dietary needs, and build a prep list. Order ahead, call, or take out, so you are not deciding on the spot.</p><ul class="cs-tags"><li>Menu preview</li><li>Dietary needs</li><li>Order ahead</li></ul></div>
-        <div class="cs-card cs-feature cs-use use-here"><p class="cs-deliverable">Check-in</p><p class="cs-use-when">I am here now, is it still calm?</p><h3>Check in, in one tap</h3><p>One simple question at a time, anonymous, while you are there. Your answer helps the next person, and theirs helps you.</p><ul class="cs-tags"><li>One question</li><li>Anonymous</li><li>Live</li></ul></div>
-        <div class="cs-card cs-feature cs-use use-biz"><p class="cs-deliverable">Business dashboard</p><p class="cs-use-when">I run a place, what should I change?</p><h3>See what to fix, without raw data</h3><p>A calm visual dashboard shows patterns and gentle suggestions, like a quiet hour or clearer menu access. No names, no raw data to dissect.</p><ul class="cs-tags"><li>Visual patterns</li><li>Gentle suggestions</li><li>Private</li></ul></div>
-        <p>Underneath all five: four groups, <strong>Access, Sensory, Environment, Context</strong>, plus Inclusion and Menu.</p>
+        <p class="cs-subtitle">Three moments, not five features. Each one is a real situation, and what PEERSPECT does in it.</p>
+        <div class="cs-card cs-feature cs-use use-access"><p class="cs-deliverable">Discover</p><p class="cs-use-when">I need a quiet place to work</p><h3>Find a place that fits today</h3><p>Start with Quiet morning in one tap, or pick your own. As you pick, it says how many places fit. You see only those, nearest first, with distance and how to get there.</p><ul class="cs-tags"><li>Quiet morning</li><li>Low sensory</li><li>Co-working</li></ul></div>
+        <div class="cs-card cs-feature cs-use use-here"><p class="cs-deliverable">Check-in</p><p class="cs-use-when">I am here now, is it still calm?</p><h3>Check in, in one tap</h3><p>One question at a time, anonymous, while you are there. Sound is multi-select, music and talking can happen at once. “Still” questions show the earlier peer report first.</p><ul class="cs-tags"><li>One question</li><li>Anonymous</li><li>Live</li></ul></div>
+        <div class="cs-card cs-feature cs-use use-biz"><p class="cs-deliverable">Business dashboard</p><p class="cs-use-when">I run a place, what should I change?</p><h3>See what to fix, without raw data</h3><p>A dashboard, not just bars: stats, ring gauges, how the day feels, and AI suggestions that cite the data, like a quiet hour. No names, no raw data.</p><ul class="cs-tags"><li>Visual patterns</li><li>Gentle suggestions</li><li>Private</li></ul></div>
+        <p>Underneath all three: 92 filters in six groups, <strong>Access, Sensory, Environment, Context, Inclusion, and Menu</strong>. Returning users can start from a saved profile, or last time's picks, in one tap.</p>
       </section>
 
       <section aria-labelledby="cs-process">
@@ -814,8 +833,8 @@
         <ol class="cs-timeline">
           <li><span class="cs-num">1</span><h3>Ask the question</h3><p>I could not tell from reviews if a place would work for me that day.</p></li>
           <li><span class="cs-num honey">2</span><h3>Name the model</h3><p>One star became four groups: Access, Sensory, Environment, Context.</p></li>
-          <li><span class="cs-num pine">3</span><h3>See it, don&apos;t list it</h3><p>One question at a time, options I could see, not just read.</p></li>
-          <li><span class="cs-num">4</span><h3>Fix the words</h3><p>Yes or Not really did not answer how loud it was. Sound became level plus type.</p></li>
+          <li><span class="cs-num pine">3</span><h3>See it, don&apos;t list it</h3><p>One question at a time, options I could see, not just read. Onboarding starts with a day, not a blank list of 92 filters.</p></li>
+          <li><span class="cs-num">4</span><h3>Fix the words</h3><p>Yes or Not really did not answer how loud it was. Sound became level plus type, and type became multi-select, because sounds happen at once.</p></li>
           <li><span class="cs-num honey">5</span><h3>Build the system</h3><p>Palette, type, spacing, and content rules together. Accessibility as a rule.</p></li>
           <li><span class="cs-num pine">6</span><h3>Break it, fix it</h3><p>The first version felt like a page on my site. I rebuilt the frame so the app feels like its own world.</p></li>
         </ol>
@@ -825,38 +844,66 @@
         <h2 id="cs-decisions">Key decisions</h2>
         <p class="cs-subtitle">Four choices that kept the design simple, customisable, anonymous, and visual.</p>
         <p class="cs-note">Tap a card to open it.</p>
-        <details class="cs-card"><summary>Four groups, not one long list</summary><p>A long list creates overload. Four groups are easier to scan.</p></details>
-        <details class="cs-card"><summary>No pick limit</summary><p>A three-pick limit worked against agency. Accessibility means customisability.</p></details>
-        <details class="cs-card"><summary>Anonymous prompts, not named reviews</summary><p>Low effort and safer, with peer confirmation for trust.</p></details>
-        <details class="cs-card"><summary>Visual dashboard, not raw data</summary><p>Owners see patterns and suggestions, never who said what.</p></details>
+        <details class="cs-card"><summary>Four groups, not one long list</summary><p>A long list creates overload. Four groups are easier to scan.</p><p><strong>Trade-off:</strong> some filters fit two groups. I placed each once, to keep scanning fast.</p></details>
+        <details class="cs-card"><summary>No pick limit</summary><p>A three-pick limit worked against agency. Accessibility means customisability.</p><p><strong>Trade-off:</strong> more picks can dilute a match, so a place needs at least half of them, minimum two.</p></details>
+        <details class="cs-card"><summary>Anonymous prompts, not named reviews</summary><p>Low effort and safer, with peer confirmation for trust. “Still” questions now show the earlier report first, so the prompt makes sense.</p><p><strong>Trade-off:</strong> no follow-up with the reporter, so peer confirmation has to carry the trust instead.</p></details>
+        <details class="cs-card"><summary>Visual dashboard, not raw data</summary><p>Owners see patterns and suggestions, never who said what.</p><p><strong>Trade-off:</strong> owners get less detail, but a suggestion they can act on.</p></details>
       </section>
 
       <section aria-labelledby="cs-brand">
         <h2 id="cs-brand">Branding and UI kit</h2>
         <p class="cs-subtitle">A warm, human, steady guide, in its own colours, not my site colours.</p>
-        <div class="cs-card">
-          <p>Headings, Poppins. Body, Poppins 1rem, line height 1.6.</p>
-          <p><span class="cs-swatch" style="background:#14665a"></span>Teal <span class="cs-swatch" style="background:#2f5d3e"></span>Pine <span class="cs-swatch" style="background:#f2c14e"></span>Honey <span class="cs-swatch" style="background:#8a4a08"></span>Amber <span class="cs-swatch" style="background:#fdfbf7"></span>Warm white</p>
-          <p><button class="ps-btn" type="button" data-open-prototype>Primary button</button></p>
-          <ul class="cs-tags"><li>Tag, honey</li><li>Tag</li><li>Tag</li></ul>
-          <p>Cards: cream, radius 24px, shadow, lift on hover.</p>
-          <p><a href="colour-palettes.html">Colour palettes</a> &middot; <a href="content-standards.html">Content standards</a> &middot; <a href="logo-exploration.html">Logo exploration</a></p>
+        <div class="kit-grid">
+          <div class="kit-card">
+            <h3>Type, as it looks in the app</h3>
+            <p class="kit-label">Heading · Atkinson Hyperlegible · 26px</p>
+            <p class="kit-h1">Your guide to how places actually feel.</p>
+            <p class="kit-label">Subheading · Atkinson Hyperlegible · 21px</p>
+            <p class="kit-h2">What matters today?</p>
+            <p class="kit-label">Body · Inter · 16px, line height 1.6</p>
+            <p class="kit-body">Peer reports, anonymous, one question at a time.</p>
+          </div>
+          <div class="kit-card">
+            <h3>Colour, with its job</h3>
+            <div class="kit-colours">
+              <div class="kit-swatch"><div class="kit-block" style="background:#14665a"></div><p><strong>Teal</strong>#14665a<br/>Primary actions<br/>6.6:1</p></div>
+              <div class="kit-swatch"><div class="kit-block" style="background:#2f5d3e"></div><p><strong>Pine</strong>#2f5d3e<br/>Access<br/>7.4:1</p></div>
+              <div class="kit-swatch"><div class="kit-block" style="background:#f2c14e"></div><p><strong>Honey</strong>#f2c14e<br/>Path and accents<br/>Dark text only</p></div>
+              <div class="kit-swatch"><div class="kit-block" style="background:#8a4a08"></div><p><strong>Amber</strong>#8a4a08<br/>Warm emphasis<br/>6.6:1</p></div>
+              <div class="kit-swatch"><div class="kit-block" style="background:#fdfbf7; border-bottom:1px solid rgba(59,52,47,.12)"></div><p><strong>Warm white</strong>#fdfbf7<br/>Background</p></div>
+            </div>
+          </div>
+          <div class="kit-card">
+            <h3>Components, as they look</h3>
+            <div class="kit-components">
+              <button class="ps-btn" type="button" data-open-prototype>See places for today</button>
+              <span class="kit-chip">✓ Quiet nook</span>
+              <ul class="cs-tags" style="margin:0;"><li>Tag, honey</li><li>Tag</li></ul>
+            </div>
+            <p class="ps-muted" style="margin:8px 0 0;">Cards: warm white, radius 20px, soft shadow. Active is never colour alone: a top bar, a check, or an underline.</p>
+          </div>
+          <div class="kit-card">
+            <h3>Spacing</h3>
+            <div class="kit-space">
+              <div class="kit-space-row"><strong>8px</strong><span class="kit-space-bar" style="width:8%;"></span><span>Base grid</span></div>
+              <div class="kit-space-row"><strong>16px</strong><span class="kit-space-bar" style="width:16%;"></span><span>Side margins</span></div>
+              <div class="kit-space-row"><strong>20px</strong><span class="kit-space-bar" style="width:20%;"></span><span>Section spacing</span></div>
+              <div class="kit-space-row"><strong>44px</strong><span class="kit-space-bar" style="width:44%;"></span><span>Touch targets</span></div>
+            </div>
+          </div>
+          <p class="cs-note"><a href="colour-palettes.html">Colour palettes</a> &middot; <a href="content-standards.html">Content standards</a> &middot; <a href="logo-exploration.html">Logo exploration</a></p>
         </div>
       </section>
 
       <section aria-labelledby="cs-hifi">
         <h2 id="cs-hifi">High fidelity designs</h2>
-        <p class="cs-subtitle">Seven screens, live below. Tap one and use it right here.</p>
+        <p class="cs-subtitle">Three screens, live below. Tap one and use it right here.</p>
         <p class="cs-note">This is the real prototype, not a screenshot. Pick a screen on the left, use it live on the right, or open it fullscreen.</p>
         <div class="cs-hifi-layout">
         <div class="cs-screen-grid">
-          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Landing</div><div class="cs-screen-body"><h3>Landing</h3><p>Your guide to how places actually feel.</p><button class="cs-screen-link" type="button" data-preview-screen="landing">Show this screen</button></div></article>
-          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Onboarding</div><div class="cs-screen-body"><h3>Onboarding</h3><p>What matters today? Pick as many as you like.</p><button class="cs-screen-link" type="button" data-preview-screen="onboard">Show this screen</button></div></article>
-          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Discover</div><div class="cs-screen-body"><h3>Discover</h3><p>Map and list views, distance and transport.</p><button class="cs-screen-link" type="button" data-preview-screen="discover">Show this screen</button></div></article>
-          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Place detail</div><div class="cs-screen-body"><h3>Place detail</h3><p>How it feels through the day, menu preview.</p><button class="cs-screen-link" type="button" data-preview-screen="place">Show this screen</button></div></article>
-          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Saved</div><div class="cs-screen-body"><h3>Saved</h3><p>Profiles, bookmarks and your prep list, by place.</p><button class="cs-screen-link" type="button" data-preview-screen="saved">Show this screen</button></div></article>
-          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">I am here</div><div class="cs-screen-body"><h3>I am here</h3><p>One question at a time, anonymous.</p><button class="cs-screen-link" type="button" data-preview-screen="here">Show this screen</button></div></article>
-          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Business</div><div class="cs-screen-body"><h3>Business</h3><p>Calm visual dashboard, gentle suggestions.</p><button class="cs-screen-link" type="button" data-preview-screen="business">Show this screen</button></div></article>
+          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Discover</div><div class="cs-screen-body"><h3>Discover</h3><p>Map and list views, distance and transport, only the filters you picked today.</p><button class="cs-screen-link" type="button" data-preview-screen="discover">Show this screen</button></div></article>
+          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">I am here</div><div class="cs-screen-body"><h3>I am here</h3><p>One question at a time, anonymous. Sound is multi-select, and “still” questions show the earlier peer report.</p><button class="cs-screen-link" type="button" data-preview-screen="here">Show this screen</button></div></article>
+          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Business</div><div class="cs-screen-body"><h3>Business</h3><p>Dashboard with rings, how the day feels, and AI suggestions that cite the data.</p><button class="cs-screen-link" type="button" data-preview-screen="business">Show this screen</button></div></article>
         </div>
         <div class="cs-live" id="live-preview">
           <div class="cs-live-head">
@@ -871,27 +918,13 @@
       </section>
 
       <section aria-labelledby="cs-testing">
-        <h2 id="cs-testing">Testing and impact</h2>
-        <p class="cs-subtitle">Not yet measured, and that is honest, here is what to test next.</p>
-        <p>No user testing, no metrics, none claimed here. Next: is onboarding clear, are four groups intuitive, do check-ins feel low effort.</p>
-      </section>
-
-      <section aria-labelledby="cs-before-after">
-        <h2 id="cs-before-after">Before and after</h2>
-        <p class="cs-subtitle">Before, you guessed from stars. After, you match a place to today.</p>
-        <div class="cs-beforeafter">
-          <div class="cs-card cs-before"><h3>Before</h3><p>Five stars. Read 20 reviews. Guess about light, sound, and access.</p></div>
-          <div class="cs-card cs-after"><h3>After</h3><p>Four groups, one factor per line. Match today. Prep list ready.</p></div>
-        </div>
-      </section>
-
-      <section aria-labelledby="cs-outcomes">
-        <h2 id="cs-outcomes">Next steps</h2>
-        <p class="cs-subtitle">Test it, connect live listing data, and test trust, while staying anonymous.</p>
+        <h2 id="cs-testing">Testing, lessons, and next steps</h2>
+        <p class="cs-subtitle">Not yet measured, and that is honest. Here is what to test next, and what I learned building it.</p>
+        <p>No user testing, no metrics, none claimed here. Next: is the quick start clear, do the presets feel right, is multi-select sound clear, do the “still” questions make sense, and is the dashboard readable.</p>
+        <p><strong>What I learned:</strong> a tidy limit can work against agency, and agency goes hand in hand with customisability.</p>
         <ul>
           <li>Test onboarding, groups, check-ins, and the business dashboard.</li>
           <li>Build the live listing connection, with real peer data.</li>
-          <li>What I learned: a tidy limit can work against agency, and agency goes hand in hand with customisability.</li>
         </ul>
       </section>
 
