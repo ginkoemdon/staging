@@ -41,6 +41,13 @@
       "description": "Prototype logo favicons for PEERSPECT and Form to Function",
       "upstream_sha": "617545defe97c52aa922bf718fe27f00c41342df",
       "staged": "2026-11-24"
+    },
+    {
+      "name": "hamburger-fix",
+      "branch": "experiment/hamburger-fix",
+      "description": "Hamburger icon turns into an X on open; mobile menu spacing fix",
+      "upstream_sha": "1012ce450fc50b40a239896acd1ed3714d88030a",
+      "staged": "2026-11-24"
     }
   ],
   "upstream": "ginkoemdon/ginkoemdon.github.io",

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 240" role="img" aria-label="Option B: geometric art deco mountains, a rising sun arc, and a straight stepped path">
+  <rect width="640" height="240" fill="#e3e0d8"/>
+  <path d="M320 40 a72 72 0 0 1 72 72 l-144 0 a72 72 0 0 1 72 -72z" fill="#f8c05e"/>
+  <line x1="320" y1="16" x2="320" y2="32" stroke="#e26c00" stroke-width="3" stroke-linecap="round"/>
+  <line x1="392" y1="40" x2="380" y2="52" stroke="#e26c00" stroke-width="3" stroke-linecap="round"/>
+  <line x1="248" y1="40" x2="260" y2="52" stroke="#e26c00" stroke-width="3" stroke-linecap="round"/>
+  <path d="M0 240 L180 96 L300 240 Z" fill="#184b44"/>
+  <path d="M220 240 L420 64 L600 240 Z" fill="#3b342f"/>
+  <path d="M420 64 L462 112 L420 100 L378 112 Z" fill="#f8c05e"/>
+  <path d="M460 240 L580 140 L640 200 L640 240 Z" fill="#a35f3c"/>
+  <path d="M40 216 L160 216 L160 196 L280 196 L280 176 L400 176 L400 156 L520 156" stroke="#e26c00" stroke-width="3" fill="none" stroke-linejoin="round"/>
+  <circle cx="520" cy="156" r="7" fill="#e26c00"/>
+  <g fill="#3b342f"><circle cx="88" cy="64" r="3"/><circle cx="560" cy="56" r="3"/><circle cx="500" cy="96" r="2"/></g>
+</svg>
