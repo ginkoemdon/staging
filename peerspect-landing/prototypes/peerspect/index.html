@@ -215,10 +215,11 @@
     .screen-head { padding:20px 0 8px; }
     .screen-head h2 { font-size:1.3rem; line-height:1.25; margin:0 0 .25rem; color:var(--teal-dark); }
     /* Place detail, Nov 23 2026: the "← Places" back button sat
-       right on top of the place title. 20px of space under the
-       button gives the title breathing room, on phone and desktop.
+       right on top of the place title. 40px of space under the
+       button (20px in the v=6 batch, another 20px added Nov 24)
+       gives the title breathing room, on phone and desktop.
        The button itself does not move. */
-    #screen-place #back-to-discover { margin-bottom:20px; }
+    #screen-place #back-to-discover { margin-bottom:40px; }
     /* Place detail visuals, Nov 23 2026: menu as cards, match as a
        gauge plus oval tags, sound/light/crowd and through-the-day
        as small bars, peer reports as a count bar plus peer-note
@@ -377,7 +378,7 @@
     .adventure p { margin:.2rem 0; }
     /* Alignment — how a place matches today. Nov 23 2026: the
        "This fits today" wording was removed as redundant. The
-       match now reads as a compact "5/5" score with the matched
+       match now reads as a compact "5 of 5" score with the matched
        filters as oval tags (per-group colours, text label and a
        tick on every tag, so never colour alone). Unmatched
        filters show as muted dashed tags under "Not matched here",
@@ -391,8 +392,8 @@
     .align-card { background:var(--card); border:1px solid var(--line); border-left:6px solid var(--teal); border-radius:16px; padding:16px 20px; margin:16px 0; box-shadow:0 1px 3px rgba(26,43,38,.08); }
     .align-card h4 { margin:0 0 .25rem; color:var(--teal-dark); font-size:1.05rem; display:flex; justify-content:space-between; gap:12px; align-items:baseline; }
     .align-card .align-count { flex:0 0 auto; background:none; border:0; color:var(--teal-dark); padding:0; font-weight:700; font-size:.85rem; white-space:nowrap; }
-    .align-card ul { list-style:none; padding:0; margin:.5rem 0 0; display:grid; gap:10px; }
-    .align-card li { display:flex; gap:10px; align-items:baseline; }
+    .align-card ul:not(.ps-tags) { list-style:none; padding:0; margin:.5rem 0 0; display:grid; gap:10px; }
+    .align-card ul:not(.ps-tags) li { display:flex; gap:10px; align-items:baseline; }
     .align-card li .align-yes { font-weight:700; color:var(--teal-dark); }
     .align-card li .align-no { color:var(--muted); }
     .align-card .align-dot { flex:0 0 auto; width:.7rem; height:.7rem; border-radius:50%; display:inline-block; }
@@ -401,7 +402,7 @@
     .align-card .align-summary { margin:.75rem 0 0; padding-top:.75rem; border-top:1px solid var(--line); font-weight:700; color:var(--teal-dark); }
     .align-line { display:block; margin-top:.5rem; font-weight:600; color:var(--teal-dark); }
     .align-line::before { content:"\2713  "; font-weight:700; }
-    /* Match score + oval tags, Nov 23 2026: "5/5" in bold teal,
+    /* Match score + oval tags, Nov 23 2026: "5 of 5" in bold teal,
        then the matched filters as eye-grabbing oval tags. */
     .match-score { display:inline-flex; align-items:center; gap:6px; font-weight:800; font-size:1.1rem; color:var(--teal-dark); white-space:nowrap; }
     .match-tags { margin:.5rem 0; }
@@ -609,14 +610,22 @@
     #view-app .align-card { background:var(--card); border:1px solid var(--line); border-left:6px solid var(--teal); border-radius:16px; padding:16px 20px; margin:16px 0; box-shadow:0 1px 3px rgba(26,43,38,.08); }
     #view-app .align-card h4 { margin:0 0 .25rem; color:var(--teal-dark); font-size:1.05rem; display:flex; justify-content:space-between; gap:12px; align-items:baseline; }
     #view-app .align-card .align-count { flex:0 0 auto; background:none; border:0; color:var(--teal-dark); padding:0; font-weight:700; font-size:.85rem; white-space:nowrap; }
-    #view-app .align-card ul { list-style:none; padding:0; margin:.5rem 0 0; display:grid; gap:10px; }
-    #view-app .align-card li { display:flex; gap:10px; align-items:baseline; }
+    #view-app .align-card ul:not(.ps-tags) { list-style:none; padding:0; margin:.5rem 0 0; display:grid; gap:10px; }
+    #view-app .align-card ul:not(.ps-tags) li { display:flex; gap:10px; align-items:baseline; }
     #view-app .align-card li .align-yes { font-weight:700; color:var(--teal-dark); }
     #view-app .align-card li .align-no { color:var(--muted); }
     #view-app .align-card .align-dot { flex:0 0 auto; width:.7rem; height:.7rem; border-radius:50%; display:inline-block; }
     #view-app .align-card .align-dot.yes { background:#2f5d3e; }
     #view-app .align-card .align-dot.no { background:var(--line); border:1px solid var(--muted); }
     #view-app .align-card .align-summary { margin:.75rem 0 0; padding-top:.75rem; border-top:1px solid var(--line); font-weight:700; color:var(--teal-dark); }
+    /* "Why this matches" oval tags, Nov 24 2026: the grid rule above
+       used to stretch every tag full-width. Tag lists are flex and
+       each tag hugs its own label: width auto, no stretching,
+       left-aligned, wrapping naturally. Same for the muted dashed
+       "Not matched here" tags. Colours and text unchanged. */
+    .align-card ul.ps-tags, #view-app .align-card ul.ps-tags { display:flex; flex-wrap:wrap; justify-content:flex-start; gap:8px; }
+    .align-card ul.ps-tags li, .align-card ul.ps-tags span[role="listitem"],
+    #view-app .align-card ul.ps-tags li, #view-app .align-card ul.ps-tags span[role="listitem"] { width:auto; flex:0 0 auto; display:inline-flex; align-items:center; }
     #view-app .align-line { display:block; margin-top:.5rem; font-weight:600; color:var(--teal-dark); }
     #view-app .align-line::before { content:"\2713  "; font-weight:700; }
     /* Responsive web app, Nov 23 2026: the prototype adapts to
@@ -1677,11 +1686,11 @@
       var matched = priorityMatches(p);
       var threshold = activeFilters.size <= 2 ? activeFilters.size : Math.max(2, Math.ceil(activeFilters.size / 2));
       if(matched.length >= threshold){
-        return {text:matched.length + "/" + activeFilters.size, count:matched.length, total:activeFilters.size, matched:matched};
+        return {text:matched.length + " of " + activeFilters.size, count:matched.length, total:activeFilters.size, matched:matched};
       }
       return null;
     }
-    /* Match display, Nov 23 2026: a compact "5/5" score plus the
+    /* Match display, Nov 23 2026: a compact "5 of 5" score plus the
        matched filters as oval tags (per-group colours via tagClass,
        text label and a tick on every tag, so never colour alone).
        Matched tags are capped at 4, with an "and N more" muted tag.
@@ -1704,12 +1713,12 @@
     }
     function matchOvalsHTML(p){
       var m = matchScore(p); if(!m) return "";
-      return '<span class="match-score">✓ ' + m.count + '/' + m.total + '</span>' +
+      return '<span class="match-score">✓ ' + m.count + ' of ' + m.total + '</span>' +
         '<ul class="ps-tags match-tags" aria-label="Filters this place matches">' + matchTagItems(m, false) + '</ul>';
     }
     function matchOvalsInlineHTML(p){
       var m = matchScore(p); if(!m) return "";
-      return '<span class="match-score">✓ ' + m.count + '/' + m.total + '</span>' +
+      return '<span class="match-score">✓ ' + m.count + ' of ' + m.total + '</span>' +
         '<span class="ps-tags match-tags" role="list" aria-label="Filters this place matches">' + matchTagItems(m, true) + '</span>';
     }
     function matchAriaText(p){
@@ -1747,7 +1756,7 @@
         var m = matchScore(p);
         var pin = document.createElement("button"); pin.type="button";
         pin.className = "map-pin" + (align ? " align" : "");
-        pin.innerHTML = '<span class="pin-name">' + p.name + '</span>' + (m ? '<span class="pin-score">' + m.count + '/' + m.total + ' match</span>' : '');
+        pin.innerHTML = '<span class="pin-name">' + p.name + '</span>' + (m ? '<span class="pin-score">' + m.count + ' of ' + m.total + ' match</span>' : '');
         pin.style.left = p.mapX + "%"; pin.style.top = p.mapY + "%";
         pin.setAttribute("aria-label", p.name + ", " + p.distLabel + ", " + p.transport + (align ? ". " + matchAriaText(p) : ""));
         pin.addEventListener("click", function(){ showPlace(p.id); });
@@ -1781,7 +1790,7 @@
       var s = scored[focusIndex], p = s.place;
       var align = alignmentFor(p);
       card.className = "ps-card" + (align ? " align-good" : "");
-      var matchText = activeFilters.size===0 ? "No filters picked yet" : '<span class="match-score">✓ ' + s.matches.length + '/' + activeFilters.size + '</span>';
+      var matchText = activeFilters.size===0 ? "No filters picked yet" : '<span class="match-score">✓ ' + s.matches.length + ' of ' + activeFilters.size + '</span>';
       var shownTags = (s.matches.length ? s.matches : p.tags).slice(0,3);
       /* tagClass() is global now, above PLACES: it maps every filter
          key to its real group, so Inclusion and Menu tags get
@@ -1790,7 +1799,7 @@
         '<p class="focus-top"><span class="ps-match">' + matchText + '</span><span class="dist-line">' + p.distLabel + '</span></p>' +
         '<h3>' + p.name + '</h3>' +
         '<p class="ps-muted" style="margin:.2rem 0;">' + p.type + ' · ' + p.area + ' · ' + p.transport + '</p>' +
-        (function(){ if(!activeFilters.size) return ""; var m = matchScore(p); var matchedTags = m.matched.length ? '<ul class="ps-tags match-tags" aria-label="Filters this place matches">' + matchTagItems(m, false) + '</ul>' : '<p class="ps-muted">None of your filters matched here yet.</p>'; var missed = m.unmatched.length ? '<p class="align-missed-label">Not matched here</p><ul class="ps-tags match-tags" aria-label="Filters this place does not match">' + m.unmatched.map(function(f){ return '<li class="tag-missed">— ' + (FILTER_LABELS[f]||f) + '</li>'; }).join("") + '</ul>' : ""; return '<div class="align-card"><h4>Why this matches <span class="align-count">' + m.count + '/' + m.total + '</span></h4>' + matchedTags + missed + (align ? '' : '<p class="align-summary">No strong match yet — ' + m.count + '/' + m.total + ' of your filters.</p>') + '</div>'; })() +
+        (function(){ if(!activeFilters.size) return ""; var m = matchScore(p); var matchedTags = m.matched.length ? '<ul class="ps-tags match-tags" aria-label="Filters this place matches">' + matchTagItems(m, false) + '</ul>' : '<p class="ps-muted">None of your filters matched here yet.</p>'; var missed = m.unmatched.length ? '<p class="align-missed-label">Not matched here</p><ul class="ps-tags match-tags" aria-label="Filters this place does not match">' + m.unmatched.map(function(f){ return '<li class="tag-missed">— ' + (FILTER_LABELS[f]||f) + '</li>'; }).join("") + '</ul>' : ""; return '<div class="align-card"><h4>Why this matches <span class="align-count">' + m.count + ' of ' + m.total + '</span></h4>' + matchedTags + missed + (align ? '' : '<p class="align-summary">No strong match yet — ' + m.count + ' of ' + m.total + ' of your filters.</p>') + '</div>'; })() +
         '<ul class="ps-facts"><li><strong>Lighting:</strong> ' + p.lighting + '</li><li><strong>Sound:</strong> ' + (p.soundLevel||'') + ' — ' + p.sound + '</li><li><strong>What you will hear:</strong> ' + (p.soundSources||[]).join("; ") + '</li><li><strong>Crowd:</strong> ' + p.crowding + '</li></ul>' +
         '<ul class="ps-tags">' + shownTags.map(function(t){ return '<li class="'+tagClass(t)+'">'+(FILTER_LABELS[t]||t)+'</li>'; }).join("") + '</ul>' +
         '<p class="ps-muted">Confirmed by ' + p.confirmed + ' peers · Anonymous</p>' +
@@ -1840,12 +1849,12 @@
         '<p class="ps-muted" style="margin:.25rem 0 0;">Anonymous peer reports for this place.</p>' +
         (peerNotes.length ? '<ul class="peer-notes">' + peerNotes.map(function(n){ return '<li>“' + n + '”</li>'; }).join("") + '</ul>' : '');
       body.appendChild(peerDiv);
-      /* Match, visual: a gauge plus the 5/5 oval tags. */
+      /* Match, visual: a gauge plus the 5 of 5 oval tags. */
       var alignDetail = alignmentFor(p);
       if(alignDetail){
         var mDetail = matchScore(p);
         var gauge = document.createElement("div"); gauge.className="match-gauge";
-        gauge.innerHTML = '<div class="gauge-track" role="img" aria-label="Matches ' + mDetail.count + ' of ' + mDetail.total + ' of your filters"><div class="gauge-fill" style="width:' + Math.round(mDetail.count/mDetail.total*100) + '%"></div></div><p>' + mDetail.count + '/' + mDetail.total + ' of your filters</p>' + matchOvalsHTML(p);
+        gauge.innerHTML = '<div class="gauge-track" role="img" aria-label="Matches ' + mDetail.count + ' of ' + mDetail.total + ' of your filters"><div class="gauge-fill" style="width:' + Math.round(mDetail.count/mDetail.total*100) + '%"></div></div><p>' + mDetail.count + ' of ' + mDetail.total + ' of your filters</p>' + matchOvalsHTML(p);
         body.appendChild(gauge);
       }
       /* Getting there and access, kept short: three rows, no paragraphs. */
