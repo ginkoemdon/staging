@@ -491,6 +491,46 @@
     .visit-item-rating { display:inline-block; background:var(--soft); border:1px solid var(--line); border-radius:999px; padding:2px 10px; font-weight:700; font-size:.85rem; margin:4px 0 0; }
     .visit-total { font-weight:700; color:var(--teal-dark); border-top:1px solid var(--line-soft); padding-top:10px; }
     .visit-empty { background:var(--card); border:1px dashed var(--line); border-radius:16px; padding:20px; }
+    /* Your last visits, two views, Nov 24 2026: List view is one
+       expandable row per visit (date, place, rating in the
+       summary; the full card inside when open), and Calendar
+       view is a month grid where each day shows its visits as
+       coloured chips. Colours come from the visit's own rating,
+       never colour alone: every chip also carries the place
+       name, and the detail below the calendar shows the rating
+       in words. */
+    .visit-item { background:var(--card); border:1px solid var(--line); border-radius:16px; margin:0 0 12px; overflow:hidden; }
+    .visit-item summary { list-style:none; cursor:pointer; display:flex; flex-wrap:wrap; align-items:center; gap:4px 12px; padding:14px 16px; min-height:44px; }
+    .visit-item summary::-webkit-details-marker { display:none; }
+    .visit-item summary:focus-visible { outline:3px solid var(--focus); outline-offset:-3px; border-radius:16px; }
+    .visit-item .visit-chev { font-weight:800; color:var(--teal-dark); transition:transform .18s ease; }
+    .visit-item[open] .visit-chev { transform:rotate(90deg); }
+    .visit-item .visit-sum-date { font-weight:800; }
+    .visit-item .visit-sum-place { font-weight:700; }
+    .visit-item .visit-card { border:0; border-top:1px solid var(--line-soft); border-radius:0; margin:0; }
+    .visit-cal-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:8px 0 12px; }
+    .visit-cal-head h4 { margin:0; font-size:1.05rem; }
+    .visit-cal-grid { display:grid; grid-template-columns:repeat(7, minmax(0,1fr)); gap:4px; }
+    .visit-cal-dow { font-weight:700; font-size:.8rem; text-align:center; padding:4px 0; color:var(--muted); }
+    .visit-cal-day { min-height:64px; min-width:0; border:1px solid var(--line); border-radius:10px; background:var(--card); padding:4px; text-align:left; cursor:pointer; font:inherit; color:inherit; }
+    .visit-cal-day:hover { border-color:var(--teal); }
+    .visit-cal-day:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+    .visit-cal-day[aria-pressed="true"] { outline:3px solid var(--teal); outline-offset:1px; }
+    .visit-cal-day.empty { background:transparent; border-color:transparent; cursor:default; }
+    .visit-cal-day .day-num { display:block; font-weight:800; font-size:.9rem; }
+    .visit-cal-chip { display:block; font-size:.7rem; font-weight:700; line-height:1.3; border-radius:999px; padding:2px 6px; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .visit-cal-chip.cal-up { background:#14665a; color:#fff; }
+    .visit-cal-chip.cal-meh { background:#f2c14e; color:#372c1f; }
+    .visit-cal-chip.cal-down { background:#8c4a24; color:#fff; }
+    .visit-cal-chip.cal-none { background:transparent; border:1px dashed var(--line); color:var(--muted); }
+    .visit-cal-legend { list-style:none; padding:0; margin:12px 0; display:flex; flex-wrap:wrap; gap:8px 16px; font-size:.9rem; }
+    .visit-cal-legend .legend-swatch { display:inline-block; width:16px; height:16px; border-radius:5px; vertical-align:middle; margin-right:6px; }
+    .visit-cal-legend .legend-swatch.cal-up { background:#14665a; }
+    .visit-cal-legend .legend-swatch.cal-meh { background:#f2c14e; }
+    .visit-cal-legend .legend-swatch.cal-down { background:#8c4a24; }
+    .visit-cal-legend .legend-swatch.cal-none { background:transparent; border:1px dashed var(--line); }
+    .visit-cal-detail { margin-top:16px; }
+    .visit-cal-detail h4 { margin:0 0 8px; }
     /* Menu preview on desktop, Nov 24 2026: the base grid above
        already sizes the boxes, so no separate wide rule that
        stretched them tall. */
@@ -1828,6 +1868,10 @@
           <section class="ps-panel" aria-labelledby="visits-h">
             <h3 id="visits-h">Your last visits</h3>
             <p class="ps-muted">Only you see this. What you ordered, and how it was, so you remember next time.</p>
+            <div class="view-toggle" role="group" aria-label="How to see your visits">
+              <button type="button" id="visits-list-btn" aria-pressed="true">List view</button>
+              <button type="button" id="visits-cal-btn" aria-pressed="false">Calendar view</button>
+            </div>
             <div id="visit-list" class="visit-list"></div>
             <button class="ps-btn ps-btn-secondary ps-btn-small" id="clear-visits" type="button">Clear visits</button>
           </section>
@@ -2885,14 +2929,19 @@
     function visitCardEl(v, opts){
       opts = opts || {};
       var card=document.createElement("article"); card.className="visit-card";
-      var head=document.createElement("div"); head.className="visit-card-head";
-      var d=document.createElement("h4");
-      var dv=new Date(v.date+"T12:00:00");
-      d.textContent = isNaN(dv.getTime()) ? v.date : dv.toLocaleDateString(undefined, {weekday:"short", day:"numeric", month:"short", year:"numeric"});
-      head.appendChild(d);
-      if(opts.mostRecent){ var tag=document.createElement("span"); tag.className="visit-tag"; tag.textContent="Most recent"; head.appendChild(tag); }
-      var rate=document.createElement("span"); rate.className="visit-rating"; rate.textContent=ratingVisual(v.rating); head.appendChild(rate);
-      card.appendChild(head);
+      /* noHead, Nov 24 2026: in the List view the expandable
+         summary already shows the date, place and rating, so
+         the card inside skips its own date and rating head. */
+      if(!opts.noHead){
+        var head=document.createElement("div"); head.className="visit-card-head";
+        var d=document.createElement("h4");
+        var dv=new Date(v.date+"T12:00:00");
+        d.textContent = isNaN(dv.getTime()) ? v.date : dv.toLocaleDateString(undefined, {weekday:"short", day:"numeric", month:"short", year:"numeric"});
+        head.appendChild(d);
+        if(opts.mostRecent){ var tag=document.createElement("span"); tag.className="visit-tag"; tag.textContent="Most recent"; head.appendChild(tag); }
+        var rate=document.createElement("span"); rate.className="visit-rating"; rate.textContent=ratingVisual(v.rating); head.appendChild(rate);
+        card.appendChild(head);
+      }
       if(opts.showPlaceName){ var pl=document.createElement("p"); pl.className="visit-place"; pl.textContent=v.place; card.appendChild(pl); }
       if(v.answers && v.answers.length){
         var expH=document.createElement("p"); expH.className="visit-sub"; expH.textContent="Your experience"; card.appendChild(expH);
@@ -3172,18 +3221,106 @@
       Array.from(bookmarks).forEach(function(id){ var p=PLACES.find(function(x){ return x.id===id; }); if(p){ var li=document.createElement("li"); li.textContent=p.name+", "+p.area; bl.appendChild(li); } });
     }
     $("clear-prep").addEventListener("click", function(){ prep=[]; save("peerspect-prep-v1", prep); renderPrep(); });
-    /* Your last visits, Nov 24 2026: was one comma-joined
-       line per visit — raw data. Now a summary line, then
-       visits grouped by place, each visit its own card
-       (visitCardEl, shared with place detail). Most recent
-       first, in each group and overall. Only saved visit
-       data is used; nothing is invented. */
+    /* Your last visits, two views, Nov 24 2026: was one
+       comma-joined line per visit, then cards grouped by
+       place. Now List view is one expandable row per visit
+       (most recent first, most recent open), and Calendar
+       view is a month grid where tapping a day shows that
+       day's visits below. Colours come from the visit's own
+       rating: Loved it is high alignment, So-so is mixed,
+       Not for me is low alignment, no rating is uncoloured.
+       Only saved visit data is used, except for the labelled
+       sample visits below, which only appear if you ask for
+       them from the empty state. */
+    var visitsView = "list";
+    var calNow = new Date(); var calYear = calNow.getFullYear(), calMonth = calNow.getMonth(), calSelected = null;
+    function visitDateLabel(dateStr){
+      var dv=new Date(dateStr+"T12:00:00");
+      return isNaN(dv.getTime()) ? dateStr : dv.toLocaleDateString(undefined, {weekday:"short", day:"numeric", month:"short", year:"numeric"});
+    }
+    function visitCalClass(r){ return r==="up" ? "cal-up" : r==="meh" ? "cal-meh" : r==="down" ? "cal-down" : "cal-none"; }
+    function daysAgoStr(n){ return new Date(Date.now() - n*86400000).toISOString().slice(0,10); }
+    function loadSampleVisits(){
+      visits = [
+        {place:"Café Pinocchio", placeId:"pinocchio", date:daysAgoStr(2), rating:"up", answers:[{q:"How loud is it right now?", a:"Quiet"}], order:[{item:"Cappuccino", qty:1, price:"$4.50"}]},
+        {place:"Café Vito", placeId:"vito", date:daysAgoStr(5), rating:"meh", answers:[{q:"How loud is it right now?", a:"A bit loud"}], order:[{item:"Espresso", qty:1, price:"$3.50"}]},
+        {place:"Café Velours", placeId:"velours", date:daysAgoStr(9), rating:"down", answers:[{q:"How loud is it right now?", a:"Loud"}], order:[{item:"Espresso", qty:1, price:"$3.50"}]},
+        {place:"Larue & Fils", placeId:"larue", date:daysAgoStr(12), rating:null, answers:[{q:"How loud is it right now?", a:"Quiet"}], order:[{item:"Cappuccino", qty:1, price:"$4.50"}]}
+      ];
+      save("peerspect-visits-v1", visits); renderVisits();
+    }
+    function renderVisitList(ul, ordered){
+      ordered.forEach(function(v, i){
+        var item=document.createElement("details"); item.className="visit-item"; if(i===0) item.open=true;
+        var sum=document.createElement("summary");
+        var chev=document.createElement("span"); chev.className="visit-chev"; chev.setAttribute("aria-hidden","true"); chev.textContent="›"; sum.appendChild(chev);
+        var dt=document.createElement("span"); dt.className="visit-sum-date"; dt.textContent=visitDateLabel(v.date); sum.appendChild(dt);
+        var pl=document.createElement("span"); pl.className="visit-sum-place"; pl.textContent=v.place; sum.appendChild(pl);
+        var rt=document.createElement("span"); rt.className="visit-rating"; rt.textContent=ratingVisual(v.rating); sum.appendChild(rt);
+        item.appendChild(sum);
+        item.appendChild(visitCardEl(v, {noHead:true, showPlaceName:false, mostRecent:i===0}));
+        ul.appendChild(item);
+      });
+    }
+    function renderVisitCalendar(ul, ordered){
+      var byDate={}; ordered.forEach(function(v){ (byDate[v.date]=byDate[v.date]||[]).push(v); });
+      var head=document.createElement("div"); head.className="visit-cal-head";
+      var prev=document.createElement("button"); prev.type="button"; prev.className="ps-btn ps-btn-secondary ps-btn-small"; prev.textContent="← Previous month"; prev.setAttribute("aria-label","Previous month");
+      prev.addEventListener("click", function(){ calMonth--; if(calMonth<0){ calMonth=11; calYear--; } renderVisits(); });
+      var label=document.createElement("h4"); label.textContent=new Date(calYear, calMonth, 1).toLocaleDateString(undefined, {month:"long", year:"numeric"});
+      var next=document.createElement("button"); next.type="button"; next.className="ps-btn ps-btn-secondary ps-btn-small"; next.textContent="Next month →"; next.setAttribute("aria-label","Next month");
+      next.addEventListener("click", function(){ calMonth++; if(calMonth>11){ calMonth=0; calYear++; } renderVisits(); });
+      head.appendChild(prev); head.appendChild(label); head.appendChild(next); ul.appendChild(head);
+      var grid=document.createElement("div"); grid.className="visit-cal-grid";
+      ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].forEach(function(d){ var c=document.createElement("div"); c.className="visit-cal-dow"; c.textContent=d; grid.appendChild(c); });
+      var firstOffset=(new Date(calYear, calMonth, 1).getDay()+6)%7, daysInMonth=new Date(calYear, calMonth+1, 0).getDate();
+      for(var i=0;i<firstOffset;i++){ var pad=document.createElement("div"); pad.className="visit-cal-day empty"; grid.appendChild(pad); }
+      for(var d=1; d<=daysInMonth; d++){
+        var dateStr=calYear+"-"+String(calMonth+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+        var day=document.createElement("button"); day.type="button"; day.className="visit-cal-day";
+        var num=document.createElement("span"); num.className="day-num"; num.textContent=d; day.appendChild(num);
+        var dayVisits=byDate[dateStr]||[];
+        dayVisits.forEach(function(v){
+          var chip=document.createElement("span"); chip.className="visit-cal-chip "+visitCalClass(v.rating); chip.textContent=v.place; day.appendChild(chip);
+        });
+        day.setAttribute("aria-pressed", calSelected===dateStr ? "true" : "false");
+        day.setAttribute("aria-label", visitDateLabel(dateStr) + (dayVisits.length ? ", " + dayVisits.length + (dayVisits.length===1 ? " visit" : " visits") + ": " + dayVisits.map(function(v){ return v.place + ", " + ratingLabel(v.rating); }).join("; ") : ", no visit"));
+        /* dateStr is var-scoped, so the click handler takes a copy
+           of this day's date, or every day would select the last. */
+        day.addEventListener("click", (function(ds){ return function(){ calSelected=ds; renderVisits(); }; })(dateStr));
+        grid.appendChild(day);
+      }
+      ul.appendChild(grid);
+      var legend=document.createElement("ul"); legend.className="visit-cal-legend"; legend.setAttribute("aria-label","Calendar legend: colour shows how the visit went for you");
+      [["cal-up","Loved it: high alignment"],["cal-meh","So-so: mixed"],["cal-down","Not for me: low alignment"],["cal-none","No rating yet"]].forEach(function(pair){
+        var li=document.createElement("li"); var sw=document.createElement("span"); sw.className="legend-swatch "+pair[0]; sw.setAttribute("aria-hidden","true"); li.appendChild(sw); li.appendChild(document.createTextNode(pair[1])); legend.appendChild(li);
+      });
+      ul.appendChild(legend);
+      var detail=document.createElement("div"); detail.className="visit-cal-detail";
+      if(calSelected){
+        var dh=document.createElement("h4"); dh.textContent="Visits on " + visitDateLabel(calSelected); detail.appendChild(dh);
+        var sel=byDate[calSelected]||[];
+        if(!sel.length){ var none=document.createElement("p"); none.className="ps-muted"; none.textContent="No visit on this day."; detail.appendChild(none); }
+        sel.forEach(function(v, i){ detail.appendChild(visitCardEl(v, {mostRecent:i===0, showPlaceName:true})); });
+      } else {
+        var hint=document.createElement("p"); hint.className="ps-muted"; hint.textContent="Tap a day to see where you went and how it was."; detail.appendChild(hint);
+      }
+      ul.appendChild(detail);
+    }
     function renderVisits(){
       var ul=$("visit-list"); if(!ul) return; ul.innerHTML="";
+      var lb=$("visits-list-btn"), cb=$("visits-cal-btn");
+      if(lb) lb.setAttribute("aria-pressed", visitsView==="list" ? "true" : "false");
+      if(cb) cb.setAttribute("aria-pressed", visitsView==="cal" ? "true" : "false");
       if(!visits.length){
         var empty=document.createElement("div"); empty.className="visit-empty";
         empty.innerHTML="<p><strong>No visits yet.</strong></p><p class='ps-muted'>Check in at a place and it will show up here, with what you got and how it was.</p>";
-        ul.appendChild(empty); return;
+        ul.appendChild(empty);
+        var sample=document.createElement("button"); sample.type="button"; sample.className="ps-btn ps-btn-secondary ps-btn-small"; sample.textContent="See sample visits";
+        sample.addEventListener("click", loadSampleVisits);
+        ul.appendChild(sample);
+        var sampleNote=document.createElement("p"); sampleNote.className="ps-muted"; sampleNote.textContent="Sample only: four made-up visits across this month, one Loved it, one So-so, one Not for me and one unrated, so you can try both views. Clear visits removes them."; ul.appendChild(sampleNote);
+        return;
       }
       var ordered = visits.slice().reverse();
       var places = []; ordered.forEach(function(v){ if(places.indexOf(v.placeId)<0) places.push(v.placeId); });
@@ -3193,19 +3330,10 @@
       sum.textContent = ordered.length + (ordered.length===1 ? " visit" : " visits") + " · " + places.length + (places.length===1 ? " place" : " places");
       if(most) sum.textContent += " · Most ordered: " + most + " (" + mostCount + (mostCount===1 ? " time" : " times") + ")";
       ul.appendChild(sum);
-      var groups = [];
-      ordered.forEach(function(v){
-        var g=null; groups.forEach(function(x){ if(x.placeId===v.placeId) g=x; });
-        if(!g){ g={placeId:v.placeId, place:v.place, list:[]}; groups.push(g); }
-        g.list.push(v);
-      });
-      groups.forEach(function(g){
-        var wrap=document.createElement("div"); wrap.className="visit-group";
-        var gh=document.createElement("h4"); gh.textContent=g.place + ": " + g.list.length + (g.list.length===1 ? " visit" : " visits"); wrap.appendChild(gh);
-        g.list.forEach(function(v, i){ wrap.appendChild(visitCardEl(v, {mostRecent:i===0, showPlaceName:false})); });
-        ul.appendChild(wrap);
-      });
+      if(visitsView==="cal") renderVisitCalendar(ul, ordered); else renderVisitList(ul, ordered);
     }
+    $("visits-list-btn").addEventListener("click", function(){ visitsView="list"; renderVisits(); });
+    $("visits-cal-btn").addEventListener("click", function(){ visitsView="cal"; renderVisits(); });
     $("clear-visits").addEventListener("click", function(){ visits=[]; save("peerspect-visits-v1", visits); renderVisits(); });
     /* Trust milestones, Nov 24 2026: demo thresholds, counted
        locally and anonymously. Progress is counted two ways:
