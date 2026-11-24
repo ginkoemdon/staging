@@ -214,6 +214,40 @@
     .screen.active { display:block; }
     .screen-head { padding:20px 0 8px; }
     .screen-head h2 { font-size:1.3rem; line-height:1.25; margin:0 0 .25rem; color:var(--teal-dark); }
+    /* Place detail, Nov 23 2026: the "← Places" back button sat
+       right on top of the place title. 20px of space under the
+       button gives the title breathing room, on phone and desktop.
+       The button itself does not move. */
+    #screen-place #back-to-discover { margin-bottom:20px; }
+    /* Place detail visuals, Nov 23 2026: menu as cards, match as a
+       gauge plus oval tags, sound/light/crowd and through-the-day
+       as small bars, peer reports as a count bar plus peer-note
+       chips. Same information as the text it replaces, just drawn.
+       Every bar is labelled in words, so nothing is colour alone,
+       and fills use var(--teal) so they stay readable in dark mode. */
+    .match-gauge { margin:12px 0 4px; }
+    .match-gauge .gauge-track { height:12px; border-radius:999px; background:var(--track); overflow:hidden; }
+    .match-gauge .gauge-fill { height:100%; background:var(--teal); border-radius:999px; }
+    .match-gauge p { margin:.4rem 0 0; font-weight:700; color:var(--teal-dark); }
+    .detail-kv { display:grid; gap:8px; margin:12px 0; }
+    .detail-kv div { display:flex; justify-content:space-between; gap:16px; border-bottom:1px solid var(--line-soft); padding:8px 0; }
+    .detail-kv dt { font-weight:700; } .detail-kv dd { margin:0; text-align:right; }
+    .factor-bars { display:grid; gap:12px; margin:12px 0; }
+    .factor-bar p { margin:0 0 4px; }
+    .factor-bar .bar-track { height:10px; border-radius:999px; background:var(--track); overflow:hidden; }
+    .factor-bar .bar-fill { height:100%; background:var(--teal); border-radius:999px; }
+    .menu-cards { display:grid; gap:12px; margin:12px 0; }
+    .menu-card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .menu-card .menu-name { font-weight:700; }
+    .menu-card .menu-price { color:var(--muted); font-weight:700; white-space:nowrap; }
+    .menu-card .ps-btn { flex:0 0 auto; }
+    .peer-visual { background:var(--soft); border:1px solid var(--line); border-radius:16px; padding:16px 20px; margin:12px 0; }
+    .peer-visual .peer-num { font-size:1.6rem; font-weight:800; color:var(--teal-dark); line-height:1.2; margin:0; }
+    .peer-visual .peer-bar { height:10px; border-radius:999px; background:var(--track); overflow:hidden; margin:8px 0; }
+    .peer-visual .peer-fill { height:100%; background:var(--teal); border-radius:999px; }
+    .peer-notes { list-style:none; padding:0; margin:12px 0 0; display:grid; gap:8px; }
+    .peer-notes li { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--teal); border-radius:12px; padding:12px 16px; font-size:.95rem; }
+    @media (min-width: 700px) { .menu-cards { grid-template-columns:repeat(3, minmax(0,1fr)); } .menu-card { flex-direction:column; align-items:flex-start; } }
     .screen-head p { margin:.2rem 0 .4rem; color:var(--muted); font-size:.96rem; }
     .screen-scroll { padding:8px 0 20px; display:flex; flex-direction:column; gap:16px; }
     .screen-foot { padding:16px 0 20px; background:var(--bg); border-top:1px solid var(--line); display:flex; gap:12px; }
@@ -342,15 +376,14 @@
     .adventure .adventure-line { font-size:1.05rem; font-weight:700; color:var(--teal-dark); margin:.4rem 0 .2rem; }
     .adventure p { margin:.2rem 0; }
     /* Alignment — how a place matches today. Nov 23 2026: the
-       "This fits today" wording was removed as redundant; the
-       match is now just "Matches X of Y: ..." (see alignmentFor).
-       On the place cards it reads as its own section: a teal
-       left bar, a heading "Why this matches" with the count,
-       matched rows bold in teal with a green dot and a tick,
-       unmatched rows muted with a grey dot and a dash (never
-       colour alone). The match line on the list cards is a plain
-       bold line (.align-line), not a pill, so it never wraps
-       inside a bubble. */
+       "This fits today" wording was removed as redundant. The
+       match now reads as a compact "5/5" score with the matched
+       filters as oval tags (per-group colours, text label and a
+       tick on every tag, so never colour alone). Unmatched
+       filters show as muted dashed tags under "Not matched here",
+       so you can still see what did not match. The old plain
+       bold match line (.align-line) is kept in the stylesheet
+       but no longer used on the cards. */
     /* Check-in row, Nov 23 2026: Back, Skip and Done for now are
        small secondary buttons, but they still get a 44px touch
        target in the app (the app-wide .ps-btn-small is 40px). */
@@ -368,6 +401,24 @@
     .align-card .align-summary { margin:.75rem 0 0; padding-top:.75rem; border-top:1px solid var(--line); font-weight:700; color:var(--teal-dark); }
     .align-line { display:block; margin-top:.5rem; font-weight:600; color:var(--teal-dark); }
     .align-line::before { content:"\2713  "; font-weight:700; }
+    /* Match score + oval tags, Nov 23 2026: "5/5" in bold teal,
+       then the matched filters as eye-grabbing oval tags. */
+    .match-score { display:inline-flex; align-items:center; gap:6px; font-weight:800; font-size:1.1rem; color:var(--teal-dark); white-space:nowrap; }
+    .match-tags { margin:.5rem 0; }
+    .match-tags li, .match-tags span[role="listitem"] { font-weight:700; }
+    .ps-tags span[role="listitem"] { border-radius:999px; padding:4px 12px; font-size:.9rem; background:var(--tag-bg); }
+    .ps-tags li.tag-missed, .ps-tags span.tag-missed { background:var(--tag-bg); color:var(--muted); border:1px dashed var(--line); font-weight:400; }
+    .align-card .align-count { font-size:1.25rem; }
+    .align-card .align-missed-label { margin:.75rem 0 .25rem; font-size:.85rem; color:var(--muted); font-weight:700; }
+    /* Oval match tags also render as spans inside buttons (a <ul>
+       is not valid inside a <button>), so the per-group colours
+       are defined for span tags too, matching the li tags. */
+    #view-app .ps-tags span.tag-access { background:#2f5d3e; border-color:#2f5d3e; color:#fff; font-weight:700; }
+    #view-app .ps-tags span.tag-sensory { background:#f2c14e; border-color:#f2c14e; color:#372c1f; font-weight:700; }
+    #view-app .ps-tags span.tag-env { background:#14665a; border-color:#14665a; color:#fff; font-weight:700; }
+    #view-app .ps-tags span.tag-context { background:#8a4a08; border-color:#8a4a08; color:#fff; font-weight:700; }
+    #view-app .ps-tags span.tag-inclusion { background:#8ecdc0; border-color:#8ecdc0; color:#372c1f; font-weight:700; }
+    #view-app .ps-tags span.tag-menu { background:#2f5d3e; border-color:#2f5d3e; color:#fff; font-weight:700; }
     /* Filters and sort bar, Nov 23 2026: it is a <details> but the
        native marker was hidden by display:flex, so it read as a
        plain heading. Now it shows a chevron on the right that
@@ -384,11 +435,63 @@
     .view-toggle button[aria-pressed="true"] { background:var(--card); color:var(--teal-dark); box-shadow:0 1px 4px rgba(0,0,0,.18); }
     .map-wrap { position:relative; background:var(--map-bg); border:1px solid var(--line); border-radius:16px; overflow:hidden; margin:16px 0; }
     .map-wrap svg { display:block; width:100%; height:auto; }
-    /* Map pin: fixed teal, not var(--teal), or in dark mode white text
-       sat on the light mint teal (1.8:1). #14665a with white is 6.82:1. */
-    .map-pin { position:absolute; transform:translate(-50%,-100%); min-width:44px; min-height:44px; border-radius:999px; border:2px solid #fff; background:#14665a; color:#fff; font-weight:700; font-size:1rem; box-shadow:0 2px 6px rgba(0,0,0,.3); padding:.2rem .5rem; }
+    /* Map pins, Nov 23 2026: bigger pins that show the place name
+       plus its match count, not just a number. Fixed teal, not
+       var(--teal), or in dark mode white text sat on the light
+       mint teal (1.8:1). #14665a with white is 6.82:1. A place
+       with fewer matches is a dark grey-green pin, still white
+       text, so the match is never colour alone: the count is
+       written on the pin. */
+    .map-pin { position:absolute; transform:translate(-50%,-100%); min-width:44px; min-height:44px; max-width:180px; border-radius:12px; border:2px solid #fff; background:#3f5148; color:#fff; font-weight:700; font-size:.8rem; line-height:1.25; box-shadow:0 2px 6px rgba(0,0,0,.3); padding:6px 10px; text-align:center; cursor:pointer; }
+    .map-pin .pin-name { display:block; font-weight:700; }
+    .map-pin .pin-score { display:block; font-size:.85rem; font-weight:800; }
     .map-pin.align { background:#14665a; outline:3px solid #f2c14e; }
-    .map-pin.here { background:var(--card); color:var(--teal-dark); border-color:var(--teal); border-radius:8px; font-size:.85rem; }
+    .map-pin.here { background:#f2c14e; color:#372c1f; border-color:#fff; border-radius:12px; font-size:.85rem; max-width:200px; }
+    .map-pin.here .pin-name { font-weight:800; }
+    /* Map legend, Nov 23 2026: what each pin means, in words. */
+    .map-legend { list-style:none; padding:0; margin:12px 0; display:grid; gap:8px; font-size:.9rem; }
+    .map-legend .legend-pin { display:inline-block; width:20px; height:20px; border-radius:6px; vertical-align:middle; margin-right:8px; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,.25); }
+    .map-legend .legend-pin.match { background:#14665a; outline:2px solid #f2c14e; }
+    .map-legend .legend-pin.few { background:#3f5148; }
+    .map-legend .legend-pin.here { background:#f2c14e; }
+    /* Schematic map colours, Nov 23 2026: the SVG used hardcoded
+       light fills, so in dark mode it stayed a light block while
+       the rest of the app went dark. Streets, labels and lines
+       now use classes with dark-mode values, so the map stays
+       readable in both themes. */
+    .map-wrap svg text { font-family:inherit; }
+    .map-land { fill:#eef4ea; }
+    .map-park { fill:#cfe6c8; }
+    .map-road { stroke:#ffffff; stroke-width:12; fill:none; }
+    .map-road-edge { stroke:#c4d8cc; stroke-width:1.5; fill:none; }
+    .map-label { fill:#43524f; font-size:12px; font-weight:700; }
+    .map-street { fill:#5a6b66; font-size:11px; font-weight:600; }
+    .map-station { fill:#0e4a40; font-size:10px; font-weight:700; }
+    .map-metro { stroke:#14665a; stroke-width:3; fill:none; stroke-dasharray:6 4; }
+    .map-dot { fill:#14665a; stroke:#fff; stroke-width:1.5; }
+    .map-thread { fill:none; stroke:#8a4a08; stroke-width:2; stroke-dasharray:5 4; stroke-linecap:round; }
+    html[data-theme="dark"] .map-land { fill:#1d3a32; }
+    html[data-theme="dark"] .map-park { fill:#2a5245; }
+    html[data-theme="dark"] .map-road { stroke:#33584c; }
+    html[data-theme="dark"] .map-road-edge { stroke:#1c3a31; }
+    html[data-theme="dark"] .map-label { fill:#d5e6de; }
+    html[data-theme="dark"] .map-street { fill:#b9d4c6; }
+    html[data-theme="dark"] .map-station { fill:#cfe3d8; }
+    html[data-theme="dark"] .map-metro { stroke:#7fd1bd; }
+    html[data-theme="dark"] .map-dot { fill:#7fd1bd; }
+    html[data-theme="dark"] .map-thread { stroke:#f2c14e; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .map-land { fill:#1d3a32; }
+      html:not([data-theme="light"]) .map-park { fill:#2a5245; }
+      html:not([data-theme="light"]) .map-road { stroke:#33584c; }
+      html:not([data-theme="light"]) .map-road-edge { stroke:#1c3a31; }
+      html:not([data-theme="light"]) .map-label { fill:#d5e6de; }
+      html:not([data-theme="light"]) .map-street { fill:#b9d4c6; }
+      html:not([data-theme="light"]) .map-station { fill:#cfe3d8; }
+      html:not([data-theme="light"]) .map-metro { stroke:#7fd1bd; }
+      html:not([data-theme="light"]) .map-dot { fill:#7fd1bd; }
+      html:not([data-theme="light"]) .map-thread { stroke:#f2c14e; }
+    }
     .compact-list { list-style:none; padding:0; margin:12px 0; display:grid; gap:12px; }
     .compact-list li { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; }
     .compact-list li.align-good { border:2px solid var(--teal); background:var(--soft); }
@@ -491,7 +594,7 @@
        non-text contrast bar, and colour alone is not enough. */
     #view-app .app-nav button[aria-current="page"] { box-shadow:inset 0 4px 0 var(--teal); }
     #view-app .ps-bar span { background:linear-gradient(90deg, #14665a, #2f5d3e, #f2c14e); }
-    #view-app .map-wrap { background:linear-gradient(180deg, #eef4ea, #e2efe8); }
+    #view-app .map-wrap { background:var(--map-bg); }
     #view-app .landing .landing-list li:nth-child(2) { border-left:6px solid #f2c14e; }
     #view-app .landing .landing-list li:nth-child(3) { border-left:6px solid #2f5d3e; }
     #view-app .landing .landing-list li:nth-child(4) { border-left:6px solid #8a4a08; }
@@ -1066,8 +1169,8 @@
       <!-- 1. ONBOARDING -->
       <section class="screen" id="screen-onboard" aria-labelledby="onboard-h" hidden>
         <div class="screen-head">
-          <h2 id="onboard-h">What matters today?</h2>
-          <p>Start with a day, or open a category and pick what fits. About a minute, and you can change it anytime.</p>
+          <h2 id="onboard-h">What would make a place feel right today?</h2>
+          <p>Start with a type of day, like a quiet morning, or tailor your own needs from the categories below. About a minute, and you can change it anytime.</p>
         </div>
         <div class="screen-scroll">
           <div id="onboard-quick" aria-label="Quick start"></div>
@@ -1106,25 +1209,47 @@
           </details>
           <div id="view-map" hidden>
             <div class="map-wrap" id="map-wrap" aria-label="Sample schematic map of Montreal places">
-              <svg viewBox="0 0 400 300" role="img" aria-label="Schematic map, not to scale: Jarry Park at top left, Mile End to the right, Plateau below, Outremont to the left">
-                <rect width="400" height="300" fill="#eef4ea"/>
-                <path d="M0 90 H400 M0 190 H400 M90 0 V300 M210 0 V300 M320 0 V300" stroke="#fff" stroke-width="10" fill="none"/>
-                <path d="M0 90 H400 M0 190 H400 M90 0 V300 M210 0 V300 M320 0 V300" stroke="#c4d8cc" stroke-width="1.5" fill="none"/>
-                <circle cx="70" cy="55" r="26" fill="#dcebd8"/><text x="70" y="58" text-anchor="middle" font-size="11" fill="#0e4a40">Jarry Park</text>
-                <text x="18" y="110" font-size="11" fill="#43524f">Villeray</text>
-                <text x="230" y="110" font-size="11" fill="#43524f">Mile End</text>
-                <text x="230" y="210" font-size="11" fill="#43524f">Plateau</text>
-                <text x="18" y="210" font-size="11" fill="#43524f">Outremont</text>
-                <path d="M40 240 C 120 220, 200 260, 360 230" stroke="#14665a" stroke-width="3" fill="none" stroke-dasharray="6 4"/>
-                <text x="40" y="278" font-size="11" fill="#14665a">Metro line (sample)</text>
+              <svg viewBox="0 0 640 420" role="img" aria-label="Schematic map, not to scale: Jarry Park top left, with Rue Jarry, Rue Jean-Talon, Avenue Van Horne and Rue Rachel running east to west, crossed by Avenue du Parc, Boulevard Saint-Laurent and Rue Saint-Denis; neighbourhoods Villeray, Mile End, Plateau-Mont-Royal and Outremont; four sample places pinned">
+                <rect class="map-land" width="640" height="420"/>
+                <rect class="map-park" x="24" y="16" width="150" height="58" rx="14"/>
+                <text class="map-label" x="99" y="50" text-anchor="middle">Jarry Park</text>
+                <!-- Streets: east-west -->
+                <path class="map-road" d="M0 100 H640 M0 180 H640 M0 262 H640 M0 344 H640"/>
+                <path class="map-road-edge" d="M0 100 H640 M0 180 H640 M0 262 H640 M0 344 H640"/>
+                <!-- Streets: north-south -->
+                <path class="map-road" d="M232 0 V420 M352 0 V420 M472 0 V420"/>
+                <path class="map-road-edge" d="M232 0 V420 M352 0 V420 M472 0 V420"/>
+                <!-- Street names -->
+                <text class="map-street" x="482" y="94">Rue Jarry</text>
+                <text class="map-street" x="482" y="174">Rue Jean-Talon</text>
+                <text class="map-street" x="482" y="256">Ave Van Horne</text>
+                <text class="map-street" x="482" y="338">Rue Rachel</text>
+                <text class="map-street" transform="translate(224,396) rotate(-90)">Ave du Parc</text>
+                <text class="map-street" transform="translate(344,396) rotate(-90)">Boul. Saint-Laurent</text>
+                <text class="map-street" transform="translate(464,396) rotate(-90)">Rue Saint-Denis</text>
+                <!-- Neighbourhoods -->
+                <text class="map-label" x="40" y="140">Villeray</text>
+                <text class="map-label" x="260" y="220">Mile End</text>
+                <text class="map-label" x="380" y="300">Plateau-Mont-Royal</text>
+                <text class="map-label" x="40" y="300">Outremont</text>
+                <!-- Metro line (sample): along Rue Jarry, then down Boul. Saint-Laurent -->
+                <path class="map-metro" d="M120 100 H352 V344"/>
+                <circle class="map-dot" cx="200" cy="100" r="5"/><text class="map-station" x="192" y="88">Jarry</text>
+                <circle class="map-dot" cx="352" cy="220" r="5"/><text class="map-station" x="362" y="224">Laurier</text>
+                <circle class="map-dot" cx="352" cy="300" r="5"/><text class="map-station" x="362" y="304">Mont-Royal</text>
                 <!-- Thread echo: a thin warm thread connecting the sample
                      places on the map. Pins sit
                      on top of it (they are HTML buttons over this SVG). -->
-                <path d="M72 66 C 180 58, 240 68, 288 90 C 302 138, 282 168, 260 186 C 200 202, 122 196, 88 174 C 68 140, 64 92, 72 66 Z" fill="none" stroke="#8a4a08" stroke-width="2" stroke-dasharray="5 4" stroke-linecap="round" aria-hidden="true"/>
-                <text x="200" y="278" font-size="11" fill="#8a4a08">Thread connecting peer insights</text>
+                <path class="map-thread" d="M115 92 C 240 80, 320 110, 358 126 C 380 190, 360 240, 397 286 C 300 300, 160 290, 102 252 C 80 210, 90 130, 115 92 Z" aria-hidden="true"/>
+                <text class="map-street" x="24" y="404">Metro line (sample) · Thread connecting peer insights</text>
               </svg>
             </div>
             <p class="ps-muted">Sample schematic map — not to scale, no live listings. Tap a pin to open that establishment.</p>
+            <ul class="map-legend" aria-label="Map legend">
+              <li><span class="legend-pin here" aria-hidden="true"></span>★ You are here — Jarry Park</li>
+              <li><span class="legend-pin match" aria-hidden="true"></span>Place that matches today — its name and match count are on the pin</li>
+              <li><span class="legend-pin few" aria-hidden="true"></span>Place with fewer matches</li>
+            </ul>
             <ul class="compact-list" id="map-distance-list"></ul>
           </div>
           <div id="view-list">
@@ -1257,7 +1382,7 @@
       "menu-physical":"Physical menu","menu-qr":"QR-code menu","menu-preview":"Menu preview online","menu-accessible":"Accessible menu","diet-gluten-free":"Gluten-free options","diet-vegan":"Vegan options","diet-lactose-free":"Lactose-free options","diet-halal":"Halal options","diet-kosher":"Kosher options","diet-vegetarian":"Vegetarian options","diet-cultural":"Cultural food options","diet-sugar-free":"Sugar-free options","menu-nutrition":"Nutrition or carb info","menu-free-water":"Free water available",
       "order-verbal":"Verbal order","order-call":"Call to order","order-online":"Order online","order-ahead":"Order ahead","order-click-collect":"Click and collect","order-takeout":"Takeout",
       "sensory-quiet-nook":"Quiet nook","sensory-low-hours":"Low sensory hours","sensory-no-flash":"No flashing lights","sensory-fragrance-free":"Fragrance free","sensory-no-music":"No background music","sensory-no-sudden-noise":"No sudden loud noises",
-      "vision-contrast-tables":"High contrast tables and floor","vision-contrast-tableware":"High contrast plates and cups","vision-even-light":"Even lighting, no glare","vision-clear-paths":"Clear, wide pathways that stay the same","vision-marked-glass":"Marked glass doors","vision-tactile-lines":"Tactile floor guide lines","vision-step-edges":"Step edges marked","vision-large-print":"Large print menu","vision-braille":"Braille menu","vision-read-aloud":"Staff will read the menu aloud","vision-high-contrast-signs":"High contrast signs","vision-no-pattern":"No patterned tablecloths or dishes"
+      "vision-contrast-tables":"High contrast tables and floor","vision-contrast-tableware":"High contrast plates and cups","vision-even-light":"Even lighting, no glare","vision-clear-paths":"Clear white pathways","vision-marked-glass":"Marked glass doors","vision-tactile-lines":"Tactile floor guide lines","vision-step-edges":"Step edges marked","vision-large-print":"Large print menu","vision-braille":"Braille menu","vision-read-aloud":"Staff will read the menu aloud","vision-high-contrast-signs":"High contrast signs","vision-no-pattern":"No patterned tablecloths or dishes"
     };
     /* Onboarding uses GROUPS below directly: every filter, grouped,
        not a short list of nine shortcuts. */
@@ -1310,7 +1435,7 @@
          {q:"Are pronouns being respected today?", a:["Yes","Not today","Not sure"]},
          {q:"Is it still calm, not crowded?", c:"A peer reported 30 minutes ago: it was calm, not crowded.", a:["Yes, still calm","A bit busy","No, it's crowded"]}
        ]},
-      {id:"nostalgie", name:"Café Nostalgie", area:"Mile End", type:"Café / diner", distKm:3.2, distLabel:"3.2 km · 12 min by Metro", transport:"Metro Jarry to Laurier, 12 min", mapX:72, mapY:30,
+      {id:"nostalgie", name:"Café Nostalgie", area:"Mile End", type:"Café / diner", distKm:3.2, distLabel:"3.2 km · 12 min by Metro", transport:"Metro Jarry to Laurier, 12 min", mapX:56, mapY:30,
        tags:["seating-comfy","lighting-bright","lighting-big","sound-music","crowding-busy","retro","nostalgic","socialising","service-fast","communication-clear","price-transparent","language-french","language-english","language-italian","language-creole","menu-qr","menu-preview","written-order","diet-vegetarian","order-verbal","order-call","order-click-collect","order-takeout","sensory-no-flash","vision-contrast-tableware","vision-step-edges","vision-high-contrast-signs","hearing-captions","hearing-written-confirm","diet-sugar-free"],
        lighting:"Bright, big overhead light", sound:"Music and chatter, TV on in the corner", soundLevel:"Loud", soundSources:["Music, loud","Talking, loud","TV, on in the corner"], crowding:"Busy at lunch, lively",
        access:"Step up at the door, no gender-neutral restroom listed", menuNote:"QR-code menu only, preview online. Ask staff for a printed copy.",
@@ -1323,7 +1448,7 @@
          {q:"Is it busy right now?", a:["Yes, it's busy","A bit busy","No, it's quiet"]},
          {q:"Is the TV on right now?", c:"A peer reported 30 minutes ago: the TV was on in the corner.", a:["Yes","No","Not sure"]}
        ]},
-      {id:"boheme", name:"Bohemian Books & Brew", area:"Plateau-Mont-Royal", type:"Book café", distKm:2.8, distLabel:"2.8 km · 15 min by bus", transport:"Bus 55, 15 min from Jarry", mapX:65, mapY:62,
+      {id:"boheme", name:"Bohemian Books & Brew", area:"Plateau-Mont-Royal", type:"Book café", distKm:2.8, distLabel:"2.8 km · 15 min by bus", transport:"Bus 55, 15 min from Jarry", mapX:62, mapY:68,
        tags:["step-free","seating-comfy","lighting-ambient","lighting-dim","sound-quiet","sound-music","crowding-low","bohemian","artsy","coworking","quiet-chat","service-patient","service-calm","pronoun-respect","queer-friendly","staff-representation","price-transparent","language-french","language-english","language-mandarin","language-arabic","menu-physical","menu-preview","menu-accessible","diet-vegan","diet-gluten-free","diet-vegetarian","diet-halal","diet-cultural","online-meetings","temp-comfortable","clean","order-verbal","order-online","order-ahead","order-takeout","sensory-quiet-nook","sensory-no-flash","sensory-fragrance-free","sensory-no-music","sensory-no-sudden-noise","vision-contrast-tables","vision-even-light","vision-clear-paths","vision-large-print","vision-braille","vision-read-aloud","vision-high-contrast-signs","vision-no-pattern","hearing-face-you","hearing-written-confirm","restroom-sharps","restroom-private","diet-sugar-free","menu-free-water"],
        lighting:"Ambient, dim corners, bright reading lamps", sound:"Quiet, occasional soft music", soundLevel:"Quiet", soundSources:["Music, soft, occasional","Talking, quiet","Machines, none noted"], crowding:"Usually calm",
        access:"Step-free entry, comfy seating, staff happy to help", menuNote:"Physical menu, preview online. Tell staff your access needs and they will help.",
@@ -1336,7 +1461,7 @@
          {q:"Are pronouns being respected today?", a:["Yes","Not today","Not sure"]},
          {q:"Is there still a free comfy seat?", c:"A peer reported 30 minutes ago: there were free comfy seats.", a:["Yes","A few left","No, it's full"]}
        ]},
-      {id:"jardin", name:"Jardin Café", area:"Outremont", type:"Café / event space", distKm:2.1, distLabel:"2.1 km · 14 min by bus", transport:"Bus 160, 14 min · 20 min walk", mapX:22, mapY:58,
+      {id:"jardin", name:"Jardin Café", area:"Outremont", type:"Café / event space", distKm:2.1, distLabel:"2.1 km · 14 min by bus", transport:"Bus 160, 14 min · 20 min walk", mapX:16, mapY:60,
        tags:["step-free","restroom-accessible","lighting-bright","lighting-ambient","sound-music","crowding-busy","nostalgic","socialising","coworking","service-patient","communication-clear","price-transparent","language-french","language-english","language-spanish","language-creole","language-mandarin","menu-qr","menu-preview","menu-accessible","diet-vegan","diet-gluten-free","diet-vegetarian","diet-cultural","outdoor-space","airflow","order-verbal","order-call","order-online","order-click-collect","order-takeout","sensory-low-hours","sensory-no-flash","sensory-fragrance-free","sensory-no-music","sensory-no-sudden-noise","vision-contrast-tables","vision-even-light","vision-clear-paths","vision-marked-glass","vision-tactile-lines","vision-large-print","vision-braille","vision-read-aloud","language-lsq","lsq-order","hearing-captions","hearing-face-you","restroom-sharps","restroom-private","diet-sugar-free","menu-nutrition","menu-free-water"],
        lighting:"Bright by day, ambient in the evening", sound:"Music, lively at events", soundLevel:"Lively", soundSources:["Music, lively at events","Talking, loud at events","Machines, none noted"], crowding:"Busy on event days, calm on weekdays",
        access:"Step-free entry, accessible restroom", menuNote:"QR menu, preview online, large print on request.",
@@ -1552,12 +1677,44 @@
       var matched = priorityMatches(p);
       var threshold = activeFilters.size <= 2 ? activeFilters.size : Math.max(2, Math.ceil(activeFilters.size / 2));
       if(matched.length >= threshold){
-        var labels = matched.map(function(f){ return FILTER_LABELS[f]||f; });
-        var shown = labels.slice(0, 4);
-        var labelText = shown.join(", ") + (labels.length > 4 ? ", and " + (labels.length - 4) + " more" : "");
-        return {text:"Matches " + matched.length + " of " + activeFilters.size + ": " + labelText, count:matched.length};
+        return {text:matched.length + "/" + activeFilters.size, count:matched.length, total:activeFilters.size, matched:matched};
       }
       return null;
+    }
+    /* Match display, Nov 23 2026: a compact "5/5" score plus the
+       matched filters as oval tags (per-group colours via tagClass,
+       text label and a tick on every tag, so never colour alone).
+       Matched tags are capped at 4, with an "and N more" muted tag.
+       matchScore() is the count regardless of the alignment
+       threshold; alignmentFor() still decides whether a place
+       counts as a match at all. */
+    function matchScore(p){
+      if(!activeFilters.size) return null;
+      var matched = priorityMatches(p);
+      return {matched:matched, total:activeFilters.size, count:matched.length,
+        unmatched:Array.from(activeFilters).filter(function(f){ return p.tags.indexOf(f)<0; })};
+    }
+    function matchTagItems(m, inline){
+      var shown = m.matched.slice(0,4);
+      var open = inline ? '<span role="listitem" class="' : '<li class="';
+      var close = inline ? '</span>' : '</li>';
+      var out = shown.map(function(f){ return open + tagClass(f) + '">✓ ' + (FILTER_LABELS[f]||f) + close; }).join("");
+      if(m.matched.length > 4) out += open + 'tag-missed">and ' + (m.matched.length-4) + ' more' + close;
+      return out;
+    }
+    function matchOvalsHTML(p){
+      var m = matchScore(p); if(!m) return "";
+      return '<span class="match-score">✓ ' + m.count + '/' + m.total + '</span>' +
+        '<ul class="ps-tags match-tags" aria-label="Filters this place matches">' + matchTagItems(m, false) + '</ul>';
+    }
+    function matchOvalsInlineHTML(p){
+      var m = matchScore(p); if(!m) return "";
+      return '<span class="match-score">✓ ' + m.count + '/' + m.total + '</span>' +
+        '<span class="ps-tags match-tags" role="list" aria-label="Filters this place matches">' + matchTagItems(m, true) + '</span>';
+    }
+    function matchAriaText(p){
+      var m = matchScore(p); if(!m) return "";
+      return "Matches " + m.count + " of " + m.total + " of your filters: " + m.matched.map(function(f){ return FILTER_LABELS[f]||f; }).join(", ");
     }
     function renderPlaces(){
       scored = PLACES.map(function(p){
@@ -1581,15 +1738,18 @@
     function renderMap(){
       var wrap = $("map-wrap"); if(!wrap) return;
       wrap.querySelectorAll(".map-pin").forEach(function(el){ el.remove(); });
-      var here = document.createElement("span"); here.className="map-pin here"; here.textContent="You are here"; here.style.left="18%"; here.style.top="18%"; here.title="Sample start point: Jarry Park, Villeray. Distances are sample distances from here.";
+      var here = document.createElement("span"); here.className="map-pin here";
+      here.innerHTML = '<span class="pin-name">★ You are here</span><span class="pin-score">Jarry Park</span>';
+      here.style.left="10%"; here.style.top="10%"; here.title="Sample start point: Jarry Park, Villeray. Distances are sample distances from here.";
       wrap.appendChild(here);
       scored.forEach(function(s, i){
         var p = s.place, align = alignmentFor(p);
+        var m = matchScore(p);
         var pin = document.createElement("button"); pin.type="button";
         pin.className = "map-pin" + (align ? " align" : "");
-        pin.textContent = String(i+1);
+        pin.innerHTML = '<span class="pin-name">' + p.name + '</span>' + (m ? '<span class="pin-score">' + m.count + '/' + m.total + ' match</span>' : '');
         pin.style.left = p.mapX + "%"; pin.style.top = p.mapY + "%";
-        pin.setAttribute("aria-label", p.name + ", " + p.distLabel + ", " + p.transport + (align ? ". " + align.text : ""));
+        pin.setAttribute("aria-label", p.name + ", " + p.distLabel + ", " + p.transport + (align ? ". " + matchAriaText(p) : ""));
         pin.addEventListener("click", function(){ showPlace(p.id); });
         wrap.appendChild(pin);
       });
@@ -1598,7 +1758,7 @@
         scored.forEach(function(s, i){
           var p = s.place, align = alignmentFor(p);
           var li = document.createElement("li"); if(align) li.className="align-good";
-          li.innerHTML = "<strong>" + (i+1) + ". " + p.name + "</strong><br/><span>" + p.distLabel + " · " + p.transport + "</span>" + (align ? "<br/><span class='align-line'>" + align.text + "</span>" : "");
+          li.innerHTML = "<strong>" + (i+1) + ". " + p.name + "</strong><br/><span>" + p.distLabel + " · " + p.transport + "</span>" + (align ? "<br/>" + matchOvalsHTML(p) : "");
           li.addEventListener("click", function(){ showPlace(p.id); });
           list.appendChild(li);
         });
@@ -1610,7 +1770,7 @@
         var p = s.place, align = alignmentFor(p);
         var li = document.createElement("li"); if(align) li.className="align-good";
         var b = document.createElement("button"); b.type="button";
-        b.innerHTML = "<strong>" + p.name + "</strong> — " + p.distLabel + "<br/><span class='ps-muted'>" + p.transport + " · " + p.area + "</span>" + (align ? "<br/><span class='align-line'>" + align.text + "</span>" : "");
+        b.innerHTML = "<strong>" + p.name + "</strong> — " + p.distLabel + "<br/><span class='ps-muted'>" + p.transport + " · " + p.area + "</span>" + (align ? "<br/>" + matchOvalsInlineHTML(p) : "");
         b.addEventListener("click", function(){ showPlace(p.id); });
         li.appendChild(b); ul.appendChild(li);
       });
@@ -1621,7 +1781,7 @@
       var s = scored[focusIndex], p = s.place;
       var align = alignmentFor(p);
       card.className = "ps-card" + (align ? " align-good" : "");
-      var matchText = activeFilters.size===0 ? "No filters picked yet" : "Matches " + s.matches.length + " of " + activeFilters.size + " filters";
+      var matchText = activeFilters.size===0 ? "No filters picked yet" : '<span class="match-score">✓ ' + s.matches.length + '/' + activeFilters.size + '</span>';
       var shownTags = (s.matches.length ? s.matches : p.tags).slice(0,3);
       /* tagClass() is global now, above PLACES: it maps every filter
          key to its real group, so Inclusion and Menu tags get
@@ -1630,7 +1790,7 @@
         '<p class="focus-top"><span class="ps-match">' + matchText + '</span><span class="dist-line">' + p.distLabel + '</span></p>' +
         '<h3>' + p.name + '</h3>' +
         '<p class="ps-muted" style="margin:.2rem 0;">' + p.type + ' · ' + p.area + ' · ' + p.transport + '</p>' +
-        (function(){ if(!activeFilters.size) return ""; var rows = Array.from(activeFilters).map(function(f){ var ok = p.tags.indexOf(f) >= 0; return '<li><span class="align-dot ' + (ok ? "yes" : "no") + '" aria-hidden="true"></span><span class="' + (ok ? "align-yes" : "align-no") + '">' + (ok ? "✓ " : "— ") + (FILTER_LABELS[f]||f) + '</span></li>'; }).join(""); return '<div class="align-card"><h4>Why this matches <span class="align-count">' + s.matches.length + ' of ' + activeFilters.size + '</span></h4><ul>' + rows + '</ul>' + (align ? '' : '<p class="align-summary">No strong match yet, this place matches ' + s.matches.length + ' of ' + activeFilters.size + ' of your filters.</p>') + '</div>'; })() +
+        (function(){ if(!activeFilters.size) return ""; var m = matchScore(p); var matchedTags = m.matched.length ? '<ul class="ps-tags match-tags" aria-label="Filters this place matches">' + matchTagItems(m, false) + '</ul>' : '<p class="ps-muted">None of your filters matched here yet.</p>'; var missed = m.unmatched.length ? '<p class="align-missed-label">Not matched here</p><ul class="ps-tags match-tags" aria-label="Filters this place does not match">' + m.unmatched.map(function(f){ return '<li class="tag-missed">— ' + (FILTER_LABELS[f]||f) + '</li>'; }).join("") + '</ul>' : ""; return '<div class="align-card"><h4>Why this matches <span class="align-count">' + m.count + '/' + m.total + '</span></h4>' + matchedTags + missed + (align ? '' : '<p class="align-summary">No strong match yet — ' + m.count + '/' + m.total + ' of your filters.</p>') + '</div>'; })() +
         '<ul class="ps-facts"><li><strong>Lighting:</strong> ' + p.lighting + '</li><li><strong>Sound:</strong> ' + (p.soundLevel||'') + ' — ' + p.sound + '</li><li><strong>What you will hear:</strong> ' + (p.soundSources||[]).join("; ") + '</li><li><strong>Crowd:</strong> ' + p.crowding + '</li></ul>' +
         '<ul class="ps-tags">' + shownTags.map(function(t){ return '<li class="'+tagClass(t)+'">'+(FILTER_LABELS[t]||t)+'</li>'; }).join("") + '</ul>' +
         '<p class="ps-muted">Confirmed by ' + p.confirmed + ' peers · Anonymous</p>' +
@@ -1666,23 +1826,67 @@
       var p = currentPlace;
       $("place-detail-h").textContent = p.name;
       var body = $("place-detail-body"); body.innerHTML = "";
-      var trustP = document.createElement("p"); trustP.innerHTML = '<span class="ps-badge">Confirmed by ' + p.confirmed + ' peers</span>'; body.appendChild(trustP);
-      var dl = document.createElement("dl"); dl.className="ps-kv";
-      dl.innerHTML = '<div><dt>Distance</dt><dd>'+p.distLabel+'</dd></div><div><dt>Getting there</dt><dd>'+p.transport+'</dd></div><div><dt>Lighting</dt><dd>'+p.lighting+'</dd></div><div><dt>Sound</dt><dd>'+p.sound+'</dd></div><div><dt>Crowding</dt><dd>'+p.crowding+'</dd></div><div><dt>Access</dt><dd>'+p.access+'</dd></div><div><dt>Menu</dt><dd>'+p.menuNote+'</dd></div>';
+      /* Peer reports, visual, Nov 23 2026: the confirmed count as a
+         big number with a bar (bar length is this place's count
+         against the most-confirmed sample place), plus the recent
+         peer notes already in the sample data (the "A peer
+         reported…" lines from this place's check-in questions).
+         No new data. */
+      var maxConfirmed = Math.max.apply(null, PLACES.map(function(q){ return q.confirmed; }));
+      var peerNotes = (p.live||[]).filter(function(q){ return q.c; }).map(function(q){ return q.c; });
+      var peerDiv = document.createElement("div"); peerDiv.className="peer-visual";
+      peerDiv.innerHTML = '<p class="peer-num">' + p.confirmed + ' peer confirmations</p>' +
+        '<div class="peer-bar" role="img" aria-label="' + p.confirmed + ' peer confirmations"><div class="peer-fill" style="width:' + Math.round(p.confirmed/maxConfirmed*100) + '%"></div></div>' +
+        '<p class="ps-muted" style="margin:.25rem 0 0;">Anonymous peer reports for this place.</p>' +
+        (peerNotes.length ? '<ul class="peer-notes">' + peerNotes.map(function(n){ return '<li>“' + n + '”</li>'; }).join("") + '</ul>' : '');
+      body.appendChild(peerDiv);
+      /* Match, visual: a gauge plus the 5/5 oval tags. */
       var alignDetail = alignmentFor(p);
-      if(alignDetail){ var ab=document.createElement("p"); ab.className="align-line"; ab.textContent=alignDetail.text; body.appendChild(ab); }
+      if(alignDetail){
+        var mDetail = matchScore(p);
+        var gauge = document.createElement("div"); gauge.className="match-gauge";
+        gauge.innerHTML = '<div class="gauge-track" role="img" aria-label="Matches ' + mDetail.count + ' of ' + mDetail.total + ' of your filters"><div class="gauge-fill" style="width:' + Math.round(mDetail.count/mDetail.total*100) + '%"></div></div><p>' + mDetail.count + '/' + mDetail.total + ' of your filters</p>' + matchOvalsHTML(p);
+        body.appendChild(gauge);
+      }
+      /* Getting there and access, kept short: three rows, no paragraphs. */
+      var dl = document.createElement("dl"); dl.className="detail-kv";
+      dl.innerHTML = '<div><dt>Distance</dt><dd>'+p.distLabel+'</dd></div><div><dt>Getting there</dt><dd>'+p.transport+'</dd></div><div><dt>Access</dt><dd>'+p.access+'</dd></div>';
       body.appendChild(dl);
+      /* How it feels, as bars: each bar length is drawn from the
+         words already in the sample data (the sound level, the
+         first word of the lighting note, the crowd words), and the
+         words stay as the bar label, so nothing is invented or hidden. */
+      var soundLevel = {"Quiet":1,"Soft":2,"Lively":3,"Loud":4}[p.soundLevel] || 2;
+      var lightLevel = /^Bright/.test(p.lighting) ? 3 : (/^Ambient/.test(p.lighting) ? 2 : 1);
+      var crowdLevel = /Busy/.test(p.crowding) ? 3 : (/busier/i.test(p.crowding) ? 2 : 1);
+      var factors = document.createElement("div"); factors.className="factor-bars";
+      factors.innerHTML =
+        '<div class="factor-bar"><p><strong>Sound:</strong> ' + p.soundLevel + ' — ' + p.sound + '</p><div class="bar-track" role="img" aria-label="Sound level ' + soundLevel + ' of 4"><div class="bar-fill" style="width:' + (soundLevel*25) + '%"></div></div></div>' +
+        '<div class="factor-bar"><p><strong>Light:</strong> ' + p.lighting + '</p><div class="bar-track" role="img" aria-label="Light level ' + lightLevel + ' of 3"><div class="bar-fill" style="width:' + Math.round(lightLevel/3*100) + '%"></div></div></div>' +
+        '<div class="factor-bar"><p><strong>Crowd:</strong> ' + p.crowding + '</p><div class="bar-track" role="img" aria-label="Crowd level ' + crowdLevel + ' of 3"><div class="bar-fill" style="width:' + Math.round(crowdLevel/3*100) + '%"></div></div></div>';
+      body.appendChild(factors);
+      /* Through the day, as bars: one bar per time of day, its
+         length drawn from the busyness words in that entry's own
+         text, and the text stays as the label. */
       var dayH=document.createElement("h3"); dayH.textContent="Through the day"; body.appendChild(dayH);
-      p.day.forEach(function(d){ var s=document.createElement("p"); s.className="ps-muted"; s.textContent=d[0]+": "+d[1]; body.appendChild(s); });
+      var dayBars = document.createElement("div"); dayBars.className="factor-bars";
+      dayBars.innerHTML = p.day.map(function(d){
+        var lvl = /Busy/.test(d[1]) ? 3 : (/busier|lively/i.test(d[1]) ? 2 : 1);
+        return '<div class="factor-bar"><p><strong>' + d[0] + ':</strong> ' + d[1] + '</p><div class="bar-track" role="img" aria-label="' + d[0] + ' busyness ' + lvl + ' of 3"><div class="bar-fill" style="width:' + Math.round(lvl/3*100) + '%"></div></div></div>';
+      }).join("");
+      body.appendChild(dayBars);
       var menuH=document.createElement("h3"); menuH.textContent="Menu preview"; body.appendChild(menuH);
-      var ul=document.createElement("ul");
+      var menuNote=document.createElement("p"); menuNote.className="ps-muted"; menuNote.textContent=p.menuNote; body.appendChild(menuNote);
+      var cards=document.createElement("div"); cards.className="menu-cards";
       p.menu.forEach(function(item){
-        var li=document.createElement("li"); li.textContent=item.n+" — "+item.p+" ";
+        var card=document.createElement("article"); card.className="menu-card";
+        var nm=document.createElement("span"); nm.className="menu-name"; nm.textContent=item.n;
+        var pr=document.createElement("span"); pr.className="menu-price"; pr.textContent=item.p;
         var add=document.createElement("button"); add.type="button"; add.className="ps-btn ps-btn-secondary ps-btn-small"; add.textContent="Add to my order";
         add.addEventListener("click", function(){ prep.push({place:p.name, placeId:p.id, item:item.n, price:item.p, date:todayStr()}); save("peerspect-prep-v1", prep); renderPrep(); add.textContent="Added ✓"; setTimeout(function(){ add.textContent="Add to my order"; },1500); });
-        li.appendChild(add); ul.appendChild(li);
+        card.appendChild(nm); card.appendChild(pr); card.appendChild(add); cards.appendChild(card);
       });
-      body.appendChild(ul);
+      body.appendChild(cards);
       var lastVisit = null;
       for(var vi=visits.length-1; vi>=0; vi--){ if(visits[vi].placeId===p.id){ lastVisit=visits[vi]; break; } }
       var lastOrdered = prep.filter(function(it){ return it.placeId===p.id || it.place===p.name; });
