@@ -88,6 +88,7 @@ button, input, select { min-height: 44px; }
 
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 44px; padding: 0.7rem 1.25rem; border-radius: 999px; border: 1px solid #1e293b; font-family: "Atkinson Hyperlegible", sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; background: #fff; color: #1e293b; }
 .btn-primary { background: #0f766e; border-color: #0f766e; color: #fff; }
+.btn svg { width: 1.35rem; height: 1.35rem; flex-shrink: 0; }
 .btn-primary:hover { background: #115e59; border-color: #115e59; }
 .btn-secondary { background: transparent; color: #1e293b; }
 .btn-secondary:hover { background: #e6efec; border-color: #0f766e; }
