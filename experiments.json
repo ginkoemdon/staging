@@ -10,8 +10,8 @@
     {
       "name": "jungle",
       "branch": "experiment/jungle",
-      "description": "Tropical jungle pixel scene in the hero",
-      "upstream_sha": "ef84f3d12365446d2e9f8863a1a81922a5d483de",
+      "description": "Tropical jungle hero",
+      "upstream_sha": "a1bc64df0f90f5f45888198255677966e35c526e",
       "staged": "2026-11-24"
     }
   ],
