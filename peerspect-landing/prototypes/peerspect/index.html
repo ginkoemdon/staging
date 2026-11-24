@@ -313,6 +313,13 @@
     .cart-qty-btn { min-width:44px; min-height:44px; border-radius:10px; border:1px solid var(--line); background:var(--card); color:var(--ink); font-size:1.1rem; font-weight:700; }
     .cart-qty { min-width:2.5em; text-align:center; font-weight:700; }
     .cart-line-total { font-weight:700; color:var(--teal-dark); }
+    /* Order prep list grouped by place, Nov 24 2026: one
+       section per place, headed with the place name once, so
+       the place is never repeated on every item line. */
+    .cart-group { background:var(--soft); border:1px solid var(--line); border-radius:16px; padding:12px; margin:0 0 12px; }
+    .cart-group-h { margin:0 0 8px; font-size:1.05rem; }
+    .cart-group-sub { margin:8px 0 0; font-weight:700; color:var(--teal-dark); text-align:right; }
+    .cart-group .ps-btn { margin-top:8px; }
     .cart-remove { min-height:44px; border:1px solid var(--line); background:transparent; color:var(--muted); border-radius:10px; padding:0 12px; }
     .cart-money { display:grid; grid-template-columns:1fr auto; gap:6px 12px; margin:12px 0 0; }
     .cart-money dt { color:var(--muted); }
@@ -1609,7 +1616,7 @@
        lighting:"Dim, ambient — good contrast at tables", sound:"Soft music, no TV", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, espresso machine, occasional"], crowding:"Usually calm, busier at 10am",
        access:"Step-free entry, accessible restroom, gender-neutral restroom", menuNote:"Physical menu at the counter, plus a preview online. Large print on request.",
        confirmed:42, day:[["Morning","Calm, bright at the window"],["Midday","Calm, dim and warm"],["Evening","Quiet, soft lighting"]], dayCounts:[12,18,12],
-       menu:[{n:"Oat latte",p:"$5.50"},{n:"Flat white",p:"$5.00"},{n:"Herbal tea",p:"$4.50"},{n:"Sparkling water",p:"$3.00"},{n:"Croissant, butter",p:"$4.00"},{n:"Banana bread",p:"$4.50"},{n:"Avocado toast",p:"$11.00"},{n:"Soup of the day",p:"$9.00"}],
+       menu:[{n:"Oat latte",p:"$5.50",k:"drink"},{n:"Flat white",p:"$5.00",k:"drink"},{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Sparkling water",p:"$3.00",k:"drink"},{n:"Croissant, butter",p:"$4.00",k:"food"},{n:"Banana bread",p:"$4.50",k:"food"},{n:"Avocado toast",p:"$11.00",k:"food"},{n:"Soup of the day",p:"$9.00",k:"food"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
@@ -1622,7 +1629,7 @@
        lighting:"Bright, big overhead light", sound:"Music and chatter, TV on in the corner", soundLevel:"Loud", soundSources:["Music, loud","Talking, loud","TV, on in the corner"], crowding:"Busy at lunch, lively",
        access:"Step up at the door, no gender-neutral restroom listed", menuNote:"QR-code menu only, preview online. Ask staff for a printed copy.",
        confirmed:27, day:[["Morning","Bright, lively"],["Midday","Busy, loud"],["Evening","Lively, warm light"]], dayCounts:[7,12,8],
-       menu:[{n:"Diner breakfast",p:"$12.00"},{n:"Coffee, bottomless",p:"$3.50"},{n:"Orange juice",p:"$4.50"},{n:"Grilled cheese",p:"$10.00"},{n:"Poutine",p:"$11.00"},{n:"Club sandwich",p:"$13.00"},{n:"Milkshake",p:"$7.50"},{n:"Pie of the day",p:"$6.50"}],
+       menu:[{n:"Diner breakfast",p:"$12.00",k:"food"},{n:"Coffee, bottomless",p:"$3.50",k:"drink"},{n:"Orange juice",p:"$4.50",k:"drink"},{n:"Grilled cheese",p:"$10.00",k:"food"},{n:"Poutine",p:"$11.00",k:"food"},{n:"Club sandwich",p:"$13.00",k:"food"},{n:"Milkshake",p:"$7.50",k:"drink"},{n:"Pie of the day",p:"$6.50",k:"food"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines","TV"]},
@@ -1635,7 +1642,7 @@
        lighting:"Ambient, dim corners, bright reading lamps", sound:"Quiet, occasional soft music", soundLevel:"Quiet", soundSources:["Music, soft, occasional","Talking, quiet","Machines, none noted"], crowding:"Usually calm",
        access:"Step-free entry, comfy seating, staff happy to help", menuNote:"Physical menu, preview online. Tell staff your access needs and they will help.",
        confirmed:38, day:[["Morning","Calm, good for working"],["Midday","Calm, a little busier"],["Evening","Quiet, bookish"]], dayCounts:[10,16,12],
-       menu:[{n:"Herbal tea",p:"$4.50"},{n:"Drip coffee",p:"$3.50"},{n:"Hot chocolate",p:"$5.00"},{n:"Lemonade",p:"$4.50"},{n:"Toast with jam",p:"$5.00"},{n:"Veggie sandwich",p:"$10.50"},{n:"Lentil soup",p:"$8.50"},{n:"Scone",p:"$4.00"}],
+       menu:[{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Drip coffee",p:"$3.50",k:"drink"},{n:"Hot chocolate",p:"$5.00",k:"drink"},{n:"Lemonade",p:"$4.50",k:"drink"},{n:"Toast with jam",p:"$5.00",k:"food"},{n:"Veggie sandwich",p:"$10.50",k:"food"},{n:"Lentil soup",p:"$8.50",k:"food"},{n:"Scone",p:"$4.00",k:"food"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
@@ -1648,7 +1655,7 @@
        lighting:"Bright by day, ambient in the evening", sound:"Music, lively at events", soundLevel:"Lively", soundSources:["Music, lively at events","Talking, loud at events","Machines, none noted"], crowding:"Busy on event days, calm on weekdays",
        access:"Step-free entry, accessible restroom", menuNote:"QR menu, preview online, large print on request.",
        confirmed:19, day:[["Morning","Bright, calm"],["Midday","Busy at lunch"],["Evening","Event nights are lively"]], dayCounts:[6,8,5],
-       menu:[{n:"Espresso",p:"$3.50"},{n:"Cappuccino",p:"$5.00"},{n:"Iced tea",p:"$4.50"},{n:"Salad bowl",p:"$11.00"},{n:"Quiche of the day",p:"$10.00"},{n:"Hummus plate",p:"$9.50"},{n:"Cake of the day",p:"$6.00"},{n:"Fruit cup",p:"$5.50"}],
+       menu:[{n:"Espresso",p:"$3.50",k:"drink"},{n:"Cappuccino",p:"$5.00",k:"drink"},{n:"Iced tea",p:"$4.50",k:"drink"},{n:"Salad bowl",p:"$11.00",k:"food"},{n:"Quiche of the day",p:"$10.00",k:"food"},{n:"Hummus plate",p:"$9.50",k:"food"},{n:"Cake of the day",p:"$6.00",k:"food"},{n:"Fruit cup",p:"$5.50",k:"food"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
@@ -1672,11 +1679,27 @@
     var tipRate = load("peerspect-tip-v1", 0);
     if([0, 0.10, 0.15, 0.20].indexOf(tipRate)<0) tipRate = 0;
     var orderSummaryRefresh = null;
+    /* Note chips by kind, Nov 24 2026: drink chips (milk,
+       sweetener, extra shot, decaf) only make sense on drinks,
+       so food gets food chips instead. The kind comes from the
+       menu data (k:"drink"/"food"); the keyword fallback covers
+       items saved before the kind existed, and any future item
+       without a kind. */
+    var DRINK_CHIPS=["oat milk","almond milk","soy milk","no sweetener","extra shot","decaf"];
+    var FOOD_CHIPS=["No nuts","Gluten-free","Extra sauce","No onions"];
+    var DRINK_WORDS=["latte","coffee","tea","espresso","cappuccino","flat white","chai","juice","milkshake","lemonade","water","hot chocolate","iced tea","mocha","matcha","smoothie","soda","cola"];
+    function kindFromName(name){ var n=String(name||"").toLowerCase(); for(var i=0;i<DRINK_WORDS.length;i++){ if(n.indexOf(DRINK_WORDS[i])>=0) return "drink"; } return "food"; }
+    function menuItemKind(placeId, itemName){
+      var p=null; PLACES.forEach(function(x){ if(x.id===placeId) p=x; });
+      if(p){ var m=null; p.menu.forEach(function(it){ if(it.n===itemName) m=it; }); if(m) return m.k || kindFromName(m.n); }
+      return kindFromName(itemName);
+    }
+    function noteChipsFor(kind){ return kind==="drink" ? DRINK_CHIPS : FOOD_CHIPS; }
     function groupPrep(items){
       var byKey = {}, out = [];
       items.forEach(function(it){
         var k = (it.placeId||it.place) + "|" + it.item + "|" + (it.note||"");
-        if(!byKey[k]){ byKey[k] = {item:it.item, price:it.price, place:it.place, placeId:it.placeId, note:it.note||"", qty:0}; out.push(byKey[k]); }
+        if(!byKey[k]){ byKey[k] = {item:it.item, price:it.price, place:it.place, placeId:it.placeId, note:it.note||"", qty:0, kind:it.k || menuItemKind(it.placeId, it.item)}; out.push(byKey[k]); }
         byKey[k].qty++;
       });
       return out;
@@ -1768,11 +1791,25 @@
         container.appendChild(empty);
         return;
       }
-      var list=document.createElement("ul"); list.className="cart-lines";
+      /* Grouped by place, Nov 24 2026: one section per place,
+         headed with the place name once, items underneath, no
+         place name on the item lines. Each section has its own
+         subtotal; the overall Subtotal/Tax/Tip/Total below is
+         for the whole outing. */
+      var placeGroups=[];
       grouped.forEach(function(g){
+        var pg=null; placeGroups.forEach(function(x){ if(x.placeId===g.placeId) pg=x; });
+        if(!pg){ pg={place:g.place, placeId:g.placeId, lines:[]}; placeGroups.push(pg); }
+        pg.lines.push(g);
+      });
+      placeGroups.forEach(function(pg){
+        var sec=document.createElement("section"); sec.className="cart-group"; sec.setAttribute("aria-label","Order for "+pg.place);
+        var gh=document.createElement("h4"); gh.className="cart-group-h"; gh.textContent=pg.place; sec.appendChild(gh);
+        var list=document.createElement("ul"); list.className="cart-lines";
+        pg.lines.forEach(function(g){
         var li=document.createElement("li"); li.className="cart-line";
         var name=document.createElement("span"); name.className="cart-name";
-        name.textContent = g.item + (opts.showPlace ? " (" + g.place + ")" : "");
+        name.textContent = g.item;
         li.appendChild(name);
         var stepper=document.createElement("span"); stepper.className="cart-stepper";
         var minus=document.createElement("button"); minus.type="button"; minus.className="cart-qty-btn"; minus.textContent="−"; minus.setAttribute("aria-label","One fewer " + g.item);
@@ -1804,10 +1841,10 @@
         var lab=document.createElement("label"); lab.textContent="Order note for " + g.item + " (what to ask for)";
         var noteInput=document.createElement("input"); noteInput.type="text"; noteInput.value=g.note||"";
         noteInput.setAttribute("aria-label","Order note for " + g.item);
-        noteInput.placeholder="e.g. oat milk, no sweetener";
+        noteInput.placeholder = g.kind==="drink" ? "e.g. oat milk, no sweetener" : "e.g. no nuts, extra sauce";
         lab.appendChild(noteInput); editor.appendChild(lab);
         var chips=document.createElement("div"); chips.className="note-chips";
-        ["oat milk","almond milk","soy milk","no sweetener","extra shot","decaf"].forEach(function(chip){
+        noteChipsFor(g.kind).forEach(function(chip){
           var cb=document.createElement("button"); cb.type="button"; cb.className="tip-btn"; cb.textContent=chip;
           cb.addEventListener("click", function(){
             var cur=noteInput.value.trim();
@@ -1832,8 +1869,17 @@
         noteWrap.appendChild(noteBtn); noteWrap.appendChild(editor);
         li.appendChild(noteWrap);
         list.appendChild(li);
+        });
+        sec.appendChild(list);
+        var pgSub=0; pg.lines.forEach(function(g){ pgSub+=priceNum(g.price)*g.qty; });
+        var sub=document.createElement("p"); sub.className="cart-group-sub"; sub.textContent="Subtotal for "+pg.place+": "+money(pgSub); sec.appendChild(sub);
+        if(opts.backToMenu){
+          var bb=document.createElement("button"); bb.type="button"; bb.className="ps-btn ps-btn-secondary"; bb.style.minHeight="44px"; bb.textContent="Add more from the menu";
+          bb.addEventListener("click", function(){ showPlace(pg.placeId); var menu=document.querySelector('[aria-label="Menu preview"]'); if(menu) menu.scrollIntoView({block:"start"}); });
+          sec.appendChild(bb);
+        }
+        container.appendChild(sec);
       });
-      container.appendChild(list);
       var t = cartTotals(items);
       var moneyBox=document.createElement("dl"); moneyBox.className="cart-money";
       function moneyRow(label, value, total){
@@ -2354,7 +2400,7 @@
         var pr=document.createElement("span"); pr.className="menu-price"; pr.textContent=item.p;
         var add=document.createElement("button"); add.type="button"; add.className="ps-btn ps-btn-secondary ps-btn-small"; add.textContent="Add to my order";
         add.addEventListener("click", function(){
-          prep.push({place:p.name, placeId:p.id, item:item.n, price:item.p, date:todayStr()});
+          prep.push({place:p.name, placeId:p.id, item:item.n, price:item.p, date:todayStr(), k:item.k});
           save("peerspect-prep-v1", prep); renderPrep();
           card.classList.add("is-added"); add.textContent="Added ✓";
           setTimeout(function(){ add.textContent="Add to my order"; },1500);
@@ -2458,24 +2504,7 @@
     });
     function renderPrep(){
       var box=$("prep-list");
-      renderCartInto(box, prep, {showPlace:true, emptyText:"Nothing yet. Open a place and add a menu item."});
-      /* Back to menu, Nov 24 2026: one place in the order goes
-         back to that place's Menu preview; more than one place,
-         or none yet, goes to Today to pick a place. Order,
-         budget, tip and notes are all kept, they live in
-         localStorage and are not touched by navigating. */
-      var backBtn=document.createElement("button"); backBtn.type="button"; backBtn.className="ps-btn"; backBtn.style.minHeight="44px"; backBtn.textContent="Add more from the menu";
-      backBtn.addEventListener("click", function(){
-        var placeIds=[]; prep.forEach(function(it){ if(it.placeId && placeIds.indexOf(it.placeId)<0) placeIds.push(it.placeId); });
-        if(placeIds.length===1){
-          showPlace(placeIds[0]);
-          var menu=document.querySelector('[aria-label="Menu preview"]');
-          if(menu) menu.scrollIntoView({block:"start"});
-        } else {
-          showScreen("discover");
-        }
-      });
-      box.appendChild(backBtn);
+      renderCartInto(box, prep, {backToMenu:true, emptyText:"Nothing yet. Open a place and add a menu item."});
       var bl=$("bookmark-list"); bl.innerHTML="";
       if(!bookmarks.size) bl.innerHTML="<li class='ps-muted'>No places bookmarked yet.</li>";
       Array.from(bookmarks).forEach(function(id){ var p=PLACES.find(function(x){ return x.id===id; }); if(p){ var li=document.createElement("li"); li.textContent=p.name+" — "+p.area; bl.appendChild(li); } });
@@ -2766,8 +2795,30 @@
             rateRow.appendChild(rb);
           });
           detail.appendChild(rateRow);
+          /* Order note, Nov 24 2026: editable here too, with the
+             same kind-aware quick chips as the Order prep list
+             (drink chips on drinks, food chips on food). The
+             edited note is saved with the visit and back into
+             the prep list, so the two stay in sync. */
+          var gKind = menuItemKind(p.id, g.item);
+          var noteLab=document.createElement("label"); noteLab.textContent="Order note (what you asked for)";
+          var noteIn=document.createElement("input"); noteIn.type="text"; noteIn.value=g.note||"";
+          noteIn.setAttribute("aria-label","Order note for " + g.item);
+          noteIn.placeholder = gKind==="drink" ? "e.g. oat milk, no sweetener" : "e.g. no nuts, extra sauce";
+          noteLab.appendChild(noteIn); detail.appendChild(noteLab);
+          var noteChips=document.createElement("div"); noteChips.className="note-chips";
+          noteChipsFor(gKind).forEach(function(chip){
+            var cb=document.createElement("button"); cb.type="button"; cb.className="tip-btn"; cb.textContent=chip;
+            cb.addEventListener("click", function(){
+              var cur=noteIn.value.trim();
+              noteIn.value = cur ? cur.replace(/,\s*$/,"") + ", " + chip : chip;
+              noteIn.focus();
+            });
+            noteChips.appendChild(cb);
+          });
+          detail.appendChild(noteChips);
           row.appendChild(detail);
-          rows.push({kind:"prepped", row:row, ni:ni, g:g});
+          rows.push({kind:"prepped", row:row, ni:ni, g:g, noteInput:noteIn});
           box.appendChild(row);
         });
       }
@@ -2810,11 +2861,20 @@
         rows.forEach(function(r){
           if(r.kind==="prepped"){
             if(r.row.dataset.decision!=="yes") return;
-            items.push({item:r.g.item, qty:r.g.qty, price:r.g.price, note:r.g.note||"", gotNote:r.ni.value.trim(), rating:r.row.dataset.rating||null});
+            items.push({item:r.g.item, qty:r.g.qty, price:r.g.price, note:r.noteInput ? r.noteInput.value.trim() : (r.g.note||""), gotNote:r.ni.value.trim(), rating:r.row.dataset.rating||null});
           } else if(r.cb.checked){
             items.push({item:r.item.n, qty:1, price:r.item.p, note:"", gotNote:r.ni.value.trim(), rating:r.row.dataset.rating||null});
           }
         });
+        /* Keep the prep list in sync with any order note edited
+           here, matching the original note like the cart does. */
+        rows.forEach(function(r){
+          if(r.kind==="prepped" && r.row.dataset.decision==="yes" && r.noteInput){
+            var nv=r.noteInput.value.trim();
+            prep.forEach(function(it){ if(it.item===r.g.item && it.placeId===p.id && (it.note||"")===(r.g.note||"")){ if(nv) it.note=nv; else delete it.note; } });
+          }
+        });
+        save("peerspect-prep-v1", prep);
         checkin.got = items; checkin.gotDone = true; renderCheckin();
       });
       box.appendChild(saveBtn);
