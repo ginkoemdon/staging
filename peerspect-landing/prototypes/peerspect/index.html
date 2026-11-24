@@ -471,15 +471,20 @@
        Now 20px above and 8px below, matching the 20pt section
        spacing in the rest of the app. */
     .onboard-sub { font-size:.85rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin:20px 16px 8px; }
-    .ps-chip { flex:0 0 auto; border:2px solid var(--muted); background:var(--card); color:var(--ink); border-radius:999px; padding:12px 16px; min-height:44px; }
+    .ps-chip { flex:0 1 auto; min-width:0; max-width:100%; white-space:normal; overflow-wrap:break-word; text-align:left; line-height:1.35; border:2px solid var(--muted); background:var(--card); color:var(--ink); border-radius:999px; padding:12px 16px; min-height:44px; }
     .ps-chip[aria-pressed="true"] { background:var(--teal); border-color:var(--teal); color:#fff; font-weight:700; }
     .ps-card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; }
     /* No ovals for fit emphasis, Nov 23 2026: the pill/oval around
        fit text looked dated. Fit is now plain bold teal text with
        a tick, no background, border or rounded bubble. */
     .ps-match { display:inline-block; background:none; color:var(--teal-dark); padding:0; font-weight:700; font-size:.9rem; }
-    .ps-tags { display:flex; flex-wrap:wrap; gap:8px; list-style:none; padding:0; margin:12px 0; }
-    .ps-tags li { background:var(--tag-bg); border-radius:999px; padding:4px 12px; font-size:.9rem; }
+    .ps-tags { display:flex; flex-wrap:wrap; gap:8px; list-style:none; padding:0; margin:12px 0; min-width:0; width:100%; box-sizing:border-box; }
+    /* Mobile tag wrap, Nov 24 2026: a long tag ran off the right
+       edge on Discover, because a flex item will not shrink
+       below its content width by default. Tags now shrink,
+       cap at the card width, and wrap their text inside the
+       pill instead of overflowing the screen. */
+    .ps-tags li, .ps-tags span[role="listitem"] { background:var(--tag-bg); border-radius:999px; padding:4px 12px; font-size:.9rem; flex:0 1 auto; min-width:0; max-width:100%; white-space:normal; overflow-wrap:break-word; text-align:left; line-height:1.35; box-sizing:border-box; }
     .ps-kv { display:grid; gap:8px; margin:12px 0; }
     .ps-kv div { display:flex; justify-content:space-between; gap:16px; border-bottom:1px solid var(--line-soft); padding:8px 0; }
     .ps-kv dt { font-weight:700; } .ps-kv dd { margin:0; text-align:right; }
@@ -551,12 +556,19 @@
     .ps-answer { display:block; width:100%; text-align:left; background:var(--card); border:2px solid var(--teal); color:var(--teal-dark); border-radius:12px; padding:16px; margin:8px 0; font-weight:700; min-height:52px; }
     .ps-answer:hover { background:var(--soft); }
     .ps-panel { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; margin-bottom:20px; }
-    .dots { display:flex; gap:8px; justify-content:center; padding:8px 0; }
-    /* The button is a 44px touch target; the dot itself is drawn
-       small inside it, so the carousel stays tappable on phone. */
-    .dots button { width:44px; height:44px; min-height:44px; border:0; background:none; padding:0; display:grid; place-items:center; }
-    .dots button::after { content:""; width:10px; height:10px; border-radius:50%; border:2px solid var(--teal); background:var(--card); }
-    .dots button[aria-current="true"]::after { background:var(--teal); }
+    /* Pagination dots, Nov 24 2026: cleaned up on mobile. The old
+       active rule shrank the button itself to 20px wide while it
+       stayed 44px tall, with a 3px border and outline, so the
+       active dot looked like a thin vertical pill. Now every
+       button stays a 44px touch target, every dot is a circle,
+       and the active one is simply filled and a touch bigger,
+       never colour alone, with the "1 of 4" count beside Back /
+       Next underneath. */
+    .dots { display:flex; flex-wrap:wrap; gap:4px; justify-content:center; align-items:center; padding:12px 0 4px; min-width:0; max-width:100%; box-sizing:border-box; }
+    .dots button { width:44px; height:44px; min-height:44px; min-width:44px; border:0; background:none; padding:0; display:grid; place-items:center; cursor:pointer; }
+    .dots button::after { content:""; width:10px; height:10px; border-radius:50%; border:2px solid var(--teal); background:var(--card); box-sizing:border-box; }
+    .dots button[aria-current="true"]::after { background:var(--teal); width:12px; height:12px; }
+    .dots button:focus-visible { outline:3px solid var(--focus); outline-offset:2px; border-radius:8px; }
     .step { display:flex; gap:12px; align-items:center; justify-content:space-between; }
     .step .ps-btn { flex:0 0 auto; }
     [hidden] { display:none !important; }
@@ -635,11 +647,20 @@
     .map-pin.align { background:#14665a; outline:3px solid #f2c14e; }
     .map-pin.here { background:#f2c14e; color:#372c1f; border-color:#fff; border-radius:12px; font-size:.85rem; max-width:200px; }
     .map-pin.here .pin-name { font-weight:800; }
+    /* "You are here" pin, Nov 24 2026: it sat at 10% / 10% with
+       translate(-50%,-100%), so on a phone its left half and
+       its top hung past the map edge and were clipped by the
+       map's overflow:hidden, and Ginko could not see it at all.
+       The here pin now sits with its top-left corner at its
+       point instead of centred above it, so it grows right
+       and down, inside the map. Place pins keep the centred
+       above-point position, they sit further in. */
+    .map-pin.here { transform:none; }
     /* Pins at phone width, Nov 24 2026: smaller text and a
        narrower cap, so neighbouring pins do not overlap. */
     @media (max-width:480px) {
-      .map-pin { max-width:120px; font-size:.72rem; padding:4px 8px; }
-      .map-pin.here { max-width:150px; font-size:.78rem; }
+      .map-pin { max-width:110px; font-size:.72rem; padding:4px 8px; }
+      .map-pin.here { max-width:140px; font-size:.78rem; }
     }
     /* Map legend, Nov 23 2026: what each pin means, in words. */
     .map-legend { list-style:none; padding:0; margin:12px 0; display:grid; gap:8px; font-size:.9rem; }
@@ -739,7 +760,7 @@
        tick + bold + 3px border/outline (line 714). Nov 24 2026:
        the small group-colour dots were removed too, Ginko said they
        did not help. Tags and chips are plain neutral pills now. */
-    #view-app .ps-chip { display:inline-flex; align-items:center; gap:6px; background:var(--tag-bg); border:1px solid var(--line); color:var(--ink); border-radius:999px; padding:11px 14px; min-height:44px; font-size:.9rem; font-weight:500; transition:transform .12s ease, background .15s ease; }
+    #view-app .ps-chip { display:inline-flex; align-items:center; gap:6px; background:var(--tag-bg); border:1px solid var(--line); color:var(--ink); border-radius:999px; padding:11px 14px; min-height:44px; font-size:.9rem; font-weight:500; transition:transform .12s ease, background .15s ease; flex:0 1 auto; min-width:0; max-width:100%; white-space:normal; overflow-wrap:break-word; text-align:left; line-height:1.35; }
     #view-app .ps-chip:active { transform:scale(.97); }
     #view-app .ps-card, #view-app .ps-panel { border-radius:20px; padding:16px; border:1px solid var(--line); box-shadow:0 1px 3px rgba(26,43,38,.08); }
     #view-app .ps-answer { border-radius:14px; padding:14px 16px; min-height:48px; border-width:1.5px; }
@@ -754,8 +775,8 @@
     #view-app .app-nav .ico { font-size:1.25rem; }
     #view-app .screen { animation:ps-screen-in .18s ease; }
     @keyframes ps-screen-in { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
-    #view-app .dots button::after { width:8px; height:8px; border-width:1.5px; }
-    #view-app .dots button[aria-current="true"]::after { width:20px; border-radius:999px; }
+    #view-app .dots button::after { width:10px; height:10px; border-width:2px; }
+    #view-app .dots button[aria-current="true"]::after { width:12px; height:12px; border-radius:50%; background:var(--teal); }
     #view-app .step { gap:8px; }
     #view-app .step .ps-btn { background:none; border:0; box-shadow:none; text-decoration:underline; padding:10px 8px; min-height:44px; width:auto; flex:0 0 auto; }
     #view-app .step .ps-btn-secondary { background:none; }
@@ -829,7 +850,7 @@
        "Not matched here" tags. Colours and text unchanged. */
     .align-card ul.ps-tags, #view-app .align-card ul.ps-tags { display:flex; flex-wrap:wrap; justify-content:flex-start; gap:8px; }
     .align-card ul.ps-tags li, .align-card ul.ps-tags span[role="listitem"],
-    #view-app .align-card ul.ps-tags li, #view-app .align-card ul.ps-tags span[role="listitem"] { width:auto; flex:0 0 auto; display:inline-flex; align-items:center; }
+    #view-app .align-card ul.ps-tags li, #view-app .align-card ul.ps-tags span[role="listitem"] { width:auto; flex:0 1 auto; min-width:0; max-width:100%; display:inline-flex; align-items:center; white-space:normal; overflow-wrap:break-word; text-align:left; line-height:1.35; }
     #view-app .align-line { display:block; margin-top:.5rem; font-weight:600; color:var(--teal-dark); }
     #view-app .align-line::before { content:"\2713  "; font-weight:700; }
     /* Responsive web app, Nov 23 2026: the prototype adapts to
@@ -929,7 +950,10 @@
     #view-app .app-nav button[aria-current="page"] { border:0; outline:0; text-decoration:none; font-weight:700; }
     #view-app .app-nav button[aria-current="page"] .nav-label { text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:2px; }
     #view-app .app-nav .ico { text-decoration:none; }
-    #view-app .dots button[aria-current="true"] { width:20px; border-radius:999px; border-width:3px; outline:2px solid var(--ink); outline-offset:1px; }
+    /* Removed Nov 24 2026: this rule shrank the active dot button
+       to 20px wide, which made it look like a thin vertical pill
+       on mobile. Active is now just a filled, slightly bigger
+       circle, set in the base .dots rules above. */
     #view-app .rate-btn[aria-pressed="true"] { border-width:3px; outline:2px solid var(--ink); outline-offset:1px; }
     #view-app .rate-btn[aria-pressed="true"]::before { content:"\2713  "; }
     #view-app .ps-answer[aria-pressed="true"], #view-app .ps-answer[aria-checked="true"] { border-width:3px; outline:2px solid var(--ink); outline-offset:1px; }
@@ -2417,7 +2441,7 @@
       wrap.querySelectorAll(".map-pin").forEach(function(el){ el.remove(); });
       var here = document.createElement("span"); here.className="map-pin here";
       here.innerHTML = '<span class="pin-name">★ You are here</span><span class="pin-score">Jarry Park</span>';
-      here.style.left="10%"; here.style.top="10%"; here.title="Sample start point: Jarry Park, Villeray. Distances are sample distances from here.";
+      here.style.left="12%"; here.style.top="14%"; here.title="Sample start point: Jarry Park, Villeray. Distances are sample distances from here.";
       wrap.appendChild(here);
       scored.forEach(function(s, i){
         var p = s.place, align = alignmentFor(p);
