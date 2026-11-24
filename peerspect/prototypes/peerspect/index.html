@@ -227,7 +227,7 @@
     #view-app .app-wrap { padding-bottom:96px; }
     #view-app:fullscreen .app-wrap { padding-bottom:96px; }
     .app-nav button { flex:1; border:0; background:none; color:var(--muted); padding:.55rem .2rem .6rem; font-size:.82rem; font-weight:700; min-height:56px; }
-    .app-nav button[aria-current="page"] { color:var(--teal); box-shadow:inset 0 3px 0 var(--teal); background:var(--soft); }
+    .app-nav button[aria-current="page"] { color:var(--teal); box-shadow:inset 0 4px 0 var(--teal); background:var(--soft); }
     .app-nav .ico { display:block; font-size:1.15rem; line-height:1.1; }
     /* Controls */
     .ps-btn { background:var(--teal); color:#fff; border:2px solid var(--teal); border-radius:999px; padding:12px 20px; font-weight:700; min-height:48px; }
@@ -236,8 +236,8 @@
     @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .ps-btn, html:not([data-theme="light"]) .ps-chip[aria-pressed="true"] { background:#14665a; border-color:#14665a; color:#fff; } }
     html[data-theme="dark"] .ps-btn-secondary { border-color:#8ecdc0; color:var(--ink); }
     @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .ps-btn-secondary { border-color:#8ecdc0; color:var(--ink); } }
-    html[data-theme="dark"] .app-nav button[aria-current="page"] { color:#8ecdc0; box-shadow:inset 0 3px 0 #8ecdc0; }
-    @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .app-nav button[aria-current="page"] { color:#8ecdc0; box-shadow:inset 0 3px 0 #8ecdc0; } }
+    html[data-theme="dark"] .app-nav button[aria-current="page"] { color:#8ecdc0; box-shadow:inset 0 4px 0 #8ecdc0; }
+    @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .app-nav button[aria-current="page"] { color:#8ecdc0; box-shadow:inset 0 4px 0 #8ecdc0; } }
     .theme-toggle { background:var(--card); color:var(--teal); border:2px solid var(--teal); border-radius:999px; padding:8px 12px; min-height:44px; font-weight:700; font-size:.9rem; }
     .ps-btn-small { padding:.45rem .85rem; min-height:44px; font-size:.95rem; }
     .ps-note { background:var(--soft); border-radius:12px; padding:16px 20px; font-size:1rem; }
@@ -344,7 +344,7 @@
     #view-app .view-toggle button { border-radius:9px; min-height:40px; }
     #view-app .app-nav { border-top:1px solid var(--line); margin-top:0; }
     #view-app .app-nav button { min-height:60px; font-size:.72rem; padding:.5rem .2rem; }
-    #view-app .app-nav button[aria-current="page"] { box-shadow:none; background:var(--soft); border-radius:12px; margin:4px 2px; min-height:52px; }
+    #view-app .app-nav button[aria-current="page"] { box-shadow:inset 0 4px 0 var(--teal); background:var(--soft); border-radius:0; margin:0; min-height:52px; }
     #view-app .app-nav .ico { font-size:1.25rem; }
     #view-app .screen { animation:ps-screen-in .18s ease; }
     @keyframes ps-screen-in { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
@@ -379,7 +379,10 @@
     #view-app .onboard-group[data-group="access"] .ps-chip[aria-pressed="true"] { background:#2f5d3e; border-color:#2f5d3e; color:#fff; }
     #view-app .onboard-group[data-group="environment"] .ps-chip[aria-pressed="true"] { background:#f2c14e; border-color:#f2c14e; color:#372c1f; }
     #view-app .onboard-group[data-group="context"] .ps-chip[aria-pressed="true"] { background:#8a4a08; border-color:#8a4a08; color:#fff; }
-    #view-app .app-nav button[aria-current="page"] { box-shadow:inset 0 3px 0 #f2c14e; }
+    /* Nov 23 2026: active tab is a 4px teal top bar, NOT honey.
+       Honey #f2c14e on warm white is 1.62:1, below the 3:1
+       non-text contrast bar, and colour alone is not enough. */
+    #view-app .app-nav button[aria-current="page"] { box-shadow:inset 0 4px 0 var(--teal); }
     #view-app .ps-bar span { background:linear-gradient(90deg, #14665a, #2f5d3e, #f2c14e); }
     #view-app .map-wrap { background:linear-gradient(180deg, #eef4ea, #e2efe8); }
     #view-app .landing .landing-list li:nth-child(2) { border-left:6px solid #f2c14e; }
@@ -486,7 +489,13 @@
     #view-app .ps-chip[aria-pressed="true"] { border-width:3px; outline:2px solid var(--ink); outline-offset:1px; }
     #view-app .ps-chip[aria-pressed="true"]::before { content:"\2713  "; font-weight:700; }
     #view-app .view-toggle button[aria-pressed="true"] { border:2px solid var(--teal); outline:2px solid var(--ink); outline-offset:-2px; text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:2px; }
-    #view-app .app-nav button[aria-current="page"] { border:2px solid var(--teal); outline:2px solid var(--ink); outline-offset:-2px; text-decoration:underline; text-underline-offset:4px; font-weight:700; }
+    /* Nov 23 2026: no full box around the active tab. The old
+       rule added a border + outline all round the button, so it
+       lined the bottom of the icon too. Active is now: top bar
+       (above) + soft background + underlined bold label. Three
+       cues, none of them a box, and none of them colour alone.
+       Keyboard focus still gets its own outline via :focus-visible. */
+    #view-app .app-nav button[aria-current="page"] { border:0; outline:0; text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:2px; font-weight:700; }
     #view-app .dots button[aria-current="true"] { width:20px; border-radius:999px; border-width:3px; outline:2px solid var(--ink); outline-offset:1px; }
     #view-app .rate-btn[aria-pressed="true"] { border-width:3px; outline:2px solid var(--ink); outline-offset:1px; }
     #view-app .rate-btn[aria-pressed="true"]::before { content:"\2713  "; }
@@ -1130,10 +1139,10 @@
        menu:[{n:"Oat latte",p:"$5.50"},{n:"Croissant, butter",p:"$4.00"},{n:"Soup of the day",p:"$9.00"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
-         {q:"What is the sound right now?", a:["Mostly music","Mostly talking","Mostly machines","A mix of these"]},
-         {q:"Is the music still soft right now?", a:["Yes, still soft","A bit louder now","No, it's loud now"]},
+         {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
+         {q:"Is the music still soft right now?", c:"A peer reported 30 minutes ago: the music was soft.", a:["Yes, still soft","A bit louder now","No, it's loud now"]},
          {q:"Are pronouns being respected today?", a:["Yes","Not today","Not sure"]},
-         {q:"Is it still calm, not crowded?", a:["Yes, still calm","A bit busy","No, it's crowded"]}
+         {q:"Is it still calm, not crowded?", c:"A peer reported 30 minutes ago: it was calm, not crowded.", a:["Yes, still calm","A bit busy","No, it's crowded"]}
        ]},
       {id:"nostalgie", name:"Café Nostalgie", area:"Mile End", type:"Café / diner", distKm:3.2, distLabel:"3.2 km · 12 min by Metro", transport:"Metro Jarry to Laurier, 12 min", mapX:72, mapY:30,
        tags:["seating-comfy","lighting-bright","lighting-big","sound-music","crowding-busy","retro","nostalgic","socialising","service-fast","communication-clear","price-transparent","language-french","language-english","language-italian","language-creole","menu-qr","menu-preview","written-order","diet-vegetarian","order-verbal","order-call","order-click-collect","order-takeout","sensory-no-flash","vision-contrast-tableware","vision-step-edges","vision-high-contrast-signs","hearing-captions","hearing-written-confirm","diet-sugar-free"],
@@ -1143,10 +1152,10 @@
        menu:[{n:"Diner breakfast",p:"$12.00"},{n:"Milkshake",p:"$7.50"},{n:"Grilled cheese",p:"$10.00"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
-         {q:"What is the sound right now?", a:["Mostly music","Mostly talking","TV","A mix of these"]},
-         {q:"Is the music still on right now?", a:["Yes","No","Not sure"]},
+         {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines","TV"]},
+         {q:"Is the music still on right now?", c:"A peer reported 30 minutes ago: the music was on.", a:["Yes","No","Not sure"]},
          {q:"Is it busy right now?", a:["Yes, it's busy","A bit busy","No, it's quiet"]},
-         {q:"Is the TV on right now?", a:["Yes","No","Not sure"]}
+         {q:"Is the TV on right now?", c:"A peer reported 30 minutes ago: the TV was on in the corner.", a:["Yes","No","Not sure"]}
        ]},
       {id:"boheme", name:"Bohemian Books & Brew", area:"Plateau-Mont-Royal", type:"Book café", distKm:2.8, distLabel:"2.8 km · 15 min by bus", transport:"Bus 55, 15 min from Jarry", mapX:65, mapY:62,
        tags:["step-free","seating-comfy","lighting-ambient","lighting-dim","sound-quiet","sound-music","crowding-low","bohemian","artsy","coworking","quiet-chat","service-patient","service-calm","pronoun-respect","queer-friendly","staff-representation","price-transparent","language-french","language-english","language-mandarin","language-arabic","menu-physical","menu-preview","menu-accessible","diet-vegan","diet-gluten-free","diet-vegetarian","diet-halal","diet-cultural","online-meetings","temp-comfortable","clean","order-verbal","order-online","order-ahead","order-takeout","sensory-quiet-nook","sensory-no-flash","sensory-fragrance-free","sensory-no-music","sensory-no-sudden-noise","vision-contrast-tables","vision-even-light","vision-clear-paths","vision-large-print","vision-braille","vision-read-aloud","vision-high-contrast-signs","vision-no-pattern","hearing-face-you","hearing-written-confirm","restroom-sharps","restroom-private","diet-sugar-free","menu-free-water"],
@@ -1156,10 +1165,10 @@
        menu:[{n:"Herbal tea",p:"$4.50"},{n:"Toast with jam",p:"$5.00"},{n:"Lentil soup",p:"$8.50"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
-         {q:"What is the sound right now?", a:["Mostly music","Mostly talking","Mostly machines","A mix of these"]},
-         {q:"Is it still quiet enough to read?", a:["Yes, quiet enough","Mostly","No, too loud"]},
+         {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
+         {q:"Is it still quiet enough to read?", c:"A peer reported 30 minutes ago: it was quiet enough to read.", a:["Yes, quiet enough","Mostly","No, too loud"]},
          {q:"Are pronouns being respected today?", a:["Yes","Not today","Not sure"]},
-         {q:"Is there still a free comfy seat?", a:["Yes","A few left","No, it's full"]}
+         {q:"Is there still a free comfy seat?", c:"A peer reported 30 minutes ago: there were free comfy seats.", a:["Yes","A few left","No, it's full"]}
        ]},
       {id:"jardin", name:"Jardin Café", area:"Outremont", type:"Café / event space", distKm:2.1, distLabel:"2.1 km · 14 min by bus", transport:"Bus 160, 14 min · 20 min walk", mapX:22, mapY:58,
        tags:["step-free","restroom-accessible","lighting-bright","lighting-ambient","sound-music","crowding-busy","nostalgic","socialising","coworking","service-patient","communication-clear","price-transparent","language-french","language-english","language-spanish","language-creole","language-mandarin","menu-qr","menu-preview","menu-accessible","diet-vegan","diet-gluten-free","diet-vegetarian","diet-cultural","outdoor-space","airflow","order-verbal","order-call","order-online","order-click-collect","order-takeout","sensory-low-hours","sensory-no-flash","sensory-fragrance-free","sensory-no-music","sensory-no-sudden-noise","vision-contrast-tables","vision-even-light","vision-clear-paths","vision-marked-glass","vision-tactile-lines","vision-large-print","vision-braille","vision-read-aloud","language-lsq","lsq-order","hearing-captions","hearing-face-you","restroom-sharps","restroom-private","diet-sugar-free","menu-nutrition","menu-free-water"],
@@ -1169,10 +1178,10 @@
        menu:[{n:"Espresso",p:"$3.50"},{n:"Salad bowl",p:"$11.00"},{n:"Cake of the day",p:"$6.00"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
-         {q:"What is the sound right now?", a:["Mostly music","Mostly talking","Mostly machines","A mix of these"]},
+         {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
          {q:"Is there an event on right now?", a:["Yes","No","Not sure"]},
          {q:"Is it busy right now?", a:["Yes, it's busy","A bit busy","No, it's quiet"]},
-         {q:"Is the music still on?", a:["Yes","No","Not sure"]}
+         {q:"Is the music still on?", c:"A peer reported 30 minutes ago: the music was on.", a:["Yes","No","Not sure"]}
        ]}
     ];
     function load(key, fallback){ try { var v = JSON.parse(localStorage.getItem(key)); return v == null ? fallback : v; } catch(e){ return fallback; } }
@@ -1576,11 +1585,37 @@
       }
       var prog=document.createElement("p"); prog.className="ps-muted"; prog.textContent="Question "+(checkin.step+1)+" of "+p.live.length; box.appendChild(prog);
       var current = p.live[checkin.step];
+      /* Nov 23 2026: "still" questions only make sense with the
+         earlier report in front of you. Show it first, so the
+         user knows what they are confirming, and when. */
+      if(current.c){ var ctx=document.createElement("p"); ctx.className="ps-muted"; ctx.textContent=current.c; box.appendChild(ctx); }
       var q=document.createElement("p"); q.innerHTML="<strong>"+current.q+"</strong>"; box.appendChild(q);
-      current.a.forEach(function(ans){
-        var b=document.createElement("button"); b.type="button"; b.className="ps-answer"; b.textContent=ans;
-        b.addEventListener("click", function(){ checkin.answers.push({q:current.q, a:ans}); checkin.step+=1; renderCheckin(); }); box.appendChild(b);
-      });
+      if(current.multi){
+        /* Nov 23 2026: sound is multi-select. Music, talking and
+           machines can all be happening at once, so "Mostly …"
+           and "A mix of these" were the wrong framing. Tap all
+           that apply, then Next. */
+        var hint=document.createElement("p"); hint.className="ps-muted"; hint.textContent="Tap all that apply."; box.appendChild(hint);
+        var picked=[];
+        current.a.forEach(function(ans){
+          var b=document.createElement("button"); b.type="button"; b.className="ps-answer"; b.textContent=ans; b.setAttribute("aria-pressed","false");
+          b.addEventListener("click", function(){
+            var i=picked.indexOf(ans);
+            if(i>=0){ picked.splice(i,1); b.setAttribute("aria-pressed","false"); }
+            else { picked.push(ans); b.setAttribute("aria-pressed","true"); }
+            nextBtn.disabled = picked.length===0;
+          });
+          box.appendChild(b);
+        });
+        var nextBtn=document.createElement("button"); nextBtn.type="button"; nextBtn.className="ps-btn"; nextBtn.textContent="Next"; nextBtn.disabled=true;
+        nextBtn.addEventListener("click", function(){ if(!picked.length) return; checkin.answers.push({q:current.q, a:picked.join(", ")}); checkin.step+=1; renderCheckin(); });
+        box.appendChild(nextBtn);
+      } else {
+        current.a.forEach(function(ans){
+          var b=document.createElement("button"); b.type="button"; b.className="ps-answer"; b.textContent=ans;
+          b.addEventListener("click", function(){ checkin.answers.push({q:current.q, a:ans}); checkin.step+=1; renderCheckin(); }); box.appendChild(b);
+        });
+      }
       var row=document.createElement("p");
       var skip=document.createElement("button"); skip.type="button"; skip.className="ps-btn ps-btn-secondary ps-btn-small"; skip.textContent="Skip";
       skip.addEventListener("click", function(){ checkin.step+=1; renderCheckin(); });
