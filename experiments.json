@@ -38,8 +38,8 @@
     {
       "name": "hero-adventure-illustration",
       "branch": "experiment/hero-adventure-illustration",
-      "description": "Mountains-only hero, centred button, case study margins",
-      "upstream_sha": "4a00d565b55b3cf29ccd0eda85fd0325f825be6d",
+      "description": "Add previous portfolio favicons to every page",
+      "upstream_sha": "af67eb65e3be9e75f4bea98fab82793e7254e0c7",
       "staged": "2026-11-24"
     }
   ],
