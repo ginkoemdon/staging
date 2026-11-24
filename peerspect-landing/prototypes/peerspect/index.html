@@ -250,11 +250,17 @@
     .detail-kv { display:grid; gap:8px; margin:12px 0; }
     .detail-kv div { display:flex; justify-content:space-between; gap:16px; border-bottom:1px solid var(--line-soft); padding:8px 0; }
     .detail-kv dt { font-weight:700; } .detail-kv dd { margin:0; text-align:right; }
-    .menu-cards { display:grid; gap:12px; margin:12px 0; }
-    .menu-card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; }
-    .menu-card .menu-name { font-weight:700; flex:1 1 120px; min-width:0; }
+    /* Menu preview boxes, smaller, Nov 24 2026: tighter padding
+       and gaps, name and price on one line where they fit, and a
+       grid that sizes to its content instead of stretching tall. */
+    .menu-cards { display:grid; gap:8px; margin:12px 0; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); align-items:start; }
+    .menu-card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 12px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:6px 10px; }
+    .menu-card .menu-name { font-weight:700; flex:1 1 auto; min-width:0; }
     .menu-card .menu-price { color:var(--muted); font-weight:700; white-space:nowrap; }
     .menu-card .ps-btn { flex:0 0 auto; }
+    /* Slimmer "Add to order" button, Nov 24 2026: less side
+       padding, same 44px touch height. */
+    #view-app .menu-card .ps-btn { padding:8px 12px; }
     .peer-visual { background:var(--soft); border:1px solid var(--line); border-radius:16px; padding:16px 20px; margin:12px 0; }
     .peer-visual .peer-num { font-size:1.6rem; font-weight:800; color:var(--teal-dark); line-height:1.2; margin:0; }
     .peer-visual .peer-bar { height:10px; border-radius:999px; background:var(--track); overflow:hidden; margin:8px 0; }
@@ -403,7 +409,9 @@
     .visit-item-rating { display:inline-block; background:var(--soft); border:1px solid var(--line); border-radius:999px; padding:2px 10px; font-weight:700; font-size:.85rem; margin:4px 0 0; }
     .visit-total { font-weight:700; color:var(--teal-dark); border-top:1px solid var(--line-soft); padding-top:10px; }
     .visit-empty { background:var(--card); border:1px dashed var(--line); border-radius:16px; padding:20px; }
-    @media (min-width: 700px) { .menu-cards { grid-template-columns:repeat(3, minmax(0,1fr)); } .menu-card { flex-direction:column; align-items:flex-start; } }
+    /* Menu preview on desktop, Nov 24 2026: the base grid above
+       already sizes the boxes, so no separate wide rule that
+       stretched them tall. */
     .screen-head p { margin:.2rem 0 .4rem; color:var(--muted); font-size:.96rem; }
     .screen-scroll { padding:8px 0 20px; display:flex; flex-direction:column; gap:16px; }
     .screen-foot { padding:16px 0 20px; background:var(--bg); border-top:1px solid var(--line); display:flex; gap:12px; }
@@ -1647,6 +1655,7 @@
           <label for="here-place">Where are you?</label>
           <select class="ps-input" id="here-place"></select>
           <div class="ps-panel" id="live-box" style="margin-top:.8rem;"></div>
+          <div class="ps-panel" id="crosscheck-box" style="margin-top:.8rem;"></div>
         </div>
       </section>
 
@@ -2119,7 +2128,7 @@
          starts the questions for the selected place right away.
          If a check-in is already in progress, keep it, so going
          away and back does not wipe your answers. */
-      if(name === "here" && !checkin){ startCheckin(); }
+      if(name === "here"){ if(!checkin) startCheckin(); renderCrosscheck(); }
     }
     nav.querySelectorAll("button").forEach(function(b){ b.addEventListener("click", function(){ showScreen(b.dataset.screen); }); });
     function finishOnboarding(){ showScreen("discover"); }
@@ -2673,6 +2682,7 @@
       var peerDiv = document.createElement("div"); peerDiv.className="peer-visual";
       var peerNum=document.createElement("p"); peerNum.className="peer-num"; peerNum.textContent=p.confirmed+" peer confirmations"; peerDiv.appendChild(peerNum);
       var peerSub=document.createElement("p"); peerSub.className="ps-muted"; peerSub.style.margin=".25rem 0 0"; peerSub.textContent="Anonymous peer reports for this place, in the last 14 days (sample data)."; peerDiv.appendChild(peerSub);
+      var whyLine=document.createElement("p"); whyLine.className="ps-muted"; whyLine.style.margin=".25rem 0 0"; whyLine.textContent="Places change through the day, so checking what a peer reported keeps it trustworthy for the next person who needs it."; peerDiv.appendChild(whyLine);
       var reportQs=(p.live||[]).filter(function(q){ return q.c; });
       if(reportQs.length){
         var notesUl=document.createElement("ul"); notesUl.className="peer-notes";
@@ -2998,10 +3008,77 @@
       if(!qs.length) return {questions:genericCheckinQuestions(), generic:true};
       return {questions:qs, generic:false};
     }
+    /* Peer cross-check card on I'm here, Nov 24 2026: a second
+       card, separate from the general check-in. It lists the top
+       five most recent peer reports for the place you are at,
+       most recent first, each with its age, and a one-tap
+       "Is this still true?" cross-check. Answering reuses the
+       place-detail counting: it counts as a peer cross-check in
+       the trust data, bumps that report's confirmation count,
+       and marks it "You cross-checked this". The key matches
+       place detail (placeId plus the report's index among that
+       place's reports), so a cross-check in either place shows
+       in the other. */
+    function capFirst(s){ return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+    function crosscheckReports(p){
+      var out = [];
+      (p.live||[]).forEach(function(q){
+        if(!q.c) return;
+        var m = q.c.match(/^A peer reported (.+?): (.+)$/);
+        if(!m) return;
+        var age = m[1], text = m[2].replace(/\.$/,"");
+        var mins = 1440;
+        if(/30 minutes/.test(age)) mins = 30;
+        else if(/an hour/.test(age)) mins = 60;
+        out.push({q:q, key:p.id+"|"+out.length, age:age, text:text, mins:mins});
+      });
+      out.sort(function(a,b){ return a.mins - b.mins; });
+      return out.slice(0,5);
+    }
+    function renderCrosscheck(focusKey){
+      var box=$("crosscheck-box"); if(!box) return; box.innerHTML="";
+      var p = PLACES.find(function(x){ return x.id===hereSelect.value; }) || PLACES[0];
+      var h=document.createElement("h3"); h.textContent="Peer cross-check"; box.appendChild(h);
+      var why=document.createElement("p"); why.className="ps-muted";
+      why.textContent="Places change through the day, so checking what a peer reported keeps it trustworthy for the next person who needs it. Your check is anonymous.";
+      box.appendChild(why);
+      var reports = crosscheckReports(p);
+      if(!reports.length){
+        var none=document.createElement("p"); none.className="ps-muted"; none.textContent="No peer reports to check here yet."; box.appendChild(none); return;
+      }
+      var sub=document.createElement("p"); sub.className="ps-muted"; sub.textContent="Most recent reports at "+p.name+". Tap an answer to cross-check one."; box.appendChild(sub);
+      var ul=document.createElement("ul"); ul.className="peer-notes";
+      reports.forEach(function(r){
+        var li=document.createElement("li");
+        var quote=document.createElement("p"); quote.style.margin="0"; quote.textContent="\u201c"+capFirst(r.text)+"\u201d \u00b7 "+r.age; li.appendChild(quote);
+        function confirmedCount(){ return (r.q.cc||0) + ((crosschecks[r.key]&&crosschecks[r.key].count)||0); }
+        var conf=document.createElement("p"); conf.className="peer-confirmed";
+        var done=!!(crosschecks[r.key]&&crosschecks[r.key].answered);
+        function confText(){ var n=confirmedCount(); return "Confirmed by "+n+" peer"+(n===1?"":"s")+(done?" \u00b7 including your cross-check":""); }
+        conf.textContent=confText(); li.appendChild(conf);
+        var crossed=document.createElement("p"); crossed.className="peer-crossed ps-confirm"; crossed.hidden=!done; crossed.textContent="You cross-checked this"; li.appendChild(crossed);
+        if(!done){
+          var qText=document.createElement("p"); qText.innerHTML="<strong>Is this still true?</strong>"; li.appendChild(qText);
+          var ansRow=document.createElement("div"); ansRow.className="rate-row"; li.appendChild(ansRow);
+          [["yes","Yes, still true"],["no","Not really"],["unsure","Not sure"]].forEach(function(pair){
+            var b=document.createElement("button"); b.type="button"; b.className="rate-btn"; b.textContent=pair[1];
+            b.addEventListener("click", function(){
+              crosschecks[r.key]={answered:true, answer:pair[0], count:((crosschecks[r.key]&&crosschecks[r.key].count)||0)+1, date:todayStr()};
+              save("peerspect-crosschecks-v1", crosschecks);
+              countCrosscheck(r.q); renderTrust(); renderCrosscheck(r.key);
+            });
+            ansRow.appendChild(b);
+          });
+        }
+        if(focusKey && r.key===focusKey && done){ crossed.setAttribute("tabindex","-1"); crossed.focus({preventScroll:true}); }
+        ul.appendChild(li);
+      });
+      box.appendChild(ul);
+    }
     function startCheckin(){
       var p = PLACES.find(function(x){ return x.id===hereSelect.value; }) || PLACES[0];
       var built = buildCheckinQuestions(p);
-      checkin={place:p, step:0, answers:[], questions:built.questions, generic:built.generic}; renderCheckin();
+      checkin={place:p, step:0, answers:[], questions:built.questions, generic:built.generic}; renderCheckin(); renderCrosscheck();
     }
     hereSelect.addEventListener("change", function(){ startCheckin(); });
     function renderCheckinIntro(){
@@ -3497,7 +3574,7 @@
     }, true);
     /* Init: web page view first. */
     showWeb(); showScreen("landing");
-    renderTailored(); renderPlaces(); renderAllFilters(); renderProfiles(); renderPrep(); renderVisits(); renderTrust(); renderBiz(); renderCheckinIntro(); renderOnboardQuick();
+    renderTailored(); renderPlaces(); renderAllFilters(); renderProfiles(); renderPrep(); renderVisits(); renderTrust(); renderBiz(); renderCheckinIntro(); renderOnboardQuick(); renderCrosscheck();
   })();
   </script>
 </body>
