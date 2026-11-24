@@ -38,8 +38,8 @@
     {
       "name": "hero-adventure-illustration",
       "branch": "experiment/hero-adventure-illustration",
-      "description": "Remove Featured work heading",
-      "upstream_sha": "8ee455974a9f0156394966bed69a7f89e130723e",
+      "description": "Centre hero button, more space above hero",
+      "upstream_sha": "4bdaad0c9a47ecf5d97cdab41bbd643b1d3d2e48",
       "staged": "2026-11-24"
     }
   ],

@@ -91,7 +91,7 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
    monitor. Text lines stay capped for readability. */
 .wrap { max-width: 1440px; margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 4rem); }
 @media (min-width: 1200px) {
-  .hero { padding: 7rem 0 4rem; }
+  .hero { padding: 9rem 0 4rem; }
 }
 
 /* Top nav — STYLE copied from Webflow (mindfullydesign.webflow.io),
@@ -308,7 +308,7 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
 .flower-button:hover .button-line-right { width: 20px; }
 
 /* Hero — large Krona One heading, sun highlight, like Webflow's hero */
-.hero { padding: 5rem 0 3rem; }
+.hero { padding: 6.5rem 0 3rem; }
 .hero h1 { font-size: clamp(2rem, 3.6vw, 3.2rem); max-width: 1100px; }
 .hero h1 .seen { color: var(--forest); }
 .hero h1 .heard { color: var(--tangerine-text); }
@@ -327,7 +327,7 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
   font-size: 1.1rem; line-height: 1.5;
   color: var(--muted); max-width: 680px; margin: 0 0 1rem;
 }
-.hero-cta { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1.75rem 0 0; }
+.hero-cta { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; margin: 1.75rem 0 0; }
 .btn {
   display: inline-block; padding: 0.8rem 1.4rem; border-radius: 999px;
   font-weight: 600; font-size: 0.95rem; text-decoration: none;
@@ -530,7 +530,7 @@ footer a { color: var(--earth); }
   h1 { font-size: 2rem; }
   .hero h1 { font-size: 1.7rem; }
   h2 { font-size: 1.5rem; }
-  .hero { padding: 3rem 0 2rem; }
+  .hero { padding: 4rem 0 2rem; }
   #featured-work { padding-top: 4rem; padding-bottom: 4rem; }
 }
 
