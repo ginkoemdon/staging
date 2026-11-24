@@ -695,8 +695,8 @@
 
       <section aria-labelledby="cs-tldr">
         <h2 id="cs-tldr">TL;DR</h2>
-        <p class="cs-subtitle">Filter places by how they feel, not by stars, with a peer layer on Google Maps.</p>
-        <div class="cs-tldr"><p>Concept prototype, November 2026. Sample Montreal places only. No live Google data or testing yet.</p></div>
+        <p class="cs-subtitle">Filter establishments and businesses by how they feel, not by stars, before you go.</p>
+        <div class="cs-tldr"><p>Concept prototype, November 2026. Sample Montreal establishments only. No live listing data or testing yet.</p></div>
       </section>
 
       <section aria-labelledby="cs-glance">
@@ -707,15 +707,15 @@
           <li><strong>Team</strong><span>Ginko, with Muse (Wynn, AI collaborator)</span></li>
           <li><strong>Type</strong><span>Mobile-first web app prototype</span></li>
           <li><strong>Status</strong><span>In progress, November 2026</span></li>
-          <li><strong>Tools</strong><span>HTML, CSS, JavaScript, sample data. Google Places API planned, not yet connected.</span></li>
+          <li><strong>Tools</strong><span>HTML, CSS, JavaScript, sample data. Business listings could come from Google Places API, not yet connected.</span></li>
         </ul></div>
       </section>
 
       <section aria-labelledby="cs-context">
         <h2 id="cs-context">Context</h2>
-        <p class="cs-subtitle">A peer layer on Google Maps, so you can tell how a place feels before you go.</p>
+        <p class="cs-subtitle">A peer layer on business listings, so you can tell how an establishment feels before you go.</p>
         <div class="cs-context">
-          <div class="cs-card"><h3>What</h3><p>Experiential filters on Google Maps listings, not reviews.</p></div>
+          <div class="cs-card"><h3>What</h3><p>Experiential filters on establishment and business listings, not reviews.</p></div>
           <div class="cs-card"><h3>Who</h3><p>Disabled and neurodiverse people first. Useful for everyone.</p></div>
           <div class="cs-card"><h3>When</h3><p>Concept and prototype, November 2026.</p></div>
           <div class="cs-card"><h3>How</h3><p>Anonymous peer check-ins, one tap at a time.</p></div>
@@ -724,7 +724,7 @@
 
       <section aria-labelledby="cs-problem">
         <h2 id="cs-problem">Problem</h2>
-        <p class="cs-subtitle">Reviews give stars, not how a place feels, so people cannot tell if it fits today.</p>
+        <p class="cs-subtitle">Reviews give stars, not how an establishment feels, so people cannot tell if it fits today.</p>
         <div class="cs-visual">
           <div class="cs-card"><h3>What stars show</h3><p class="cs-stars" aria-label="Five out of five stars">&#9733;&#9733;&#9733;&#9733;&#9733;</p><p>One number. No light, sound, crowding, or access.</p></div>
           <div class="cs-card"><h3>What people need</h3>
@@ -827,10 +827,10 @@
 
       <section aria-labelledby="cs-outcomes">
         <h2 id="cs-outcomes">Next steps</h2>
-        <p class="cs-subtitle">Test it, connect live Google data, and test trust, while staying anonymous.</p>
+        <p class="cs-subtitle">Test it, connect live listing data, and test trust, while staying anonymous.</p>
         <ul>
           <li>Test onboarding, groups, check-ins, and the business dashboard.</li>
-          <li>Build the live Google Places API connection, with real peer data.</li>
+          <li>Build the live listing connection, with real peer data.</li>
           <li>What I learned: a tidy limit can work against agency, and agency goes hand in hand with customisability.</li>
         </ul>
       </section>
@@ -890,7 +890,7 @@
         <div class="screen-scroll">
           <ul class="ps-tags"><li class="tag-access">Access</li><li class="tag-sensory">Sensory</li><li class="tag-env">Environment</li><li class="tag-context">Context</li></ul>
           <p>Peer reports, anonymous, one question at a time.</p>
-          <p class="ps-muted">Demo: sample Montreal places only.</p>
+          <p class="ps-muted">Demo: sample Montreal establishments only.</p>
         </div>
         <div class="screen-foot">
           <button class="ps-btn" id="enter-app" type="button">Enter</button>
@@ -956,7 +956,7 @@
                 <text x="200" y="278" font-size="11" fill="#8a4a08">Thread connecting peer insights</text>
               </svg>
             </div>
-            <p class="ps-muted">Sample schematic map — not to scale, no live Google Maps. Tap a pin to open that place.</p>
+            <p class="ps-muted">Sample schematic map — not to scale, no live listings. Tap a pin to open that establishment.</p>
             <ul class="compact-list" id="map-distance-list"></ul>
           </div>
           <div id="view-list">
@@ -976,7 +976,7 @@
           </div>
           <details>
             <summary>How the data would work</summary>
-            <p class="ps-muted"><strong>Business listings come from Google, via the Google Places API, kept updated.</strong> Not scraping Google Maps — this prototype has no scraping code and makes no live Google API call. Google would provide name, address, hours, ratings and photos. PEERSPECT's peer layer adds the rest:</p>
+            <p class="ps-muted"><strong>In a live version, business listings would come from a listings source such as the Google Places API, kept updated.</strong> Not scraping. That source would provide name, address, hours, ratings and photos. PEERSPECT's peer layer adds the rest:</p>
             <ul class="ps-muted">
               <li>Lighting</li>
               <li>Sound</li>
@@ -986,7 +986,7 @@
               <li>Pronoun respect</li>
               <li>Menu access</li>
             </ul>
-            <p class="ps-muted">Live connection needs a Google API key, with a server-side step so the key is not shipped in the page.</p>
+            <p class="ps-muted">A live connection needs an API key, with a server-side step so the key is not shipped in the page.</p>
           </details>
         </div>
       </section>
@@ -1079,9 +1079,10 @@
     "use strict";
     var $ = function(id){ return document.getElementById(id); };
     var app = $("peerspect-app"); if(!app) return;
-    /* Sample data — see Discover note: live listings would come from the
-       Google Places API, not scraping. Google gives base facts; the
-       experiential data below is PEERSPECT's peer layer. */
+    /* Sample data — see Discover note: live listings would come from a
+       listings source such as the Google Places API, not scraping. That
+       source gives base facts; the experiential data below is
+       PEERSPECT's peer layer. */
     var FILTER_LABELS = {
       "step-free":"Step-free entry","seating-comfy":"Comfy seating","restroom-accessible":"Accessible restroom","gender-neutral-restroom":"Gender-neutral restroom",
       "lighting-bright":"Bright light","lighting-dim":"Dim light","lighting-ambient":"Ambient lighting","lighting-big":"Big overhead light","sound-quiet":"Quiet sound","sound-music":"Background music","sound-tv":"TV on","crowding-low":"Usually not crowded","crowding-busy":"Usually busy","smell-neutral":"No strong smell",
