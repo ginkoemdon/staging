@@ -341,21 +341,20 @@
     .adventure { text-align:center; padding:8px 0 4px; }
     .adventure .adventure-line { font-size:1.05rem; font-weight:700; color:var(--teal-dark); margin:.4rem 0 .2rem; }
     .adventure p { margin:.2rem 0; }
-    /* Alignment — a place that fits today */
-    /* White-on-white fix, Nov 23 2026: these used hard-coded pale
-       backgrounds, so in dark mode the white text sat on near-white.
-       They now use --soft, pale in light mode, dark teal in dark. */
-    .align-badge { display:inline; background:none; border:0; color:var(--teal-dark); padding:0; font-weight:700; font-size:.95rem; }
-    /* "This fits today" section on the place cards, styled Nov 23 2026:
-       the fit verdict was getting lost as a plain white box with a
-       muted grey summary line. Now it reads as its own section:
-       a teal left bar, a heading with the match count as a pill,
+    /* Alignment — how a place matches today. Nov 23 2026: the
+       "This fits today" wording was removed as redundant; the
+       match is now just "Matches X of Y: ..." (see alignmentFor).
+       On the place cards it reads as its own section: a teal
+       left bar, a heading "Why this matches" with the count,
        matched rows bold in teal with a green dot and a tick,
        unmatched rows muted with a grey dot and a dash (never
-       colour alone), and the verdict as a bold teal summary
-       above a top rule, not a muted footnote. The long fit
-       sentence on the list cards is a plain bold line
-       (.align-line), not a pill, so it never wraps inside a bubble. */
+       colour alone). The match line on the list cards is a plain
+       bold line (.align-line), not a pill, so it never wraps
+       inside a bubble. */
+    /* Check-in row, Nov 23 2026: Back, Skip and Done for now are
+       small secondary buttons, but they still get a 44px touch
+       target in the app (the app-wide .ps-btn-small is 40px). */
+    #view-app #live-box .ps-btn-small { min-height:44px; }
     .align-card { background:var(--card); border:1px solid var(--line); border-left:6px solid var(--teal); border-radius:16px; padding:16px 20px; margin:16px 0; box-shadow:0 1px 3px rgba(26,43,38,.08); }
     .align-card h4 { margin:0 0 .25rem; color:var(--teal-dark); font-size:1.05rem; display:flex; justify-content:space-between; gap:12px; align-items:baseline; }
     .align-card .align-count { flex:0 0 auto; background:none; border:0; color:var(--teal-dark); padding:0; font-weight:700; font-size:.85rem; white-space:nowrap; }
@@ -459,21 +458,34 @@
        Then colour-coded tags, then the quiet proof line, then
        one primary action. Bookmark is a quiet text action below it. */
     #view-app #focus-card { padding:28px 24px; }
-    /* Full palette in the app, Nov 23 2026: not just teal.
-       Access is pine, Sensory is honey/amber, Environment is
-       teal-tint, Context is amber, Inclusion is teal, Menu is pine.
-       Chips, group headers, nav and bars each carry their own
-       colour, so the app feels alive, not two-colour. */
+    /* One colour per filter group, Nov 23 2026 (Ginko's mapping):
+       Access pine #2f5d3e, Sensory honey #f2c14e, Environment teal
+       #14665a, Context amber #8a4a08. Inclusion reuses the teal-tint
+       #8ecdc0 (the lightest, most open colour) and Menu reuses pine
+       (Access), so no new brand colour is invented. The same
+       mapping is used for the group left borders, the pressed
+       chips (here, by data-group, so it covers onboarding chips
+       and the Discover tailored / all-filters chips alike), the
+       landing pillar tags and the place-card tags. Honey and
+       teal-tint always take dark text #372c1f, never white:
+       white on honey is 1.68:1 and white on teal-tint is 1.80:1.
+       The tick and 3px border/outline on pressed chips stay, so
+       selection is never colour alone. Literal hexes are used
+       (not var(--teal) etc.) so the dark-mode teal override
+       cannot flatten the group colours; these #view-app rules
+       also outrank it. */
     #view-app .onboard-group[data-group="access"] summary { border-left:6px solid #2f5d3e; border-radius:12px 0 0 12px; }
     #view-app .onboard-group[data-group="sensory"] summary { border-left:6px solid #f2c14e; border-radius:12px 0 0 12px; }
-    #view-app .onboard-group[data-group="environment"] summary { border-left:6px solid #8ecdc0; border-radius:12px 0 0 12px; }
+    #view-app .onboard-group[data-group="environment"] summary { border-left:6px solid #14665a; border-radius:12px 0 0 12px; }
     #view-app .onboard-group[data-group="context"] summary { border-left:6px solid #8a4a08; border-radius:12px 0 0 12px; }
-    #view-app .onboard-group[data-group="inclusion"] summary { border-left:6px solid #14665a; border-radius:12px 0 0 12px; }
+    #view-app .onboard-group[data-group="inclusion"] summary { border-left:6px solid #8ecdc0; border-radius:12px 0 0 12px; }
     #view-app .onboard-group[data-group="menu"] summary { border-left:6px solid #2f5d3e; border-radius:12px 0 0 12px; }
-    #view-app .onboard-group[data-group="sensory"] .ps-chip[aria-pressed="true"] { background:#8a4a08; border-color:#8a4a08; color:#fff; }
-    #view-app .onboard-group[data-group="access"] .ps-chip[aria-pressed="true"] { background:#2f5d3e; border-color:#2f5d3e; color:#fff; }
-    #view-app .onboard-group[data-group="environment"] .ps-chip[aria-pressed="true"] { background:#f2c14e; border-color:#f2c14e; color:#372c1f; }
-    #view-app .onboard-group[data-group="context"] .ps-chip[aria-pressed="true"] { background:#8a4a08; border-color:#8a4a08; color:#fff; }
+    #view-app .ps-chip[data-group="access"][aria-pressed="true"] { background:#2f5d3e; border-color:#2f5d3e; color:#fff; }
+    #view-app .ps-chip[data-group="sensory"][aria-pressed="true"] { background:#f2c14e; border-color:#f2c14e; color:#372c1f; }
+    #view-app .ps-chip[data-group="environment"][aria-pressed="true"] { background:#14665a; border-color:#14665a; color:#fff; }
+    #view-app .ps-chip[data-group="context"][aria-pressed="true"] { background:#8a4a08; border-color:#8a4a08; color:#fff; }
+    #view-app .ps-chip[data-group="inclusion"][aria-pressed="true"] { background:#8ecdc0; border-color:#8ecdc0; color:#372c1f; }
+    #view-app .ps-chip[data-group="menu"][aria-pressed="true"] { background:#2f5d3e; border-color:#2f5d3e; color:#fff; }
     /* Nov 23 2026: active tab is a 4px teal top bar, NOT honey.
        Honey #f2c14e on warm white is 1.62:1, below the 3:1
        non-text contrast bar, and colour alone is not enough. */
@@ -614,10 +626,16 @@
     #view-app .focus-top .dist-line { margin:0; font-weight:700; color:var(--teal-dark); }
     #view-app .fit-line { font-weight:700; color:var(--teal-dark); margin:.4rem 0; }
     #view-app .ps-facts li strong { color:var(--teal-dark); }
-    #view-app .ps-tags li.tag-access { background:#14665a; border-color:#14665a; color:#fff; font-weight:700; }
+    /* Pillar tags and place-card tags use the same one-colour-per-group
+       mapping as the chips (see above). Access was teal here and
+       Environment was pine; both are now corrected to Ginko's
+       mapping: Access pine, Environment teal. */
+    #view-app .ps-tags li.tag-access { background:#2f5d3e; border-color:#2f5d3e; color:#fff; font-weight:700; }
     #view-app .ps-tags li.tag-sensory { background:#f2c14e; border-color:#f2c14e; color:#372c1f; font-weight:700; }
-    #view-app .ps-tags li.tag-env { background:#2f5d3e; border-color:#2f5d3e; color:#fff; font-weight:700; }
+    #view-app .ps-tags li.tag-env { background:#14665a; border-color:#14665a; color:#fff; font-weight:700; }
     #view-app .ps-tags li.tag-context { background:#8a4a08; border-color:#8a4a08; color:#fff; font-weight:700; }
+    #view-app .ps-tags li.tag-inclusion { background:#8ecdc0; border-color:#8ecdc0; color:#372c1f; font-weight:700; }
+    #view-app .ps-tags li.tag-menu { background:#2f5d3e; border-color:#2f5d3e; color:#fff; font-weight:700; }
     #view-app .discover-filters { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:12px 16px; }
     #view-app .discover-filters summary { font-weight:700; color:var(--teal-dark); min-height:44px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; list-style:none; }
     #view-app .discover-filters summary::-webkit-details-marker { display:none; }
@@ -1194,9 +1212,6 @@
           <select class="ps-input" id="here-place"></select>
           <div class="ps-panel" id="live-box" style="margin-top:.8rem;"></div>
         </div>
-        <div class="screen-foot">
-          <button class="ps-btn" id="start-checkin" type="button">Start check-in</button>
-        </div>
       </section>
 
       <!-- 6. BUSINESS -->
@@ -1273,6 +1288,14 @@
         {name:"How you order", keys:["order-verbal","order-call","order-online","order-ahead","order-click-collect","order-takeout"]},
         {name:"Dietary needs", keys:["diet-gluten-free","diet-vegan","diet-lactose-free","diet-halal","diet-kosher","diet-vegetarian","diet-cultural","diet-sugar-free"]}]}
     ];
+    /* One colour per filter group: every filter key maps to its
+       real group, so place-card tags and pressed chips can be
+       coloured by group instead of guessing from a prefix
+       (the old tagClass regex sent Inclusion, Menu and most
+       other tags to Context by default). */
+    var GROUP_FOR_KEY = {};
+    GROUPS.forEach(function(g){ g.subs.forEach(function(sub){ sub.keys.forEach(function(k){ GROUP_FOR_KEY[k] = g.name.toLowerCase(); }); }); });
+    function tagClass(t){ var g = GROUP_FOR_KEY[t]; if(g === "environment") return "tag-env"; return g ? "tag-" + g : "tag-context"; }
     var PLACES = [
       {id:"lumiere", name:"Café Lumière Douce", area:"Villeray, near Jarry", type:"Café", distKm:0.4, distLabel:"0.4 km · 5 min walk", transport:"Walk 5 min from Jarry Park", mapX:18, mapY:22,
        tags:["step-free","seating-comfy","restroom-accessible","gender-neutral-restroom","lighting-dim","lighting-ambient","sound-quiet","crowding-low","smell-neutral","artsy","quiet-chat","coworking","service-patient","service-calm","communication-clear","pronoun-respect","queer-friendly","price-transparent","language-french","language-english","language-spanish","language-arabic","language-italian","menu-physical","menu-preview","menu-accessible","diet-gluten-free","diet-vegan","diet-lactose-free","diet-halal","diet-vegetarian","diet-cultural","online-meetings","temp-comfortable","clean","dog-friendly","asl-service","asl-order","written-order","hearing-loop","order-verbal","order-online","order-ahead","order-takeout","sensory-quiet-nook","sensory-low-hours","sensory-no-flash","sensory-fragrance-free","sensory-no-sudden-noise","vision-contrast-tables","vision-contrast-tableware","vision-even-light","vision-clear-paths","vision-marked-glass","vision-tactile-lines","vision-step-edges","vision-large-print","vision-read-aloud","vision-high-contrast-signs","vision-no-pattern","language-lsq","lsq-order","hearing-face-you","hearing-written-confirm","restroom-sharps","restroom-private","diet-sugar-free","menu-nutrition","menu-free-water"],
@@ -1349,6 +1372,11 @@
       });
       var head = document.querySelector("#screen-" + name + " h2"); if(head) head.focus && head.setAttribute("tabindex","-1"), head.focus({preventScroll:true});
       if(name === "discover") renderFocus();
+      /* Nov 23 2026: no Start check-in button. Opening I'm here
+         starts the questions for the selected place right away.
+         If a check-in is already in progress, keep it, so going
+         away and back does not wipe your answers. */
+      if(name === "here" && !checkin){ startCheckin(); }
     }
     nav.querySelectorAll("button").forEach(function(b){ b.addEventListener("click", function(){ showScreen(b.dataset.screen); }); });
     function finishOnboarding(){ showScreen("discover"); }
@@ -1442,7 +1470,7 @@
         var ul = document.createElement("ul"); ul.className = "ps-chips wrap";
         sub.keys.forEach(function(key){
           var li = document.createElement("li");
-          var b = document.createElement("button"); b.type="button"; b.className="ps-chip"; b.textContent=FILTER_LABELS[key]||key; b.setAttribute("aria-pressed","false"); b.dataset.filter=key;
+          var b = document.createElement("button"); b.type="button"; b.className="ps-chip"; b.textContent=FILTER_LABELS[key]||key; b.setAttribute("aria-pressed","false"); b.dataset.filter=key; b.dataset.group=g.name.toLowerCase();
           b.addEventListener("click", function(){
             var i = selectedFilters.indexOf(key);
             if(i >= 0){ selectedFilters.splice(i,1); b.setAttribute("aria-pressed","false"); }
@@ -1473,6 +1501,7 @@
     /* Filters */
     function chipFor(key){
       var b = document.createElement("button"); b.type="button"; b.className="ps-chip"; b.textContent=FILTER_LABELS[key]||key;
+      b.dataset.group = GROUP_FOR_KEY[key] || "";
       b.setAttribute("aria-pressed", activeFilters.has(key)?"true":"false");
       b.addEventListener("click", function(){
         if(activeFilters.has(key)) activeFilters.delete(key); else activeFilters.add(key);
@@ -1526,7 +1555,7 @@
         var labels = matched.map(function(f){ return FILTER_LABELS[f]||f; });
         var shown = labels.slice(0, 4);
         var labelText = shown.join(", ") + (labels.length > 4 ? ", and " + (labels.length - 4) + " more" : "");
-        return {text:"This fits today: matches " + matched.length + " of " + activeFilters.size + " for you: " + labelText, count:matched.length};
+        return {text:"Matches " + matched.length + " of " + activeFilters.size + ": " + labelText, count:matched.length};
       }
       return null;
     }
@@ -1594,12 +1623,14 @@
       card.className = "ps-card" + (align ? " align-good" : "");
       var matchText = activeFilters.size===0 ? "No filters picked yet" : "Matches " + s.matches.length + " of " + activeFilters.size + " filters";
       var shownTags = (s.matches.length ? s.matches : p.tags).slice(0,3);
-      function tagClass(t){ if(/^(step-free|seating|restroom|gender-neutral)/.test(t)) return "tag-access"; if(/^(lighting|sound|crowding|smell)/.test(t)) return "tag-sensory"; if(/^(artsy|retro|nostalgic|bohemian)/.test(t)) return "tag-env"; return "tag-context"; }
+      /* tagClass() is global now, above PLACES: it maps every filter
+         key to its real group, so Inclusion and Menu tags get
+         their own colours instead of defaulting to Context. */
       card.innerHTML =
         '<p class="focus-top"><span class="ps-match">' + matchText + '</span><span class="dist-line">' + p.distLabel + '</span></p>' +
         '<h3>' + p.name + '</h3>' +
         '<p class="ps-muted" style="margin:.2rem 0;">' + p.type + ' · ' + p.area + ' · ' + p.transport + '</p>' +
-        (function(){ if(!activeFilters.size) return ""; var rows = Array.from(activeFilters).map(function(f){ var ok = p.tags.indexOf(f) >= 0; return '<li><span class="align-dot ' + (ok ? "yes" : "no") + '" aria-hidden="true"></span><span class="' + (ok ? "align-yes" : "align-no") + '">' + (ok ? "✓ " : "— ") + (FILTER_LABELS[f]||f) + '</span></li>'; }).join(""); return '<div class="align-card"><h4>Why this fits today <span class="align-count">' + s.matches.length + ' of ' + activeFilters.size + '</span></h4><ul>' + rows + '</ul><p class="align-summary">' + (align ? align.text : "No strong match yet, this place matches " + s.matches.length + " of " + activeFilters.size + " of your filters.") + '</p></div>'; })() +
+        (function(){ if(!activeFilters.size) return ""; var rows = Array.from(activeFilters).map(function(f){ var ok = p.tags.indexOf(f) >= 0; return '<li><span class="align-dot ' + (ok ? "yes" : "no") + '" aria-hidden="true"></span><span class="' + (ok ? "align-yes" : "align-no") + '">' + (ok ? "✓ " : "— ") + (FILTER_LABELS[f]||f) + '</span></li>'; }).join(""); return '<div class="align-card"><h4>Why this matches <span class="align-count">' + s.matches.length + ' of ' + activeFilters.size + '</span></h4><ul>' + rows + '</ul>' + (align ? '' : '<p class="align-summary">No strong match yet, this place matches ' + s.matches.length + ' of ' + activeFilters.size + ' of your filters.</p>') + '</div>'; })() +
         '<ul class="ps-facts"><li><strong>Lighting:</strong> ' + p.lighting + '</li><li><strong>Sound:</strong> ' + (p.soundLevel||'') + ' — ' + p.sound + '</li><li><strong>What you will hear:</strong> ' + (p.soundSources||[]).join("; ") + '</li><li><strong>Crowd:</strong> ' + p.crowding + '</li></ul>' +
         '<ul class="ps-tags">' + shownTags.map(function(t){ return '<li class="'+tagClass(t)+'">'+(FILTER_LABELS[t]||t)+'</li>'; }).join("") + '</ul>' +
         '<p class="ps-muted">Confirmed by ' + p.confirmed + ' peers · Anonymous</p>' +
@@ -1639,7 +1670,7 @@
       var dl = document.createElement("dl"); dl.className="ps-kv";
       dl.innerHTML = '<div><dt>Distance</dt><dd>'+p.distLabel+'</dd></div><div><dt>Getting there</dt><dd>'+p.transport+'</dd></div><div><dt>Lighting</dt><dd>'+p.lighting+'</dd></div><div><dt>Sound</dt><dd>'+p.sound+'</dd></div><div><dt>Crowding</dt><dd>'+p.crowding+'</dd></div><div><dt>Access</dt><dd>'+p.access+'</dd></div><div><dt>Menu</dt><dd>'+p.menuNote+'</dd></div>';
       var alignDetail = alignmentFor(p);
-      if(alignDetail){ var ab=document.createElement("p"); ab.innerHTML='<span class="align-badge">This fits today</span> '+alignDetail.text; body.appendChild(ab); }
+      if(alignDetail){ var ab=document.createElement("p"); ab.className="align-line"; ab.textContent=alignDetail.text; body.appendChild(ab); }
       body.appendChild(dl);
       var dayH=document.createElement("h3"); dayH.textContent="Through the day"; body.appendChild(dayH);
       p.day.forEach(function(d){ var s=document.createElement("p"); s.className="ps-muted"; s.textContent=d[0]+": "+d[1]; body.appendChild(s); });
@@ -1739,25 +1770,115 @@
     }
     $("report-misuse").addEventListener("click", function(){ $("misuse-note").hidden=false; });
 
-    /* I'm here */
+    /* I'm here — no Start button any more, Nov 23 2026: the
+       check-in starts by itself when the screen opens, and
+       restarts for the new place when the place changes. */
     var hereSelect=$("here-place"), bizSelect=$("biz-place");
     PLACES.forEach(function(p){ var o=document.createElement("option"); o.value=p.id; o.textContent=p.name; hereSelect.appendChild(o); var o2=document.createElement("option"); o2.value=p.id; o2.textContent=p.name; bizSelect.appendChild(o2); });
+    /* Tailored check-in questions, Nov 23 2026: the questions
+       come from the filters the user picked for today
+       (activeFilters), not from the place's fixed live list
+       alone. Each picked filter maps to one or more topics;
+       topics are taken in the order the user picked them, one
+       question per topic, capped at 6, so a long pick list
+       never becomes a long interrogation. Where the place
+       already has a matching live question — including a
+       "still" question with its earlier peer report — that
+       exact question (and its context line) is reused instead
+       of inventing a duplicate. A "still" question only
+       appears when its topic matches a picked filter. Purpose
+       filters (co-working, quiet chat, socialising, online
+       meetings) and aesthetic filters (artsy, retro, etc.)
+       map to no question: they say why you are going, not
+       what to report while you are there. */
+    function liveQ(p, test){ for(var i=0;i<p.live.length;i++){ if(test(p.live[i])) return p.live[i]; } return null; }
+    function topicsForFilter(f){
+      if(/^lighting-/.test(f)) return ["light"];
+      if(f==="sound-quiet" || f==="sound-music") return ["sound-level","sound-sources","sound-still"];
+      if(f==="sound-tv") return ["sound-sources","sound-still"];
+      if(/^crowding-/.test(f)) return ["crowd"];
+      if(f==="smell-neutral" || f==="sensory-fragrance-free") return ["smell"];
+      if(f==="sensory-quiet-nook" || f==="sensory-low-hours") return ["quiet-spot"];
+      if(f==="sensory-no-flash") return ["flash"];
+      if(f==="sensory-no-music") return ["sound-sources"];
+      if(f==="sensory-no-sudden-noise") return ["sudden-noise"];
+      if(f==="step-free") return ["entry"];
+      if(f==="seating-comfy") return ["seating"];
+      if(/^restroom-/.test(f)) return ["restroom"];
+      if(f==="gender-neutral-restroom") return ["restroom-gn"];
+      if(/^vision-/.test(f)) return ["vision"];
+      if(f==="pronoun-respect" || f==="queer-friendly" || f==="staff-representation") return ["pronouns"];
+      if(/^language-/.test(f) || f==="asl-service" || f==="asl-order" || f==="lsq-order" || f==="written-order") return ["language"];
+      if(/^hearing-/.test(f)) return ["hearing"];
+      if(/^service-/.test(f) || f==="communication-clear") return ["service"];
+      if(/^menu-/.test(f) || f==="price-transparent") return ["menu"];
+      if(/^diet-/.test(f)) return ["diet"];
+      if(/^order-/.test(f)) return ["order"];
+      if(f==="temp-comfortable" || f==="airflow" || f==="clean" || f==="outdoor-space" || f==="menu-free-water") return ["comfort"];
+      if(f==="dog-friendly") return ["dog"];
+      return [];
+    }
+    function questionForTopic(t, p){
+      var q;
+      if(t==="light") return {q:"How is the light right now?", a:["Just right","Too bright","Too dim"]};
+      if(t==="sound-level"){ q=liveQ(p, function(x){ return x.q.indexOf("loud")>=0 && !x.c; }); return q || {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]}; }
+      if(t==="sound-sources"){ q=liveQ(p, function(x){ return x.q.indexOf("What is the sound")===0; }); return q || {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]}; }
+      if(t==="sound-still"){ q=liveQ(p, function(x){ return !!x.c && (x.q.indexOf("music")>=0 || x.q.indexOf("TV")>=0 || x.q.indexOf("quiet enough")>=0); }); return q || null; }
+      if(t==="crowd"){ q=liveQ(p, function(x){ return !!x.c && x.q.indexOf("calm")>=0; }); if(q) return q; q=liveQ(p, function(x){ return x.q.indexOf("busy")>=0; }); return q || {q:"Is it busy right now?", a:["Yes, it's busy","A bit busy","No, it's quiet"]}; }
+      if(t==="smell") return {q:"Is there a strong smell right now?", a:["No, smells fine","A bit strong","Yes, strong"]};
+      if(t==="quiet-spot") return {q:"Is there a quiet spot to sit right now?", a:["Yes","Not right now","Not sure"]};
+      if(t==="flash") return {q:"Are there flashing lights right now?", a:["No","Yes","Not sure"]};
+      if(t==="sudden-noise") return {q:"Any sudden loud noises right now?", a:["No","Yes, a few","Yes, a lot"]};
+      if(t==="entry") return {q:"Is the entry step-free right now?", a:["Yes, step-free","No step-free entry","Not sure"]};
+      if(t==="seating"){ q=liveQ(p, function(x){ return !!x.c && x.q.indexOf("seat")>=0; }); return q || {q:"Is there a free comfy seat right now?", a:["Yes","A few left","No, it's full"]}; }
+      if(t==="restroom") return {q:"Is the restroom you need open and usable right now?", a:["Yes","No","Not sure"]};
+      if(t==="restroom-gn") return {q:"Is there a gender-neutral restroom you can use right now?", a:["Yes","No","Not sure"]};
+      if(t==="vision") return {q:"Is it easy to find your way around right now?", a:["Yes, clear","Mostly","No, hard to tell"]};
+      if(t==="pronouns"){ q=liveQ(p, function(x){ return x.q.indexOf("pronouns")>=0; }); return q || {q:"Are pronouns being respected today?", a:["Yes","Not today","Not sure"]}; }
+      if(t==="language") return {q:"Can you communicate in the language or sign you need right now?", a:["Yes","Not today","Not sure"]};
+      if(t==="hearing") return {q:"Can you hear staff clearly right now?", a:["Yes","Mostly","No"]};
+      if(t==="service") return {q:"Are staff patient and unhurried right now?", a:["Yes","Mostly","No, rushed"]};
+      if(t==="menu") return {q:"Can you read the menu and see the prices right now?", a:["Yes","Not today","Not sure"]};
+      if(t==="diet") return {q:"Can you find something that fits your diet right now?", a:["Yes","Not today","Not sure"]};
+      if(t==="order") return {q:"Is ordering easy right now?", a:["Yes","Not today","Not sure"]};
+      if(t==="comfort") return {q:"Is it comfortable to be here right now?", a:["Yes, comfortable","A bit uncomfortable","No"]};
+      if(t==="dog") return {q:"Can your dog come in with you right now?", a:["Yes","No","Not sure"]};
+      return null;
+    }
+    function genericCheckinQuestions(){
+      return [
+        {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
+        {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
+        {q:"Is it busy right now?", a:["Yes, it's busy","A bit busy","No, it's quiet"]}
+      ];
+    }
+    function buildCheckinQuestions(p){
+      if(!activeFilters.size) return {questions:genericCheckinQuestions(), generic:true};
+      var topics=[];
+      Array.from(activeFilters).forEach(function(f){
+        topicsForFilter(f).forEach(function(t){ if(topics.indexOf(t)<0 && topics.length<6) topics.push(t); });
+      });
+      var qs=[];
+      topics.forEach(function(t){ var q=questionForTopic(t,p); if(q) qs.push(q); });
+      if(!qs.length) return {questions:genericCheckinQuestions(), generic:true};
+      return {questions:qs, generic:false};
+    }
     function startCheckin(){
       var p = PLACES.find(function(x){ return x.id===hereSelect.value; }) || PLACES[0];
-      checkin={place:p, step:0, answers:[]}; renderCheckin();
+      var built = buildCheckinQuestions(p);
+      checkin={place:p, step:0, answers:[], questions:built.questions, generic:built.generic}; renderCheckin();
     }
-    $("start-checkin").addEventListener("click", startCheckin);
-    hereSelect.addEventListener("change", function(){ checkin=null; renderCheckinIntro(); });
+    hereSelect.addEventListener("change", function(){ startCheckin(); });
     function renderCheckinIntro(){
       var box=$("live-box");
-      box.innerHTML="<h3>Live check-in</h3><p class='ps-muted'>Tap “Start check-in” below. One question at a time, with answers that fit the question. Skip any question you like.</p>";
+      box.innerHTML="<h3>Live check-in</h3><p class='ps-muted'>Pick a place above and the questions start right away. One question at a time, with answers that fit the question. Skip any question you like.</p>";
     }
     function renderCheckin(){
       var box=$("live-box"); if(!box) return; box.innerHTML="";
       if(!checkin){ renderCheckinIntro(); return; }
       var p=checkin.place;
       var h=document.createElement("h3"); h.textContent="You are at "+p.name; box.appendChild(h);
-      if(checkin.step>=p.live.length){
+      if(checkin.step>=checkin.questions.length){
         if(!checkin.saved){
           checkin.saved = true;
           visits.push({place:p.name, placeId:p.id, date:todayStr(), answers:checkin.answers.slice(), rating:null});
@@ -1784,8 +1905,9 @@
         var again=document.createElement("button"); again.type="button"; again.className="ps-btn ps-btn-secondary"; again.textContent="Check in again";
         again.addEventListener("click", function(){ checkin={place:p, step:0, answers:[]}; renderCheckin(); }); box.appendChild(again); return;
       }
-      var prog=document.createElement("p"); prog.className="ps-muted"; prog.textContent="Question "+(checkin.step+1)+" of "+p.live.length; box.appendChild(prog);
-      var current = p.live[checkin.step];
+      if(checkin.generic && checkin.step===0){ var gn=document.createElement("p"); gn.className="ps-muted"; gn.textContent="No filters picked for today, so these are general questions. Pick what matters today and the questions will match what you picked."; box.appendChild(gn); }
+      var prog=document.createElement("p"); prog.className="ps-muted"; prog.textContent="Question "+(checkin.step+1)+" of "+checkin.questions.length; box.appendChild(prog);
+      var current = checkin.questions[checkin.step];
       /* Nov 23 2026: "still" questions only make sense with the
          earlier report in front of you. Show it first, so the
          user knows what they are confirming, and when. */
@@ -1818,11 +1940,16 @@
         });
       }
       var row=document.createElement("p");
+      var back=document.createElement("button"); back.type="button"; back.className="ps-btn ps-btn-secondary ps-btn-small"; back.textContent="Back";
+      back.addEventListener("click", function(){
+        if(checkin.step<=0){ checkin=null; renderCheckinIntro(); return; }
+        checkin.step-=1; checkin.answers.pop(); renderCheckin();
+      });
       var skip=document.createElement("button"); skip.type="button"; skip.className="ps-btn ps-btn-secondary ps-btn-small"; skip.textContent="Skip";
       skip.addEventListener("click", function(){ checkin.step+=1; renderCheckin(); });
       var stop=document.createElement("button"); stop.type="button"; stop.className="ps-btn ps-btn-secondary ps-btn-small"; stop.textContent="Done for now";
-      stop.addEventListener("click", function(){ checkin.step=p.live.length; renderCheckin(); });
-      row.appendChild(skip); row.appendChild(document.createTextNode(" ")); row.appendChild(stop); box.appendChild(row);
+      stop.addEventListener("click", function(){ checkin.step=checkin.questions.length; renderCheckin(); });
+      row.appendChild(back); row.appendChild(document.createTextNode(" ")); row.appendChild(skip); row.appendChild(document.createTextNode(" ")); row.appendChild(stop); box.appendChild(row);
     }
 
     /* Business dashboard, Nov 23 2026: a dashboard, not a list of
