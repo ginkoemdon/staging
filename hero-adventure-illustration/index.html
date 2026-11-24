@@ -16,7 +16,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./css/style.css?v=20261124a" />
 </head>
-<body>
+<body id="top">
   <a class="skip-link" href="#main">Skip to main content</a>
   <!-- Nav — style copied from Webflow (mindfullydesign.webflow.io), own simple JS, no Webflow JS.
        Logo, 4.5rem bar, blur, Krona One menu, 1px underline, flower button.
@@ -125,7 +125,7 @@
   <footer id="footer" class="footer-component">
     <div class="footer-inner">
       <div class="footer-top">
-        <a href="./index.html" class="footer-logo" aria-label="Ginko — home"><img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" /></a>
+        <a href="#top" class="footer-logo" aria-label="Back to top"><img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" /></a>
         <div class="footer-email">
           <div class="footer-email-label">Hit my line</div>
           <div class="footer-block">
@@ -149,7 +149,7 @@
   <script>
   /* Footer logo smooth scroll (Nov 24 2026): on the landing page the
      footer logo scrolls smoothly back to the top instead of reloading
-     the page. Without JS the link still goes home (./index.html).
+     the page. Without JS the link jumps to #top.
      Respects prefers-reduced-motion: instant jump instead of smooth. */
   (function(){
     var logo = document.querySelector('footer .footer-logo');
