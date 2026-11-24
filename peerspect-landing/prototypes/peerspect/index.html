@@ -731,7 +731,7 @@
     #view-app .ps-card, #view-app .ps-panel { border-radius:20px; padding:16px; border:1px solid var(--line); box-shadow:0 1px 3px rgba(26,43,38,.08); }
     #view-app .ps-answer { border-radius:14px; padding:14px 16px; min-height:48px; border-width:1.5px; }
     #view-app .app-controls { gap:6px; padding:8px 0; }
-    #view-app .back-web { padding:10px 6px; min-height:40px; text-decoration:none; font-weight:600; }
+    #view-app .back-web { padding:10px 6px; min-height:44px; text-decoration:none; font-weight:600; }
     #view-app .theme-toggle, #view-app .expand-btn { border:1px solid var(--line); border-radius:12px; padding:8px 10px; min-height:44px; font-weight:600; background:var(--card); box-shadow:none; }
     #view-app .view-toggle { border-radius:12px; padding:3px; }
     #view-app .view-toggle button { border-radius:9px; min-height:44px; }
@@ -744,7 +744,7 @@
     #view-app .dots button::after { width:8px; height:8px; border-width:1.5px; }
     #view-app .dots button[aria-current="true"]::after { width:20px; border-radius:999px; }
     #view-app .step { gap:8px; }
-    #view-app .step .ps-btn { background:none; border:0; box-shadow:none; text-decoration:underline; padding:10px 8px; min-height:40px; width:auto; flex:0 0 auto; }
+    #view-app .step .ps-btn { background:none; border:0; box-shadow:none; text-decoration:underline; padding:10px 8px; min-height:44px; width:auto; flex:0 0 auto; }
     #view-app .step .ps-btn-secondary { background:none; }
     #view-app .ps-input { border-width:1.5px; border-radius:12px; }
     #view-app .ps-tags li { padding:3px 10px; font-size:.85rem; }
@@ -1010,6 +1010,43 @@
     #view-app .discover-filters[open] summary::after { transform:rotate(180deg); }
     #view-app .compact-list li strong { color:var(--teal-dark); }
     @media (prefers-reduced-motion: reduce) { #view-app .screen { animation:none; } #view-app .ps-btn, #view-app .ps-chip { transition:none; } }
+    /* Interaction pass, Nov 24 2026: every control answers a tap.
+       Hover and pressed states on all buttons, chips and toggles,
+       smooth open and close on dropdowns, a short confirmation
+       after saving, logging and cross-checking, and no motion
+       for users who asked for reduced motion. Nothing here
+       changes what a control does, its wording, or its colour. */
+    @keyframes ps-drop-in { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
+    @keyframes ps-confirm-in { from { opacity:0; transform:translateY(3px); } to { opacity:1; transform:none; } }
+    #view-app .ps-btn, #view-app .ps-chip, #view-app .rate-btn, #view-app .tip-btn, #view-app .cart-qty-btn, #view-app .cart-remove, #view-app .quick-card, #view-app .view-toggle button, #view-app .app-nav button, #view-app .ps-answer, #view-app .chip-vibe-picker button, #view-app .theme-toggle, #view-app .view-size-cycle, #view-app .app-close, #view-app .map-pin, #view-app select.ps-input { transition:transform .12s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease, filter .15s ease; }
+    #view-app .ps-btn:hover { box-shadow:0 2px 8px rgba(26,43,38,.22); }
+    #view-app .screen-foot .ps-btn-secondary:hover { box-shadow:none; background:var(--soft); }
+    #view-app .ps-btn:disabled { opacity:.55; cursor:not-allowed; box-shadow:none; }
+    #view-app .ps-btn:disabled:hover { box-shadow:none; }
+    #view-app .ps-btn[aria-pressed="true"] { outline:2px solid var(--ink); outline-offset:1px; font-weight:700; }
+    #view-app .ps-chip:hover, #view-app .rate-btn:hover, #view-app .tip-btn:hover, #view-app .quick-card:hover, #view-app .chip-vibe-picker button:hover, #view-app .cart-qty-btn:hover, #view-app .cart-remove:hover { background:var(--soft); }
+    #view-app .ps-chip:active, #view-app .rate-btn:active, #view-app .tip-btn:active, #view-app .cart-qty-btn:active, #view-app .quick-card:active, #view-app .ps-answer:active, #view-app .chip-vibe-picker button:active, #view-app .cart-remove:active { transform:scale(.97); }
+    #view-app .view-toggle button:hover { background:var(--soft); }
+    #view-app .view-toggle button:active, #view-app .app-nav button:active { transform:scale(.98); }
+    #view-app .app-nav button:hover { background:var(--soft); }
+    #view-app .theme-toggle:active, #view-app .view-size-cycle:active, #view-app .app-close:active { transform:scale(.92); }
+    #view-app .theme-toggle:hover, #view-app .app-close:hover { background:var(--soft); }
+    #view-app .map-pin:hover { filter:brightness(1.08); box-shadow:0 4px 10px rgba(0,0,0,.35); }
+    #view-app .map-pin:active { filter:brightness(.88); }
+    #view-app .card-open:hover strong { text-decoration:underline; text-underline-offset:3px; }
+    #view-app .card-open:active strong { text-decoration:underline; }
+    #view-app .onboard-group summary:hover, #view-app .discover-filters summary:hover, #view-app .card-descriptors summary:hover, #view-app .save-preview summary:hover { background:var(--soft); border-radius:12px; }
+    #view-app .onboard-group .group-chev { transition:transform .18s ease; }
+    #view-app .back-web:hover { background:var(--soft); border-radius:8px; }
+    #view-app .dots button:hover::after { border-color:var(--teal-dark); }
+    #view-app .discover-filters[open] > *:not(summary), #view-app .onboard-group[open] > *:not(summary), #view-app .card-descriptors[open] > *:not(summary), #view-app #all-filters:not([hidden]), #view-app #view-map:not([hidden]), #view-app #view-list:not([hidden]) { animation:ps-drop-in .18s ease; }
+    #view-app .ps-confirm { font-weight:700; color:var(--teal-dark); animation:ps-confirm-in .18s ease; }
+    #view-app .ps-confirm::before { content:"\2713  "; font-weight:800; }
+    #view-app .peer-crossed { animation:ps-confirm-in .18s ease; }
+    @media (prefers-reduced-motion: reduce) {
+      #view-app *, #view-app *::before, #view-app *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
+      #view-app .screen { animation:none; }
+    }
 
     .skip-link { position:absolute; left:-9999px; top:0; background:var(--card); color:var(--teal-dark); padding:12px 16px; z-index:10; }
     .skip-link:focus { left:.5rem; top:.5rem; }
@@ -1652,6 +1689,10 @@
   (function(){
     "use strict";
     var $ = function(id){ return document.getElementById(id); };
+    /* Interaction pass, Nov 24 2026: smooth scrolling follows the
+       reduced-motion setting, so users who asked for no motion
+       get an instant jump instead. */
+    function smoothScrollTo(el){ if(!el) return; var rm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; el.scrollIntoView({behavior: rm ? "auto" : "smooth", block:"start"}); }
     var app = $("peerspect-app"); if(!app) return;
     /* Sample data — see Discover note: live listings would come from a
        listings source such as the Google Places API, not scraping. That
@@ -1814,8 +1855,27 @@
       var pd = $("screen-place");
       if(orderSummaryRefresh && pd && !pd.hidden) orderSummaryRefresh();
     }
+    /* Interaction pass, Nov 24 2026: after a cart re-render, put
+       focus back on the control that was just used, so tapping
+       plus, minus, Remove, Tip or Save note does not drop keyboard
+       focus to the top of the page. The control is found again
+       by its aria-label inside the same panel. */
+    function refocusControl(scopeId, label){
+      if(!scopeId || !label) return;
+      var scope = document.getElementById(scopeId); if(!scope) return;
+      var el = null;
+      try { el = scope.querySelector('button[aria-label="' + label.replace(/"/g, "") + '"]'); } catch(e){ el = null; }
+      if(el) el.focus({preventScroll:true});
+    }
+    function captureFocus(){
+      var ae = document.activeElement;
+      if(!ae || !ae.getAttribute) return null;
+      var scopeEl = ae.closest ? ae.closest("[id]") : null;
+      return {scopeId: scopeEl ? scopeEl.id : null, label: ae.getAttribute("aria-label")};
+    }
     function changePrepQty(itemName, placeId, delta, note){
       note = note||"";
+      var focusBack = captureFocus();
       if(delta > 0){
         var src = prep.find(function(it){ return it.item===itemName && it.placeId===placeId && (it.note||"")===note; });
         if(src) prep.push({item:src.item, price:src.price, place:src.place, placeId:src.placeId, note:src.note});
@@ -1825,17 +1885,33 @@
         if(idx>=0) prep.splice(idx,1);
       }
       save("peerspect-prep-v1", prep); refreshCarts();
+      if(focusBack) refocusControl(focusBack.scopeId, focusBack.label);
     }
     function removePrepItem(itemName, placeId, note){
       note = note||"";
+      var focusBack = captureFocus();
       prep = prep.filter(function(it){ return !(it.item===itemName && it.placeId===placeId && (it.note||"")===note); });
       save("peerspect-prep-v1", prep); refreshCarts();
+      if(focusBack) refocusControl(focusBack.scopeId, focusBack.label);
     }
     /* Budget, Nov 24 2026: per outing, not per place. Saved
        locally. Clearing the prep list does not clear the budget. */
     var budget = load("peerspect-budget-v1", null);
     if(typeof budget!=="number" || budget<=0) budget = null;
-    function setBudget(v){ budget = (typeof v==="number" && v>0) ? Math.round(v*100)/100 : null; save("peerspect-budget-v1", budget); refreshCarts(); }
+    function setBudget(v){ budget = (typeof v==="number" && v>0) ? Math.round(v*100)/100 : null; save("peerspect-budget-v1", budget); refreshCarts(); refocusBudget(); }
+    /* Interaction pass, Nov 24 2026: after the budget panel is
+       rebuilt, focus lands on the next useful control: Change
+       budget once a budget is set, the amount box once it is
+       cleared, so the totals stay live without losing your place. */
+    function refocusBudget(){
+      var boxes = document.querySelectorAll(".budget-box"), box = null;
+      boxes.forEach(function(b){ var s = b.closest(".screen"); if(s && !s.hidden) box = b; });
+      if(!box && boxes.length) box = boxes[0];
+      if(!box) return;
+      var btns = box.querySelectorAll("button");
+      for(var i=0;i<btns.length;i++){ if(btns[i].textContent === "Change budget"){ btns[i].focus({preventScroll:true}); return; } }
+      var inp = box.querySelector("input"); if(inp) inp.focus({preventScroll:true});
+    }
     function budgetSection(container){
       var box=document.createElement("div"); box.className="budget-box";
       var outing = cartTotals(prep);
@@ -1849,6 +1925,7 @@
         var set=document.createElement("button"); set.type="button"; set.className="ps-btn ps-btn-small"; set.textContent="Set budget";
         set.addEventListener("click", function(){ var v=parseFloat(inp.value); if(!isNaN(v) && v>0) setBudget(v); else inp.focus(); });
         row.appendChild(set);
+        inp.addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); set.click(); } });
         box.appendChild(row);
         var chips=document.createElement("div"); chips.className="budget-chips";
         [10,15,20,30].forEach(function(v){
@@ -1937,6 +2014,7 @@
         var noteBtn=document.createElement("button"); noteBtn.type="button"; noteBtn.className="ps-btn ps-btn-secondary ps-btn-small cart-note-btn";
         noteBtn.textContent = g.note ? "Edit note" : "Add a note";
         noteBtn.setAttribute("aria-expanded","false");
+        noteBtn.setAttribute("aria-label", (g.note ? "Edit note for " : "Add a note for ") + g.item);
         var editor=document.createElement("div"); editor.className="note-editor"; editor.hidden=true;
         var lab=document.createElement("label"); lab.textContent="Order note for " + g.item + " (what to ask for)";
         var noteInput=document.createElement("input"); noteInput.type="text"; noteInput.value=g.note||"";
@@ -1956,10 +2034,14 @@
         editor.appendChild(chips);
         var saveNote=document.createElement("button"); saveNote.type="button"; saveNote.className="ps-btn ps-btn-small"; saveNote.textContent="Save note";
         saveNote.addEventListener("click", function(){
+          var scopeEl = noteBtn.closest ? noteBtn.closest("[id]") : null;
+          var scopeId = scopeEl ? scopeEl.id : null;
           var v=noteInput.value.trim();
           prep.forEach(function(it){ if(it.item===g.item && it.placeId===g.placeId && (it.note||"")===(g.note||"")){ if(v) it.note=v; else delete it.note; } });
           save("peerspect-prep-v1", prep); refreshCarts();
+          refocusControl(scopeId, (v ? "Edit note for " : "Add a note for ") + g.item);
         });
+        noteInput.addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); saveNote.click(); } });
         editor.appendChild(saveNote);
         noteBtn.addEventListener("click", function(){
           editor.hidden = !editor.hidden;
@@ -1996,7 +2078,8 @@
       [[0,"No tip"],[0.10,"10%"],[0.15,"15%"],[0.20,"20%"]].forEach(function(pair){
         var b=document.createElement("button"); b.type="button"; b.className="tip-btn"; b.textContent=pair[1];
         b.setAttribute("aria-pressed", tipRate===pair[0] ? "true" : "false");
-        b.addEventListener("click", function(){ tipRate=pair[0]; save("peerspect-tip-v1", tipRate); refreshCarts(); });
+        b.setAttribute("aria-label", "Tip " + pair[1]);
+        b.addEventListener("click", function(){ var focusBack=captureFocus(); tipRate=pair[0]; save("peerspect-tip-v1", tipRate); refreshCarts(); if(focusBack) refocusControl(focusBack.scopeId, focusBack.label); });
         tipRow.appendChild(b);
       });
       var tipAmt=document.createElement("span"); tipAmt.className="tip-amt"; tipAmt.textContent=money(t.tip);
@@ -2130,6 +2213,7 @@
       det.dataset.group = g.name.toLowerCase();
       if(gi === 0) det.open = true;
       var sum = document.createElement("summary");
+      sum.setAttribute("aria-expanded", det.open ? "true" : "false");
       var nameSpan = document.createElement("span"); nameSpan.textContent = g.name;
       var countSpan = document.createElement("span"); countSpan.className = "group-count";
       var chev = document.createElement("span"); chev.className = "group-chev"; chev.setAttribute("aria-hidden","true"); chev.textContent = "\u2304";
@@ -2147,6 +2231,7 @@
             if(i >= 0){ selectedFilters.splice(i,1); b.setAttribute("aria-pressed","false"); }
             else { selectedFilters.push(key); b.setAttribute("aria-pressed","true"); }
             activeFilters = new Set(selectedFilters);
+            document.querySelectorAll("#onboard-quick .quick-card[aria-pressed]").forEach(function(x){ x.setAttribute("aria-pressed","false"); });
             updateOnboardCounts();
             renderTailored(); renderPlaces(); renderAllFilters();
           });
@@ -2165,6 +2250,7 @@
     $("skip-onboarding").addEventListener("click", function(){
       selectedFilters = []; activeFilters = new Set();
       priorityList.querySelectorAll("button").forEach(function(b){ b.setAttribute("aria-pressed","false"); });
+      document.querySelectorAll("#onboard-quick .quick-card[aria-pressed]").forEach(function(x){ x.setAttribute("aria-pressed","false"); });
       $("priority-count").textContent = "Skipped. Showing all places.";
       renderTailored(); renderPlaces(); finishOnboarding();
     });
@@ -2351,7 +2437,7 @@
       if(p.crowding) attrs.push(p.crowding.split(",")[0]);
       attrs.forEach(function(a){ items += '<li>' + capFirst(a) + '</li>'; });
       if(!items) return "";
-      return '<details class="card-descriptors"><summary>Most common descriptors</summary>' +
+      return '<details class="card-descriptors"><summary aria-expanded="false">Most common descriptors</summary>' +
         '<ul class="desc-list">' + items + '</ul>' +
         '<p class="ps-muted desc-note">Counts show how many peers confirmed that report. Descriptors without a count come from this place’s own details.</p></details>';
     }
@@ -2425,21 +2511,23 @@
         '<div class="focus-actions"><button class="ps-btn" id="focus-open" type="button">Open place</button>' +
         '<button class="ps-btn ps-btn-secondary" id="focus-bm" type="button">' + (bookmarks.has(p.id)?"★ Bookmarked":"☆ Bookmark") + '</button></div>';
       $("focus-open").addEventListener("click", function(){ showPlace(p.id); });
+      $("focus-bm").setAttribute("aria-pressed", bookmarks.has(p.id) ? "true" : "false");
       $("focus-bm").addEventListener("click", function(){
         if(bookmarks.has(p.id)) bookmarks.delete(p.id); else bookmarks.add(p.id);
         save("peerspect-bookmarks-v1", Array.from(bookmarks)); renderPrep(); renderFocus();
+        var nb = $("focus-bm"); if(nb) nb.focus({preventScroll:true});
       });
       $("place-count").textContent = (focusIndex+1) + " of " + scored.length;
       dots.innerHTML = "";
       scored.forEach(function(_, i){
         var d = document.createElement("button"); d.type="button"; d.setAttribute("aria-label","Show place " + (i+1));
         d.setAttribute("aria-current", i===focusIndex?"true":"false");
-        d.addEventListener("click", function(){ focusIndex=i; renderFocus(); });
+        d.addEventListener("click", function(){ focusIndex=i; renderFocus(); var nd=$("place-dots").children[i]; if(nd) nd.focus({preventScroll:true}); });
         dots.appendChild(d);
       });
     }
-    $("prev-place").addEventListener("click", function(){ focusIndex = (focusIndex-1+scored.length)%scored.length; renderFocus(); });
-    $("next-place").addEventListener("click", function(){ focusIndex = (focusIndex+1)%scored.length; renderFocus(); });
+    $("prev-place").addEventListener("click", function(){ focusIndex = (focusIndex-1+scored.length)%scored.length; renderFocus(); $("prev-place").focus({preventScroll:true}); });
+    $("next-place").addEventListener("click", function(){ focusIndex = (focusIndex+1)%scored.length; renderFocus(); $("next-place").focus({preventScroll:true}); });
     /* Swipe left/right on the focus card */
     var touchX = null;
     $("focus-card").addEventListener("touchstart", function(e){ touchX = e.changedTouches[0].clientX; }, {passive:true});
@@ -2656,11 +2744,12 @@
               countCrosscheck(q); renderTrust();
               conf.textContent=confText(true);
               qBox.hidden=true; btn.hidden=true; crossed.hidden=false;
+              crossed.setAttribute("tabindex","-1"); crossed.focus({preventScroll:true});
             });
             ansRow.appendChild(b);
           });
           li.appendChild(qBox);
-          var crossed=document.createElement("p"); crossed.className="peer-crossed"; crossed.hidden=!done; crossed.textContent="You cross-checked this"; li.appendChild(crossed);
+          var crossed=document.createElement("p"); crossed.className="peer-crossed ps-confirm"; crossed.hidden=!done; crossed.textContent="You cross-checked this"; li.appendChild(crossed);
           btn.addEventListener("click", function(){ qBox.hidden=false; btn.hidden=true; });
           notesUl.appendChild(li);
         });
@@ -2688,6 +2777,7 @@
       }
       var foot = $("place-foot"); foot.innerHTML = "";
       var bm=document.createElement("button"); bm.type="button"; bm.className="ps-btn ps-btn-secondary"; bm.textContent=bookmarks.has(p.id)?"★ Bookmarked":"☆ Bookmark";
+      bm.setAttribute("aria-pressed", bookmarks.has(p.id)?"true":"false");
       bm.addEventListener("click", function(){ if(bookmarks.has(p.id)) bookmarks.delete(p.id); else bookmarks.add(p.id); save("peerspect-bookmarks-v1", Array.from(bookmarks)); renderPrep(); showPlace(p.id); });
       var here=document.createElement("button"); here.type="button"; here.className="ps-btn"; here.textContent="I'm here, check in";
       here.addEventListener("click", function(){ $("here-place").value=p.id; showScreen("here"); startCheckin(); });
@@ -2711,18 +2801,20 @@
           renderTailored(); renderPlaces(); renderAllFilters(); showScreen("discover");
         });
         var del=document.createElement("button"); del.type="button"; del.className="ps-btn ps-btn-secondary ps-btn-small"; del.textContent="Delete";
-        del.addEventListener("click", function(){ profiles.splice(idx,1); save("peerspect-profiles-v1", profiles); renderProfiles(); });
+        del.addEventListener("click", function(){ profiles.splice(idx,1); save("peerspect-profiles-v1", profiles); renderProfiles(); $("profile-name").focus({preventScroll:true}); });
         li.appendChild(apply); li.appendChild(document.createTextNode(" ")); li.appendChild(del); ul.appendChild(li);
       });
     }
     $("save-profile").addEventListener("click", function(){
-      if(!activeFilters.size){ $("profile-status").textContent="Pick at least one filter first. There is nothing to save yet."; return; }
+      var status=$("profile-status"); status.classList.remove("ps-confirm");
+      if(!activeFilters.size){ status.textContent="Pick at least one filter first. There is nothing to save yet."; return; }
       var name=$("profile-name").value.trim();
-      if(!name){ $("profile-status").textContent="Give the profile a name first, e.g. “Quiet morning”."; return; }
+      if(!name){ status.textContent="Give the profile a name first, e.g. “Quiet morning”."; $("profile-name").focus(); return; }
       profiles.push({name:name, filters:Array.from(activeFilters), priorities:selectedFilters.slice(), saved:new Date().toISOString().slice(0,10)});
-      save("peerspect-profiles-v1", profiles); $("profile-status").textContent="Saved “"+name+"” with "+activeFilters.size+" filter(s).";
+      save("peerspect-profiles-v1", profiles); status.textContent="Saved “"+name+"” with "+activeFilters.size+" filter(s)."; status.classList.add("ps-confirm");
       $("profile-name").value=""; renderProfiles();
     });
+    $("profile-name").addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); $("save-profile").click(); } });
     function renderPrep(){
       var box=$("prep-list");
       renderCartInto(box, prep, {backToMenu:true, emptyText:"Nothing yet. Open a place and add a menu item."});
@@ -2977,7 +3069,7 @@
     function renderGotStep(){
       var box=$("live-box"); if(!box || !checkin) return; box.innerHTML="";
       var p=checkin.place;
-      var h=document.createElement("h3"); h.textContent="What did you get?"; box.appendChild(h);
+      var h=document.createElement("h3"); h.textContent="What did you get?"; h.setAttribute("tabindex","-1"); box.appendChild(h); h.focus({preventScroll:true});
       var sub=document.createElement("p"); sub.className="ps-muted";
       sub.textContent="At "+p.name+". Confirm what you got, so you can remember what you liked next time.";
       box.appendChild(sub);
@@ -3129,7 +3221,7 @@
           visits.push({place:p.name, placeId:p.id, date:todayStr(), answers:checkin.answers.slice(), rating:null, order:(checkin.got||[])});
           save("peerspect-visits-v1", visits); renderVisits();
         }
-        var done=document.createElement("p"); done.innerHTML="Thanks. That helps the next person. <span class='ps-badge'>Reliable observer</span>"; box.appendChild(done);
+        var done=document.createElement("p"); done.className="ps-confirm"; done.setAttribute("tabindex","-1"); done.innerHTML="Thanks. That helps the next person. <span class='ps-badge'>Reliable observer</span>"; box.appendChild(done); done.focus({preventScroll:true});
         var rateQ=document.createElement("p"); rateQ.innerHTML="<strong>How was it for you?</strong>"; box.appendChild(rateQ);
         var rateRow=document.createElement("div"); rateRow.className="rate-row";
         [["up","\uD83D\uDC4D Loved it"],["meh","\uD83D\uDE10 So-so"],["down","\uD83D\uDC4E Not for me"]].forEach(function(pair){
@@ -3144,7 +3236,7 @@
           rateRow.appendChild(rb);
         });
         box.appendChild(rateRow);
-        var rateNote=document.createElement("p"); rateNote.className="ps-muted"; rateNote.textContent="Only you see your rating."; box.appendChild(rateNote);
+        var rateNote=document.createElement("p"); rateNote.className="ps-muted"; rateNote.setAttribute("aria-live","polite"); rateNote.textContent="Only you see your rating."; box.appendChild(rateNote);
         var note=document.createElement("p"); note.className="ps-muted"; note.textContent="You answered "+checkin.answers.length+" question"+(checkin.answers.length===1?"":"s")+". In this demo, your report is counted on this device only, anonymously."; box.appendChild(note);
         trust.reports+=1; trust.confirmed+=1; save("peerspect-trust-v1", trust); renderTrust();
         var again=document.createElement("button"); again.type="button"; again.className="ps-btn ps-btn-secondary"; again.textContent="Check in again";
@@ -3157,7 +3249,7 @@
          earlier report in front of you. Show it first, so the
          user knows what they are confirming, and when. */
       if(current.c){ var ctx=document.createElement("p"); ctx.className="ps-muted"; ctx.textContent=current.c; box.appendChild(ctx); }
-      var q=document.createElement("p"); q.innerHTML="<strong>"+current.q+"</strong>"; box.appendChild(q);
+      var q=document.createElement("p"); q.innerHTML="<strong>"+current.q+"</strong>"; q.setAttribute("tabindex","-1"); box.appendChild(q);
       if(current.multi){
         /* Nov 23 2026: sound is multi-select. Music, talking and
            machines can all be happening at once, so "Mostly …"
@@ -3184,10 +3276,11 @@
           b.addEventListener("click", function(){ checkin.answers.push({q:current.q, a:ans}); countCrosscheck(current); checkin.step+=1; renderCheckin(); }); box.appendChild(b);
         });
       }
+      q.focus({preventScroll:true});
       var row=document.createElement("p");
       var back=document.createElement("button"); back.type="button"; back.className="ps-btn ps-btn-secondary ps-btn-small"; back.textContent="Back";
       back.addEventListener("click", function(){
-        if(checkin.step<=0){ checkin=null; renderCheckinIntro(); return; }
+        if(checkin.step<=0){ checkin=null; renderCheckinIntro(); var sel=$("here-place"); if(sel) sel.focus(); return; }
         checkin.step-=1; checkin.answers.pop(); renderCheckin();
       });
       var skip=document.createElement("button"); skip.type="button"; skip.className="ps-btn ps-btn-secondary ps-btn-small"; skip.textContent="Skip";
@@ -3262,6 +3355,7 @@
     $("skip-landing").addEventListener("click", function(){
       selectedFilters = []; activeFilters = new Set();
       priorityList.querySelectorAll("button").forEach(function(b){ b.setAttribute("aria-pressed","false"); });
+      document.querySelectorAll("#onboard-quick .quick-card[aria-pressed]").forEach(function(x){ x.setAttribute("aria-pressed","false"); });
       $("priority-count").textContent = "Skipped. Showing all places.";
       renderTailored(); renderPlaces(); finishOnboarding();
     });
@@ -3373,7 +3467,7 @@
       document.querySelectorAll(".cs-screen").forEach(function(c){ c.classList.remove("is-active"); });
       if(label){ var card = label.closest(".cs-screen"); if(card) card.classList.add("is-active"); liveName.textContent = card ? card.querySelector("h3").textContent : name; }
       showScreen(name);
-      if(!opts.noScroll) livePreview.scrollIntoView({behavior:"smooth", block:"start"});
+      if(!opts.noScroll) smoothScrollTo(livePreview);
     }
     /* The live preview is always there in High fidelity, so load
        Discover into it on page load, without scrolling the page. */
@@ -3382,7 +3476,7 @@
       restoreApp();
       viewApp.hidden = true;
       var hifi = $("cs-hifi");
-      if(hifi) hifi.scrollIntoView({behavior:"smooth", block:"start"});
+      if(hifi) smoothScrollTo(hifi);
     }
     document.querySelectorAll("[data-preview-screen]").forEach(function(b){ b.addEventListener("click", function(){ showPreview(b.getAttribute("data-preview-screen")); }); });
     var liveClose = $("live-preview-close"); if(liveClose) liveClose.addEventListener("click", closePreview);
@@ -3435,6 +3529,21 @@
       if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(email).then(done);
       else { var ta = document.createElement("textarea"); ta.value = email; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch(e){} document.body.removeChild(ta); done(); }
     }); });
+    /* Interaction pass, Nov 24 2026: every dropdown in the app
+       reports its open state, so the chevron is never the only
+       cue. Native details elements do not set aria-expanded on
+       their own; the toggle listener below keeps it in step,
+       including for descriptors dropdowns built later by the
+       list code. */
+    document.querySelectorAll("#view-app details").forEach(function(d){
+      var s = d.querySelector("summary"); if(s) s.setAttribute("aria-expanded", d.open ? "true" : "false");
+    });
+    document.addEventListener("toggle", function(e){
+      var d = e.target;
+      if(d && d.tagName === "DETAILS" && d.closest && d.closest("#view-app")){
+        var s = d.querySelector("summary"); if(s) s.setAttribute("aria-expanded", d.open ? "true" : "false");
+      }
+    }, true);
     /* Init: web page view first. */
     showWeb(); showScreen("landing");
     renderTailored(); renderPlaces(); renderAllFilters(); renderProfiles(); renderPrep(); renderVisits(); renderTrust(); renderBiz(); renderCheckinIntro(); renderOnboardQuick();
