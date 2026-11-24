@@ -1433,7 +1433,7 @@
         <div class="screen-scroll">
           <ul class="ps-tags"><li class="tag-access">Access</li><li class="tag-sensory">Sensory</li><li class="tag-env">Environment</li><li class="tag-context">Context</li></ul>
           <p>Peer reports, anonymous, one question at a time.</p>
-          <p class="ps-muted">Demo: sample Montreal establishments only.</p>
+          <p class="ps-muted">Demo: sample Montreal places only.</p>
         </div>
         <div class="screen-foot">
           <button class="ps-btn" id="enter-app" type="button">Tell us what matters</button>
@@ -1444,7 +1444,7 @@
       <section class="screen" id="screen-onboard" aria-labelledby="onboard-h" hidden>
         <div class="screen-head">
           <h2 id="onboard-h">What would make a place feel right today?</h2>
-          <p>Start with a type of day, like a quiet morning, or tailor your own needs from the categories below. About a minute, and you can change it anytime.</p>
+          <p>Pick a type of day, like a quiet morning, or choose your own filters below. Takes about a minute. You can change it anytime.</p>
         </div>
         <div class="screen-scroll">
           <div id="onboard-quick" aria-label="Quick start"></div>
@@ -1462,7 +1462,7 @@
       <section class="screen" id="screen-discover" aria-labelledby="places-h" hidden>
         <div class="screen-head">
           <h2 id="places-h">Today</h2>
-          <p id="tailored-note">No filters picked yet — showing all sample places.</p>
+          <p id="tailored-note">No filters picked yet. Showing all sample places.</p>
           <div class="view-toggle" role="group" aria-label="Choose map view or list view">
             <button type="button" id="view-list-btn" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg>List view</button>
             <button type="button" id="view-map-btn" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"/><path d="M9 4v14M15 6v14"/></svg>Map view</button>
@@ -1518,10 +1518,10 @@
                 <text class="map-street" x="24" y="404">Metro line (sample) · Thread connecting peer insights</text>
               </svg>
             </div>
-            <p class="ps-muted">Sample schematic map — not to scale, no live listings. Tap a pin to open a place.</p>
+            <p class="ps-muted">Sample schematic map. Not to scale, no live listings. Tap a pin to open a place.</p>
             <ul class="map-legend" aria-label="Map legend">
-              <li><span class="legend-pin here" aria-hidden="true"></span>★ You are here — Jarry Park</li>
-              <li><span class="legend-pin match" aria-hidden="true"></span>Matches today — name and match count on the pin</li>
+              <li><span class="legend-pin here" aria-hidden="true"></span>★ You are here: Jarry Park</li>
+              <li><span class="legend-pin match" aria-hidden="true"></span>Matches today: name and match count on the pin</li>
               <li><span class="legend-pin few" aria-hidden="true"></span>Fewer matches</li>
             </ul>
             <ul class="compact-list" id="map-distance-list"></ul>
@@ -1537,13 +1537,13 @@
           </div>
           </div>
           <div class="discover-side">
-          <h3>All places, nearest first</h3>
+          <h3 id="all-places-h">All places, nearest first</h3>
           <ul class="compact-list" id="compact-list"></ul>
           </div>
           </div>
           <details>
             <summary>How the data would work</summary>
-            <p class="ps-muted"><strong>In a live version, business listings would come from a listings source such as the Google Places API, kept updated.</strong> Not scraping. That source would provide name, address, hours, ratings and photos. PEERSPECT's peer layer adds the rest:</p>
+            <p class="ps-muted"><strong>In a live version, listings would come from a source such as the Google Places API, kept updated.</strong> Not scraping. That source gives name, address, hours, ratings and photos. The peer layer adds:</p>
             <ul class="ps-muted">
               <li>Lighting</li>
               <li>Sound</li>
@@ -1553,7 +1553,7 @@
               <li>Pronoun respect</li>
               <li>Menu access</li>
             </ul>
-            <p class="ps-muted">A live connection needs an API key, with a server-side step so the key is not shipped in the page.</p>
+            <p class="ps-muted">A live connection needs an API key, kept on a server so it is not shipped in the page.</p>
           </details>
         </div>
       </section>
@@ -1574,7 +1574,7 @@
         <div class="screen-scroll">
           <section class="ps-panel" aria-labelledby="save-profile-h">
             <h3 id="save-profile-h">Save today's filters</h3>
-            <p>Name your collection of filters for the day so that you can return to it later.</p>
+            <p>Name this set of filters so you can use it again later.</p>
             <div class="save-row">
               <div class="save-field">
                 <label for="profile-name">Profile name</label>
@@ -1599,14 +1599,14 @@
           </section>
           <section class="ps-panel" aria-labelledby="visits-h">
             <h3 id="visits-h">Your last visits</h3>
-            <p class="ps-muted">Only you see this. What you ordered, and how it was for you, so you remember next time.</p>
+            <p class="ps-muted">Only you see this. What you ordered, and how it was, so you remember next time.</p>
             <div id="visit-list" class="visit-list"></div>
             <button class="ps-btn ps-btn-secondary ps-btn-small" id="clear-visits" type="button">Clear visits</button>
           </section>
           <section class="ps-panel" aria-labelledby="trust-h">
             <h3 id="trust-h">Your peer points</h3>
-            <p>Every confirmed report and peer cross-check earns you peer points, and helps the PEERSPECT community trust what it reads. Trust, anonymously — always.</p>
-            <p><span class="ps-badge" id="trust-badge">Reliable observer — not earned yet</span></p>
+            <p>Every confirmed report and peer cross-check earns you peer points. It helps the community trust what it reads. Always anonymous.</p>
+            <p><span class="ps-badge" id="trust-badge">Reliable observer: not earned yet</span></p>
             <p id="trust-sub"></p>
             <div id="milestone-track" class="milestone-track"></div>
           </section>
@@ -1708,7 +1708,7 @@
     var PLACES = [
       {id:"lumiere", name:"Café Lumière Douce", area:"Villeray, near Jarry", type:"Café", distKm:0.4, distLabel:"0.4 km · 5 min walk", transport:"Walk 5 min from Jarry Park", mapX:18, mapY:22,
        tags:["step-free","seating-comfy","restroom-accessible","gender-neutral-restroom","lighting-dim","lighting-ambient","sound-quiet","crowding-low","smell-neutral","artsy","quiet-chat","coworking","service-patient","service-calm","communication-clear","pronoun-respect","queer-friendly","price-transparent","language-french","language-english","language-spanish","language-arabic","language-italian","menu-physical","menu-preview","menu-accessible","diet-gluten-free","diet-vegan","diet-lactose-free","diet-halal","diet-vegetarian","diet-cultural","online-meetings","temp-comfortable","clean","dog-friendly","asl-service","asl-order","written-order","hearing-loop","order-verbal","order-online","order-ahead","order-takeout","sensory-quiet-nook","sensory-low-hours","sensory-no-flash","sensory-fragrance-free","sensory-no-sudden-noise","vision-contrast-tables","vision-contrast-tableware","vision-even-light","vision-clear-paths","vision-marked-glass","vision-tactile-lines","vision-step-edges","vision-large-print","vision-read-aloud","vision-high-contrast-signs","vision-no-pattern","language-lsq","lsq-order","hearing-face-you","hearing-written-confirm","restroom-sharps","restroom-private","diet-sugar-free","menu-nutrition","menu-free-water"],
-       lighting:"Dim, ambient — good contrast at tables", sound:"Soft music, no TV", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, espresso machine, occasional"], crowding:"Usually calm, busier at 10am",
+       lighting:"Dim, ambient. Good contrast at tables", sound:"Soft music, no TV", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, espresso machine, occasional"], crowding:"Usually calm, busier at 10am",
        access:"Step-free entry, accessible restroom, gender-neutral restroom", menuNote:"Physical menu at the counter, plus a preview online. Large print on request.",
        confirmed:42, day:[["Morning","Calm, bright at the window"],["Midday","Calm, dim and warm"],["Evening","Quiet, soft lighting"]], dayCounts:[12,18,12],
        menu:[{n:"Oat latte",p:"$5.50",k:"drink"},{n:"Flat white",p:"$5.00",k:"drink"},{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Sparkling water",p:"$3.00",k:"drink"},{n:"Croissant, butter",p:"$4.00",k:"food"},{n:"Banana bread",p:"$4.50",k:"food"},{n:"Avocado toast",p:"$11.00",k:"food"},{n:"Soup of the day",p:"$9.00",k:"food"}],
@@ -1862,7 +1862,7 @@
         var total = outing.total;
         var diff = budget - total;
         var line=document.createElement("p");
-        line.textContent = "Budget " + money(budget) + " · Outing total " + money(total) + " of " + money(budget) + " budget.";
+        line.textContent = "Budget " + money(budget) + ". Outing total " + money(total) + ".";
         box.appendChild(line);
         var bar=document.createElement("div"); bar.className="m-bar"; bar.setAttribute("role","img");
         bar.setAttribute("aria-label","Outing total " + money(total) + " of " + money(budget) + " budget");
@@ -1870,7 +1870,7 @@
         fill.style.width = Math.min(100, Math.round(total/budget*100)) + "%";
         bar.appendChild(fill); box.appendChild(bar);
         var verdict=document.createElement("p"); verdict.className = diff>=0 ? "budget-under" : "budget-over";
-        verdict.textContent = diff>=0 ? money(diff) + " under budget" : "Over budget — " + money(-diff) + " over budget";
+        verdict.textContent = diff>=0 ? money(diff) + " under budget" : "Over budget by " + money(-diff);
         box.appendChild(verdict);
         var actions=document.createElement("div"); actions.className="budget-row";
         var change=document.createElement("button"); change.type="button"; change.className="ps-btn ps-btn-secondary ps-btn-small"; change.textContent="Change budget";
@@ -2021,10 +2021,10 @@
        quantity and price, then the order note (what was asked
        for), the item rating, and the how-it-was note. */
     function gotLine(o){
-      var s = o.item + (o.qty>1 ? " x"+o.qty : "") + " — " + money(priceNum(o.price)*o.qty);
+      var s = o.item + (o.qty>1 ? " x"+o.qty : "") + ": " + money(priceNum(o.price)*o.qty);
       if(o.note) s += " (Order note: " + o.note + ")";
-      if(o.rating) s += " — " + ratingVisual(o.rating);
-      if(o.gotNote) s += " — How it was: " + o.gotNote;
+      if(o.rating) s += ", " + ratingVisual(o.rating);
+      if(o.gotNote) s += ". How it was: " + o.gotNote;
       return s;
     }
     var currentPlace = null, checkin = null, focusIndex = 0, scored = PLACES.map(function(p){ return {place:p, matches:[]}; });
@@ -2071,7 +2071,7 @@
         if(!selectedFilters.length){ fit.textContent="Pick a starting point, or open a category below."; }
         else {
           var fits=PLACES.filter(function(p){ return alignmentFor(p); }).length;
-          fit.textContent=selectedFilters.length+" picked · "+fits+" of "+PLACES.length+" places fit today. Tap “See places for today” when you are ready.";
+          fit.textContent=selectedFilters.length+" picked. "+fits+" of "+PLACES.length+" places fit today. Tap “See places for today” when you are ready.";
         }
       }
     }
@@ -2104,7 +2104,7 @@
         box.appendChild(b);
       });
       if(profiles && profiles.length){
-        var hp=document.createElement("h3"); hp.textContent="Your profiles — tap one to go straight to places"; box.appendChild(hp);
+        var hp=document.createElement("h3"); hp.textContent="Your profiles. Tap one to go straight to places"; box.appendChild(hp);
         profiles.forEach(function(prof){
           var b=document.createElement("button"); b.type="button"; b.className="quick-card";
           b.innerHTML="<strong>"+prof.name+"</strong><span>"+prof.filters.length+" filters, saved.</span>";
@@ -2165,7 +2165,7 @@
     $("skip-onboarding").addEventListener("click", function(){
       selectedFilters = []; activeFilters = new Set();
       priorityList.querySelectorAll("button").forEach(function(b){ b.setAttribute("aria-pressed","false"); });
-      $("priority-count").textContent = "Skipped — showing all places.";
+      $("priority-count").textContent = "Skipped. Showing all places.";
       renderTailored(); renderPlaces(); finishOnboarding();
     });
 
@@ -2184,8 +2184,8 @@
     }
     function renderTailored(){
       var box = $("tailored-chips"); box.innerHTML = "";
-      if(activeFilters.size === 0){ $("tailored-note").textContent = "No filters picked yet — showing all sample places."; renderSavePreview(); return; }
-      $("tailored-note").textContent = "Tailored for today — tap a filter to turn it off.";
+      if(activeFilters.size === 0){ $("tailored-note").textContent = "No filters picked yet. Showing all sample places."; renderSavePreview(); return; }
+      $("tailored-note").textContent = "Tailored for today. Tap a filter to turn it off.";
       Array.from(activeFilters).forEach(function(k){ var li=document.createElement("li"); li.appendChild(chipFor(k)); box.appendChild(li); });
       renderSavePreview();
     }
@@ -2294,6 +2294,8 @@
       } else {
         scored.sort(function(a,b){ return b.matches.length - a.matches.length || a.place.distKm - b.place.distKm; });
       }
+      var allH = $("all-places-h");
+      if(allH) allH.textContent = sortMode === "match" ? "All places, best match first" : "All places, nearest first";
       focusIndex = 0; renderFocus(); renderMap(); renderCompactList();
     }
     function setView(view){
@@ -2345,7 +2347,7 @@
       });
       var attrs = [];
       if(p.sound) attrs.push(p.sound);
-      if(p.lighting) attrs.push(p.lighting.split(" — ")[0]);
+      if(p.lighting) attrs.push(p.lighting.split(". ")[0]);
       if(p.crowding) attrs.push(p.crowding.split(",")[0]);
       attrs.forEach(function(a){ items += '<li>' + capFirst(a) + '</li>'; });
       if(!items) return "";
@@ -2542,7 +2544,7 @@
       var feels = document.createElement("section"); feels.className="ps-panel place-section"; feels.setAttribute("aria-label","How it feels right now");
       var fH=document.createElement("h3"); fH.textContent="How it feels right now"; feels.appendChild(fH);
       var fDl=document.createElement("dl"); fDl.className="detail-kv";
-      fDl.innerHTML = '<div><dt>Sound</dt><dd>'+p.soundLevel+' — '+p.sound+'</dd></div><div><dt>Light</dt><dd>'+p.lighting+'</dd></div><div><dt>Crowd</dt><dd>'+p.crowding+'</dd></div>';
+      fDl.innerHTML = '<div><dt>Sound</dt><dd>'+p.soundLevel+': '+p.sound+'</dd></div><div><dt>Light</dt><dd>'+p.lighting+'</dd></div><div><dt>Crowd</dt><dd>'+p.crowding+'</dd></div>';
       feels.appendChild(fDl);
       grid.appendChild(feels);
       /* Card 4 — Through the day, its own card: real counts, not
@@ -2700,7 +2702,7 @@
       if(!profiles.length){ ul.innerHTML="<li class='ps-muted'>No profiles saved yet.</li>"; if(typeof renderOnboardQuick==="function") renderOnboardQuick(); return; }
       profiles.forEach(function(prof, idx){
         var li=document.createElement("li");
-        li.textContent=prof.name+" — "+prof.filters.length+" filter(s): "+prof.filters.map(function(f){ return FILTER_LABELS[f]||f; }).join(", ")+" ";
+        li.textContent=prof.name+" ("+prof.filters.length+" filter"+(prof.filters.length===1?"":"s")+"): "+prof.filters.map(function(f){ return FILTER_LABELS[f]||f; }).join(", ")+" ";
         var apply=document.createElement("button"); apply.type="button"; apply.className="ps-btn ps-btn-secondary ps-btn-small"; apply.textContent="Use this profile";
         apply.addEventListener("click", function(){
           activeFilters=new Set(prof.filters); selectedFilters=prof.priorities||[];
@@ -2714,7 +2716,7 @@
       });
     }
     $("save-profile").addEventListener("click", function(){
-      if(!activeFilters.size){ $("profile-status").textContent="Pick at least one filter first — there is nothing to save yet."; return; }
+      if(!activeFilters.size){ $("profile-status").textContent="Pick at least one filter first. There is nothing to save yet."; return; }
       var name=$("profile-name").value.trim();
       if(!name){ $("profile-status").textContent="Give the profile a name first, e.g. “Quiet morning”."; return; }
       profiles.push({name:name, filters:Array.from(activeFilters), priorities:selectedFilters.slice(), saved:new Date().toISOString().slice(0,10)});
@@ -2726,7 +2728,7 @@
       renderCartInto(box, prep, {backToMenu:true, emptyText:"Nothing yet. Open a place and add a menu item."});
       var bl=$("bookmark-list"); bl.innerHTML="";
       if(!bookmarks.size) bl.innerHTML="<li class='ps-muted'>No places bookmarked yet.</li>";
-      Array.from(bookmarks).forEach(function(id){ var p=PLACES.find(function(x){ return x.id===id; }); if(p){ var li=document.createElement("li"); li.textContent=p.name+" — "+p.area; bl.appendChild(li); } });
+      Array.from(bookmarks).forEach(function(id){ var p=PLACES.find(function(x){ return x.id===id; }); if(p){ var li=document.createElement("li"); li.textContent=p.name+", "+p.area; bl.appendChild(li); } });
     }
     $("clear-prep").addEventListener("click", function(){ prep=[]; save("peerspect-prep-v1", prep); renderPrep(); });
     /* Your last visits, Nov 24 2026: was one comma-joined
@@ -2758,7 +2760,7 @@
       });
       groups.forEach(function(g){
         var wrap=document.createElement("div"); wrap.className="visit-group";
-        var gh=document.createElement("h4"); gh.textContent=g.place + " — " + g.list.length + (g.list.length===1 ? " visit" : " visits"); wrap.appendChild(gh);
+        var gh=document.createElement("h4"); gh.textContent=g.place + ": " + g.list.length + (g.list.length===1 ? " visit" : " visits"); wrap.appendChild(gh);
         g.list.forEach(function(v, i){ wrap.appendChild(visitCardEl(v, {mostRecent:i===0, showPlaceName:false})); });
         ul.appendChild(wrap);
       });
@@ -2815,7 +2817,7 @@
       if(typeof trust.crosschecks!=="number") trust.crosschecks=0;
       if(!trust.milestones) trust.milestones={};
       var b=$("trust-badge");
-      b.textContent = trust.confirmed>0 ? "Reliable observer — "+trust.confirmed+" confirmed report(s)" : "Reliable observer — not earned yet";
+      b.textContent = trust.confirmed>0 ? "Reliable observer: "+trust.confirmed+" confirmed report"+(trust.confirmed===1?"":"s") : "Reliable observer: not earned yet";
       var next = null;
       TRUST_MILESTONES.forEach(function(m){
         if(milestoneMet(m) && !trust.milestones[m.key]){ trust.milestones[m.key]=todayStr(); }
@@ -2823,7 +2825,7 @@
       });
       save("peerspect-trust-v1", trust);
       var sub=$("trust-sub");
-      var base="Your peer points so far: "+trust.confirmed+" confirmed report"+(trust.confirmed===1?"":"s")+" and "+trust.crosschecks+" peer cross-check"+(trust.crosschecks===1?"":"s")+". ";
+      var base="Your peer points: "+trust.confirmed+" confirmed report"+(trust.confirmed===1?"":"s")+" and "+trust.crosschecks+" peer cross-check"+(trust.crosschecks===1?"":"s")+". ";
       sub.textContent = next ? base+"Next milestone: "+next.name+" at "+next.reports+" confirmed report"+(next.reports===1?"":"s")+(next.crosschecks?" and "+next.crosschecks+" peer cross-check"+(next.crosschecks===1?"":"s"):"")+"."
                             : base+"All milestones accomplished.";
       var track=$("milestone-track"); track.innerHTML="";
@@ -2837,7 +2839,7 @@
         card.appendChild(icon);
         var h=document.createElement("h4"); h.textContent=m.name; card.appendChild(h);
         var need=document.createElement("p"); need.className="ps-muted";
-        need.textContent="Earns at "+m.reports+" confirmed report"+(m.reports===1?"":"s")+(m.crosschecks?" and "+m.crosschecks+" peer cross-check"+(m.crosschecks===1?"":"s"):"")+".";
+        need.textContent="Unlocks at "+m.reports+" confirmed report"+(m.reports===1?"":"s")+(m.crosschecks?" and "+m.crosschecks+" peer cross-check"+(m.crosschecks===1?"":"s"):"")+".";
         card.appendChild(need);
         var prog=document.createElement("p");
         prog.textContent = milestoneProgressText(m);
@@ -2856,8 +2858,8 @@
         }
         var status=document.createElement("p"); status.className="m-status";
         if(met) status.textContent="✓ Unlocked"+(trust.milestones[m.key] ? " on "+trust.milestones[m.key] : "");
-        else if(isNext) status.textContent="Next — "+milestoneDistance(m);
-        else status.textContent="Yet to unlock — "+milestoneDistance(m);
+        else if(isNext) status.textContent="Next: "+milestoneDistance(m);
+        else status.textContent="Yet to unlock: "+milestoneDistance(m);
         card.appendChild(status);
         track.appendChild(card);
       });
@@ -2965,7 +2967,7 @@
     hereSelect.addEventListener("change", function(){ startCheckin(); });
     function renderCheckinIntro(){
       var box=$("live-box");
-      box.innerHTML="<h3>Live check-in</h3><p class='ps-muted'>Pick a place above and the questions start right away. One question at a time, with answers that fit the question. Skip any question you like.</p>";
+      box.innerHTML="<h3>Live check-in</h3><p class='ps-muted'>Pick a place above. The questions start right away, one at a time. Skip any question you like.</p>";
     }
     /* "What did you get?" — the step after the check-in questions,
        Nov 24 2026. Prepped items are confirmed or denied one by
@@ -2986,7 +2988,7 @@
         prepped.forEach(function(g){
           var row=document.createElement("div"); row.className="log-item";
           var nm=document.createElement("p"); nm.style.margin="0 0 4px";
-          nm.innerHTML="<strong>"+g.item+(g.qty>1 ? " x"+g.qty : "")+"</strong> — "+g.price;
+          nm.innerHTML="<strong>"+g.item+(g.qty>1 ? " x"+g.qty : "")+"</strong>: "+g.price;
           row.appendChild(nm);
           if(g.note){ var on=document.createElement("p"); on.className="ps-muted"; on.style.margin="0 0 8px"; on.textContent="You asked for: "+g.note; row.appendChild(on); }
           var yn=document.createElement("div"); yn.className="rate-row";
@@ -3051,7 +3053,7 @@
           var row=document.createElement("div"); row.className="log-item";
           var check=document.createElement("label"); check.className="log-check";
           var cb=document.createElement("input"); cb.type="checkbox";
-          var cbText=document.createElement("span"); cbText.textContent=item.n+" — "+item.p;
+          var cbText=document.createElement("span"); cbText.textContent=item.n+": "+item.p;
           check.appendChild(cb); check.appendChild(cbText); row.appendChild(check);
           var detail=document.createElement("div"); detail.className="log-detail"; detail.hidden=true;
           var lab=document.createElement("label"); lab.textContent="How was it?";
@@ -3078,7 +3080,7 @@
       var saveBtn=document.createElement("button"); saveBtn.type="button"; saveBtn.className="ps-btn"; saveBtn.style.minHeight="44px"; saveBtn.textContent="Save what I got";
       saveBtn.addEventListener("click", function(){
         var undecided = rows.filter(function(r){ return r.kind==="prepped" && !r.row.dataset.decision; });
-        if(undecided.length){ hint.textContent="Confirm or deny each item from your order prep list first — Yes, I got this, or No, I did not get this."; return; }
+        if(undecided.length){ hint.textContent="First, say yes or no for each item in your order prep list."; return; }
         var items=[];
         rows.forEach(function(r){
           if(r.kind==="prepped"){
@@ -3100,7 +3102,7 @@
         checkin.got = items; checkin.gotDone = true; renderCheckin();
       });
       box.appendChild(saveBtn);
-      var skip=document.createElement("button"); skip.type="button"; skip.className="ps-btn ps-btn-secondary"; skip.style.minHeight="44px"; skip.textContent="Skip — nothing to log";
+      var skip=document.createElement("button"); skip.type="button"; skip.className="ps-btn ps-btn-secondary"; skip.style.minHeight="44px"; skip.textContent="Skip: nothing to log"
       skip.addEventListener("click", function(){ checkin.got=[]; checkin.gotDone=true; renderCheckin(); });
       box.appendChild(skip);
       var back=document.createElement("button"); back.type="button"; back.className="ps-btn ps-btn-secondary ps-btn-small"; back.textContent="Back";
@@ -3127,7 +3129,7 @@
           visits.push({place:p.name, placeId:p.id, date:todayStr(), answers:checkin.answers.slice(), rating:null, order:(checkin.got||[])});
           save("peerspect-visits-v1", visits); renderVisits();
         }
-        var done=document.createElement("p"); done.innerHTML="Thanks — that helps the next person. <span class='ps-badge'>Reliable observer</span>"; box.appendChild(done);
+        var done=document.createElement("p"); done.innerHTML="Thanks. That helps the next person. <span class='ps-badge'>Reliable observer</span>"; box.appendChild(done);
         var rateQ=document.createElement("p"); rateQ.innerHTML="<strong>How was it for you?</strong>"; box.appendChild(rateQ);
         var rateRow=document.createElement("div"); rateRow.className="rate-row";
         [["up","\uD83D\uDC4D Loved it"],["meh","\uD83D\uDE10 So-so"],["down","\uD83D\uDC4E Not for me"]].forEach(function(pair){
@@ -3143,12 +3145,12 @@
         });
         box.appendChild(rateRow);
         var rateNote=document.createElement("p"); rateNote.className="ps-muted"; rateNote.textContent="Only you see your rating."; box.appendChild(rateNote);
-        var note=document.createElement("p"); note.className="ps-muted"; note.textContent="You answered "+checkin.answers.length+" question(s). In this demo your report is counted locally, anonymously."; box.appendChild(note);
+        var note=document.createElement("p"); note.className="ps-muted"; note.textContent="You answered "+checkin.answers.length+" question"+(checkin.answers.length===1?"":"s")+". In this demo, your report is counted on this device only, anonymously."; box.appendChild(note);
         trust.reports+=1; trust.confirmed+=1; save("peerspect-trust-v1", trust); renderTrust();
         var again=document.createElement("button"); again.type="button"; again.className="ps-btn ps-btn-secondary"; again.textContent="Check in again";
         again.addEventListener("click", function(){ startCheckin(); }); box.appendChild(again); return;
       }
-      if(checkin.generic && checkin.step===0){ var gn=document.createElement("p"); gn.className="ps-muted"; gn.textContent="No filters picked for today, so these are general questions. Pick what matters today and the questions will match what you picked."; box.appendChild(gn); }
+      if(checkin.generic && checkin.step===0){ var gn=document.createElement("p"); gn.className="ps-muted"; gn.textContent="No filters picked for today, so these are general questions. Pick filters for today and the questions will match them."; box.appendChild(gn); }
       var prog=document.createElement("p"); prog.className="ps-muted"; prog.textContent="Question "+(checkin.step+1)+" of "+checkin.questions.length; box.appendChild(prog);
       var current = checkin.questions[checkin.step];
       /* Nov 23 2026: "still" questions only make sense with the
@@ -3227,7 +3229,7 @@
       (p.day||[]).forEach(function(d){
         html+="<div class='biz-day-item'><strong>"+d[0]+"</strong><p class='ps-muted'>"+d[1]+"</p></div>";
       });
-      html+="</div><h3 style='margin-top:20px;'>What you will hear</h3><p class='ps-muted'>"+(p.soundLevel||"")+" — "+p.sound+"</p><ul class='biz-hear'>";
+      html+="</div><h3 style='margin-top:20px;'>What you will hear</h3><p class='ps-muted'>"+(p.soundLevel||"")+": "+p.sound+"</p><ul class='biz-hear'>";
       (p.soundSources||[]).forEach(function(s){ html+="<li>"+s+"</li>"; });
       html+="</ul></div>";
       /* AI suggestions, built from the numbers above, not generic. */
@@ -3251,7 +3253,7 @@
       html+="</div>";
       html+="<p class='ps-muted'>Private and anonymous. No individual report, name, or visit is shown here.</p>";
       $("biz-body").innerHTML=html;
-      $("biz-raw").textContent="Demo counts for "+p.name+": "+p.confirmed+" peer confirmations in total. Rings and percentages above are illustrative sample data, not real data.";
+      $("biz-raw").textContent="Demo counts for "+p.name+": "+p.confirmed+" peer confirmations in total. The rings and percentages above are sample data, not real data.";
     }
     bizSelect.addEventListener("change", renderBiz);
 
@@ -3260,7 +3262,7 @@
     $("skip-landing").addEventListener("click", function(){
       selectedFilters = []; activeFilters = new Set();
       priorityList.querySelectorAll("button").forEach(function(b){ b.setAttribute("aria-pressed","false"); });
-      $("priority-count").textContent = "Skipped — showing all places.";
+      $("priority-count").textContent = "Skipped. Showing all places.";
       renderTailored(); renderPlaces(); finishOnboarding();
     });
 

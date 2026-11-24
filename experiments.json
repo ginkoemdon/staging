@@ -18,7 +18,7 @@
       "name": "peerspect-landing",
       "branch": "experiment/peerspect-landing",
       "description": "PEERSPECT landing: centred pillar tags, bigger logo",
-      "upstream_sha": "d23948fb5c32b32ab3233645ed997413f7b51008",
+      "upstream_sha": "0a5de8c70658db497e1427a614ff97be695c78fb",
       "staged": "2026-11-23"
     }
   ],
