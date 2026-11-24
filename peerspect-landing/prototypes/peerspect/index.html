@@ -569,6 +569,25 @@
     .dots button::after { content:""; width:10px; height:10px; border-radius:50%; border:2px solid var(--teal); background:var(--card); box-sizing:border-box; }
     .dots button[aria-current="true"]::after { background:var(--teal); width:12px; height:12px; }
     .dots button:focus-visible { outline:3px solid var(--focus); outline-offset:2px; border-radius:8px; }
+    /* Bookmark polish, Nov 24 2026: the old toggle rebuilt the
+       whole card or place page on every tap, so it flashed and
+       jumped, and the button changed width as Bookmark became
+       Bookmarked. Now the button updates in place: a fixed
+       width, so nothing shifts; the star gives a small pop when
+       it fills; and a short toast confirms where it went. The
+       word and aria-pressed stay, so it is still clear without
+       colour alone, and the pop and toast both switch off under
+       reduced motion. */
+    .bm-btn { min-width:152px; }
+    .bm-btn .bm-star { display:inline-block; }
+    /* The pop runs only on a tap, via the .pop class, so a
+       bookmarked place does not pop again every time its card
+       is drawn. */
+    .bm-btn.pop .bm-star { animation:bm-pop .28s ease; }
+    @keyframes bm-pop { 0% { transform:scale(.5); } 60% { transform:scale(1.3); } 100% { transform:scale(1); } }
+    .bm-toast { position:fixed; left:50%; bottom:92px; transform:translate(-50%, 8px); background:var(--ink); color:var(--card); border-radius:999px; padding:10px 18px; font-size:.9rem; font-weight:700; box-shadow:0 4px 14px rgba(0,0,0,.3); opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease; z-index:50; max-width:90vw; text-align:center; }
+    .bm-toast.show { opacity:1; transform:translate(-50%, 0); }
+    @media (prefers-reduced-motion: reduce) { .bm-btn.pop .bm-star { animation:none; } .bm-toast { transition:none; } }
     .step { display:flex; gap:12px; align-items:center; justify-content:space-between; }
     .step .ps-btn { flex:0 0 auto; }
     [hidden] { display:none !important; }
@@ -1714,6 +1733,7 @@
       <button type="button" data-screen="here"><span class="ico" aria-hidden="true">◉</span><span class="nav-label">I'm here</span></button>
       <button type="button" data-screen="business"><span class="ico" aria-hidden="true">▦</span><span class="nav-label">Business</span></button>
     </nav>
+    <div class="bm-toast" id="bm-toast" role="status" aria-live="polite"></div>
   </div>
   </div>
   </div>
@@ -2513,14 +2533,10 @@
         '<ul class="ps-tags">' + shownTags.map(function(t){ return '<li class="'+tagClass(t)+'">'+(FILTER_LABELS[t]||t)+'</li>'; }).join("") + '</ul>' +
         '<p class="ps-muted">Confirmed by ' + p.confirmed + ' peers · Anonymous</p>' +
         '<div class="focus-actions"><button class="ps-btn" id="focus-open" type="button">Open place</button>' +
-        '<button class="ps-btn ps-btn-secondary" id="focus-bm" type="button">' + (bookmarks.has(p.id)?"★ Bookmarked":"☆ Bookmark") + '</button></div>';
+        '<button class="ps-btn ps-btn-secondary bm-btn' + (bookmarks.has(p.id)?" is-on":"") + '" id="focus-bm" type="button"><span class="bm-star" aria-hidden="true">' + (bookmarks.has(p.id)?"★":"☆") + '</span> ' + (bookmarks.has(p.id)?"Bookmarked":"Bookmark") + '</button></div>';
       $("focus-open").addEventListener("click", function(){ showPlace(p.id); });
-      $("focus-bm").setAttribute("aria-pressed", bookmarks.has(p.id) ? "true" : "false");
-      $("focus-bm").addEventListener("click", function(){
-        if(bookmarks.has(p.id)) bookmarks.delete(p.id); else bookmarks.add(p.id);
-        save("peerspect-bookmarks-v1", Array.from(bookmarks)); renderPrep(); renderFocus();
-        var nb = $("focus-bm"); if(nb) nb.focus({preventScroll:true});
-      });
+      paintBmBtn($("focus-bm"), bookmarks.has(p.id));
+      $("focus-bm").addEventListener("click", function(){ toggleBookmark(p.id, $("focus-bm")); });
       $("place-count").textContent = (focusIndex+1) + " of " + scored.length;
       dots.innerHTML = "";
       scored.forEach(function(_, i){
@@ -2775,15 +2791,29 @@
         body.appendChild(vt);
       }
       var foot = $("place-foot"); foot.innerHTML = "";
-      var bm=document.createElement("button"); bm.type="button"; bm.className="ps-btn ps-btn-secondary"; bm.textContent=bookmarks.has(p.id)?"★ Bookmarked":"☆ Bookmark";
-      bm.setAttribute("aria-pressed", bookmarks.has(p.id)?"true":"false");
-      bm.addEventListener("click", function(){ if(bookmarks.has(p.id)) bookmarks.delete(p.id); else bookmarks.add(p.id); save("peerspect-bookmarks-v1", Array.from(bookmarks)); renderPrep(); showPlace(p.id); });
+      var bm=document.createElement("button"); bm.type="button"; bm.className="ps-btn ps-btn-secondary bm-btn"; paintBmBtn(bm, bookmarks.has(p.id));
+      bm.addEventListener("click", function(){ toggleBookmark(p.id, bm); });
       var here=document.createElement("button"); here.type="button"; here.className="ps-btn"; here.textContent="I'm here, check in";
       here.addEventListener("click", function(){ $("here-place").value=p.id; showScreen("here"); startCheckin(); });
       foot.appendChild(here); foot.appendChild(bm);
       showScreen("place");
     }
     $("back-to-discover").addEventListener("click", function(){ showScreen("discover"); });
+
+    /* Bookmark polish helpers, Nov 24 2026: paint one bookmark
+       button in place, and show a short toast, instead of
+       rebuilding the card or page on every tap. */
+    var bmToastTimer = null;
+    function showBmToast(msg){ var t=$("bm-toast"); if(!t) return; t.textContent=msg; t.classList.add("show"); if(bmToastTimer) clearTimeout(bmToastTimer); bmToastTimer=setTimeout(function(){ t.classList.remove("show"); }, 2600); }
+    function paintBmBtn(btn, on){ btn.innerHTML='<span class="bm-star" aria-hidden="true">'+(on?"★":"☆")+'</span> '+(on?"Bookmarked":"Bookmark"); btn.setAttribute("aria-pressed", on?"true":"false"); btn.classList.toggle("is-on", on); }
+    function toggleBookmark(placeId, btn){
+      var on;
+      if(bookmarks.has(placeId)){ bookmarks.delete(placeId); on=false; } else { bookmarks.add(placeId); on=true; }
+      save("peerspect-bookmarks-v1", Array.from(bookmarks)); renderPrep();
+      paintBmBtn(btn, on);
+      if(on){ btn.classList.add("pop"); setTimeout(function(){ btn.classList.remove("pop"); }, 320); showBmToast("Bookmarked. Find it in Saved."); }
+      else { showBmToast("Bookmark removed."); }
+    }
 
     /* Saved */
     function renderProfiles(){
