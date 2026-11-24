@@ -531,7 +531,14 @@
     #view-app .ps-btn-secondary { background:var(--soft); color:var(--teal-dark); border:1px solid var(--line); box-shadow:none; }
     #view-app .screen-foot .ps-btn-secondary { background:none; border:0; box-shadow:none; text-decoration:underline; font-weight:600; }
     #view-app .ps-btn-small { padding:10px 14px; min-height:40px; }
-    #view-app .ps-chip { border:1.5px solid var(--line); border-radius:12px; padding:9px 13px; min-height:40px; font-weight:500; transition:transform .12s ease, background .15s ease; }
+    /* Choosing chips match the card tags, Nov 24 2026: same oval pill,
+       same neutral background/border/dark text, same small group-colour
+       dot inside (see dot rules after the uniform tag block). The old
+       rectangle (12px radius) and solid per-group pressed colours are
+       gone, so a chip looks the same in onboarding, in Filters and
+       sort, and on a place card. Pressed stays clear without colour:
+       tick + bold + 3px border/outline (line 714). */
+    #view-app .ps-chip { display:inline-flex; align-items:center; gap:6px; background:var(--tag-bg); border:1px solid var(--line); color:var(--ink); border-radius:999px; padding:11px 14px; min-height:44px; font-size:.9rem; font-weight:500; transition:transform .12s ease, background .15s ease; }
     #view-app .ps-chip:active { transform:scale(.97); }
     #view-app .ps-card, #view-app .ps-panel { border-radius:20px; padding:16px; border:1px solid var(--line); box-shadow:0 1px 3px rgba(26,43,38,.08); }
     #view-app .ps-answer { border-radius:14px; padding:14px 16px; min-height:48px; border-width:1.5px; }
@@ -567,16 +574,15 @@
        #14665a, Context amber #8a4a08. Inclusion reuses the teal-tint
        #8ecdc0 (the lightest, most open colour) and Menu reuses pine
        (Access), so no new brand colour is invented. The same
-       mapping is used for the group left borders, the pressed
-       chips (here, by data-group, so it covers onboarding chips
-       and the Discover tailored / all-filters chips alike), the
-       landing pillar tags and the place-card tags. Honey and
-       teal-tint always take dark text #372c1f, never white:
-       white on honey is 1.68:1 and white on teal-tint is 1.80:1.
-       The tick and 3px border/outline on pressed chips stay, so
-       selection is never colour alone. Literal hexes are used
-       (not var(--teal) etc.) so the dark-mode teal override
-       cannot flatten the group colours; these #view-app rules
+       mapping is used for the group left borders, the small
+       group-colour dot inside each chip and tag, the landing
+       pillar tags and the place-card tags. Pressed chips stay
+       the same neutral pill as unpressed ones: the tick and
+       3px border/outline on pressed chips stay, so selection
+       is never colour alone, and no solid per-group colour
+       returns. Literal hexes are used for the group left
+       borders (not var(--teal) etc.) so the dark-mode teal
+       override cannot flatten them; these #view-app rules
        also outrank it. */
     #view-app .onboard-group[data-group="access"] summary { border-left:6px solid #2f5d3e; border-radius:12px 0 0 12px; }
     #view-app .onboard-group[data-group="sensory"] summary { border-left:6px solid #f2c14e; border-radius:12px 0 0 12px; }
@@ -584,12 +590,11 @@
     #view-app .onboard-group[data-group="context"] summary { border-left:6px solid #8a4a08; border-radius:12px 0 0 12px; }
     #view-app .onboard-group[data-group="inclusion"] summary { border-left:6px solid #8ecdc0; border-radius:12px 0 0 12px; }
     #view-app .onboard-group[data-group="menu"] summary { border-left:6px solid #2f5d3e; border-radius:12px 0 0 12px; }
-    #view-app .ps-chip[data-group="access"][aria-pressed="true"] { background:#2f5d3e; border-color:#2f5d3e; color:#fff; }
-    #view-app .ps-chip[data-group="sensory"][aria-pressed="true"] { background:#f2c14e; border-color:#f2c14e; color:#372c1f; }
-    #view-app .ps-chip[data-group="environment"][aria-pressed="true"] { background:#14665a; border-color:#14665a; color:#fff; }
-    #view-app .ps-chip[data-group="context"][aria-pressed="true"] { background:#8a4a08; border-color:#8a4a08; color:#fff; }
-    #view-app .ps-chip[data-group="inclusion"][aria-pressed="true"] { background:#8ecdc0; border-color:#8ecdc0; color:#372c1f; }
-    #view-app .ps-chip[data-group="menu"][aria-pressed="true"] { background:#2f5d3e; border-color:#2f5d3e; color:#fff; }
+    /* Pressed chips stay the same neutral pill as unpressed ones,
+       Nov 24 2026: no solid per-group colour. The tick, bold text
+       and 3px border/outline (line 714) are what mark a pressed chip. */
+    #view-app .ps-chip[aria-pressed="true"] { background:var(--tag-bg); border-color:var(--line); color:var(--ink); font-weight:700; }
+    #view-app .ps-chip[data-group="access"][aria-pressed="true"], #view-app .ps-chip[data-group="sensory"][aria-pressed="true"], #view-app .ps-chip[data-group="environment"][aria-pressed="true"], #view-app .ps-chip[data-group="context"][aria-pressed="true"], #view-app .ps-chip[data-group="inclusion"][aria-pressed="true"], #view-app .ps-chip[data-group="menu"][aria-pressed="true"] { background:var(--tag-bg); border-color:var(--line); color:var(--ink); font-weight:700; }
     /* Nov 23 2026: active tab is a 4px teal top bar, NOT honey.
        Honey #f2c14e on warm white is 1.62:1, below the 3:1
        non-text contrast bar, and colour alone is not enough. */
@@ -775,6 +780,15 @@
     #view-app .ps-tags li.tag-context .tag-dot, #view-app .ps-tags span.tag-context .tag-dot { background:var(--amber); }
     #view-app .ps-tags li.tag-inclusion .tag-dot, #view-app .ps-tags span.tag-inclusion .tag-dot { background:var(--teal-tint); }
     #view-app .ps-tags li.tag-menu .tag-dot, #view-app .ps-tags span.tag-menu .tag-dot { background:var(--pine); }
+    /* Choosing chips carry the same dot as the card tags, Nov 24 2026:
+       same per-group colours, same theme variables, so the dot stays
+       visible in dark mode too. */
+    #view-app .ps-chip[data-group="access"] .tag-dot { background:var(--pine); }
+    #view-app .ps-chip[data-group="sensory"] .tag-dot { background:var(--honey); }
+    #view-app .ps-chip[data-group="environment"] .tag-dot { background:var(--teal); }
+    #view-app .ps-chip[data-group="context"] .tag-dot { background:var(--amber); }
+    #view-app .ps-chip[data-group="inclusion"] .tag-dot { background:var(--teal-tint); }
+    #view-app .ps-chip[data-group="menu"] .tag-dot { background:var(--pine); }
     #view-app .discover-filters { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:12px 16px; }
     #view-app .discover-filters summary { font-weight:700; color:var(--teal-dark); min-height:44px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; list-style:none; }
     #view-app .discover-filters summary::-webkit-details-marker { display:none; }
@@ -1631,7 +1645,9 @@
         var ul = document.createElement("ul"); ul.className = "ps-chips wrap";
         sub.keys.forEach(function(key){
           var li = document.createElement("li");
-          var b = document.createElement("button"); b.type="button"; b.className="ps-chip"; b.textContent=FILTER_LABELS[key]||key; b.setAttribute("aria-pressed","false"); b.dataset.filter=key; b.dataset.group=g.name.toLowerCase();
+          var b = document.createElement("button"); b.type="button"; b.className="ps-chip"; b.setAttribute("aria-pressed","false"); b.dataset.filter=key; b.dataset.group=g.name.toLowerCase();
+          var dot=document.createElement("span"); dot.className="tag-dot"; dot.setAttribute("aria-hidden","true"); b.appendChild(dot);
+          b.appendChild(document.createTextNode(FILTER_LABELS[key]||key));
           b.addEventListener("click", function(){
             var i = selectedFilters.indexOf(key);
             if(i >= 0){ selectedFilters.splice(i,1); b.setAttribute("aria-pressed","false"); }
@@ -1661,7 +1677,9 @@
 
     /* Filters */
     function chipFor(key){
-      var b = document.createElement("button"); b.type="button"; b.className="ps-chip"; b.textContent=FILTER_LABELS[key]||key;
+      var b = document.createElement("button"); b.type="button"; b.className="ps-chip";
+      var dot=document.createElement("span"); dot.className="tag-dot"; dot.setAttribute("aria-hidden","true"); b.appendChild(dot);
+      b.appendChild(document.createTextNode(FILTER_LABELS[key]||key));
       b.dataset.group = GROUP_FOR_KEY[key] || "";
       b.setAttribute("aria-pressed", activeFilters.has(key)?"true":"false");
       b.addEventListener("click", function(){
