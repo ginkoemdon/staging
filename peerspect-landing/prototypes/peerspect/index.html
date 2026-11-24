@@ -244,6 +244,10 @@
     .ps-muted { color:var(--muted); font-size:.95rem; }
     .ps-chips { display:flex; gap:8px; list-style:none; padding:4px 0; margin:8px 0 12px; overflow-x:auto; scrollbar-width:thin; }
     .ps-chips.wrap { flex-wrap:wrap; overflow-x:visible; }
+    /* Selected filters for today, Nov 23 2026: they sat in one
+       row with horizontal scroll, so they looked squished.
+       They now wrap onto a second line (and more) instead. */
+    #tailored-chips, .discover-filters .ps-chips { flex-wrap:wrap; overflow-x:visible; }
     /* Onboarding groups: a category first, its filters inside.
        Closed by default except the first, so the list stays short. */
     /* Onboarding quick start, Nov 23 2026: the old page was a
@@ -272,7 +276,10 @@
     .ps-chip { flex:0 0 auto; border:2px solid var(--muted); background:var(--card); color:var(--ink); border-radius:999px; padding:12px 16px; min-height:44px; }
     .ps-chip[aria-pressed="true"] { background:var(--teal); border-color:var(--teal); color:#fff; font-weight:700; }
     .ps-card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; }
-    .ps-match { display:inline-block; background:var(--soft); color:var(--teal-dark); border-radius:999px; padding:.2rem .7rem; font-weight:700; font-size:.9rem; }
+    /* No ovals for fit emphasis, Nov 23 2026: the pill/oval around
+       fit text looked dated. Fit is now plain bold teal text with
+       a tick, no background, border or rounded bubble. */
+    .ps-match { display:inline-block; background:none; color:var(--teal-dark); padding:0; font-weight:700; font-size:.9rem; }
     .ps-tags { display:flex; flex-wrap:wrap; gap:8px; list-style:none; padding:0; margin:12px 0; }
     .ps-tags li { background:var(--tag-bg); border-radius:999px; padding:4px 12px; font-size:.9rem; }
     .ps-kv { display:grid; gap:8px; margin:12px 0; }
@@ -317,6 +324,10 @@
     .ps-bar span { display:block; height:100%; background:var(--teal); }
     .ps-badge { display:inline-block; background:var(--amber-bg); border:2px solid #8a4a08; color:var(--amber-ink); border-radius:999px; padding:.25rem .75rem; font-weight:700; }
     .ps-input { padding:12px 16px; border:2px solid var(--muted); border-radius:12px; font:inherit; width:100%; min-height:44px; background:var(--card); color:var(--ink); }
+    /* Sort select, Nov 23 2026: a native select can lose its arrow
+       under app styling, so it gets an explicit chevron, so it
+       always reads as a dropdown selector. */
+    select.ps-input { appearance:none; -webkit-appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%2314665a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 16px center; background-size:14px 9px; padding-right:44px; cursor:pointer; }
     .ps-answer { display:block; width:100%; text-align:left; background:var(--card); border:2px solid var(--teal); color:var(--teal-dark); border-radius:12px; padding:16px; margin:8px 0; font-weight:700; min-height:52px; }
     .ps-answer:hover { background:var(--soft); }
     .ps-panel { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; margin-bottom:20px; }
@@ -334,7 +345,7 @@
     /* White-on-white fix, Nov 23 2026: these used hard-coded pale
        backgrounds, so in dark mode the white text sat on near-white.
        They now use --soft, pale in light mode, dark teal in dark. */
-    .align-badge { display:inline-block; background:var(--soft); border:2px solid var(--teal); color:var(--teal-dark); border-radius:999px; padding:.3rem .8rem; font-weight:700; font-size:.95rem; margin-bottom:.4rem; }
+    .align-badge { display:inline; background:none; border:0; color:var(--teal-dark); padding:0; font-weight:700; font-size:.95rem; }
     /* "This fits today" section on the place cards, styled Nov 23 2026:
        the fit verdict was getting lost as a plain white box with a
        muted grey summary line. Now it reads as its own section:
@@ -347,7 +358,7 @@
        (.align-line), not a pill, so it never wraps inside a bubble. */
     .align-card { background:var(--card); border:1px solid var(--line); border-left:6px solid var(--teal); border-radius:16px; padding:16px 20px; margin:16px 0; box-shadow:0 1px 3px rgba(26,43,38,.08); }
     .align-card h4 { margin:0 0 .25rem; color:var(--teal-dark); font-size:1.05rem; display:flex; justify-content:space-between; gap:12px; align-items:baseline; }
-    .align-card .align-count { flex:0 0 auto; background:var(--soft); border:2px solid var(--teal); color:var(--teal-dark); border-radius:999px; padding:.15rem .65rem; font-weight:700; font-size:.85rem; white-space:nowrap; }
+    .align-card .align-count { flex:0 0 auto; background:none; border:0; color:var(--teal-dark); padding:0; font-weight:700; font-size:.85rem; white-space:nowrap; }
     .align-card ul { list-style:none; padding:0; margin:.5rem 0 0; display:grid; gap:10px; }
     .align-card li { display:flex; gap:10px; align-items:baseline; }
     .align-card li .align-yes { font-weight:700; color:var(--teal-dark); }
@@ -356,7 +367,16 @@
     .align-card .align-dot.yes { background:#2f5d3e; }
     .align-card .align-dot.no { background:var(--line); border:1px solid var(--muted); }
     .align-card .align-summary { margin:.75rem 0 0; padding-top:.75rem; border-top:1px solid var(--line); font-weight:700; color:var(--teal-dark); }
-    .align-line { display:block; margin-top:.5rem; font-weight:700; color:var(--teal-dark); }
+    .align-line { display:block; margin-top:.5rem; font-weight:600; color:var(--teal-dark); }
+    .align-line::before { content:"\2713  "; font-weight:700; }
+    /* Filters and sort bar, Nov 23 2026: it is a <details> but the
+       native marker was hidden by display:flex, so it read as a
+       plain heading. Now it shows a chevron on the right that
+       rotates when open, so it reads as a dropdown selector. */
+    .discover-filters summary { font-weight:700; color:var(--teal-dark); min-height:44px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; list-style:none; }
+    .discover-filters summary::-webkit-details-marker { display:none; }
+    .discover-filters summary::after { content:"\25BE"; font-size:1.25rem; line-height:1; color:var(--teal-dark); flex:0 0 auto; transition:transform .15s ease; }
+    .discover-filters[open] summary::after { transform:rotate(180deg); }
     .ps-card.align-good { border:2px solid var(--teal); background:var(--soft); box-shadow:0 4px 14px rgba(11,94,84,.12); }
     .dist-line { font-weight:700; color:var(--teal-dark); margin:.4rem 0; }
     /* Map / List toggle */
@@ -473,7 +493,7 @@
     #view-app #focus-card .ps-muted { margin:.5rem 0; }
     #view-app .align-card { background:var(--card); border:1px solid var(--line); border-left:6px solid var(--teal); border-radius:16px; padding:16px 20px; margin:16px 0; box-shadow:0 1px 3px rgba(26,43,38,.08); }
     #view-app .align-card h4 { margin:0 0 .25rem; color:var(--teal-dark); font-size:1.05rem; display:flex; justify-content:space-between; gap:12px; align-items:baseline; }
-    #view-app .align-card .align-count { flex:0 0 auto; background:var(--soft); border:2px solid var(--teal); color:var(--teal-dark); border-radius:999px; padding:.15rem .65rem; font-weight:700; font-size:.85rem; white-space:nowrap; }
+    #view-app .align-card .align-count { flex:0 0 auto; background:none; border:0; color:var(--teal-dark); padding:0; font-weight:700; font-size:.85rem; white-space:nowrap; }
     #view-app .align-card ul { list-style:none; padding:0; margin:.5rem 0 0; display:grid; gap:10px; }
     #view-app .align-card li { display:flex; gap:10px; align-items:baseline; }
     #view-app .align-card li .align-yes { font-weight:700; color:var(--teal-dark); }
@@ -482,7 +502,8 @@
     #view-app .align-card .align-dot.yes { background:#2f5d3e; }
     #view-app .align-card .align-dot.no { background:var(--line); border:1px solid var(--muted); }
     #view-app .align-card .align-summary { margin:.75rem 0 0; padding-top:.75rem; border-top:1px solid var(--line); font-weight:700; color:var(--teal-dark); }
-    #view-app .align-line { display:block; margin-top:.5rem; font-weight:700; color:var(--teal-dark); }
+    #view-app .align-line { display:block; margin-top:.5rem; font-weight:600; color:var(--teal-dark); }
+    #view-app .align-line::before { content:"\2713  "; font-weight:700; }
     /* Responsive web app, Nov 23 2026: the prototype adapts to
        what you open it on. On a phone it stays the phone app,
        max 560px, one column, bottom nav. On a laptop / wide
@@ -598,7 +619,10 @@
     #view-app .ps-tags li.tag-env { background:#2f5d3e; border-color:#2f5d3e; color:#fff; font-weight:700; }
     #view-app .ps-tags li.tag-context { background:#8a4a08; border-color:#8a4a08; color:#fff; font-weight:700; }
     #view-app .discover-filters { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:12px 16px; }
-    #view-app .discover-filters summary { font-weight:700; color:var(--teal-dark); min-height:44px; display:flex; align-items:center; cursor:pointer; }
+    #view-app .discover-filters summary { font-weight:700; color:var(--teal-dark); min-height:44px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; list-style:none; }
+    #view-app .discover-filters summary::-webkit-details-marker { display:none; }
+    #view-app .discover-filters summary::after { content:"\25BE"; font-size:1.25rem; line-height:1; color:var(--teal-dark); flex:0 0 auto; transition:transform .15s ease; }
+    #view-app .discover-filters[open] summary::after { transform:rotate(180deg); }
     #view-app .compact-list li strong { color:var(--teal-dark); }
     @media (prefers-reduced-motion: reduce) { #view-app .screen { animation:none; } #view-app .ps-btn, #view-app .ps-chip { transition:none; } }
 
@@ -1058,7 +1082,7 @@
               <option value="distance" selected>Nearest first</option>
               <option value="match">Best match first</option>
             </select>
-            <ul class="ps-chips" id="tailored-chips" aria-label="Your filters for today"></ul>
+            <ul class="ps-chips wrap" id="tailored-chips" aria-label="Your filters for today"></ul>
             <button class="ps-btn ps-btn-secondary ps-btn-small" id="toggle-all-filters" type="button" aria-expanded="false">See all filters</button>
             <div id="all-filters" hidden></div>
           </details>
