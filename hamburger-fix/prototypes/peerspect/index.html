@@ -27,7 +27,7 @@
     :root {
       --teal:#14665a; --teal-dark:#0e4a40; --pine:#2f5d3e; --honey:#f2c14e; --honey-light:#f6cf6e;
       --amber:#8a4a08; --amber-bg:#fdf0d8; --amber-ink:#8a4a08;
-      --ink:#1a2b26; --muted:#3f5148; --bg:#f4f1ea; --card:#fffefa; --line:#c9c1ac;
+      --ink:#1a2b26; --muted:#3f5148; --muted-soft:#5f7268; --bg:#f4f1ea; --card:#fffefa; --line:#c9c1ac;
       --line-soft:#e9e4d6; --soft:#e9f0ea; --tag-bg:#f1eee6; --track:#e9e4d6; --map-bg:#eef3ec;
       --card-shadow:0 2px 10px rgba(26,43,38,.10);
       --teal-tint:#8ecdc0; --focus:#14665a; --danger:#b3261e;
@@ -40,7 +40,7 @@
     html[data-theme="dark"] {
       --teal:#8ecdc0; --teal-dark:#fdfbf7; --pine:#a8c9a8; --honey:#f6cf6e; --honey-light:#f6cf6e;
       --amber:#f6cf6e; --amber-bg:#214f45; --amber-ink:#f6cf6e;
-      --ink:#fdfbf7; --muted:#d5e6de; --bg:#14201d; --card:#243530; --line:#47645a;
+      --ink:#fdfbf7; --muted:#d5e6de; --muted-soft:#a9c4b6; --bg:#14201d; --card:#243530; --line:#47645a;
       --line-soft:#2f453d; --soft:#2a3f38; --tag-bg:#2a3f38; --track:#2f453d; --map-bg:#1d2f2a;
       --card-shadow:0 2px 10px rgba(0,0,0,.30);
       --teal-tint:#8ecdc0; --focus:#f6cf6e; --danger:#ffb3ab;
@@ -49,7 +49,7 @@
       html:not([data-theme="light"]) {
         --teal:#8ecdc0; --teal-dark:#fdfbf7; --pine:#a8c9a8; --honey:#f6cf6e; --honey-light:#f6cf6e;
         --amber:#f6cf6e; --amber-bg:#214f45; --amber-ink:#f6cf6e;
-        --ink:#fdfbf7; --muted:#d5e6de; --bg:#14201d; --card:#243530; --line:#47645a;
+        --ink:#fdfbf7; --muted:#d5e6de; --muted-soft:#a9c4b6; --bg:#14201d; --card:#243530; --line:#47645a;
         --line-soft:#2f453d; --soft:#2a3f38; --tag-bg:#2a3f38; --track:#2f453d; --map-bg:#1d2f2a;
         --card-shadow:0 2px 10px rgba(0,0,0,.30);
         --teal-tint:#8ecdc0; --focus:#f6cf6e; --danger:#ffb3ab;
@@ -742,7 +742,7 @@
     .align-line::before { content:"\2713  "; font-weight:700; }
     /* Match score + oval tags, Nov 23 2026: "5 of 5" in bold teal,
        then the matched filters as eye-grabbing oval tags. */
-    .match-score { display:inline-flex; align-items:center; gap:6px; font-weight:800; font-size:1.1rem; color:var(--teal-dark); white-space:nowrap; }
+    .match-score { display:inline-flex; align-items:center; gap:6px; font-weight:800; font-size:1.1rem; color:var(--teal); white-space:nowrap; }
     .match-tags { margin:.5rem 0; }
     .match-tags li, .match-tags span[role="listitem"] { font-weight:700; }
     .ps-tags span[role="listitem"] { border-radius:999px; padding:4px 12px; font-size:.9rem; background:var(--tag-bg); }
@@ -767,7 +767,7 @@
     .discover-filters summary::after { content:"\25BE"; font-size:1.25rem; line-height:1; color:var(--teal-dark); flex:0 0 auto; transition:transform .15s ease; }
     .discover-filters[open] summary::after { transform:rotate(180deg); }
     .ps-card.align-good { border:2px solid var(--teal); background:var(--soft); box-shadow:0 4px 14px rgba(11,94,84,.12); }
-    .dist-line { font-weight:700; color:var(--teal-dark); margin:.4rem 0; }
+    .dist-line { font-weight:700; color:var(--muted); margin:.4rem 0; }
     /* Map / List toggle */
     .view-toggle { display:flex; background:var(--line-soft); border-radius:999px; padding:4px; gap:4px; margin:12px 0 16px; }
     .view-toggle button { flex:1; border:0; background:none; border-radius:999px; padding:.55rem .5rem; font-weight:700; min-height:44px; color:var(--muted); display:inline-flex; align-items:center; justify-content:center; gap:6px; }
@@ -887,6 +887,53 @@
        area, and the matched oval tags when the place matches
        today. The button styling stays from ?v=16. */
     .compact-list .card-open { background:none; border:0; text-align:left; width:100%; padding:0; font:inherit; color:var(--ink); cursor:pointer; display:block; }
+    /* All places, Nov 24 2026: framed side-scroll, not a bare row.
+       With 12 places the vertical stack made Discover a very
+       long scroll. The list is now one horizontal row inside a
+       clean rounded frame, so it reads as one contained unit:
+       heading and Prev/Next controls on top, cards scrolling
+       sideways inside, a fade at the edge that still has more,
+       and a visible thin scrollbar. Swipe on mobile, arrows
+       and keyboard on desktop. The Map side list keeps its
+       vertical stack. Cards keep everything they had: match,
+       distance top-right, type and area, tags, tap to open.
+       Card type is nuanced, not loud: name darkest and bold,
+       match line teal, distance muted grey, secondary details
+       a softer grey. All AA on the card in light and dark
+       (muted 8.4/10.0, muted-soft 5.1/6.9, teal 6.8/7.2). */
+    #view-app .all-places-frame { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:16px; box-shadow:0 1px 3px rgba(26,43,38,.08); margin:12px 0; }
+    #view-app .all-places-head { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    #view-app .all-places-head h3 { margin:0; min-width:0; }
+    #view-app .all-places-nav { display:flex; gap:8px; flex:0 0 auto; }
+    #view-app .all-places-nav button { width:44px; height:44px; min-width:44px; border-radius:999px; border:1px solid var(--line); background:var(--card); color:var(--teal-dark); font-size:1.1rem; font-weight:700; cursor:pointer; padding:0; }
+    #view-app .all-places-nav button:hover:not(:disabled) { background:var(--soft); }
+    #view-app .all-places-nav button:disabled { opacity:.4; cursor:default; }
+    #view-app .all-places-scrollwrap { position:relative; }
+    #view-app .places-row { display:flex; flex-direction:row; gap:16px; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; scroll-padding:0 16px; padding:4px 2px 12px; margin:0; -webkit-overflow-scrolling:touch; scrollbar-width:thin; scrollbar-color:var(--line) transparent; }
+    #view-app .places-row::-webkit-scrollbar { height:8px; }
+    #view-app .places-row::-webkit-scrollbar-thumb { background:var(--line); border-radius:999px; }
+    #view-app .places-row::-webkit-scrollbar-track { background:transparent; }
+    #view-app .places-row li { flex:0 0 272px; max-width:78vw; scroll-snap-align:start; display:flex; }
+    #view-app .places-row li .card-open { flex:1 1 auto; }
+    @media (prefers-reduced-motion: no-preference) { #view-app .places-row { scroll-behavior:smooth; } }
+    #view-app .all-places-fade { position:absolute; top:0; bottom:0; width:56px; pointer-events:none; z-index:2; }
+    #view-app .fade-right { right:0; background:linear-gradient(90deg, color-mix(in srgb, var(--card) 0%, transparent), var(--card) 80%); }
+    #view-app .fade-left { left:0; background:linear-gradient(270deg, color-mix(in srgb, var(--card) 0%, transparent), var(--card) 80%); }
+    #view-app .all-places-scrollwrap.at-end .fade-right { display:none; }
+    #view-app .all-places-scrollwrap.at-start .fade-left { display:none; }
+    /* List card top row, Nov 24 2026: same layout as the featured
+       card's .focus-top. Name on the left, distance and travel
+       time top-right in the same words and format, e.g.
+       "0.4 km · 6 min walk", from the same p.distLabel. The name
+       wraps if it needs to, the distance stays put, top-right,
+       and never overlaps the name or the tags. */
+    #view-app .list-top { display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin:0 0 .2rem; }
+    #view-app .list-top strong { min-width:0; color:var(--ink); }
+    #view-app .list-top .dist-line { flex:0 0 auto; margin:0; white-space:nowrap; text-align:right; }
+    /* Secondary details on place cards, Nov 24 2026: type and
+       area, and the focus card's quiet lines, in a softer grey
+       than the distance. Still AA on the card, light and dark. */
+    #view-app #focus-card .ps-muted, #view-app .compact-list .ps-muted { color:var(--muted-soft); }
     /* Focus card actions, Nov 24 2026: Open place and Bookmark
        share one row, side by side on desktop, stacked on phone. */
     .focus-actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
@@ -1050,7 +1097,7 @@
       #view-app:not(.embedded) #view-map { display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); column-gap:24px; align-items:start; }
       #view-app:not(.embedded) #view-map .map-wrap { grid-column:1; }
       #view-app:not(.embedded) #view-map p.ps-muted { grid-column:1; }
-      #view-app:not(.embedded) #view-map #map-distance-list { grid-column:2; grid-row:1 / span 2; margin-top:0; }
+      #view-app:not(.embedded) #view-map .map-places-frame { grid-column:2; grid-row:1 / span 2; margin-top:0; min-width:0; }
       #view-app:not(.embedded) #priority-groups { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:0 20px; align-items:start; }
       #view-app:not(.embedded) #priority-groups .onboard-group { margin-bottom:20px; }
       #view-app:not(.embedded) .ps-kv { grid-template-columns:minmax(0,1fr) minmax(0,1fr); column-gap:32px; }
@@ -1086,7 +1133,7 @@
     #view-app.force-web:not(.embedded) #view-map { display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); column-gap:24px; align-items:start; }
     #view-app.force-web:not(.embedded) #view-map .map-wrap { grid-column:1; }
     #view-app.force-web:not(.embedded) #view-map p.ps-muted { grid-column:1; }
-    #view-app.force-web:not(.embedded) #view-map #map-distance-list { grid-column:2; grid-row:1 / span 2; margin-top:0; }
+    #view-app.force-web:not(.embedded) #view-map .map-places-frame { grid-column:2; grid-row:1 / span 2; margin-top:0; min-width:0; }
     #view-app.force-web:not(.embedded) #priority-groups { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:0 20px; align-items:start; }
     #view-app.force-web:not(.embedded) #priority-groups .onboard-group { margin-bottom:20px; }
     #view-app.force-web:not(.embedded) .ps-kv { grid-template-columns:minmax(0,1fr) minmax(0,1fr); column-gap:32px; }
@@ -1135,7 +1182,7 @@
     #view-app .ps-btn:active { outline:3px solid var(--focus); outline-offset:2px; }
     #view-app #focus-card h3 { font-size:1.4rem; line-height:1.2; margin:.25rem 0 .1rem; color:var(--teal-dark); }
     #view-app .focus-top { display:flex; justify-content:space-between; gap:12px; align-items:baseline; margin:0 0 .25rem; }
-    #view-app .focus-top .dist-line { margin:0; font-weight:700; color:var(--teal-dark); }
+    #view-app .focus-top .dist-line { margin:0; font-weight:700; color:var(--muted); }
     #view-app .fit-line { font-weight:700; color:var(--teal-dark); margin:.4rem 0; }
     #view-app .ps-facts li strong { color:var(--teal-dark); }
     /* Pillar tags and place-card tags use the same one-colour-per-group
@@ -1793,7 +1840,20 @@
               <li><span class="legend-pin match" aria-hidden="true"></span>Matches today: name and match count on the pin</li>
               <li><span class="legend-pin few" aria-hidden="true"></span>Fewer matches</li>
             </ul>
-            <ul class="compact-list" id="map-distance-list"></ul>
+            <div class="all-places-frame map-places-frame" id="map-all-places-frame">
+            <div class="all-places-head">
+            <h3 id="map-all-places-h">All places, nearest first</h3>
+            <div class="all-places-nav" role="group" aria-label="Scroll All places">
+              <button type="button" id="map-all-prev" aria-label="Show earlier places">←</button>
+              <button type="button" id="map-all-next" aria-label="Show more places">→</button>
+            </div>
+            </div>
+            <div class="all-places-scrollwrap at-start" id="map-all-places-scrollwrap">
+            <ul class="compact-list places-row" id="map-distance-list" tabindex="0" role="region" aria-label="All places, scroll sideways to see more places"></ul>
+            <span class="all-places-fade fade-left" aria-hidden="true"></span>
+            <span class="all-places-fade fade-right" aria-hidden="true"></span>
+            </div>
+            </div>
           </div>
           <div id="view-list">
           <div class="discover-main">
@@ -1805,8 +1865,20 @@
           </div>
           </div>
           <div class="discover-side">
+          <div class="all-places-frame" id="all-places-frame">
+          <div class="all-places-head">
           <h3 id="all-places-h">All places, nearest first</h3>
-          <ul class="compact-list" id="compact-list"></ul>
+          <div class="all-places-nav" role="group" aria-label="Scroll All places">
+            <button type="button" id="all-prev" aria-label="Show earlier places">←</button>
+            <button type="button" id="all-next" aria-label="Show more places">→</button>
+          </div>
+          </div>
+          <div class="all-places-scrollwrap at-start" id="all-places-scrollwrap">
+          <ul class="compact-list places-row" id="compact-list" tabindex="0" role="region" aria-label="All places, scroll sideways to see more places"></ul>
+          <span class="all-places-fade fade-left" aria-hidden="true"></span>
+          <span class="all-places-fade fade-right" aria-hidden="true"></span>
+          </div>
+          </div>
           </div>
           </div>
           <details>
@@ -2777,8 +2849,11 @@
       } else {
         scored.sort(function(a,b){ return b.matches.length - a.matches.length || a.place.distKm - b.place.distKm; });
       }
+      var placesLabel = sortMode === "match" ? "All places, best match first" : "All places, nearest first";
       var allH = $("all-places-h");
-      if(allH) allH.textContent = sortMode === "match" ? "All places, best match first" : "All places, nearest first";
+      if(allH) allH.textContent = placesLabel;
+      var mapH = $("map-all-places-h");
+      if(mapH) mapH.textContent = placesLabel;
       focusIndex = 0; renderFocus(); renderMap(); renderCompactList();
     }
     function setView(view){
@@ -2832,7 +2907,7 @@
        The em dashes in the ?v=14 strings are commas here, per
        the ?v=17 copy rules. */
     function listCardHTML(p, align){
-      return "<strong>" + p.name + "</strong>, " + p.distLabel + "<br/><span class='ps-muted'>" + p.type + " · " + p.area + "</span>" + (align ? "<br/>" + matchOvalsInlineHTML(p) : "");
+      return "<span class=\"list-top\"><strong>" + p.name + "</strong><span class=\"dist-line\">" + p.distLabel + "</span></span>" + "<span class='ps-muted'>" + p.type + " · " + p.area + "</span>" + (align ? "<br/>" + matchOvalsInlineHTML(p) : "");
     }
     function renderMap(){
       var wrap = $("map-canvas") || $("map-wrap"); if(!wrap) return;
@@ -2863,8 +2938,43 @@
           li.appendChild(b);
           list.appendChild(li);
         });
+        list.scrollLeft = 0; updatePlacesNav(MAP_ROW);
       }
     }
+    /* All places side-scroll controls, Nov 24 2026: Prev/Next
+       move a framed row one card at a time, and the edge
+       fades and button states follow the scroll position.
+       Same for the Discover row and the Map view row. */
+    var DISCOVER_ROW = {ul:"compact-list", prev:"all-prev", next:"all-next", wrap:"all-places-scrollwrap"};
+    var MAP_ROW = {ul:"map-distance-list", prev:"map-all-prev", next:"map-all-next", wrap:"map-all-places-scrollwrap"};
+    function updatePlacesNav(row){
+      var ul = $(row.ul), prev = $(row.prev), next = $(row.next), wrap = $(row.wrap);
+      if(!ul || !prev || !next) return;
+      var atStart = ul.scrollLeft <= 4;
+      var atEnd = ul.scrollLeft + ul.clientWidth >= ul.scrollWidth - 4;
+      prev.disabled = atStart; next.disabled = atEnd;
+      if(wrap){ wrap.classList.toggle("at-start", atStart); wrap.classList.toggle("at-end", atEnd); }
+    }
+    function updateAllNav(){ updatePlacesNav(DISCOVER_ROW); }
+    function scrollPlacesRow(row, dir){
+      var ul = $(row.ul); if(!ul) return;
+      var card = ul.querySelector("li"); if(!card) return;
+      var w = card.getBoundingClientRect().width + 16;
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      ul.scrollBy({left: dir * w, behavior: reduce ? "auto" : "smooth"});
+    }
+    function scrollAllPlaces(dir){ scrollPlacesRow(DISCOVER_ROW, dir); }
+    (function(){
+      [DISCOVER_ROW, MAP_ROW].forEach(function(row){
+        var prev = $(row.prev), next = $(row.next), ul = $(row.ul);
+        if(!prev || !next || !ul) return;
+        prev.addEventListener("click", function(){ scrollPlacesRow(row, -1); });
+        next.addEventListener("click", function(){ scrollPlacesRow(row, 1); });
+        ul.addEventListener("scroll", function(){ updatePlacesNav(row); }, {passive:true});
+        window.addEventListener("resize", function(){ updatePlacesNav(row); });
+        updatePlacesNav(row);
+      });
+    })();
     function renderCompactList(){
       var ul = $("compact-list"); if(!ul) return; ul.innerHTML = "";
       scored.forEach(function(s){
@@ -2876,6 +2986,7 @@
         li.appendChild(b);
         ul.appendChild(li);
       });
+      ul.scrollLeft = 0; updateAllNav();
     }
     function renderFocus(){
       var card = $("focus-card");
