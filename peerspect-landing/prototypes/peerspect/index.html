@@ -303,23 +303,29 @@
     .day-row .bar-track { height:10px; border-radius:999px; background:var(--track); overflow:hidden; }
     .day-row .bar-fill { height:100%; background:var(--teal); border-radius:999px; }
     /* Busyness chart, Nov 24 2026: Google Maps "Popular times"
-       style, vertical bars for Morning, Midday, Evening, from
+       style, one bar per hour from opening to closing, from
        peer check-ins over the last 7 days. One shared chart on
        the place page (Through the day) and on Business (How the
-       day feels). Bar height is the count; the word under each
-       bar says how busy it is in words, never colour alone;
-       the count is written out; the column for right now is
-       marked with a word, not just a colour. */
-    .busy-chart { display:flex; gap:12px; align-items:stretch; margin:12px 0 4px; }
-    .busy-col { flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; }
-    .busy-now-slot { height:20px; display:flex; align-items:center; justify-content:center; }
-    .busy-now { font-weight:800; color:var(--teal-dark); font-size:.85rem; white-space:nowrap; }
-    .busy-track { height:110px; display:flex; align-items:flex-end; justify-content:center; }
-    .busy-bar { width:52px; max-width:80%; border-radius:8px 8px 0 0; background:var(--teal); min-height:8px; }
-    .busy-label { margin:8px 0 0; }
-    .busy-word { margin:2px 0 0; font-weight:700; }
-    .busy-desc { margin:2px 0 0; font-size:.9rem; }
-    .busy-count { margin:2px 0 0; font-size:.9rem; }
+       day feels). Bar height is the count for that hour. The
+       line above the bars says, in words, how busy the chosen
+       hour is and how many reports it has, so the chart never
+       relies on colour alone; tapping a bar picks that hour.
+       The bar for right now is marked with the word Now. The
+       strip scrolls sideways on a phone, like Google Maps. */
+    .busy-chart-wrap { min-width:0; }
+    .busy-now-line { margin:4px 0 8px; }
+    .busy-hours { display:flex; gap:6px; overflow-x:auto; padding:6px 2px 10px; }
+    .busy-hour-btn { flex:0 0 34px; background:none; border:0; padding:0; cursor:pointer; font:inherit; color:inherit; text-align:center; display:flex; flex-direction:column; align-items:stretch; }
+    .busy-hour-btn .busy-now-slot { height:20px; display:flex; align-items:center; justify-content:center; }
+    .busy-now { font-weight:800; color:var(--teal-dark); font-size:.8rem; white-space:nowrap; }
+    .busy-hour-btn .busy-track { height:110px; display:flex; align-items:flex-end; justify-content:center; }
+    .busy-hour-btn .busy-bar { width:26px; max-width:100%; border-radius:6px 6px 0 0; background:var(--teal); min-height:8px; display:block; }
+    .busy-hour-btn .busy-hour-label { margin-top:6px; font-size:.85rem; font-weight:600; }
+    .busy-hour-btn[aria-pressed="true"] .busy-hour-label { font-weight:800; color:var(--teal-dark); }
+    .busy-hour-btn[aria-pressed="true"] .busy-bar { outline:2px solid var(--teal-dark); outline-offset:2px; }
+    .busy-hour-btn.is-now .busy-bar { background:var(--teal-dark); }
+    .busy-hour-btn:focus-visible { outline:3px solid var(--teal-dark); outline-offset:2px; border-radius:8px; }
+    .busy-note { margin:8px 0 0; }
     .visit-head { margin:0 0 8px; }
     .visit-head strong { color:var(--teal-dark); }
     .visit-sub { font-weight:700; margin:12px 0 4px; color:var(--teal-dark); }
@@ -1832,7 +1838,7 @@
        tags:["step-free","seating-comfy","restroom-accessible","gender-neutral-restroom","lighting-dim","lighting-ambient","sound-quiet","crowding-low","smell-neutral","artsy","quiet-chat","coworking","service-patient","service-calm","communication-clear","pronoun-respect","queer-friendly","price-transparent","language-french","language-english","language-spanish","language-arabic","language-italian","menu-physical","menu-preview","menu-accessible","diet-gluten-free","diet-vegan","diet-lactose-free","diet-halal","diet-vegetarian","diet-cultural","online-meetings","temp-comfortable","clean","dog-friendly","asl-service","asl-order","written-order","hearing-loop","order-verbal","order-online","order-ahead","order-takeout","sensory-quiet-nook","sensory-low-hours","sensory-no-flash","sensory-fragrance-free","sensory-no-sudden-noise","vision-contrast-tables","vision-contrast-tableware","vision-even-light","vision-clear-paths","vision-marked-glass","vision-tactile-lines","vision-step-edges","vision-large-print","vision-read-aloud","vision-high-contrast-signs","vision-no-pattern","language-lsq","lsq-order","hearing-face-you","hearing-written-confirm","restroom-sharps","restroom-private","diet-sugar-free","menu-nutrition","menu-free-water"],
        lighting:"Dim, ambient. Good contrast at tables", sound:"Soft music, no TV", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, espresso machine, occasional"], crowding:"Usually calm, busier at 10am",
        access:"Step-free entry, accessible restroom, gender-neutral restroom", menuNote:"Physical menu at the counter, plus a preview online. Large print on request.",
-       confirmed:42, day:[["Morning","Calm, bright at the window"],["Midday","Calm, dim and warm"],["Evening","Quiet, soft lighting"]], dayCounts:[12,18,12], dayCounts7:[6,9,6],
+       confirmed:42, day:[["Morning","Calm, bright at the window"],["Midday","Calm, dim and warm"],["Evening","Quiet, soft lighting"]], dayCounts:[12,18,12], openHour:7, closeHour:19, hourCounts:[1,2,2,1,2,3,2,2,2,2,1,1],
        menu:[{n:"Oat latte",p:"$5.50",k:"drink"},{n:"Flat white",p:"$5.00",k:"drink"},{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Sparkling water",p:"$3.00",k:"drink"},{n:"Croissant, butter",p:"$4.00",k:"food"},{n:"Banana bread",p:"$4.50",k:"food"},{n:"Avocado toast",p:"$11.00",k:"food"},{n:"Soup of the day",p:"$9.00",k:"food"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
@@ -1847,7 +1853,7 @@
        tags:["seating-comfy","lighting-bright","lighting-big","sound-music","crowding-busy","retro","nostalgic","socialising","service-fast","communication-clear","price-transparent","language-french","language-english","language-italian","language-creole","menu-qr","menu-preview","written-order","diet-vegetarian","order-verbal","order-call","order-click-collect","order-takeout","sensory-no-flash","vision-contrast-tableware","vision-step-edges","vision-high-contrast-signs","hearing-captions","hearing-written-confirm","diet-sugar-free"],
        lighting:"Bright, big overhead light", sound:"Music and chatter, TV on in the corner", soundLevel:"Loud", soundSources:["Music, loud","Talking, loud","TV, on in the corner"], crowding:"Busy at lunch, lively",
        access:"Step up at the door, no gender-neutral restroom listed", menuNote:"QR-code menu only, preview online. Ask staff for a printed copy.",
-       confirmed:27, day:[["Morning","Bright, lively"],["Midday","Busy, loud"],["Evening","Lively, warm light"]], dayCounts:[7,12,8], dayCounts7:[4,6,4],
+       confirmed:27, day:[["Morning","Bright, lively"],["Midday","Busy, loud"],["Evening","Lively, warm light"]], dayCounts:[7,12,8], openHour:7, closeHour:19, hourCounts:[1,1,1,1,1,2,2,1,1,1,1,1],
        menu:[{n:"Diner breakfast",p:"$12.00",k:"food"},{n:"Coffee, bottomless",p:"$3.50",k:"drink"},{n:"Orange juice",p:"$4.50",k:"drink"},{n:"Grilled cheese",p:"$10.00",k:"food"},{n:"Poutine",p:"$11.00",k:"food"},{n:"Club sandwich",p:"$13.00",k:"food"},{n:"Milkshake",p:"$7.50",k:"drink"},{n:"Pie of the day",p:"$6.50",k:"food"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
@@ -1862,7 +1868,7 @@
        tags:["step-free","seating-comfy","lighting-ambient","lighting-dim","sound-quiet","sound-music","crowding-low","bohemian","artsy","coworking","quiet-chat","service-patient","service-calm","pronoun-respect","queer-friendly","staff-representation","price-transparent","language-french","language-english","language-mandarin","language-arabic","menu-physical","menu-preview","menu-accessible","diet-vegan","diet-gluten-free","diet-vegetarian","diet-halal","diet-cultural","online-meetings","temp-comfortable","clean","order-verbal","order-online","order-ahead","order-takeout","sensory-quiet-nook","sensory-no-flash","sensory-fragrance-free","sensory-no-music","sensory-no-sudden-noise","vision-contrast-tables","vision-even-light","vision-clear-paths","vision-large-print","vision-braille","vision-read-aloud","vision-high-contrast-signs","vision-no-pattern","hearing-face-you","hearing-written-confirm","restroom-sharps","restroom-private","diet-sugar-free","menu-free-water"],
        lighting:"Ambient, dim corners, bright reading lamps", sound:"Quiet, occasional soft music", soundLevel:"Quiet", soundSources:["Music, soft, occasional","Talking, quiet","Machines, none noted"], crowding:"Usually calm",
        access:"Step-free entry, comfy seating, staff happy to help", menuNote:"Physical menu, preview online. Tell staff your access needs and they will help.",
-       confirmed:38, day:[["Morning","Calm, good for working"],["Midday","Calm, a little busier"],["Evening","Quiet, bookish"]], dayCounts:[10,16,12], dayCounts7:[5,8,6],
+       confirmed:38, day:[["Morning","Calm, good for working"],["Midday","Calm, a little busier"],["Evening","Quiet, bookish"]], dayCounts:[10,16,12], openHour:7, closeHour:19, hourCounts:[1,1,2,1,2,2,2,2,2,2,1,1],
        menu:[{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Drip coffee",p:"$3.50",k:"drink"},{n:"Hot chocolate",p:"$5.00",k:"drink"},{n:"Lemonade",p:"$4.50",k:"drink"},{n:"Toast with jam",p:"$5.00",k:"food"},{n:"Veggie sandwich",p:"$10.50",k:"food"},{n:"Lentil soup",p:"$8.50",k:"food"},{n:"Scone",p:"$4.00",k:"food"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
@@ -1877,7 +1883,7 @@
        tags:["step-free","restroom-accessible","lighting-bright","lighting-ambient","sound-music","crowding-busy","nostalgic","socialising","coworking","service-patient","communication-clear","price-transparent","language-french","language-english","language-spanish","language-creole","language-mandarin","menu-qr","menu-preview","menu-accessible","diet-vegan","diet-gluten-free","diet-vegetarian","diet-cultural","outdoor-space","airflow","order-verbal","order-call","order-online","order-click-collect","order-takeout","sensory-low-hours","sensory-no-flash","sensory-fragrance-free","sensory-no-music","sensory-no-sudden-noise","vision-contrast-tables","vision-even-light","vision-clear-paths","vision-marked-glass","vision-tactile-lines","vision-large-print","vision-braille","vision-read-aloud","language-lsq","lsq-order","hearing-captions","hearing-face-you","restroom-sharps","restroom-private","diet-sugar-free","menu-nutrition","menu-free-water"],
        lighting:"Bright by day, ambient in the evening", sound:"Music, lively at events", soundLevel:"Lively", soundSources:["Music, lively at events","Talking, loud at events","Machines, none noted"], crowding:"Busy on event days, calm on weekdays",
        access:"Step-free entry, accessible restroom", menuNote:"QR menu, preview online, large print on request.",
-       confirmed:19, day:[["Morning","Bright, calm"],["Midday","Busy at lunch"],["Evening","Event nights are lively"]], dayCounts:[6,8,5], dayCounts7:[3,4,3],
+       confirmed:19, day:[["Morning","Bright, calm"],["Midday","Busy at lunch"],["Evening","Event nights are lively"]], dayCounts:[6,8,5], openHour:7, closeHour:19, hourCounts:[1,1,1,0,1,2,1,0,1,1,1,0],
        menu:[{n:"Espresso",p:"$3.50",k:"drink"},{n:"Cappuccino",p:"$5.00",k:"drink"},{n:"Iced tea",p:"$4.50",k:"drink"},{n:"Salad bowl",p:"$11.00",k:"food"},{n:"Quiche of the day",p:"$10.00",k:"food"},{n:"Hummus plate",p:"$9.50",k:"food"},{n:"Cake of the day",p:"$6.00",k:"food"},{n:"Fruit cup",p:"$5.50",k:"food"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
@@ -2692,14 +2698,16 @@
       feels.appendChild(fDl);
       grid.appendChild(feels);
       /* Card 4 — Through the day, its own card: the busyness
-         chart, Nov 24 2026. Vertical bars, Google Maps "Popular
-         times" style, seven-day view from peer check-ins. It
-         replaces the old horizontal count bars; the counts, the
-         words and the source are still written out next to the
-         bars, so a bar is never just a shape. */
+         chart, Nov 24 2026. One bar per hour, opening to
+         closing, Google Maps "Popular times" style, seven-day
+         view from peer check-ins. It replaces the old
+         horizontal count bars and the three morning/midday/
+         evening columns; the counts, the words and the source
+         are still written out next to the bars, so a bar is
+         never just a shape. */
       var dayCard = document.createElement("section"); dayCard.className="ps-panel place-section"; dayCard.setAttribute("aria-label","Through the day");
       var dayH=document.createElement("h3"); dayH.textContent="Through the day"; dayCard.appendChild(dayH);
-      var dayChart=document.createElement("div"); dayChart.innerHTML=busyChartHTML(p); dayCard.appendChild(dayChart);
+      var dayChart=document.createElement("div"); dayChart.innerHTML=busyChartHTML(p); wireBusyChart(dayChart, p); dayCard.appendChild(dayChart);
       grid.appendChild(dayCard);
       body.appendChild(grid);
       /* Card 5 — Menu preview, with a "Your order prep list"
@@ -3421,42 +3429,72 @@
 
     /* Busyness chart, Nov 24 2026: one shared chart for the
        place page (Through the day) and Business (How the day
-       feels). Vertical bars, Google Maps "Popular times" style.
-       Seven-day view in both places, Nov 24 2026, because a
-       week of peer check-ins is more accurate than one day.
-       Height is the 7-day peer-report count for that part of
-       day (dayCounts7); the word under the bar says how busy
-       it is, and the count is written out, so the chart never
-       relies on colour alone. The column for right now is
-       marked from the device clock. */
+       feels). Vertical bars, Google Maps "Popular times" style,
+       one bar per hour from opening to closing. Seven-day view
+       in both places, because a week of peer check-ins is more
+       accurate than one day. Height is the 7-day peer-report
+       count for that hour (hourCounts); the line above the bars
+       says in words how busy the chosen hour is and how many
+       reports it has, so the chart never relies on colour
+       alone, and tapping a bar picks that hour. The bar for
+       right now is marked with the word Now, from the device
+       clock. Hours would come from the listing live; in this
+       demo every place opens at 7am and closes at 7pm. */
     function busyWord(ratio){
       if(ratio>=0.8) return "Usually busy";
       if(ratio>=0.45) return "Usually a little busy";
       return "Usually calm";
     }
+    function hourLabel(h){
+      var ap = h<12 ? "am" : "pm";
+      var hh = h%12===0 ? 12 : h%12;
+      return hh+ap;
+    }
     function busyChartHTML(p){
-      var counts = p.dayCounts7 || p.dayCounts || [0,0,0];
+      var counts = p.hourCounts || [];
+      var open = p.openHour != null ? p.openHour : 7;
+      var close = p.closeHour != null ? p.closeHour : 19;
       var total = counts.reduce(function(a,b){ return a+b; }, 0);
       var max = Math.max.apply(null, counts.concat([1]));
-      var h = new Date().getHours();
-      var nowIdx = h<12 ? 0 : (h<17 ? 1 : 2);
-      var out = "<div class='busy-chart'>";
-      p.day.forEach(function(d, i){
-        var n = counts[i] || 0;
+      var nowH = new Date().getHours();
+      var nowIdx = (nowH>=open && nowH<close) ? nowH-open : -1;
+      var maxIdx = 0;
+      counts.forEach(function(n,i){ if(n>counts[maxIdx]) maxIdx=i; });
+      var selIdx = nowIdx>=0 ? nowIdx : maxIdx;
+      var out = "<div class='busy-chart-wrap'>";
+      var selN = counts[selIdx] || 0;
+      out += "<p class='busy-now-line' data-busy-line><strong>" + hourLabel(open+selIdx) + ":</strong> " + busyWord(max?selN/max:0) + " \u00B7 " + selN + (selN===1 ? " report" : " reports") + "</p>";
+      out += "<div class='busy-hours' role='group' aria-label='Busyness by hour, " + hourLabel(open) + " to " + hourLabel(close) + "'>";
+      counts.forEach(function(n, i){
         var ratio = max ? n/max : 0;
         var pct = Math.round(ratio*100);
-        out += "<div class='busy-col'>"
-          + "<div class='busy-now-slot'>" + (i===nowIdx ? "<span class='busy-now'>\u25CF Now</span>" : "") + "</div>"
-          + "<div class='busy-track'><div class='busy-bar' aria-hidden='true' style='height:" + Math.max(7, pct) + "%'></div></div>"
-          + "<p class='busy-label'><strong>" + d[0] + "</strong></p>"
-          + "<p class='busy-word'>" + busyWord(ratio) + "</p>"
-          + "<p class='busy-desc ps-muted'>" + d[1] + "</p>"
-          + "<p class='busy-count ps-muted'>" + n + " reports</p>"
-          + "</div>";
+        out += "<button type='button' class='busy-hour-btn" + (i===nowIdx ? " is-now" : "") + "' data-i='" + i + "' aria-pressed='" + (i===selIdx ? "true" : "false") + "' aria-label='" + hourLabel(open+i) + ": " + busyWord(ratio) + ", " + n + (n===1 ? " report" : " reports") + "'>"
+          + "<span class='busy-now-slot'>" + (i===nowIdx ? "<span class='busy-now'>\u25CF Now</span>" : "") + "</span>"
+          + "<span class='busy-track'><span class='busy-bar' aria-hidden='true' style='height:" + Math.max(7, pct) + "%'></span></span>"
+          + "<span class='busy-hour-label'>" + hourLabel(open+i) + "</span>"
+          + "</button>";
       });
       out += "</div>";
-      out += "<p class='ps-muted'>Based on " + total + " peer reports in the last 7 days.</p>";
+      out += "<p class='ps-muted busy-note'>Open " + hourLabel(open) + " to " + hourLabel(close) + " \u00B7 Based on " + total + " peer reports in the last 7 days.</p>";
+      if(p.day){
+        out += "<p class='ps-muted busy-note'>" + p.day.map(function(d){ return d[0] + ": " + d[1]; }).join(" \u00B7 ") + "</p>";
+      }
+      out += "</div>";
       return out;
+    }
+    function wireBusyChart(wrap, p){
+      var line = wrap.querySelector("[data-busy-line]");
+      var btns = wrap.querySelectorAll(".busy-hour-btn");
+      if(!line || !btns.length) return;
+      var counts = p.hourCounts || [];
+      var open = p.openHour != null ? p.openHour : 7;
+      var max = Math.max.apply(null, counts.concat([1]));
+      function show(i){
+        var n = counts[i] || 0;
+        line.innerHTML = "<strong>" + hourLabel(open+i) + ":</strong> " + busyWord(max?n/max:0) + " \u00B7 " + n + (n===1 ? " report" : " reports");
+        btns.forEach(function(b, j){ b.setAttribute("aria-pressed", j===i ? "true" : "false"); });
+      }
+      btns.forEach(function(b, i){ b.addEventListener("click", function(){ show(i); }); });
     }
 
     /* Business dashboard, Nov 23 2026: a dashboard, not a list of
@@ -3514,6 +3552,7 @@
       html+="</div>";
       html+="<p class='ps-muted'>Private and anonymous. Only counts and patterns, never a name or an individual report.</p>";
       $("biz-body").innerHTML=html;
+      var bizChart=$("biz-body").querySelector(".busy-chart-wrap"); if(bizChart) wireBusyChart(bizChart, p);
       $("biz-raw").textContent="Peer data for "+p.name+": "+p.confirmed+" peer confirmations in total. The rings and percentages above come from anonymous peer check-ins over the last 7 days.";
     }
     bizSelect.addEventListener("change", renderBiz);
