@@ -36,9 +36,6 @@
             <a class="nav-dropdown-link" href="./prototypes/index.html#early-concepts"><span class="thumb">✿</span><span><strong>Rough concepts</strong><span>Six early ideas to test and break, on the Rough concepts page.</span></span></a>
           </div>
         </div>
-        <a class="nav-link" href="https://mindfullydesign.webflow.io/#offerings">Services</a>
-        <a class="nav-link" href="https://mindfullydesign.webflow.io/about">About</a>
-        <a class="nav-link" href="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/67aea44f506169a16be6fd36_95d3807660de7d4d3415709f6ff2e4eb_Ginko%20Emdon%20-%20Product%20Designer%20-%20Resume%20-%202025.pdf">Resumé</a>
         <a class="flower-button" href="https://mindfullydesign.webflow.io/" target="_blank" rel="noopener"><span class="button-line-left"></span><span class="button-inner-text">Ginko's Portfolio</span><span class="button-line-right"></span></a>
       </nav>
     </div>
@@ -52,14 +49,11 @@
         <!-- Hero adventure, drawn in code (inline SVG + css/style.css) —
              a mystical path winds from the foreground through a smooth
              jungle in Ginko's palette, past coloured mountains, to a
-             stepped building that grows and blooms. A river runs through
-             the middle; light beams through the canopy. Decorative. -->
+             stepped building that grows and blooms. Light beams
+             through the canopy. Decorative. -->
         <figure class="hero-art-wrap" aria-hidden="true">
           <svg class="hero-art" viewBox="0 0 1200 440" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="ha-river" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#2aa5b2"/><stop offset="1" stop-color="#127d8c"/>
-              </linearGradient>
               <linearGradient id="ha-leaf" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0" stop-color="#2c8a4c"/><stop offset="1" stop-color="#184b44"/>
               </linearGradient>
@@ -73,7 +67,7 @@
             <!-- sun -->
             <g class="ha-sun">
               <g stroke="#e26c00" stroke-width="3" stroke-linecap="round">
-                <line x1="1020" y1="6" x2="1020" y2="20"/><line x1="1068" y1="22" x2="1058" y2="32"/><line x1="972" y1="22" x2="982" y2="32"/>
+                <line x1="1070" y1="72" x2="1081" y2="72"/><line x1="1063" y1="97" x2="1073" y2="103"/><line x1="1045" y1="115" x2="1051" y2="125"/><line x1="1020" y1="122" x2="1020" y2="133"/><line x1="995" y1="115" x2="990" y2="125"/><line x1="977" y1="97" x2="967" y2="103"/><line x1="970" y1="72" x2="959" y2="72"/><line x1="977" y1="47" x2="967" y2="42"/><line x1="995" y1="29" x2="990" y2="19"/><line x1="1020" y1="22" x2="1020" y2="11"/><line x1="1045" y1="29" x2="1051" y2="19"/><line x1="1063" y1="47" x2="1073" y2="42"/>
               </g>
               <circle cx="1020" cy="72" r="44" fill="#f8c05e"/>
               <circle cx="1006" cy="66" r="4" fill="#3b342f"/><circle cx="1034" cy="66" r="4" fill="#3b342f"/>
@@ -93,21 +87,12 @@
             <path class="ha-mountain" d="M0 340 L170 210 L310 320" fill="none" stroke="#3b342f" stroke-width="1.5" opacity="0.35"/>
             <path class="ha-mountain ha-m2" d="M120 380 L430 140 L720 380 Z" fill="url(#ha-mtn)"/>
             <path class="ha-mountain ha-m2" d="M430 140 L478 196 L430 182 L382 196 Z" fill="#f8c05e"/>
-            <path class="ha-mountain ha-m2" d="M430 140 L470 240" stroke="#e3e0d8" stroke-width="1.5" opacity="0.6" fill="none"/>
             <path class="ha-mountain ha-m3" d="M560 380 L870 180 L1140 380 Z" fill="#a35f3c"/>
             <path class="ha-mountain ha-m3" d="M870 180 L912 230 L870 216 L828 230 Z" fill="#f8c05e"/>
             <path class="ha-mountain ha-m3" d="M700 380 L940 210 L1200 380 Z" fill="#3b342f" opacity="0.9"/>
-            <!-- light beams through the canopy, kept narrow and to the
-                 right of the building so they do not swallow it -->
-            <polygon class="ha-beam" points="1010,110 1065,110 1005,380 950,380" fill="#f8c05e"/>
-            <polygon class="ha-beam b2" points="1085,110 1125,110 1075,380 1035,380" fill="#f8c05e"/>
-            <!-- river, a stream descending the mountain face, narrow at
-                 the top and widening as it reaches the foreground -->
-            <path d="M520 210 C 505 245, 540 270, 555 300 C 565 318, 580 322, 588 325" stroke="#0c5561" stroke-width="16" fill="none" stroke-linecap="round"/>
-            <path d="M520 210 C 505 245, 540 270, 555 300 C 565 318, 580 322, 588 325" stroke="url(#ha-river)" stroke-width="10" fill="none" stroke-linecap="round"/>
-            <path d="M588 325 C 600 355, 575 380, 600 405 C 615 425, 610 435, 612 440" stroke="#0c5561" stroke-width="40" fill="none" stroke-linecap="round"/>
-            <path d="M588 325 C 600 355, 575 380, 600 405 C 615 425, 610 435, 612 440" stroke="url(#ha-river)" stroke-width="32" fill="none" stroke-linecap="round"/>
-            <path class="ha-shimmer" d="M600 345 C 595 375, 605 400, 600 430" stroke="#bdeff2" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- light beams fanning down from the sun, landing on the ground -->
+            <polygon class="ha-beam" points="1005,112 1014,112 977,380 908,380" fill="#f8c05e"/>
+            <polygon class="ha-beam b2" points="1026,112 1035,112 1132,380 1063,380" fill="#f8c05e"/>
             <!-- jungle canopy, left -->
             <g class="ha-leaf">
               <path d="M60 380 C 40 300, 90 240, 150 250 C 190 258, 180 320, 150 380 Z" fill="url(#ha-leaf)"/>
@@ -133,29 +118,26 @@
             <!-- ground hills -->
             <path d="M0 440 L0 410 Q 200 380 420 410 T 820 405 Q 1000 385 1200 410 L1200 440 Z" fill="#e1d8c7"/>
             <!-- winding dotted path -->
-            <path id="ha-trail" class="ha-path" d="M70 425 C 180 395, 260 425, 380 390 S 560 350, 660 330 S 800 300, 885 305" stroke="#184b44" stroke-width="3" stroke-dasharray="1 10" stroke-linecap="round" fill="none"/>
+            <path id="ha-trail" class="ha-path" d="M70 425 C 180 395, 260 425, 380 390 S 560 350, 660 330 S 790 320, 828 392" stroke="#184b44" stroke-width="3" stroke-dasharray="1 10" stroke-linecap="round" fill="none"/>
             <circle r="7" fill="#e26c00" stroke="#e3e0d8" stroke-width="2">
-              <animateMotion dur="3.4s" begin="0.7s" fill="freeze" path="M70 425 C 180 395, 260 425, 380 390 S 560 350, 660 330 S 800 300, 885 305"/>
+              <animateMotion dur="3.4s" begin="0.7s" fill="freeze" path="M70 425 C 180 395, 260 425, 380 390 S 560 350, 660 330 S 790 320, 828 392"/>
             </circle>
             <!-- stepped building, growing, at the end of the path -->
             <g class="ha-building">
-              <rect x="830" y="268" width="110" height="42" fill="#3b342f"/>
-              <rect x="850" y="234" width="70" height="34" fill="#184b44"/>
-              <rect x="868" y="204" width="34" height="30" fill="#a35f3c"/>
-              <g stroke="#e3e0d8" stroke-width="1.5"><line x1="850" y1="284" x2="920" y2="284"/><line x1="862" y1="250" x2="908" y2="250"/><line x1="878" y1="218" x2="892" y2="218"/></g>
+              <rect x="830" y="353" width="110" height="42" fill="#3b342f"/>
+              <rect x="850" y="319" width="70" height="34" fill="#184b44"/>
+              <rect x="868" y="289" width="34" height="30" fill="#a35f3c"/>
+              <g stroke="#e3e0d8" stroke-width="1.5"><line x1="850" y1="369" x2="920" y2="369"/><line x1="862" y1="335" x2="908" y2="335"/><line x1="878" y1="303" x2="892" y2="303"/></g>
             </g>
             <!-- bloom on top of the building -->
             <g class="ha-bloom">
-              <path d="M885 204 C 866 178, 866 156, 885 142 C 904 156, 904 178, 885 204z" fill="#c9c972"/>
-              <path d="M885 168 C 870 154, 854 154, 842 166 C 856 178, 876 178, 885 168z" fill="#184b44"/>
-              <path d="M885 168 C 900 154, 916 154, 928 166 C 914 178, 894 178, 885 168z" fill="#184b44"/>
-              <circle cx="885" cy="164" r="6" fill="#f8c05e"/>
+              <path d="M885 289 C 866 263, 866 241, 885 227 C 904 241, 904 263, 885 289z" fill="#c9c972"/>
+              <path d="M885 253 C 870 239, 854 239, 842 251 C 856 263, 876 263, 885 253z" fill="#184b44"/>
+              <path d="M885 253 C 900 239, 916 239, 928 251 C 914 263, 894 263, 885 253z" fill="#184b44"/>
+              <circle cx="885" cy="249" r="6" fill="#f8c05e"/>
             </g>
-            <!-- beacon star and compass -->
+            <!-- beacon star -->
             <path class="ha-beacon" d="M980 150 l4 11 11 4 -11 4 -4 11 -4 -11 -11 -4 11 -4z" fill="#e26c00"/>
-            <g transform="translate(110 330)" stroke="#3b342f" stroke-width="1.5" fill="none" opacity="0.7">
-              <circle r="20"/><path d="M0 -20 L0 20 M-20 0 L20 0 M0 -20 L5 -5 L20 0 L5 5 L0 20 L-5 5 L-20 0 L-5 -5 Z"/>
-            </g>
           </svg>
         </figure>
         <div class="hero-cta">
