@@ -511,6 +511,16 @@
     .biz-sugg { border-top:1px solid var(--line); padding:16px 0 4px; margin-top:16px; }
     .biz-sugg:first-of-type { border-top:0; margin-top:8px; }
     .biz-sugg .based { font-size:.9rem; color:var(--muted); margin:.25rem 0 0; }
+    /* Rationale dropdown behind each AI suggestion, Nov 24 2026:
+       closed by default, chevron flips when open, like Filters
+       and sort. Shows only counts and patterns already in the
+       sample data for this place, never a name or a report. */
+    .biz-why { margin-top:8px; border-top:1px solid var(--line); padding-top:8px; }
+    .biz-why summary { font-weight:700; color:var(--teal-dark); min-height:44px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; list-style:none; }
+    .biz-why summary::-webkit-details-marker { display:none; }
+    .biz-why summary::after { content:"\25BE"; font-size:1.25rem; line-height:1; color:var(--teal-dark); flex:0 0 auto; transition:transform .15s ease; }
+    .biz-why[open] summary::after { transform:rotate(180deg); }
+    .biz-why p { margin:8px 0 0; }
     @media (min-width:900px) {
       #view-app:not(.embedded) .biz-grid { grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
       #view-app:not(.embedded) .biz-stats { grid-template-columns:repeat(3, minmax(0,1fr)); }
@@ -1038,11 +1048,11 @@
     #view-app .map-pin:active { filter:brightness(.88); }
     #view-app .card-open:hover strong { text-decoration:underline; text-underline-offset:3px; }
     #view-app .card-open:active strong { text-decoration:underline; }
-    #view-app .onboard-group summary:hover, #view-app .discover-filters summary:hover, #view-app .save-preview summary:hover { background:var(--soft); border-radius:12px; }
+    #view-app .onboard-group summary:hover, #view-app .discover-filters summary:hover, #view-app .save-preview summary:hover, #view-app .biz-why summary:hover { background:var(--soft); border-radius:12px; }
     #view-app .onboard-group .group-chev { transition:transform .18s ease; }
     #view-app .back-web:hover { background:var(--soft); border-radius:8px; }
     #view-app .dots button:hover::after { border-color:var(--teal-dark); }
-    #view-app .discover-filters[open] > *:not(summary), #view-app .onboard-group[open] > *:not(summary), #view-app #all-filters:not([hidden]), #view-app #view-map:not([hidden]), #view-app #view-list:not([hidden]) { animation:ps-drop-in .18s ease; }
+    #view-app .discover-filters[open] > *:not(summary), #view-app .onboard-group[open] > *:not(summary), #view-app .biz-why[open] > *:not(summary), #view-app #all-filters:not([hidden]), #view-app #view-map:not([hidden]), #view-app #view-list:not([hidden]) { animation:ps-drop-in .18s ease; }
     #view-app .ps-confirm { font-weight:700; color:var(--teal-dark); animation:ps-confirm-in .18s ease; }
     #view-app .ps-confirm::before { content:"\2713  "; font-weight:800; }
     #view-app .peer-crossed { animation:ps-confirm-in .18s ease; }
@@ -3352,19 +3362,19 @@
       /* AI suggestions, built from the numbers above, not generic. */
       var sugg=[];
       if(p.tags.indexOf("menu-qr")>=0 && p.tags.indexOf("menu-physical")<0){
-        sugg.push({t:"Keep a printed menu at the counter, as well as the QR code.", why:"Based on: menu is easy to preview, 64%, and the menu is QR-code only here.", try:"It helps people who cannot scan easily, and people who want to choose before they order."});
+        sugg.push({t:"Keep a printed menu at the counter, as well as the QR code.", why:"Based on: menu is easy to preview, 64%, and the menu is QR-code only here.", try:"It helps people who cannot scan easily, and people who want to choose before they order.", d:"The place details say: "+p.menuNote+" The 'Menu is easy to preview' ring above reads "+insights[1].value+"%, from sample peer check-ins over the last 7 days. This place has "+p.confirmed+" peer confirmations in total over the last 14 days (sample data)."});
       }
       if(insights[3].value<82){
-        sugg.push({t:"Put a short note at the entrance about step-free access.", why:"Based on: step-free entry is clear, "+insights[3].value+"%.", try:"People plan around the entrance. A clear note helps them decide before they arrive."});
+        sugg.push({t:"Put a short note at the entrance about step-free access.", why:"Based on: step-free entry is clear, "+insights[3].value+"%.", try:"People plan around the entrance. A clear note helps them decide before they arrive.", d:"The place details say: "+p.access+" 'Step-free entry is clear' reads "+insights[3].value+"% in the rings above, from sample peer check-ins over the last 7 days. This place has "+p.confirmed+" peer confirmations in total over the last 14 days (sample data)."});
       }
       if(insights[2].value<91){
-        sugg.push({t:"Add a small pronoun note for staff, at the till.", why:"Based on: pronouns respected, "+insights[2].value+"%.", try:"A short reminder at the till helps staff get it right, every time."});
+        sugg.push({t:"Add a small pronoun note for staff, at the till.", why:"Based on: pronouns respected, "+insights[2].value+"%.", try:"A short reminder at the till helps staff get it right, every time.", d:"This place does not list pronouns respected in its details. 'Pronouns respected' reads "+insights[2].value+"% in the rings above, from sample peer check-ins over the last 7 days. This place has "+p.confirmed+" peer confirmations in total over the last 14 days (sample data)."});
       }
-      sugg.push({t:"Try a quiet hour on weekday mornings.", why:"Based on: "+calmVal+"% say it feels calm, and mornings are the calmest part of the day.", try:"Peers often note the room is calmest then. A named quiet hour makes that easy to find."});
+      sugg.push({t:"Try a quiet hour on weekday mornings.", why:"Based on: "+calmVal+"% say it feels calm, and mornings are the calmest part of the day.", try:"Peers often note the room is calmest then. A named quiet hour makes that easy to find.", d:"'Peers say it feels calm' reads "+calmVal+"% in the rings above, from sample peer check-ins over the last 7 days. "+(p.day && p.day[0] ? p.day[0][0] : "Morning")+" is the calmest part of the day: "+(p.dayCounts ? p.dayCounts[0] : 0)+" of this place's "+p.confirmed+" peer confirmations over the last 14 days (sample data) came in the morning."});
       sugg=sugg.slice(0,3);
       html+="<div class='biz-ai'><span class='biz-ai-tag'>AI suggestions</span><h3 style='margin-top:12px;'>Suggestions to try, based on the data above</h3><p class='ps-muted'>Gentle, pre-written suggestions for small changes, based on the patterns above. No names and no individual reports.</p>";
       sugg.forEach(function(s){
-        html+="<div class='biz-sugg'><strong>"+s.t+"</strong><p>"+s.try+"</p><p class='based'>"+s.why+"</p></div>";
+        html+="<div class='biz-sugg'><strong>"+s.t+"</strong><p>"+s.try+"</p><p class='based'>"+s.why+"</p><details class='biz-why'><summary aria-expanded='false'>Why this suggestion</summary><p>"+s.d+"</p></details></div>";
       });
       html+="</div>";
       html+="</div>";
