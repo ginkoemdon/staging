@@ -435,19 +435,20 @@
       #view-app:not(.embedded) .app-nav button { font-size:.85rem; min-height:64px; }
     }
     #view-app.embedded .app-wrap, #view-app.embedded .app { max-width:560px; }
-    /* Preview size switcher, Nov 23 2026: right by the sun/moon
-       icon, Auto / Desktop / Phone. Auto follows the device,
-       Desktop forces the web layout, Phone forces the phone
-       layout, so you can preview both sizes on one device.
-       Active button is never colour alone: stroke, outline
-       and underline, like the other active states. Hidden in
-       the embedded case study preview, which always stays
-       phone-sized to fit beside the screen cards. */
-    #view-app .view-size-toggle { display:flex; background:var(--line-soft); border-radius:999px; padding:3px; gap:2px; }
-    #view-app .view-size-toggle button { border:0; background:none; border-radius:999px; padding:8px 10px; min-height:40px; font-weight:600; font-size:.85rem; color:var(--muted); cursor:pointer; }
-    #view-app .view-size-toggle button[aria-pressed="true"] { background:var(--card); color:var(--teal-dark); border:2px solid var(--teal); outline:2px solid var(--ink); outline-offset:-2px; text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:2px; font-weight:700; }
-    #view-app.embedded .view-size-toggle { display:none; }
-    @media (max-width:560px) { #view-app .view-size-toggle button { padding:6px 7px; font-size:.8rem; } }
+    /* Preview size, Nov 23 2026: one small icon button by the
+       theme icon. Tap it to cycle Auto, Desktop, Phone. Auto
+       follows the device, Desktop forces the web layout, Phone
+       forces the phone layout, so you can preview both sizes
+       on one device. The icon shows the current mode, so the
+       mode is never colour alone. Hidden in the embedded case
+       study preview, which always stays phone-sized. */
+    #view-app .view-size-cycle { width:44px; height:44px; min-width:44px; border-radius:999px; border:2px solid var(--teal); background:var(--card); color:var(--teal); display:grid; place-items:center; cursor:pointer; padding:0; flex:0 0 auto; }
+    #view-app .view-size-cycle:hover { background:var(--soft); }
+    #view-app .view-size-cycle svg { width:22px; height:22px; display:none; }
+    #view-app .view-size-cycle[data-mode="auto"] .ico-auto { display:block; }
+    #view-app .view-size-cycle[data-mode="web"] .ico-web { display:block; }
+    #view-app .view-size-cycle[data-mode="phone"] .ico-phone { display:block; }
+    #view-app.embedded .view-size-cycle { display:none; }
     /* Force Desktop: same web layout as the 900px media query,
        but by class, so it works even on a narrow screen. */
     #view-app.force-web:not(.embedded) { overflow-x:auto; }
@@ -870,11 +871,7 @@
     <div class="app-header">
       <span class="app-mark">PEERSPECT</span>
       <span class="spacer"></span>
-      <div class="view-size-toggle" role="group" aria-label="Preview size">
-        <button type="button" data-view-size="auto" aria-pressed="true">Auto</button>
-        <button type="button" data-view-size="web" aria-pressed="false">Desktop</button>
-        <button type="button" data-view-size="phone" aria-pressed="false">Phone</button>
-      </div>
+      <button class="view-size-cycle" id="view-size-cycle" type="button" data-mode="auto" aria-label="Preview size: Auto. Tap to switch to Desktop"><svg class="ico-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="13" height="10" rx="2"/><rect x="13" y="10" width="9" height="10" rx="2"/><path d="M6 18h4"/></svg><svg class="ico-web" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><svg class="ico-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></button>
       <button class="theme-toggle" type="button" data-theme-btn aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">☾</span></button>
       <button class="app-close" id="close-app" type="button" aria-label="Close prototype and return to case study">&times;</button>
     </div>
@@ -1653,21 +1650,31 @@
        Expand view: fullscreen when available, wide layout otherwise. */
     var viewWeb = $("view-web"), viewApp = $("view-app");
     var appShown = false;
-    /* Preview size, Nov 23 2026: Auto / Desktop / Phone, by the
-       theme icon. Auto follows the screen width (the 900px media
-       query), Desktop forces the web layout, Phone forces the
-       phone layout. Saved, so your choice sticks. */
-    var viewSizeBtns = Array.prototype.slice.call(document.querySelectorAll("[data-view-size]"));
+    /* Preview size, Nov 23 2026: one icon button, by the theme
+       icon. Tap to cycle Auto, Desktop, Phone. Auto follows the
+       screen width (the 900px media query), Desktop forces the
+       web layout, Phone forces the phone layout. Saved, so your
+       choice sticks. */
+    var viewSizeBtn = $("view-size-cycle");
+    var viewSizeModes = ["auto", "web", "phone"];
+    var viewSizeLabels = {auto:"Auto", web:"Desktop", phone:"Phone"};
     var savedViewSize = "auto";
     try { savedViewSize = localStorage.getItem("peerspect-view-size-v1") || "auto"; } catch(e){}
-    if(savedViewSize !== "web" && savedViewSize !== "phone") savedViewSize = "auto";
+    if(viewSizeModes.indexOf(savedViewSize) < 0) savedViewSize = "auto";
     function applyViewSize(mode){
       viewApp.classList.toggle("force-web", mode === "web");
       viewApp.classList.toggle("force-phone", mode === "phone");
-      viewSizeBtns.forEach(function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-view-size") === mode ? "true" : "false"); });
+      if(viewSizeBtn){
+        viewSizeBtn.setAttribute("data-mode", mode);
+        var next = viewSizeModes[(viewSizeModes.indexOf(mode) + 1) % viewSizeModes.length];
+        viewSizeBtn.setAttribute("aria-label", "Preview size: " + viewSizeLabels[mode] + ". Tap to switch to " + viewSizeLabels[next]);
+      }
       try { localStorage.setItem("peerspect-view-size-v1", mode); } catch(e){}
     }
-    viewSizeBtns.forEach(function(b){ b.addEventListener("click", function(){ applyViewSize(b.getAttribute("data-view-size")); }); });
+    if(viewSizeBtn) viewSizeBtn.addEventListener("click", function(){
+      var cur = viewSizeBtn.getAttribute("data-mode") || "auto";
+      applyViewSize(viewSizeModes[(viewSizeModes.indexOf(cur) + 1) % viewSizeModes.length]);
+    });
     applyViewSize(savedViewSize);
     /* Live preview in the case study, Nov 23 2026: move the real
        app node into the preview slot in High fidelity, so the
