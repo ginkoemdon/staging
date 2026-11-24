@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon/favicon-16x16.png">
   <link rel="icon" href="./assets/favicon/favicon.ico">
   <link rel="manifest" href="./assets/favicon/site.webmanifest">
-  <meta name="description" content="Ginko's Prototype Playground — Leading AI on a little adventure, one prototype at a time. Prototypes in progress." />
+  <meta name="description" content="Ginko's Prototype Playground — AI-first design, with critical judgment and human exploration. Prototypes in progress." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -51,7 +51,7 @@
     <main id="main">
       <section class="hero">
         <p class="eyebrow">AI prototyping lab</p>
-        <h1>Leading AI on a little adventure, <span class="valued">one prototype at a time</span>.</h1>
+        <h1>AI-first design, with critical judgment and <span class="valued">human exploration</span>.</h1>
         <!-- Hero adventure, drawn in code (inline SVG + css/style.css) —
              a mystical path winds from the foreground through a smooth
              jungle in Ginko's palette, past coloured mountains, to a
@@ -137,14 +137,29 @@
       <hr class="footer-divider" />
       <div class="footer-copyright">
         <p>made mindfully<br />© 2026 Ginko Emdon</p>
-      </div>
       <div class="footer-thankyou">
         <p>✿ thank you for your cyber frolick ✿</p>
+      </div>
       </div>
     </div>
   </footer>
   <script>
   (function(){var h=document.querySelector('.nav');var b=document.querySelector('.menu-button');if(b&&h){b.addEventListener('click',function(){var o=h.classList.toggle('nav-open');b.setAttribute('aria-expanded',o);});}document.querySelectorAll('.nav-toggle').forEach(function(t){t.addEventListener('click',function(e){e.stopPropagation();var d=t.closest('.nav-dropdown');var o=d.classList.toggle('open');t.setAttribute('aria-expanded',o);});});document.addEventListener('click',function(e){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){if(!d.contains(e.target)){d.classList.remove('open');d.querySelector('.nav-toggle').setAttribute('aria-expanded','false');}});});document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open');});}});document.querySelectorAll('.email-copy').forEach(function(btn){btn.addEventListener('click',function(){var email=btn.getAttribute('data-email');var label=btn.querySelector('.email-text');function done(){if(label){label.textContent='Copied!';setTimeout(function(){label.textContent=email;},2000);}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(email).then(done);}else{var ta=document.createElement('textarea');ta.value=email;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);done();}});});})();
+  </script>
+  <script>
+  /* Footer logo smooth scroll (Nov 24 2026): on the landing page the
+     footer logo scrolls smoothly back to the top instead of reloading
+     the page. Without JS the link still goes home (./index.html).
+     Respects prefers-reduced-motion: instant jump instead of smooth. */
+  (function(){
+    var logo = document.querySelector('footer .footer-logo');
+    if (!logo) return;
+    logo.addEventListener('click', function(e){
+      e.preventDefault();
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    });
+  })();
   </script>
 </body>
 </html>

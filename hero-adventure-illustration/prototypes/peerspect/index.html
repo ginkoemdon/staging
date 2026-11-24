@@ -157,9 +157,9 @@
        while the case study above it is 1080px centred with 1.5rem
        padding. Give it the same wrap, so logo, email, divider and
        copyright line up with the content above. */
-    .pg-footer { max-width:1080px; margin:2rem auto 0; padding:2rem 1.5rem 1rem; box-sizing:border-box; color:#49433d; font-size:.9rem; font-family:"Poppins", system-ui, sans-serif; min-width:0; }
+    .pg-footer { max-width:1080px; margin:0 auto; padding:6rem clamp(1.5rem, 4vw, 4rem) 0; box-sizing:border-box; color:#49433d; font-size:.9rem; font-family:"Poppins", system-ui, sans-serif; min-width:0; } /* Same Webflow rhythm as the shared footer (6rem top, 6rem under the top row, copyright row space-between with 2rem padding), but the side padding matches the case-study wrap's clamp so the footer lines up with the content above it. */
     .pg-footer a { color:#3b342f; }
-    .pg-footer-top { display:grid; grid-template-columns:1fr 1fr; column-gap:4vw; align-items:start; padding-bottom:2rem; }
+    .pg-footer-top { display:grid; grid-template-columns:1fr 1fr; column-gap:4vw; align-items:start; padding-bottom:6rem; }
     .pg-footer-logo img { width:144px; max-height:3.5rem; display:block; }
     .pg-footer-email { display:flex; flex-direction:column; gap:1rem; align-items:flex-start; }
     .pg-footer-email-label { font-size:.75rem; font-weight:600; color:#3b342f; }
@@ -169,9 +169,9 @@
     .pg-footer-social { width:4em; height:4em; padding:1em; display:flex; justify-content:center; align-items:center; text-decoration:none; }
     .pg-footer-social img { width:2em; height:auto; filter:invert(1); display:block; }
     .pg-footer-divider { background:#3b342f; width:100%; height:1px; border:0; margin:0; }
-    .pg-footer-copyright { display:flex; gap:1.5rem; text-align:center; justify-content:space-between; align-items:center; padding:1.5rem 0 .5rem; font-size:.75rem; flex-wrap:wrap; }
+    .pg-footer-copyright { display:flex; gap:1.5rem; text-align:center; justify-content:space-between; align-items:center; padding:2rem 0; font-size:.75rem; flex-wrap:wrap; }
     .pg-footer-copyright p { margin:0; }
-    .pg-footer-thankyou { display:flex; justify-content:center; align-items:center; font-size:.75rem; padding-bottom:1rem; }
+    .pg-footer-thankyou { display:flex; justify-content:center; align-items:center; font-size:.75rem; padding-bottom:0; }
     .pg-footer-thankyou p { margin:0; }
     @media (max-width:991px) {
       .pg-nav .logo img.logo-img { display:none; }
@@ -181,8 +181,13 @@
       .pg-nav.nav-open .pg-nav-links { display:flex; }
       .pg-dropdown { width:100%; flex-direction:column; align-items:flex-start; }
       .pg-dropdown-list { position:static; width:auto; border:0; background:#e3e0d8; padding:1rem 0; }
-      .pg-footer-top { grid-template-columns:1fr; row-gap:2rem; }
-      .pg-footer-copyright { justify-content:center; flex-direction:column; gap:.5rem; }
+      .pg-footer { padding-top:5rem; }
+      .pg-footer-top { grid-template-columns:1fr; row-gap:3rem; padding-bottom:5rem; }
+      .pg-footer-copyright { justify-content:center; flex-direction:column; gap:1rem; }
+    }
+    @media (max-width:767px) {
+      .pg-footer { padding-top:3.5rem; }
+      .pg-footer-top { padding-bottom:3.5rem; }
     }
     /* App header, Nov 23 2026: one clean bar, not three back buttons.
        PEERSPECT mark on the left, theme on the right, one X to close.
@@ -979,9 +984,9 @@
       <hr class="pg-footer-divider" />
       <div class="pg-footer-copyright">
         <p>made mindfully<br />&copy; 2026 Ginko Emdon</p>
-      </div>
       <div class="pg-footer-thankyou">
         <p>&#10047; thank you for your cyber frolick &#10047;</p>
+      </div>
       </div>
     </footer>
   </div>
