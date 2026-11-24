@@ -346,6 +346,11 @@
     .m-next-tag { display:inline-block; font-weight:800; font-size:.8rem; background:var(--honey); color:#3a2a00; border-radius:999px; padding:2px 10px; margin-bottom:6px; }
     .m-bar { height:10px; border-radius:999px; background:var(--track); overflow:hidden; margin:4px 0 8px; }
     .m-bar-fill { height:100%; background:var(--teal); border-radius:999px; }
+    /* Milestone bar labels, Nov 24 2026: each bar gets its count
+       in words directly above it, so the two bars on a card are
+       never confused. Same numbers as the bar and its aria-label.
+       Bold teal-dark text, AA in light and dark. */
+    .m-bar-label { font-weight:700; color:var(--teal-dark); margin:8px 0 4px; }
     /* Note per item line, Nov 24 2026. */
     .cart-note-wrap { flex:1 1 100%; }
     .cart-note { margin:4px 0; font-size:.92rem; color:var(--muted); }
@@ -2831,11 +2836,6 @@
       if(n.crosschecks) parts.push(n.crosschecks + " more cross-check" + (n.crosschecks>1?"s":""));
       return parts.length ? parts.join(" and ") + " to go" : "Done";
     }
-    function milestoneProgressText(m){
-      var parts = [Math.min(trust.confirmed, m.reports) + " of " + m.reports + " report" + (m.reports===1?"":"s")];
-      if(m.crosschecks) parts.push(Math.min(trust.crosschecks||0, m.crosschecks) + " of " + m.crosschecks + " cross-check" + (m.crosschecks===1?"":"s"));
-      return parts.join(", ");
-    }
     /* Medals and trophies drawn in code, Nov 24 2026, in the
        PEERSPECT palette. Unlocked: full colour. Locked: muted
        outline, no fill. No emojis. */
@@ -2881,16 +2881,15 @@
         var need=document.createElement("p"); need.className="ps-muted";
         need.textContent="Unlocks at "+m.reports+" confirmed report"+(m.reports===1?"":"s")+(m.crosschecks?" and "+m.crosschecks+" peer cross-check"+(m.crosschecks===1?"":"s"):"")+".";
         card.appendChild(need);
-        var prog=document.createElement("p");
-        prog.textContent = milestoneProgressText(m);
-        card.appendChild(prog);
         if(m.reports){
+          var labR=document.createElement("p"); labR.className="m-bar-label"; labR.textContent=Math.min(trust.confirmed, m.reports)+" of "+m.reports+" report"+(m.reports===1?"":"s"); card.appendChild(labR);
           var barR=document.createElement("div"); barR.className="m-bar"; barR.setAttribute("role","img");
           barR.setAttribute("aria-label","Confirmed reports: "+Math.min(trust.confirmed, m.reports)+" of "+m.reports);
           barR.innerHTML='<div class="m-bar-fill" style="width:'+Math.min(100, Math.round(trust.confirmed/m.reports*100))+'%"></div>';
           card.appendChild(barR);
         }
         if(m.crosschecks){
+          var labC=document.createElement("p"); labC.className="m-bar-label"; labC.textContent=Math.min(trust.crosschecks||0, m.crosschecks)+" of "+m.crosschecks+" cross-check"+(m.crosschecks===1?"":"s"); card.appendChild(labC);
           var barC=document.createElement("div"); barC.className="m-bar"; barC.setAttribute("role","img");
           barC.setAttribute("aria-label","Peer cross-checks: "+Math.min(trust.crosschecks, m.crosschecks)+" of "+m.crosschecks);
           barC.innerHTML='<div class="m-bar-fill" style="width:'+Math.min(100, Math.round(trust.crosschecks/m.crosschecks*100))+'%"></div>';
