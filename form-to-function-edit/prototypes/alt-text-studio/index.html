@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alt-Text Studio — Ginko's Prototype Playground</title>
+  <meta name="description" content="Alt-Text Studio — an AI-first prototype by Ginko. AI drafts alt text, shows its confidence, and you stay in control." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <style>
+    .sample-note {
+      background: var(--sun); border: 1px solid var(--earth); border-radius: 12px;
+      padding: 0.75rem 1rem; font-size: 0.9rem; font-weight: 600; margin: 1.5rem 0 0;
+    }
+    .sample-note p { margin: 0; }
+    .studio { display: grid; gap: 1.5rem; }
+    .panel {
+      background: var(--cream); border: 1px solid rgba(59,52,47,.12);
+      border-radius: 24px; padding: 1.5rem;
+      box-shadow: 0 12px 30px rgba(59,52,47,.10);
+    }
+    .panel h2 { font-size: 1.35rem; margin: 0 0 0.5rem; }
+    .panel h3 { font-size: 1rem; margin: 1.25rem 0 0.5rem; }
+    .panel p { color: var(--muted); margin: 0 0 0.75rem; }
+    .step-num {
+      display: inline-grid; place-items: center; width: 2rem; height: 2rem;
+      border-radius: 50%; background: var(--forest); color: #fff;
+      font-family: "Krona One", sans-serif; font-size: 0.85rem; margin-right: 0.5rem;
+    }
+    /* Image picker */
+    .pickers { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .picker {
+      text-align: left; background: #fff; border: 2px solid rgba(59,52,47,.15);
+      border-radius: 16px; overflow: hidden; cursor: pointer; padding: 0;
+      font-family: "Poppins", sans-serif; color: var(--earth);
+    }
+    .picker:hover { border-color: var(--forest); }
+    .picker[aria-pressed="true"] { border-color: var(--forest); box-shadow: 0 0 0 3px var(--sun); }
+    .picker svg { display: block; width: 100%; height: auto; }
+    .picker span { display: block; padding: 0.75rem 1rem; }
+    .picker strong { display: block; font-size: 0.95rem; }
+    .picker small { color: var(--muted); }
+    .preview { margin-top: 1rem; border-radius: 16px; overflow: hidden; border: 1px solid rgba(59,52,47,.15); }
+    .preview svg { display: block; width: 100%; height: auto; }
+    .preview figcaption { background: #fff; padding: 0.75rem 1rem; font-size: 0.9rem; color: var(--muted); }
+    /* Confidence */
+    .conf-wrap { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 0.75rem 0; }
+    .conf-bar { flex: 1; min-width: 180px; height: 12px; border-radius: 999px; background: #e8e2d6; overflow: hidden; border: 1px solid var(--earth); }
+    .conf-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--forest), var(--lizard)); transition: width .4s ease; }
+    .conf-score { font-family: "Krona One", sans-serif; font-size: 1.25rem; }
+    .conf-note { font-size: 0.9rem; }
+    .flag { background: #fff3cd; border: 1px solid var(--sun); border-radius: 8px; padding: 0.6rem 0.8rem; font-size: 0.9rem; margin: 0.5rem 0; }
+    /* Form */
+    label { font-weight: 600; display: block; margin: 0.75rem 0 0.35rem; }
+    textarea {
+      width: 100%; min-height: 96px; resize: vertical;
+      font-family: "Poppins", sans-serif; font-size: 1rem; line-height: 1.5;
+      padding: 0.85rem 1rem; border-radius: 12px; border: 2px solid var(--earth);
+      background: #fff; color: var(--earth);
+    }
+    textarea:focus { outline: 3px solid var(--sun); }
+    .char-count { font-size: 0.85rem; color: var(--muted); margin-top: 0.35rem; }
+    .char-count.over { color: var(--rust-text); font-weight: 700; }
+    .toggle-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem; }
+    .toggle {
+      border: 2px solid var(--earth); background: #fff; border-radius: 999px;
+      padding: 0.55rem 1rem; font-family: "Poppins", sans-serif; font-weight: 600;
+      font-size: 0.9rem; cursor: pointer; color: var(--earth);
+    }
+    .toggle[aria-pressed="true"] { background: var(--forest); color: #fff; border-color: var(--forest); }
+    .check { display: flex; gap: 0.6rem; align-items: flex-start; margin-top: 0.75rem; font-size: 0.95rem; }
+    .check input { width: 1.25rem; height: 1.25rem; margin-top: 0.2rem; accent-color: var(--forest); }
+    /* Checklist */
+    .checklist { list-style: none; padding: 0; margin: 0.75rem 0 0; display: grid; gap: 0.6rem; }
+    .checklist li {
+      display: flex; gap: 0.6rem; align-items: flex-start;
+      background: #fff; border: 1px solid rgba(59,52,47,.15); border-radius: 12px; padding: 0.75rem 1rem;
+    }
+    .checklist .mark { font-weight: 700; flex-shrink: 0; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: grid; place-items: center; background: #e8e2d6; }
+    .checklist li.pass .mark { background: var(--lizard); }
+    .checklist li.fail .mark { background: var(--sun); }
+    .checklist small { display: block; color: var(--muted); }
+    /* Before / after */
+    .before-after { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .ba-box { background: #fff; border: 1px solid rgba(59,52,47,.15); border-radius: 12px; padding: 1rem; }
+    .ba-box h4 { margin: 0 0 0.5rem; font-family: "Krona One", sans-serif; font-size: 0.85rem; letter-spacing: .04em; text-transform: uppercase; }
+    .ba-box p { margin: 0; color: var(--earth); }
+    .ba-box .meta { font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; }
+    .changed-badge { display: inline-block; background: var(--sun); border-radius: 999px; padding: 0.2rem 0.6rem; font-size: 0.8rem; font-weight: 700; margin-left: 0.5rem; }
+    /* Actions */
+    .actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.25rem; }
+    .status {
+      display: none; border-radius: 12px; padding: 0.85rem 1rem; font-weight: 600; margin-top: 1rem;
+    }
+    .status.show { display: block; }
+    .status.approved { background: #d9ead3; border: 1px solid var(--forest); }
+    .status.work { background: #fff3cd; border: 1px solid var(--sun); }
+    .howto { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .howto div { background: #fff; border-radius: 12px; padding: 1rem; border: 1px solid rgba(59,52,47,.12); }
+    .howto strong { display: block; margin-bottom: 0.35rem; }
+    .empty { color: var(--muted); font-style: italic; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <!-- Nav — style copied from Webflow (mindfullydesign.webflow.io), own simple JS, no Webflow JS.
+       Services / About / Resumé are placeholder buttons for now, mirroring the original Webflow menu. -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="logo" href="../../index.html" aria-label="Ginko's Prototype Playground — home">
+        <img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/67b6998f1db3d0b64a9c19e6_apple-touch-icon.png" loading="lazy" width="32" alt="" class="logo-g" />
+        <img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" class="logo-img" />
+      </a>
+      <button class="menu-button" type="button" aria-label="Menu" aria-expanded="false">
+        <span class="menu-icon1"><span class="menu-icon1_line-top"></span><span class="menu-icon1_line-middle"></span><span class="menu-icon1_line-bottom"></span></span>
+      </button>
+      <nav class="nav-links" aria-label="Main">
+        <div class="nav-dropdown">
+          <button class="nav-link nav-toggle" type="button" aria-expanded="false" aria-haspopup="true">Prototypes <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.55806 6.29544C2.46043 6.19781 2.46043 6.03952 2.55806 5.94189L3.44195 5.058C3.53958 4.96037 3.69787 4.96037 3.7955 5.058L8.00001 9.26251L12.2045 5.058C12.3021 4.96037 12.4604 4.96037 12.5581 5.058L13.4419 5.94189C13.5396 6.03952 13.5396 6.19781 13.4419 6.29544L8.17678 11.5606C8.07915 11.6582 7.92086 11.6582 7.82323 11.5606L2.55806 6.29544Z" fill="currentColor"/></svg></button>
+          <div class="nav-dropdown-list">
+            <a class="nav-dropdown-link" href="../peerspect/index.html"><span class="thumb sun">P</span><span><strong>PEERSPECT</strong><span>One of Ginko's prototypes — details to come.</span></span></a>
+            <a class="nav-dropdown-link" href="../kate-ai/index.html"><span class="thumb">AI</span><span><strong>AI prototype for Kate</strong><span>The AI prototype Ginko is putting together for Kate.</span></span></a>
+            <a class="nav-dropdown-link" href="./index.html"><span class="thumb sun">Alt</span><span><strong>Alt-Text Studio</strong><span>AI drafts alt text — you stay in control.</span></span></a>
+            <a class="nav-dropdown-link" href="../index.html"><span class="thumb">All</span><span><strong>All prototypes</strong><span>See every prototype subpage in one place.</span></span></a>
+          </div>
+        </div>
+        <a class="nav-link" href="https://mindfullydesign.webflow.io/#offerings">Services</a>
+        <a class="nav-link" href="https://mindfullydesign.webflow.io/about">About</a>
+        <a class="nav-link" href="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/67aea44f506169a16be6fd36_95d3807660de7d4d3415709f6ff2e4eb_Ginko%20Emdon%20-%20Product%20Designer%20-%20Resume%20-%202025.pdf">Resumé</a>
+        <a class="flower-button" href="https://mindfullydesign.webflow.io/" target="_blank" rel="noopener"><span class="button-line-left"></span><span class="button-inner-text">Ginko's Portfolio</span><span class="button-line-right"></span></a>
+      </nav>
+    </div>
+  </header>
+  <div class="wrap">
+
+    <main id="main">
+      <section class="product-shell" style="--product-accent: #0b4f47;" aria-labelledby="product-title">
+        <p><a class="back" href="../../index.html">← Back to Ginko's Prototype Playground</a></p>
+        <div class="product-head">
+          <span class="product-mark" aria-hidden="true">A</span>
+          <div>
+            <p class="product-meta">Alt-Text Studio · A product by Ginko · 2026</p>
+            <h1 id="product-title">Alt-Text Studio</h1>
+            <p class="product-tagline">Write alt text people can actually use. AI drafts it, shows its confidence, and you stay in control — no guessing, no invented names.</p>
+          </div>
+        </div>
+        <div class="how-to">
+          <h2>How to use this product</h2>
+          <ol>
+            <li><strong>Choose an image</strong> — pick one of the three samples below.</li>
+            <li><strong>Draft, then edit</strong> — tap “Draft alt text”, check the flagged guesses, and rewrite in your own words.</li>
+            <li><strong>Approve</strong> — pass all 4 WCAG checks, then approve and copy the final text.</li>
+          </ol>
+          <p style="margin:.5rem 0 0; color: var(--muted);">Sample data only. No backend, no external AI calls. Nothing you type is sent anywhere.</p>
+        </div>
+      </section>
+
+      <div class="studio">
+        <!-- Step 1 -->
+        <section class="panel" aria-labelledby="step1">
+          <h2 id="step1"><span class="step-num">1</span>Choose an image</h2>
+          <p>Three sample images, drawn as inline SVG — no hotlinked photos. Pick one to work on.</p>
+          <div class="pickers" role="group" aria-label="Sample images">
+            <button type="button" class="picker" data-image="glasses" aria-pressed="true">
+              <svg viewBox="0 0 320 180" role="img" aria-label="Illustration: a person with smart glasses reading a book by a window">
+                <rect width="320" height="180" fill="#184b44"/><rect x="200" y="20" width="90" height="140" fill="#f8c05e" opacity="0.9"/>
+                <circle cx="110" cy="70" r="38" fill="#e3e0d8"/><path d="M70 110 Q110 95 150 110 L150 180 L70 180 Z" fill="#a35f3c"/>
+                <rect x="78" y="62" width="64" height="18" rx="9" fill="#372c1f"/><circle cx="96" cy="71" r="9" fill="#fafafa"/><circle cx="124" cy="71" r="9" fill="#fafafa"/>
+                <rect x="150" y="110" width="70" height="48" rx="4" fill="#f8c05e"/><rect x="150" y="110" width="70" height="10" fill="#372c1f"/>
+              </svg>
+              <span><strong>Smart glasses, reading</strong><small>Person by a window, reading a book. Person is not named.</small></span>
+            </button>
+            <button type="button" class="picker" data-image="workshop" aria-pressed="false">
+              <svg viewBox="0 0 320 180" role="img" aria-label="Illustration: people gathered around a workshop table with sticky notes">
+                <rect width="320" height="180" fill="#f8c05e"/><rect x="40" y="110" width="240" height="18" rx="6" fill="#372c1f"/>
+                <circle cx="90" cy="70" r="22" fill="#184b44"/><circle cx="160" cy="60" r="22" fill="#a35f3c"/><circle cx="230" cy="70" r="22" fill="#e3e0d8"/>
+                <rect x="70" y="96" width="180" height="14" fill="#fafafa"/><rect x="100" y="40" width="28" height="28" fill="#e26c00"/><rect x="190" y="36" width="28" height="28" fill="#c9c972"/>
+              </svg>
+              <span><strong>Workshop table</strong><small>People co-designing around a table. No names known.</small></span>
+            </button>
+            <button type="button" class="picker" data-image="monument" aria-pressed="false">
+              <svg viewBox="0 0 320 180" role="img" aria-label="Illustration: a stone monument in a park, with trees and a path">
+                <rect width="320" height="180" fill="#e1d8c7"/><circle cx="260" cy="40" r="28" fill="#f8c05e"/>
+                <rect x="140" y="50" width="40" height="80" fill="#49433d"/><rect x="120" y="130" width="80" height="16" fill="#3b342f"/>
+                <path d="M0 180 L0 120 Q40 90 80 120 L80 180 Z" fill="#184b44"/><path d="M240 180 L240 110 Q280 85 320 115 L320 180 Z" fill="#184b44"/>
+                <rect x="60" y="150" width="200" height="10" fill="#a35f3c"/>
+              </svg>
+              <span><strong>Park monument</strong><small>A stone monument in a park. No people in frame.</small></span>
+            </button>
+          </div>
+          <figure class="preview" id="preview">
+            <div id="preview-art"></div>
+            <figcaption id="preview-caption">Selected: Smart glasses, reading — a person by a window, reading a book.</figcaption>
+          </figure>
+        </section>
+
+        <!-- Step 2 -->
+        <section class="panel" aria-labelledby="step2">
+          <h2 id="step2"><span class="step-num">2</span>Draft alt text</h2>
+          <p>Tap “Draft alt text” for a sample draft. The score is a sample too — in a real version it would come from the AI model.</p>
+          <button type="button" class="btn btn-primary" id="draft-btn">Draft alt text</button>
+          <button type="button" class="btn btn-secondary" id="reset-btn">Start over</button>
+
+          <div id="draft-area" hidden>
+            <h3>AI draft <span id="draft-status"></span></h3>
+            <p id="draft-text" class="draft-text"></p>
+            <div class="conf-wrap">
+              <div class="conf-bar" role="img" aria-label="Confidence score"><div class="conf-fill" id="conf-fill"></div></div>
+              <span class="conf-score" id="conf-score">—</span>
+            </div>
+            <p class="conf-note" id="conf-note"></p>
+            <div class="flag" id="conf-flag" hidden></div>
+          </div>
+          <p class="empty" id="draft-empty">No draft yet — choose an image, then tap “Draft alt text”.</p>
+
+          <label for="alt-edit">Edit the alt text</label>
+          <textarea id="alt-edit" placeholder="Your edited alt text will appear here after you draft — or write your own from scratch."></textarea>
+          <p class="char-count" id="char-count">0 characters · WCAG guidance: aim for 125 or fewer.</p>
+
+          <div role="group" aria-label="Is this image informative or decorative?">
+            <label>Is this image informative or decorative?</label>
+            <div class="toggle-row">
+              <button type="button" class="toggle" id="toggle-informative" aria-pressed="true">Informative — needs alt text</button>
+              <button type="button" class="toggle" id="toggle-decorative" aria-pressed="false">Decorative — alt text should be empty</button>
+            </div>
+          </div>
+
+          <label class="check"><input type="checkbox" id="known-name" /> The person in this image is known to me, and naming them is appropriate.</label>
+          <label class="check"><input type="checkbox" id="confirmed-details" /> I have checked the details in this draft — no guessed age, gender, or identity.</label>
+        </section>
+
+        <!-- Step 3 -->
+        <section class="panel" aria-labelledby="step3">
+          <h2 id="step3"><span class="step-num">3</span>WCAG checklist — live</h2>
+          <p>Updates as you type, toggle, or switch images. WCAG 2.2, Success Criterion 1.1.1 Non-text Content.</p>
+          <ul class="checklist" id="checklist">
+            <li id="check-has-text"><span class="mark" aria-hidden="true">–</span><span>Has alt text, or is marked decorative<small>Informative images need text. Decorative images should have empty alt (alt="").</small></span></li>
+            <li id="check-length"><span class="mark" aria-hidden="true">–</span><span>Length: 125 characters or fewer<small>Short alt text is easier for screen readers. Current length is shown above the checklist.</small></span></li>
+            <li id="check-redundant"><span class="mark" aria-hidden="true">–</span><span>No “image of” / “photo of” redundancy<small>Screen readers already announce it as an image — don’t repeat that.</small></span></li>
+            <li id="check-names"><span class="mark" aria-hidden="true">–</span><span>Names a person only if known<small>Don’t invent a name, age, or gender. Tick “known to me” above only if it’s true.</small></span></li>
+          </ul>
+          <p id="check-summary" style="margin-top:1rem; font-weight:600;"></p>
+        </section>
+
+        <!-- Step 4 -->
+        <section class="panel" aria-labelledby="step4">
+          <h2 id="step4"><span class="step-num">4</span>Before / after &amp; approve</h2>
+          <div class="before-after">
+            <div class="ba-box">
+              <h4>Before — AI draft</h4>
+              <p id="ba-before" class="empty">No draft yet.</p>
+              <p class="meta" id="ba-before-meta"></p>
+            </div>
+            <div class="ba-box">
+              <h4>After — your edited version <span class="changed-badge" id="changed-badge" hidden>Edited</span></h4>
+              <p id="ba-after" class="empty">Nothing edited yet.</p>
+              <p class="meta" id="ba-after-meta"></p>
+            </div>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn btn-primary" id="approve-btn">Approve</button>
+            <button type="button" class="btn btn-secondary" id="needs-work-btn">Needs work</button>
+            <button type="button" class="btn btn-secondary" id="copy-btn">Copy final alt text</button>
+          </div>
+          <div class="status" id="status" role="status"></div>
+          <p style="margin-top:1rem;">Final alt text to publish: <code id="final-preview" style="background:#fff; padding:0.2rem 0.4rem; border-radius:6px;">(none yet)</code></p>
+        </section>
+
+        <section class="panel" aria-labelledby="how">
+          <h2 id="how">How this works</h2>
+          <div class="howto">
+            <div><strong>AI drafts, you decide</strong>The draft is a starting point, never the final word. Confidence is shown, not hidden.</div>
+            <div><strong>Flags, not guesses</strong>Low-confidence words are flagged — like “young man” in the reading sample — so you can check them.</div>
+            <div><strong>Checked against WCAG</strong>Length, redundancy, and naming are checked live, against WCAG 1.1.1.</div>
+          </div>
+        </section>
+      </div>
+      <p style="margin-top:1.5rem;"><a href="../../prototypes/index.html">← All prototypes</a></p>
+    </main>
+
+    <footer id="footer" class="footer-component">
+      <div class="footer-top">
+        <a href="../../index.html" class="footer-logo" aria-label="Ginko — home"><img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" /></a>
+        <div class="footer-email">
+          <div class="footer-email-label">Hit my line</div>
+          <div class="footer-block">
+            <button class="email-copy" type="button" data-email="mindfullydesign@gmail.com" aria-label="Copy email to clipboard"><span class="email-text">mindfullydesign@gmail.com</span><svg class="copy-icon" width="24" height="24" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="6.20312" y="7.20386" width="16.7972" height="16.7972" fill="transparent" stroke="#0F0602" stroke-width="2"/><rect x="1" y="1.99878" width="16.7972" height="16.7972" fill="#c9c972" stroke="#0F0602" stroke-width="2"/></svg></button>
+            <a class="footer-social" href="https://www.linkedin.com/in/ginkoemdon/" target="_blank" rel="noopener" aria-label="Visit my LinkedIn profile"><img loading="lazy" src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/673c129627b8d3c81d9be887_6491a87dcdb57d5bee063ee7_linkedin-logo-white.svg" alt="Ginko Emdon's LinkedIn profile" /></a>
+          </div>
+        </div>
+      </div>
+      <hr class="footer-divider" />
+      <div class="footer-copyright">
+        <p>made mindfully<br />© 2026 Ginko Emdon</p>
+      </div>
+      <div class="footer-thankyou">
+        <p>✿ thank you for your cyber frolick ✿</p>
+      </div>
+    </footer>
+  </div>
+  <script>
+  (function(){
+    /* Nav + email copy — same as landing page */
+    var h=document.querySelector('.nav');var b=document.querySelector('.menu-button');if(b&&h){b.addEventListener('click',function(){var o=h.classList.toggle('nav-open');b.setAttribute('aria-expanded',o);});}document.querySelectorAll('.nav-toggle').forEach(function(t){t.addEventListener('click',function(e){e.stopPropagation();var d=t.closest('.nav-dropdown');var o=d.classList.toggle('open');t.setAttribute('aria-expanded',o);});});document.addEventListener('click',function(e){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){if(!d.contains(e.target)){d.classList.remove('open');d.querySelector('.nav-toggle').setAttribute('aria-expanded','false');}});});document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open');});}});document.querySelectorAll('.email-copy').forEach(function(btn){btn.addEventListener('click',function(){var email=btn.getAttribute('data-email');var label=btn.querySelector('.email-text');function done(){if(label){label.textContent='Copied!';setTimeout(function(){label.textContent=email;},2000);}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(email).then(done);}else{var ta=document.createElement('textarea');ta.value=email;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);done();}});});
+
+    /* Alt-Text Studio — sample data only, no AI calls */
+    var DATA = {
+      glasses: {
+        name: "Smart glasses, reading",
+        caption: "Selected: Smart glasses, reading — a person by a window, reading a book.",
+        draft: "A young man wearing eSight smart glasses reads a yellow and black book by a window.",
+        confidence: 82,
+        note: "Confident about the glasses, the book, and the window. Less sure about the person.",
+        flag: "Flagged: “young man” is a guess. The AI cannot tell age or gender from this image — check it, or remove it.",
+        knownName: false
+      },
+      workshop: {
+        name: "Workshop table",
+        caption: "Selected: Workshop table — people co-designing around a table, with sticky notes and paper maps.",
+        draft: "People gathered around a table in a city square, co-designing around paper maps and sticky notes, with a statue and a Canadian flag behind them.",
+        confidence: 78,
+        note: "Confident about the table, maps, and sticky notes. Less sure about the location and the flag in the background.",
+        flag: "Flagged: “in a city square” and “Canadian flag” are lower-confidence details — check them before approving.",
+        knownName: false
+      },
+      monument: {
+        name: "Park monument",
+        caption: "Selected: Park monument — a stone monument in a park, with trees and a paved path.",
+        draft: "A stone monument in a park, with trees and a paved path in the foreground.",
+        confidence: 88,
+        note: "Confident about the monument, trees, and path. No people in this image, so no naming check needed.",
+        flag: "",
+        knownName: false
+      }
+    };
+    var current = "glasses";
+    var originalDraft = "";
+    var isDecorative = false;
+
+    var previewArt = document.getElementById("preview-art");
+    var previewCaption = document.getElementById("preview-caption");
+    var draftArea = document.getElementById("draft-area");
+    var draftEmpty = document.getElementById("draft-empty");
+    var draftText = document.getElementById("draft-text");
+    var confFill = document.getElementById("conf-fill");
+    var confScore = document.getElementById("conf-score");
+    var confNote = document.getElementById("conf-note");
+    var confFlag = document.getElementById("conf-flag");
+    var edit = document.getElementById("alt-edit");
+    var charCount = document.getElementById("char-count");
+    var knownName = document.getElementById("known-name");
+    var confirmedDetails = document.getElementById("confirmed-details");
+    var statusBox = document.getElementById("status");
+    var finalPreview = document.getElementById("final-preview");
+
+    function artFor(key){
+      var btn = document.querySelector('.picker[data-image="'+key+'"] svg');
+      return btn ? btn.outerHTML : "";
+    }
+    function selectImage(key, resetDraft){
+      current = key;
+      document.querySelectorAll(".picker").forEach(function(p){
+        p.setAttribute("aria-pressed", p.dataset.image === key ? "true" : "false");
+      });
+      previewArt.innerHTML = artFor(key);
+      previewCaption.textContent = DATA[key].caption;
+      if (resetDraft) {
+        originalDraft = "";
+        edit.value = "";
+        draftArea.hidden = true;
+        draftEmpty.hidden = false;
+        draftEmpty.textContent = "No draft yet for this image — tap “Draft alt text”.";
+        setStatus("", "");
+        updateAll();
+      }
+    }
+    document.querySelectorAll(".picker").forEach(function(p){
+      p.addEventListener("click", function(){ selectImage(p.dataset.image, true); });
+    });
+
+    function setStatus(text, kind){
+      statusBox.textContent = text;
+      statusBox.className = "status" + (kind ? " show " + kind : "");
+    }
+
+    function updateAll(){
+      var text = edit.value;
+      var len = text.length;
+      charCount.textContent = len + " characters · WCAG guidance: aim for 125 or fewer.";
+      charCount.classList.toggle("over", len > 125 && !isDecorative);
+
+      var hasText = text.trim().length > 0;
+      var redundant = /\b(image|photo|picture|pic)\s+of\b/i.test(text);
+      var guessed = /\b(young|old|elderly|man|woman|boy|girl|male|female)\b/i.test(text);
+      var namesSomeone = /\b(Ginko|Kate|Marco|Elodie|Julie|Julia)\b/.test(text);
+      var lengthOk = isDecorative || (hasText && len <= 125);
+
+      setCheck("check-has-text", isDecorative || hasText);
+      setCheck("check-length", lengthOk);
+      setCheck("check-redundant", !redundant);
+      // Names: pass if no name in text, or the "known to me" box is ticked.
+      // Guessed age/gender words also fail this check unless confirmed.
+      var namesOk = isDecorative || (!namesSomeone || knownName.checked) && (!guessed || confirmedDetails.checked);
+      setCheck("check-names", namesOk);
+
+      var passed = document.querySelectorAll("#checklist li.pass").length;
+      var total = 4;
+      document.getElementById("check-summary").textContent =
+        isDecorative ? "Decorative: alt text should be empty — " + passed + " of " + total + " checks passing."
+        : passed + " of " + total + " checks passing." + (passed === total ? " Ready to approve." : " Fix the ✕ items above.");
+
+      // Before / after
+      document.getElementById("ba-before").textContent = originalDraft || "No draft yet.";
+      document.getElementById("ba-before").classList.toggle("empty", !originalDraft);
+      document.getElementById("ba-before-meta").textContent = originalDraft ? originalDraft.length + " characters · sample draft" : "";
+      var after = isDecorative ? "" : text;
+      document.getElementById("ba-after").textContent = after || (isDecorative ? "(empty — decorative image)" : "Nothing edited yet.");
+      document.getElementById("ba-after").classList.toggle("empty", !after && !isDecorative);
+      document.getElementById("ba-after-meta").textContent = after ? after.length + " characters · your edited version" : "";
+      document.getElementById("changed-badge").hidden = !(originalDraft && text !== originalDraft);
+      finalPreview.textContent = isDecorative ? '(empty — alt="")' : (text.trim() || "(none yet)");
+    }
+    function setCheck(id, ok){
+      var li = document.getElementById(id);
+      li.classList.toggle("pass", !!ok);
+      li.classList.toggle("fail", !ok);
+      li.querySelector(".mark").textContent = ok ? "✓" : "✕";
+    }
+
+    document.getElementById("draft-btn").addEventListener("click", function(){
+      var d = DATA[current];
+      originalDraft = d.draft;
+      edit.value = d.draft;
+      draftArea.hidden = false;
+      draftEmpty.hidden = true;
+      draftText.textContent = d.draft;
+      confFill.style.width = d.confidence + "%";
+      confScore.textContent = d.confidence + "%";
+      confNote.textContent = d.note;
+      if (d.flag) { confFlag.hidden = false; confFlag.textContent = d.flag; }
+      else { confFlag.hidden = true; confFlag.textContent = ""; }
+      // Reset the human checks for the new draft
+      knownName.checked = false;
+      confirmedDetails.checked = false;
+      setStatus("", "");
+      updateAll();
+    });
+    document.getElementById("reset-btn").addEventListener("click", function(){
+      selectImage(current, true);
+      isDecorative = false;
+      document.getElementById("toggle-informative").setAttribute("aria-pressed", "true");
+      document.getElementById("toggle-decorative").setAttribute("aria-pressed", "false");
+    });
+    edit.addEventListener("input", updateAll);
+    knownName.addEventListener("change", updateAll);
+    confirmedDetails.addEventListener("change", updateAll);
+
+    document.getElementById("toggle-informative").addEventListener("click", function(){
+      isDecorative = false;
+      this.setAttribute("aria-pressed", "true");
+      document.getElementById("toggle-decorative").setAttribute("aria-pressed", "false");
+      updateAll();
+    });
+    document.getElementById("toggle-decorative").addEventListener("click", function(){
+      isDecorative = true;
+      this.setAttribute("aria-pressed", "true");
+      document.getElementById("toggle-informative").setAttribute("aria-pressed", "false");
+      updateAll();
+    });
+
+    document.getElementById("approve-btn").addEventListener("click", function(){
+      var passed = document.querySelectorAll("#checklist li.pass").length;
+      if (passed === 4) {
+        setStatus("Approved — ready to publish. Final alt text: " + (isDecorative ? '(empty — alt="")' : "“" + edit.value.trim() + "”"), "approved");
+      } else {
+        setStatus("Not ready to approve yet — " + passed + " of 4 WCAG checks are passing. Fix the ✕ items above, or mark it “Needs work”.", "work");
+      }
+    });
+    document.getElementById("needs-work-btn").addEventListener("click", function(){
+      setStatus("Marked “Needs work” — keep editing. Nothing was published.", "work");
+    });
+    document.getElementById("copy-btn").addEventListener("click", function(){
+      var text = isDecorative ? "" : edit.value;
+      var btn = document.getElementById("copy-btn");
+      function done(){ btn.textContent = "Copied!"; setTimeout(function(){ btn.textContent = "Copy final alt text"; }, 2000); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, done);
+      } else {
+        var ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); } catch(e){} document.body.removeChild(ta); done();
+      }
+    });
+
+    selectImage("glasses", false);
+    updateAll();
+  })();
+  </script>
+</body>
+</html>

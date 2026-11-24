@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plain-Language Government AI — Ginko's Prototype Playground</title>
+  <meta name="description" content="Plain-Language Government AI: paste in dense government text, get a plain-language rewrite with sources kept and uncertain phrases flagged, not guessed." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <style>
+    .demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; margin-top: 1.5rem; }
+    @media (max-width: 800px) { .demo-grid { grid-template-columns: 1fr; } }
+    .panel { background: var(--cream); border: 1px solid rgba(59,52,47,.12); border-radius: 24px; padding: 1.5rem; box-shadow: 0 12px 30px rgba(59,52,47,.10); }
+    .panel h2 { font-size: 1.15rem; margin: 0 0 0.75rem; }
+    .panel p.hint { color: var(--muted); font-size: 0.9rem; margin: 0 0 1rem; }
+    textarea {
+      width: 100%; min-height: 260px; resize: vertical;
+      font-family: "Poppins", sans-serif; font-size: 0.95rem; line-height: 1.6;
+      color: var(--earth); background: #fff; border: 1px solid rgba(59,52,47,.25);
+      border-radius: 12px; padding: 1rem;
+    }
+    textarea:focus { outline: 2px solid var(--tangerine); outline-offset: 2px; }
+    .demo-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem; }
+    .plain-output { display: none; }
+    .plain-output.show { display: block; }
+    .plain-sentence { margin: 0 0 1.25rem; }
+    .plain-sentence:last-child { margin-bottom: 0; }
+    .source { display: block; color: var(--muted); font-size: 0.8rem; margin-top: 0.35rem; }
+    .uncertain {
+      background: var(--sun); padding: 0 0.2em; border-bottom: 2px dashed var(--tangerine);
+      border-radius: 4px; font-weight: 600;
+    }
+    .flag {
+      display: block; margin-top: 0.4rem; padding: 0.5rem 0.75rem;
+      background: #fff3d6; border: 1px solid var(--sun); border-radius: 8px;
+      font-size: 0.85rem; color: var(--brown);
+    }
+    .flag strong { color: var(--rust-text); }
+    .readability { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+    .grade {
+      background: var(--cream); border: 1px solid rgba(59,52,47,.12); border-radius: 16px;
+      padding: 1rem 1.25rem; text-align: center;
+    }
+    .grade .big { font-family: "Krona One", sans-serif; font-size: 2rem; color: var(--earth); display: block; line-height: 1.1; }
+    .grade .label { font-size: 0.85rem; color: var(--muted); }
+    .grade.after .big { color: var(--forest); }
+    .grade-note { font-size: 0.85rem; color: var(--muted); margin-top: 0.75rem; }
+    .badge {
+      display: inline-block; border: 1px solid var(--earth); border-radius: 999px;
+      padding: 0.3rem 0.85rem; font-size: 0.8rem; font-weight: 600; background: var(--sun);
+    }
+    .empty-note { color: var(--muted); }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <!-- Nav — style copied from Webflow (mindfullydesign.webflow.io), own simple JS, no Webflow JS.
+       Services / About / Resumé are placeholder buttons for now, mirroring the original Webflow menu. -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="logo" href="../../index.html" aria-label="Ginko's Prototype Playground — home">
+        <img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/67b6998f1db3d0b64a9c19e6_apple-touch-icon.png" loading="lazy" width="32" alt="" class="logo-g" />
+        <img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" class="logo-img" />
+      </a>
+      <button class="menu-button" type="button" aria-label="Menu" aria-expanded="false">
+        <span class="menu-icon1"><span class="menu-icon1_line-top"></span><span class="menu-icon1_line-middle"></span><span class="menu-icon1_line-bottom"></span></span>
+      </button>
+      <nav class="nav-links" aria-label="Main">
+        <div class="nav-dropdown">
+          <button class="nav-link nav-toggle" type="button" aria-expanded="false" aria-haspopup="true">Prototypes <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.55806 6.29544C2.46043 6.19781 2.46043 6.03952 2.55806 5.94189L3.44195 5.058C3.53958 4.96037 3.69787 4.96037 3.7955 5.058L8.00001 9.26251L12.2045 5.058C12.3021 4.96037 12.4604 4.96037 12.5581 5.058L13.4419 5.94189C13.5396 6.03952 13.5396 6.19781 13.4419 6.29544L8.17678 11.5606C8.07915 11.6582 7.92086 11.6582 7.82323 11.5606L2.55806 6.29544Z" fill="currentColor"/></svg></button>
+          <div class="nav-dropdown-list">
+            <a class="nav-dropdown-link" href="../peerspect/index.html"><span class="thumb sun">P</span><span><strong>PEERSPECT</strong><span>One of Ginko's prototypes — details to come.</span></span></a>
+            <a class="nav-dropdown-link" href="../kate-ai/index.html"><span class="thumb">AI</span><span><strong>AI prototype for Kate</strong><span>The AI prototype Ginko is putting together for Kate.</span></span></a>
+            <a class="nav-dropdown-link" href="./index.html"><span class="thumb sun">PL</span><span><strong>Plain-Language Government AI</strong><span>Dense government text, rewritten plainly — with sources kept.</span></span></a>
+            <a class="nav-dropdown-link" href="../index.html"><span class="thumb">All</span><span><strong>All prototypes</strong><span>See every prototype subpage in one place.</span></span></a>
+          </div>
+        </div>
+        <a class="nav-link" href="https://mindfullydesign.webflow.io/#offerings">Services</a>
+        <a class="nav-link" href="https://mindfullydesign.webflow.io/about">About</a>
+        <a class="nav-link" href="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/67aea44f506169a16be6fd36_95d3807660de7d4d3415709f6ff2e4eb_Ginko%20Emdon%20-%20Product%20Designer%20-%20Resume%20-%202025.pdf">Resumé</a>
+        <a class="flower-button" href="https://mindfullydesign.webflow.io/" target="_blank" rel="noopener"><span class="button-line-left"></span><span class="button-inner-text">Ginko's Portfolio</span><span class="button-line-right"></span></a>
+      </nav>
+    </div>
+  </header>
+  <div class="wrap">
+
+    <main id="main">
+      <section class="product-shell" style="--product-accent: #1e3a5f;" aria-labelledby="product-title">
+        <p><a class="back" href="../../index.html">← Back to Ginko's Prototype Playground</a></p>
+        <div class="product-head">
+          <span class="product-mark" aria-hidden="true">PL</span>
+          <div>
+            <p class="product-meta">Plain-Language Government AI · A product by Ginko · 2026</p>
+            <h1 id="product-title">Plain-Language Government AI</h1>
+            <p class="product-tagline">Dense government text, rewritten so anyone can read it — with sources kept, and unsure phrases flagged instead of guessed.</p>
+          </div>
+        </div>
+        <div class="how-to">
+          <h2>How to use this product</h2>
+          <ol>
+            <li><strong>Read the sample</strong> — a dense government text about an accessibility benefit is already loaded. Edit it if you like.</li>
+            <li><strong>Tap “Rewrite in plain language”</strong> — the plain version appears beside the original, with a reading grade before and after.</li>
+            <li><strong>Check the flags, then copy</strong> — highlighted phrases are ones the AI is unsure about. Check them in the source, then copy the plain version.</li>
+          </ol>
+          <p style="margin:.5rem 0 0; color: var(--muted);">What happens when you do it: you get a plain-language draft, every sentence linked to its source, and the AI's uncertain phrases highlighted with a note — it never guesses. Sample data only. No text is sent anywhere: this demo runs entirely in your browser on a pre-written sample and does not call any AI service. If you get stuck, use “Reset to sample” to start again, or go back to <a href="../../index.html">Ginko's Prototype Playground</a>.</p>
+        </div>
+      </section>
+
+      <section>
+        <div class="demo-grid">
+          <div class="panel">
+            <h2>Original — dense government text</h2>
+            <p class="hint">Sample text about an accessibility benefit application. Edit it if you like — the rewrite below is the pre-written sample version.</p>
+            <label for="original-text" style="position:absolute; left:-9999px;">Original government text</label>
+            <textarea id="original-text">Pursuant to subsection 4(2) of the Accessibility Benefit Regulations, applicants who meet the eligibility criteria prescribed therein must submit a completed application form, together with supporting documentation substantiating the nature and extent of their functional limitations, within 90 days of the date of determination. Failure to provide the requisite documentation within the prescribed timeframe may result in the suspension or termination of benefits, subject to reconsideration upon submission of additional evidence. Applicants are advised that determinations are rendered on the basis of the information on file at the time of adjudication, and that retroactive payments shall not exceed a period of 12 months preceding the date of receipt of a complete application. For further information, applicants may contact the Benefit Administration Division during regular business hours.</textarea>
+            <div class="demo-actions">
+              <button class="btn btn-primary" type="button" id="rewrite-btn">Rewrite in plain language</button>
+              <button class="btn btn-secondary" type="button" id="reset-btn">Reset to sample</button>
+            </div>
+            <p class="grade-note" id="original-stats"></p>
+          </div>
+
+          <div class="panel">
+            <h2>Plain-language version</h2>
+            <p class="hint">Every sentence keeps its source. Highlighted phrases are ones the AI is unsure about — check the source, don't guess.</p>
+            <div id="plain-empty" class="empty-note">
+              <p>Click “Rewrite in plain language” to see the plain version here, side by side with the original.</p>
+            </div>
+            <div id="plain-output" class="plain-output" aria-live="polite">
+              <p class="plain-sentence">You can apply for the accessibility benefit if you meet the rules. Send in your form, plus documents that show how your disability affects your daily life. You have 90 days from the date we tell you your decision.<small class="source">Source: Accessibility Benefit Regulations, s. 4(2) — eligibility, and the 90-day deadline.</small></p>
+              <p class="plain-sentence">If you do not send the documents in time, your payments <span class="uncertain">may stop</span>.<span class="flag"><strong>AI is unsure — check source:</strong> the original says “suspension or termination.” That could mean a pause or a full stop. This rewrite does not guess which one — confirm it in the source before publishing.</span><small class="source">Source: Accessibility Benefit Regulations — late documents, suspension / termination, and reconsideration.</small></p>
+              <p class="plain-sentence">You can ask us to look at your case again if you send the documents later.<small class="source">Source: Accessibility Benefit Regulations — reconsideration on submission of additional evidence.</small></p>
+              <p class="plain-sentence">We decide based on the information we have when we look at your file. If you are approved, back pay will only cover <span class="uncertain">up to 12 months</span> before we got your full application.<span class="flag"><strong>AI is unsure — check source:</strong> confirm whether the 12 months are counted from when we received your full application, or from when we approved it.</span><small class="source">Source: Accessibility Benefit Regulations — decisions on the information on file, and the 12-month retroactive limit.</small></p>
+              <p class="plain-sentence">If you have questions, contact the Benefit Administration Division during regular business hours.<small class="source">Source: Accessibility Benefit Regulations — contact information.</small></p>
+              <div class="demo-actions">
+                <button class="btn btn-primary" type="button" id="copy-btn">Copy plain version</button>
+              </div>
+              <p class="grade-note" id="copy-note" aria-live="polite"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="readability" aria-label="Readability before and after">
+          <div class="grade">
+            <span class="big" id="grade-before">—</span>
+            <span class="label">Reading grade — original<br /><span id="words-before"></span></span>
+          </div>
+          <div class="grade after">
+            <span class="big" id="grade-after">—</span>
+            <span class="label">Reading grade — plain version<br /><span id="words-after"></span></span>
+          </div>
+        </div>
+        <p class="grade-note">Readability is a rough Flesch–Kincaid grade level, from word and sentence counts in your browser. Lower is easier to read. It is a guide, not a verdict — plain language is also about short sentences, familiar words, and clear next steps.</p>
+      </section>
+    </main>
+
+    <footer id="footer" class="footer-component">
+      <div class="footer-top">
+        <a href="../../index.html" class="footer-logo" aria-label="Ginko — home"><img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" /></a>
+        <div class="footer-email">
+          <div class="footer-email-label">Hit my line</div>
+          <div class="footer-block">
+            <button class="email-copy" type="button" data-email="mindfullydesign@gmail.com" aria-label="Copy email to clipboard"><span class="email-text">mindfullydesign@gmail.com</span><svg class="copy-icon" width="24" height="24" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="6.20312" y="7.20386" width="16.7972" height="16.7972" fill="transparent" stroke="#0F0602" stroke-width="2"/><rect x="1" y="1.99878" width="16.7972" height="16.7972" fill="#c9c972" stroke="#0F0602" stroke-width="2"/></svg></button>
+            <a class="footer-social" href="https://www.linkedin.com/in/ginkoemdon/" target="_blank" rel="noopener" aria-label="Visit my LinkedIn profile"><img loading="lazy" src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/673c129627b8d3c81d9be887_6491a87dcdb57d5bee063ee7_linkedin-logo-white.svg" alt="Ginko Emdon's LinkedIn profile" /></a>
+          </div>
+        </div>
+      </div>
+      <hr class="footer-divider" />
+      <div class="footer-copyright">
+        <p>made mindfully<br />© 2026 Ginko Emdon</p>
+      </div>
+      <div class="footer-thankyou">
+        <p>✿ thank you for your cyber frolick ✿</p>
+      </div>
+    </footer>
+  </div>
+  <script>
+  (function(){var h=document.querySelector('.nav');var b=document.querySelector('.menu-button');if(b&&h){b.addEventListener('click',function(){var o=h.classList.toggle('nav-open');b.setAttribute('aria-expanded',o);});}document.querySelectorAll('.nav-toggle').forEach(function(t){t.addEventListener('click',function(e){e.stopPropagation();var d=t.closest('.nav-dropdown');var o=d.classList.toggle('open');t.setAttribute('aria-expanded',o);});});document.addEventListener('click',function(e){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){if(!d.contains(e.target)){d.classList.remove('open');d.querySelector('.nav-toggle').setAttribute('aria-expanded','false');}});});document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open');});}});document.querySelectorAll('.email-copy').forEach(function(btn){btn.addEventListener('click',function(){var email=btn.getAttribute('data-email');var label=btn.querySelector('.email-text');function done(){if(label){label.textContent='Copied!';setTimeout(function(){label.textContent=email;},2000);}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(email).then(done);}else{var ta=document.createElement('textarea');ta.value=email;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);done();}});});})();
+  </script>
+  <script>
+  (function () {
+    var SAMPLE = document.getElementById('original-text').value;
+    var PLAIN_TEXT = [
+      "You can apply for the accessibility benefit if you meet the rules. Send in your form, plus documents that show how your disability affects your daily life. You have 90 days from the date we tell you your decision.",
+      "If you do not send the documents in time, your payments may stop. [AI is unsure — check source: the original says \u201csuspension or termination.\u201d That could mean a pause or a full stop.]",
+      "You can ask us to look at your case again if you send the documents later.",
+      "We decide based on the information we have when we look at your file. If you are approved, back pay will only cover up to 12 months before we got your full application. [AI is unsure — check source: confirm whether the 12 months are counted from receipt of your full application, or from approval.]",
+      "If you have questions, contact the Benefit Administration Division during regular business hours."
+    ].join("\n\n");
+
+    function countSyllables(word) {
+      word = word.toLowerCase().replace(/[^a-z]/g, "");
+      if (!word) return 0;
+      if (word.length <= 3) return 1;
+      var m = word.match(/[aeiouy]+/g);
+      var n = m ? m.length : 1;
+      if (word.slice(-1) === "e") n -= 1;
+      if (word.slice(-2) === "le" && word.length > 2) n += 1;
+      return Math.max(1, n);
+    }
+    function gradeLevel(text) {
+      var sentences = text.split(/[.!?]+/).filter(function (s) { return s.trim().length > 0; });
+      var words = text.trim().split(/\s+/).filter(Boolean);
+      if (!sentences.length || !words.length) return { grade: null, words: 0, sentences: 0 };
+      var syllables = words.reduce(function (sum, w) { return sum + countSyllables(w); }, 0);
+      var grade = 0.39 * (words.length / sentences.length) + 11.8 * (syllables / words.length) - 15.59;
+      return { grade: grade, words: words.length, sentences: sentences.length };
+    }
+    function renderGrades() {
+      var before = gradeLevel(document.getElementById('original-text').value);
+      var after = gradeLevel(PLAIN_TEXT);
+      var gb = document.getElementById('grade-before');
+      var ga = document.getElementById('grade-after');
+      gb.textContent = before.grade === null ? "—" : "Grade " + Math.max(1, Math.round(before.grade));
+      ga.textContent = after.grade === null ? "—" : "Grade " + Math.max(1, Math.round(after.grade));
+      document.getElementById('words-before').textContent = before.words + " words · " + before.sentences + " sentences";
+      document.getElementById('words-after').textContent = after.words + " words · " + after.sentences + " sentences";
+      document.getElementById('original-stats').textContent = before.words + " words in " + before.sentences + " long sentences. The rewrite below is the pre-written sample version for this text.";
+    }
+
+    document.getElementById('rewrite-btn').addEventListener('click', function () {
+      document.getElementById('plain-empty').style.display = 'none';
+      document.getElementById('plain-output').classList.add('show');
+      renderGrades();
+      document.getElementById('plain-output').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+    document.getElementById('reset-btn').addEventListener('click', function () {
+      document.getElementById('original-text').value = SAMPLE;
+      document.getElementById('plain-output').classList.remove('show');
+      document.getElementById('plain-empty').style.display = '';
+      document.getElementById('copy-note').textContent = '';
+      renderGrades();
+    });
+    document.getElementById('copy-btn').addEventListener('click', function () {
+      var note = document.getElementById('copy-note');
+      function done() { note.textContent = 'Copied!'; setTimeout(function () { note.textContent = ''; }, 2000); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(PLAIN_TEXT).then(done);
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = PLAIN_TEXT;
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta); done();
+      }
+    });
+    document.getElementById('original-text').addEventListener('input', renderGrades);
+    renderGrades();
+  })();
+  </script>
+</body>
+</html>

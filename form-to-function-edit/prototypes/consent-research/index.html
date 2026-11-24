@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Consent-Aware Research Assistant — Ginko's Prototype Playground</title>
+  <meta name="description" content="Consent-Aware Research Assistant — an AI-first prototype by Ginko. Synthesis that links every insight to a source, excludes private notes, and says what it does not know. Prototype — sample data." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <style>
+    /* Page-specific styles — same Webflow palette as css/style.css */
+    .sample-banner {
+      background: var(--sun); border: 2px solid var(--earth); border-radius: 12px;
+      padding: 0.75rem 1rem; font-weight: 600; margin: 0 0 1.5rem;
+    }
+    .sample-banner p { margin: 0; color: var(--brown); }
+    .notes { display: grid; gap: 1rem; margin: 1rem 0 0; }
+    .note {
+      background: var(--cream); border: 1px solid rgba(59, 52, 47, 0.15);
+      border-radius: 16px; padding: 1.25rem 1.5rem;
+      box-shadow: 0 8px 20px rgba(59, 52, 47, 0.08);
+    }
+    .note.private-note { background: #f3ecec; border-style: dashed; }
+    .note-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+    .note-head h3 { margin: 0; }
+    .note-head .who { font-size: 0.85rem; color: var(--muted); margin: 0.25rem 0 0; }
+    .note blockquote { margin: 1rem 0 0; font-size: 1.05rem; line-height: 1.55; color: var(--earth); }
+    .note blockquote.redacted { color: var(--rust-text); font-style: italic; }
+    .consent-toggle { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+    .consent-toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+    .switch {
+      width: 52px; height: 28px; border-radius: 999px; background: var(--rust);
+      position: relative; flex-shrink: 0; transition: background 0.2s; border: 2px solid var(--earth);
+    }
+    .switch::after {
+      content: ""; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px;
+      border-radius: 50%; background: #fff; transition: left 0.2s;
+    }
+    .consent-toggle input:checked + .switch { background: var(--forest); }
+    .consent-toggle input:checked + .switch::after { left: 26px; }
+    .consent-toggle input:focus-visible + .switch { outline: 3px solid var(--sun); outline-offset: 2px; }
+    .consent-state-shareable { color: var(--forest); }
+    .consent-state-private { color: var(--rust-text); }
+    .excluded-note { margin: 0.75rem 0 0; font-size: 0.9rem; color: var(--rust-text); font-weight: 600; }
+    .synth-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1.5rem 0 0; }
+    .insight {
+      background: var(--cream); border-left: 6px solid var(--forest);
+      border-radius: 12px; padding: 1.25rem 1.5rem; margin: 1rem 0;
+      box-shadow: 0 8px 20px rgba(59, 52, 47, 0.08);
+    }
+    .insight h3 { margin-top: 0; }
+    .insight p { color: var(--muted); }
+    .insight .sources { font-size: 0.9rem; margin: 0.75rem 0 0; }
+    .insight .sources a { font-weight: 600; }
+    .insight .caveat { font-size: 0.9rem; color: var(--rust-text); font-weight: 600; margin: 0.5rem 0 0; }
+    .insight-missing {
+      background: transparent; border: 2px dashed var(--rust);
+      border-radius: 12px; padding: 1.25rem 1.5rem; margin: 1rem 0; box-shadow: none;
+    }
+    .insight-missing h3 { color: var(--rust-text); }
+    .not-found {
+      background: #fff; border: 1px solid rgba(59, 52, 47, 0.15);
+      border-radius: 16px; padding: 1.25rem 1.5rem; margin: 1rem 0 0;
+    }
+    .not-found ul { margin: 0.5rem 0 0; line-height: 1.7; }
+    .prompt-box {
+      background: var(--brown); color: var(--egg); border-radius: 16px;
+      padding: 1.25rem 1.5rem; margin: 1rem 0 0; font-size: 0.95rem;
+    }
+    .prompt-box code, .prompt-box blockquote { color: var(--sun); }
+    .prompt-box blockquote { margin: 0.75rem 0 0; font-size: 1.05rem; }
+    .prompt-box p { margin: 0; }
+    .count-line { font-weight: 600; margin: 1rem 0 0; }
+    .count-line.excluded { color: var(--rust-text); }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <!-- Nav — style copied from Webflow (mindfullydesign.webflow.io), own simple JS, no Webflow JS.
+       Services / About / Resumé are placeholder buttons for now, mirroring the original Webflow menu. -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="logo" href="../../index.html" aria-label="Ginko's Prototype Playground — home">
+        <img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/67b6998f1db3d0b64a9c19e6_apple-touch-icon.png" loading="lazy" width="32" alt="" class="logo-g" />
+        <img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" class="logo-img" />
+      </a>
+      <button class="menu-button" type="button" aria-label="Menu" aria-expanded="false">
+        <span class="menu-icon1"><span class="menu-icon1_line-top"></span><span class="menu-icon1_line-middle"></span><span class="menu-icon1_line-bottom"></span></span>
+      </button>
+      <nav class="nav-links" aria-label="Main">
+        <div class="nav-dropdown">
+          <button class="nav-link nav-toggle" type="button" aria-expanded="false" aria-haspopup="true">Prototypes <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.55806 6.29544C2.46043 6.19781 2.46043 6.03952 2.55806 5.94189L3.44195 5.058C3.53958 4.96037 3.69787 4.96037 3.7955 5.058L8.00001 9.26251L12.2045 5.058C12.3021 4.96037 12.4604 4.96037 12.5581 5.058L13.4419 5.94189C13.5396 6.03952 13.5396 6.19781 13.4419 6.29544L8.17678 11.5606C8.07915 11.6582 7.92086 11.6582 7.82323 11.5606L2.55806 6.29544Z" fill="currentColor"/></svg></button>
+          <div class="nav-dropdown-list">
+            <a class="nav-dropdown-link" href="../peerspect/index.html"><span class="thumb sun">P</span><span><strong>PEERSPECT</strong><span>One of Ginko's prototypes — details to come.</span></span></a>
+            <a class="nav-dropdown-link" href="../kate-ai/index.html"><span class="thumb">AI</span><span><strong>AI prototype for Kate</strong><span>The AI prototype Ginko is putting together for Kate.</span></span></a>
+            <a class="nav-dropdown-link" href="./index.html"><span class="thumb">CA</span><span><strong>Consent-Aware Research Assistant</strong><span>Synthesis that respects consent — you are here.</span></span></a>
+            <a class="nav-dropdown-link" href="../index.html"><span class="thumb">All</span><span><strong>All prototypes</strong><span>See every prototype subpage in one place.</span></span></a>
+          </div>
+        </div>
+        <a class="nav-link" href="https://mindfullydesign.webflow.io/#offerings">Services</a>
+        <a class="nav-link" href="https://mindfullydesign.webflow.io/about">About</a>
+        <a class="nav-link" href="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/67aea44f506169a16be6fd36_95d3807660de7d4d3415709f6ff2e4eb_Ginko%20Emdon%20-%20Product%20Designer%20-%20Resume%20-%202025.pdf">Resumé</a>
+        <a class="flower-button" href="https://mindfullydesign.webflow.io/" target="_blank" rel="noopener"><span class="button-line-left"></span><span class="button-inner-text">Ginko's Portfolio</span><span class="button-line-right"></span></a>
+      </nav>
+    </div>
+  </header>
+  <div class="wrap">
+
+    <main id="main">
+      <section class="product-shell" style="--product-accent: #5b21b6;" aria-labelledby="product-title">
+        <p><a class="back" href="../../index.html">← Back to Ginko's Prototype Playground</a></p>
+        <div class="product-head">
+          <span class="product-mark" aria-hidden="true">C</span>
+          <div>
+            <p class="product-meta">Consent-Aware Research Assistant · A product by Ginko · 2026</p>
+            <h1 id="product-title">Consent-Aware Research Assistant</h1>
+            <p class="product-tagline">Summaries you can trace back to what someone actually said — and nothing is used unless they agreed to share it.</p>
+          </div>
+        </div>
+        <div class="how-to">
+          <h2>How to use this product</h2>
+          <ol>
+            <li><strong>Check the consent switches</strong> — each of the 5 sample notes is marked Shareable or Private. Flip one to Private and its words are hidden here.</li>
+            <li><strong>Press “Synthesise insights”</strong> — only Shareable notes are used, and every insight links back to the exact note it came from.</li>
+            <li><strong>Read what it does not know</strong> — the gaps are listed below, and Private notes are named as excluded, never quoted or counted.</li>
+          </ol>
+          <p style="margin:.5rem 0 0; color: var(--muted);">What happens: the count line updates to show how many notes were included and which were excluded, and the insights change to match. Sample data only. No backend, no external AI calls. Nothing you type or toggle is sent anywhere.</p>
+        </div>
+      </section>
+
+      <div class="sample-banner" role="note">
+        <p>Prototype — sample data. These 5 interview notes are invented examples, not real participants. No data leaves your browser, and no external AI is called.</p>
+      </div>
+
+      <section>
+        <p class="section-label">Step 1 — The notes</p>
+        <h2>5 sample interview notes</h2>
+        <p>Each note has a participant pseudonym, a short verbatim quote, and a consent toggle. Flip a toggle to <strong>Private</strong> and that note is redacted here — and left out of the synthesis below.</p>
+        <div class="notes" id="notes" aria-live="polite"></div>
+      </section>
+
+      <section>
+        <p class="section-label">Step 2 — Synthesise</p>
+        <h2>What does the sample say?</h2>
+        <p>Press <strong>Synthesise insights</strong>. The assistant only uses notes marked Shareable, and every insight links back to the exact source note(s) it came from.</p>
+        <div class="synth-actions">
+          <button class="btn btn-primary" type="button" id="synthesise-btn">Synthesise insights</button>
+          <button class="btn btn-secondary" type="button" id="reset-btn">Reset sample</button>
+        </div>
+        <p class="count-line" id="count-line">Not synthesised yet — toggle consent above, then press “Synthesise insights”.</p>
+        <div id="insights" aria-live="polite"></div>
+      </section>
+
+      <section>
+        <p class="section-label">Step 3 — What it does not know</p>
+        <h2>What was NOT found</h2>
+        <div class="not-found">
+          <p>This is what the sample does <strong>not</strong> support. A good research assistant says this out loud, instead of filling the gap with a guess.</p>
+          <ul>
+            <li><strong>No evidence that people want longer, more detailed explanations.</strong> Nobody in these 5 notes asked for more detail — they asked for straighter, shorter wording.</li>
+            <li><strong>No evidence about price, or about desktop vs. mobile.</strong> Those topics were not in the notes, so this synthesis says nothing about them.</li>
+            <li><strong>No claim about how common these views are.</strong> This is 5 sample notes, not a representative study. “2 of 5 notes” is a count of this sample, not a statistic about all users.</li>
+            <li><strong>Marlowe’s view cannot be quoted or counted</strong> while their consent is off — even though it is the note most directly about trust. That gap is part of the finding, not a bug to work around.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-label">Prompt design</p>
+        <h2>The instruction behind it</h2>
+        <p>What the assistant is told before it synthesises — shown here so you can judge it, not hidden away.</p>
+        <div class="prompt-box">
+          <p><strong>System instruction (sample):</strong></p>
+          <blockquote>“Link every insight to a source. Do not invent quotes. Say what you don't know.”</blockquote>
+          <p style="margin-top: 0.75rem;">Plus, enforced in this demo: only use notes marked Shareable. If a source is Private, exclude it entirely and say that you did.</p>
+        </div>
+        <p style="margin-top: 1rem;">Try it: turn Marlowe back to Shareable, re-run the synthesis, and watch Insight 3 gain a second source — then turn Sol Private, and watch Insight 3 disappear.</p>
+      </section>
+    </main>
+
+    <footer id="footer" class="footer-component">
+      <div class="footer-top">
+        <a href="../../index.html" class="footer-logo" aria-label="Ginko — home"><img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" /></a>
+        <div class="footer-email">
+          <div class="footer-email-label">Hit my line</div>
+          <div class="footer-block">
+            <button class="email-copy" type="button" data-email="mindfullydesign@gmail.com" aria-label="Copy email to clipboard"><span class="email-text">mindfullydesign@gmail.com</span><svg class="copy-icon" width="24" height="24" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="6.20312" y="7.20386" width="16.7972" height="16.7972" fill="transparent" stroke="#0F0602" stroke-width="2"/><rect x="1" y="1.99878" width="16.7972" height="16.7972" fill="#c9c972" stroke="#0F0602" stroke-width="2"/></svg></button>
+            <a class="footer-social" href="https://www.linkedin.com/in/ginkoemdon/" target="_blank" rel="noopener" aria-label="Visit my LinkedIn profile"><img loading="lazy" src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/673c129627b8d3c81d9be887_6491a87dcdb57d5bee063ee7_linkedin-logo-white.svg" alt="Ginko Emdon's LinkedIn profile" /></a>
+          </div>
+        </div>
+      </div>
+      <hr class="footer-divider" />
+      <div class="footer-copyright">
+        <p>made mindfully<br />© 2026 Ginko Emdon</p>
+      </div>
+      <div class="footer-thankyou">
+        <p>✿ thank you for your cyber frolick ✿</p>
+      </div>
+    </footer>
+  </div>
+  <script>
+  (function(){var h=document.querySelector('.nav');var b=document.querySelector('.menu-button');if(b&&h){b.addEventListener('click',function(){var o=h.classList.toggle('nav-open');b.setAttribute('aria-expanded',o);});}document.querySelectorAll('.nav-toggle').forEach(function(t){t.addEventListener('click',function(e){e.stopPropagation();var d=t.closest('.nav-dropdown');var o=d.classList.toggle('open');t.setAttribute('aria-expanded',o);});});document.addEventListener('click',function(e){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){if(!d.contains(e.target)){d.classList.remove('open');d.querySelector('.nav-toggle').setAttribute('aria-expanded','false');}});});document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open');});}});document.querySelectorAll('.email-copy').forEach(function(btn){btn.addEventListener('click',function(){var email=btn.getAttribute('data-email');var label=btn.querySelector('.email-text');function done(){if(label){label.textContent='Copied!';setTimeout(function(){label.textContent=email;},2000);}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(email).then(done);}else{var ta=document.createElement('textarea');ta.value=email;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);done();}});});})();
+  </script>
+  <script>
+  (function(){
+    // Sample data only — invented examples, not real participants.
+    var DEFAULT_NOTES = [
+      { id: 1, name: "Ash", shareable: true,
+        quote: "I skip the instructions and just try the buttons. If I get stuck, I leave." },
+      { id: 2, name: "River", shareable: true,
+        quote: "I reread the same paragraph three times before the meaning landed. I need a version that says it straight." },
+      { id: 3, name: "Marlowe", shareable: false,
+        quote: "When the form asked for my name, I stopped. I didn't know who would see it, or where it would go." },
+      { id: 4, name: "June", shareable: true,
+        quote: "The voice read the page out loud, but it never told me when it was guessing. I need it to say when it's unsure." },
+      { id: 5, name: "Sol", shareable: true,
+        quote: "I want to see where a summary came from. If I can't trace it back to what someone actually said, I don't trust it." }
+    ];
+    // Each insight lists the notes it draws on. An insight only appears if at
+    // least one of its sources is Shareable; only Shareable sources are listed.
+    var INSIGHTS = [
+      { title: "People try first, read later",
+        body: "The first step has to work without reading a manual. If trying it out fails, people leave rather than go back to the instructions.",
+        sources: [1] },
+      { title: "Say it straight — and say when you're unsure",
+        body: "Clear, plain wording matters, and so does honesty about uncertainty. People want the assistant to flag a guess instead of presenting it as fact.",
+        sources: [2, 4] },
+      { title: "Show your sources, or don't expect trust",
+        body: "A summary is only trusted when it can be traced back to what someone actually said. Traceability is part of the answer, not an extra.",
+        sources: [5, 3],
+        caveat: "Marlowe's note — about not knowing who would see their name — would also have supported this insight, but it is Private, so it was excluded and is not quoted or counted here." }
+    ];
+    var notes = JSON.parse(JSON.stringify(DEFAULT_NOTES));
+    var synthesised = false;
+    var notesEl = document.getElementById('notes');
+    var insightsEl = document.getElementById('insights');
+    var countEl = document.getElementById('count-line');
+
+    function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+    function renderNotes(){
+      notesEl.innerHTML = notes.map(function(n){
+        var state = n.shareable ? 'Shareable' : 'Private';
+        var stateClass = n.shareable ? 'consent-state-shareable' : 'consent-state-private';
+        var quote = n.shareable
+          ? '<blockquote>&ldquo;' + escapeHtml(n.quote) + '&rdquo;</blockquote>'
+          : '<blockquote class="redacted">&ldquo;■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■&rdquo; — redacted: consent off.</blockquote>';
+        var excluded = n.shareable ? '' :
+          '<p class="excluded-note">Not included in synthesis — consent is off for ' + escapeHtml(n.name) + '.</p>';
+        return '<article class="note' + (n.shareable ? '' : ' private-note') + '" id="note-' + n.id + '">' +
+          '<div class="note-head"><div><h3>Note ' + n.id + ' — ' + escapeHtml(n.name) + '</h3>' +
+          '<p class="who">Participant pseudonym · Interview note · Sample data</p></div>' +
+          '<label class="consent-toggle"><input type="checkbox" data-note="' + n.id + '"' + (n.shareable ? ' checked' : '') + ' aria-label="Consent for ' + escapeHtml(n.name) + ': shareable or private" /><span class="switch" aria-hidden="true"></span><span class="' + stateClass + '">' + state + '</span></label></div>' +
+          quote + excluded + '</article>';
+      }).join('');
+      notesEl.querySelectorAll('input[type="checkbox"]').forEach(function(cb){
+        cb.addEventListener('change', function(){
+          var n = notes.find(function(x){ return x.id === Number(cb.getAttribute('data-note')); });
+          if (n) n.shareable = cb.checked;
+          renderNotes();
+          if (synthesised) renderInsights();
+        });
+      });
+    }
+
+    function renderInsights(){
+      synthesised = true;
+      var included = notes.filter(function(n){ return n.shareable; });
+      var excluded = notes.filter(function(n){ return !n.shareable; });
+      countEl.textContent = 'Included ' + included.length + ' of ' + notes.length + ' notes. ' +
+        (excluded.length
+          ? 'Excluded ' + excluded.length + ': ' + excluded.map(function(n){ return n.name + ' (Note ' + n.id + ')'; }).join(', ') + ' — consent off. Their words were not used, quoted, or counted.'
+          : 'No notes excluded — every participant is Shareable.');
+      countEl.classList.toggle('excluded', excluded.length > 0);
+      insightsEl.innerHTML = INSIGHTS.map(function(ins, i){
+        var usable = ins.sources.filter(function(id){
+          var n = notes.find(function(x){ return x.id === id; });
+          return n && n.shareable;
+        });
+        if (usable.length === 0) {
+          var missing = ins.sources.map(function(id){
+            var n = notes.find(function(x){ return x.id === id; });
+            return n ? n.name + ' (Note ' + n.id + ')' : 'Note ' + id;
+          }).join(', ');
+          return '<div class="insight insight-missing"><h3>Insight ' + (i + 1) + ' — not supported in this run</h3>' +
+            '<p><strong>' + escapeHtml(ins.title) + '</strong> cannot be shown, because all of its sources are Private: ' + escapeHtml(missing) + '. Turn a source back to Shareable and re-run the synthesis to see it.</p></div>';
+        }
+        var links = usable.map(function(id){
+          var n = notes.find(function(x){ return x.id === id; });
+          return '<a href="#note-' + id + '">Note ' + id + ' — ' + escapeHtml(n.name) + '</a>';
+        }).join(', ');
+        var caveat = '';
+        if (ins.caveat) {
+          var someExcluded = ins.sources.some(function(id){
+            var n = notes.find(function(x){ return x.id === id; });
+            return n && !n.shareable;
+          });
+          if (someExcluded) caveat = '<p class="caveat">' + escapeHtml(ins.caveat) + '</p>';
+        }
+        return '<div class="insight"><h3>Insight ' + (i + 1) + ' — ' + escapeHtml(ins.title) + '</h3>' +
+          '<p>' + escapeHtml(ins.body) + '</p>' +
+          '<p class="sources">Sources: ' + links + '</p>' + caveat + '</div>';
+      }).join('');
+    }
+
+    document.getElementById('synthesise-btn').addEventListener('click', renderInsights);
+    document.getElementById('reset-btn').addEventListener('click', function(){
+      notes = JSON.parse(JSON.stringify(DEFAULT_NOTES));
+      synthesised = false;
+      insightsEl.innerHTML = '';
+      countEl.textContent = 'Not synthesised yet — toggle consent above, then press “Synthesise insights”.';
+      countEl.classList.remove('excluded');
+      renderNotes();
+    });
+    renderNotes();
+  })();
+  </script>
+</body>
+</html>
