@@ -246,11 +246,16 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
 .nav-dropdown-link .thumb-img img { width: 100%; height: 100%; object-fit: contain; display: block; }
 /* PEERSPECT's logo is a teal square tile: the thumb background matches the
    tile (#0b5e54) so the tile's rounded corners blend in and the whole
-   thread-and-eye mark shows. Form to Function's logo is transparent, so
-   it sits on white. Rough concepts sits on egg. */
+   thread-and-eye mark shows. Form to Function's logo is transparent, so it
+   sits on amber #fbbf24 (from its own palette): light enough that the navy
+   form reads (8.8:1) and the teal arrow still shows, and warm enough to
+   read as a colour instead of blending into the dropdown like the old
+   white did. Rough concepts sits on sun yellow #f8c05e; the forest-green
+   sprout and dotted circle read on it, but note the mark's small sun-yellow
+   dot is the same colour as the background, so it disappears there. */
 .nav-dropdown-link .thumb-logo-peerspect { background: #0b5e54; }
-.nav-dropdown-link .thumb-logo-form { background: #fff; }
-.nav-dropdown-link .thumb-logo-rough { background: var(--egg); }
+.nav-dropdown-link .thumb-logo-form { background: #fbbf24; }
+.nav-dropdown-link .thumb-logo-rough { background: #f8c05e; }
 /* Hamburger — Webflow .menu-icon1, shown only under 991px */
 .menu-button {
   display: none;
