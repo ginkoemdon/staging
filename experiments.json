@@ -27,6 +27,13 @@
       "description": "Form to Function: go back and edit previous answers from the filled form",
       "upstream_sha": "9b25801e195f8d74874411c05bcb848a26f4bafc",
       "staged": "2026-11-24"
+    },
+    {
+      "name": "landing-rough-drafts",
+      "branch": "experiment/landing-rough-drafts",
+      "description": "Landing shows only PEERSPECT and Form to Function; rough drafts live on All prototypes",
+      "upstream_sha": "50bf815b2c6d59b0790476190ce4a5898c9d5898",
+      "staged": "2026-11-24"
     }
   ],
   "upstream": "ginkoemdon/ginkoemdon.github.io",

@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PEERSPECT: Colour Palettes</title>
+<meta name="description" content="Four colour palette options for PEERSPECT, a warm, human, steady guide.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@600;700&family=Nunito:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#f8f7f4;color:#12211e;line-height:1.5}
+  .wrap{max-width:760px;margin:0 auto;padding:20px 16px 48px}
+  a{color:#0b5e54}
+  .top{font-size:.95rem;margin-bottom:12px}
+  h1{font-size:1.9rem;line-height:1.15;margin:.2em 0 .3em;color:#0b5e54}
+  .lede{font-size:1.05rem;max-width:60ch}
+  .core{background:#fff;border:1px solid #d8d2c4;border-left:5px solid #0b5e54;border-radius:12px;padding:14px 16px;margin:18px 0 26px}
+  .core p{margin:.4em 0}
+  .palette{border-radius:16px;padding:18px;margin:0 0 22px;border:1px solid rgba(0,0,0,.12)}
+  .palette h2{margin:.1em 0 .2em;font-size:1.35rem}
+  .feeling{margin:.2em 0 .9em;max-width:62ch}
+  .swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:12px 0}
+  .swatch{border-radius:10px;padding:10px;min-height:86px;border:1px solid rgba(0,0,0,.15)}
+  .swatch b{display:block;font-size:.95rem}
+  .swatch code{font-size:.85rem}
+  .swatch span{display:block;font-size:.85rem;margin-top:4px}
+  .sample{border-radius:12px;padding:14px;margin-top:12px}
+  .sample .badge{display:inline-block;border-radius:999px;padding:6px 12px;font-weight:700;font-size:.9rem;margin:6px 0}
+  .sample .chip{display:inline-block;border-radius:999px;padding:5px 10px;margin:4px 4px 0 0;font-size:.88rem;border:1px solid currentColor}
+  .sample h3{margin:.2em 0}
+  .sample p{margin:.3em 0}
+  .aa{font-size:.92rem;background:rgba(255,255,255,.75);border-radius:8px;padding:8px 10px;margin-top:10px}
+  .choose{background:#0b5e54;color:#fff;border-radius:16px;padding:18px}
+  .choose h2{color:#fff;margin:.1em 0}
+  .choose p{color:#f8f7f4}
+  :focus-visible{outline:3px solid #0b5e54;outline-offset:2px}
+  /* Clean + stimulating theme pairs — CSS variables switch Light / Dark / System */
+  .cs-palette{background:var(--cs-bg);color:var(--cs-text)}
+  .cs-palette h2{color:var(--cs-anchor)}
+  .cs-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 14px}
+  .cs-controls span{font-weight:700}
+  .cs-controls button{border:2px solid var(--cs-anchor);background:transparent;color:var(--cs-anchor);border-radius:999px;padding:8px 14px;font-weight:700;font-size:.95rem;cursor:pointer;min-height:44px}
+  .cs-controls button[aria-pressed="true"]{background:var(--cs-anchor);color:var(--cs-badge-text)}
+  .cs-sample{background:var(--cs-surface);color:var(--cs-text)}
+  .cs-sample h3{color:var(--cs-anchor);margin:.2em 0}
+  .cs-sample .badge{background:var(--cs-badge-bg);color:var(--cs-badge-text)}
+  .cs-sample .path{height:6px;border-radius:999px;background:var(--cs-accent);margin:10px 0 4px}
+  .cs-sample .chip{border-color:var(--cs-anchor);color:var(--cs-text)}
+  .cs-palette[data-palette="plum"][data-appearance="light"]{--cs-bg:#fbf5fa;--cs-surface:#f3e6f0;--cs-text:#2a1626;--cs-anchor:#54203f;--cs-accent:#7c3aed;--cs-accent-text:#5b21b6;--cs-badge-bg:#54203f;--cs-badge-text:#ffffff}
+  .cs-palette[data-palette="plum"][data-appearance="dark"]{--cs-bg:#2a1224;--cs-surface:#3d1f33;--cs-text:#fbf5fa;--cs-anchor:#f9b8d0;--cs-accent:#a78bfa;--cs-accent-text:#c4b5fd;--cs-badge-bg:#f9b8d0;--cs-badge-text:#2a1224}
+  .cs-palette[data-palette="indigo"][data-appearance="light"]{--cs-bg:#f3f6fd;--cs-surface:#e6edfb;--cs-text:#182038;--cs-anchor:#1f2a5c;--cs-accent:#c6e626;--cs-accent-text:#4d5e00;--cs-badge-bg:#1f2a5c;--cs-badge-text:#ffffff}
+  .cs-palette[data-palette="indigo"][data-appearance="dark"]{--cs-bg:#141a38;--cs-surface:#232c55;--cs-text:#f3f6fd;--cs-anchor:#d7e94a;--cs-accent:#d7e94a;--cs-accent-text:#d7e94a;--cs-badge-bg:#d7e94a;--cs-badge-text:#182038}
+  .cs-palette[data-palette="berry"][data-appearance="light"]{--cs-bg:#fdf6f8;--cs-surface:#f9e6ec;--cs-text:#2b1220;--cs-anchor:#7a1f3d;--cs-accent:#34d399;--cs-accent-text:#006b4a;--cs-badge-bg:#7a1f3d;--cs-badge-text:#ffffff}
+  .cs-palette[data-palette="berry"][data-appearance="dark"]{--cs-bg:#2e0f1c;--cs-surface:#47162c;--cs-text:#fdf6f8;--cs-anchor:#7ce8b5;--cs-accent:#34d399;--cs-accent-text:#7ce8b5;--cs-badge-bg:#7ce8b5;--cs-badge-text:#2e0f1c}
+  @media (prefers-color-scheme:dark){
+    .cs-palette[data-palette="plum"][data-appearance="system"]{--cs-bg:#2a1224;--cs-surface:#3d1f33;--cs-text:#fbf5fa;--cs-anchor:#f9b8d0;--cs-accent:#a78bfa;--cs-accent-text:#c4b5fd;--cs-badge-bg:#f9b8d0;--cs-badge-text:#2a1224}
+    .cs-palette[data-palette="indigo"][data-appearance="system"]{--cs-bg:#141a38;--cs-surface:#232c55;--cs-text:#f3f6fd;--cs-anchor:#d7e94a;--cs-accent:#d7e94a;--cs-accent-text:#d7e94a;--cs-badge-bg:#d7e94a;--cs-badge-text:#182038}
+    .cs-palette[data-palette="berry"][data-appearance="system"]{--cs-bg:#2e0f1c;--cs-surface:#47162c;--cs-text:#fdf6f8;--cs-anchor:#7ce8b5;--cs-accent:#34d399;--cs-accent-text:#7ce8b5;--cs-badge-bg:#7ce8b5;--cs-badge-text:#2e0f1c}
+  }
+  @media (prefers-color-scheme:light){
+    .cs-palette[data-palette="plum"][data-appearance="system"]{--cs-bg:#fbf5fa;--cs-surface:#f3e6f0;--cs-text:#2a1626;--cs-anchor:#54203f;--cs-accent:#7c3aed;--cs-accent-text:#5b21b6;--cs-badge-bg:#54203f;--cs-badge-text:#ffffff}
+    .cs-palette[data-palette="indigo"][data-appearance="system"]{--cs-bg:#f3f6fd;--cs-surface:#e6edfb;--cs-text:#182038;--cs-anchor:#1f2a5c;--cs-accent:#c6e626;--cs-accent-text:#4d5e00;--cs-badge-bg:#1f2a5c;--cs-badge-text:#ffffff}
+    .cs-palette[data-palette="berry"][data-appearance="system"]{--cs-bg:#fdf6f8;--cs-surface:#f9e6ec;--cs-text:#2b1220;--cs-anchor:#7a1f3d;--cs-accent:#34d399;--cs-accent-text:#006b4a;--cs-badge-bg:#7a1f3d;--cs-badge-text:#ffffff}
+  }
+  .cs-palette[data-palette="clay"][data-appearance="light"]{--cs-bg:#faf3e9;--cs-surface:#f3e2d3;--cs-text:#241a15;--cs-anchor:#7c3a26;--cs-accent:#e8b90a;--cs-accent-text:#5c4a00;--cs-badge-bg:#7c3a26;--cs-badge-text:#ffffff}
+  .cs-palette[data-palette="clay"][data-appearance="dark"]{--cs-bg:#2b1a14;--cs-surface:#3e271d;--cs-text:#faf3e9;--cs-anchor:#f2c94c;--cs-accent:#f2c94c;--cs-accent-text:#f2c94c;--cs-badge-bg:#f2c94c;--cs-badge-text:#241a15}
+  .cs-palette[data-palette="moss"][data-appearance="light"]{--cs-bg:#f4f7ee;--cs-surface:#e2ead6;--cs-text:#1e2418;--cs-anchor:#3e5231;--cs-accent:#7a4fd0;--cs-accent-text:#4c2a8a;--cs-badge-bg:#3e5231;--cs-badge-text:#ffffff}
+  .cs-palette[data-palette="moss"][data-appearance="dark"]{--cs-bg:#1d2716;--cs-surface:#2c3a22;--cs-text:#f4f7ee;--cs-anchor:#b79bf5;--cs-accent:#b79bf5;--cs-accent-text:#b79bf5;--cs-badge-bg:#b79bf5;--cs-badge-text:#1d2716}
+  .cs-palette[data-palette="terra"][data-appearance="light"]{--cs-bg:#fbf0e2;--cs-surface:#f6ddc8;--cs-text:#2a1a14;--cs-anchor:#8c3d24;--cs-accent:#2fb98a;--cs-accent-text:#005c40;--cs-badge-bg:#8c3d24;--cs-badge-text:#ffffff}
+  .cs-palette[data-palette="terra"][data-appearance="dark"]{--cs-bg:#261510;--cs-surface:#3a2016;--cs-text:#fbf0e2;--cs-anchor:#7fe3bd;--cs-accent:#7fe3bd;--cs-accent-text:#7fe3bd;--cs-badge-bg:#7fe3bd;--cs-badge-text:#261510}
+  @media (prefers-color-scheme:dark){
+    .cs-palette[data-palette="clay"][data-appearance="system"]{--cs-bg:#2b1a14;--cs-surface:#3e271d;--cs-text:#faf3e9;--cs-anchor:#f2c94c;--cs-accent:#f2c94c;--cs-accent-text:#f2c94c;--cs-badge-bg:#f2c94c;--cs-badge-text:#241a15}
+    .cs-palette[data-palette="moss"][data-appearance="system"]{--cs-bg:#1d2716;--cs-surface:#2c3a22;--cs-text:#f4f7ee;--cs-anchor:#b79bf5;--cs-accent:#b79bf5;--cs-accent-text:#b79bf5;--cs-badge-bg:#b79bf5;--cs-badge-text:#1d2716}
+    .cs-palette[data-palette="terra"][data-appearance="system"]{--cs-bg:#261510;--cs-surface:#3a2016;--cs-text:#fbf0e2;--cs-anchor:#7fe3bd;--cs-accent:#7fe3bd;--cs-accent-text:#7fe3bd;--cs-badge-bg:#7fe3bd;--cs-badge-text:#261510}
+  }
+  @media (prefers-color-scheme:light){
+    .cs-palette[data-palette="clay"][data-appearance="system"]{--cs-bg:#faf3e9;--cs-surface:#f3e2d3;--cs-text:#241a15;--cs-anchor:#7c3a26;--cs-accent:#e8b90a;--cs-accent-text:#5c4a00;--cs-badge-bg:#7c3a26;--cs-badge-text:#ffffff}
+    .cs-palette[data-palette="moss"][data-appearance="system"]{--cs-bg:#f4f7ee;--cs-surface:#e2ead6;--cs-text:#1e2418;--cs-anchor:#3e5231;--cs-accent:#7a4fd0;--cs-accent-text:#4c2a8a;--cs-badge-bg:#3e5231;--cs-badge-text:#ffffff}
+    .cs-palette[data-palette="terra"][data-appearance="system"]{--cs-bg:#fbf0e2;--cs-surface:#f6ddc8;--cs-text:#2a1a14;--cs-anchor:#8c3d24;--cs-accent:#2fb98a;--cs-accent-text:#005c40;--cs-badge-bg:#8c3d24;--cs-badge-text:#ffffff}
+  }
+  .cs-palette[data-palette="warmadv"][data-appearance="light"]{--cs-bg:#fdf3e7;--cs-surface:#f7e3d3;--cs-text:#2e1a22;--cs-anchor:#6b1f3f;--cs-accent:#f2b705;--cs-accent-text:#6b4e00;--cs-badge-bg:#6b1f3f;--cs-badge-text:#ffffff}
+  .cs-palette[data-palette="warmadv"][data-appearance="dark"]{--cs-bg:#2a1423;--cs-surface:#402031;--cs-text:#fdf3e7;--cs-anchor:#f7c8d8;--cs-accent:#f5c945;--cs-accent-text:#f5c945;--cs-badge-bg:#f5c945;--cs-badge-text:#2e1a22}
+  @media (prefers-color-scheme:dark){
+    .cs-palette[data-palette="warmadv"][data-appearance="system"]{--cs-bg:#2a1423;--cs-surface:#402031;--cs-text:#fdf3e7;--cs-anchor:#f7c8d8;--cs-accent:#f5c945;--cs-accent-text:#f5c945;--cs-badge-bg:#f5c945;--cs-badge-text:#2e1a22}
+  }
+  @media (prefers-color-scheme:light){
+    .cs-palette[data-palette="warmadv"][data-appearance="system"]{--cs-bg:#fdf3e7;--cs-surface:#f7e3d3;--cs-text:#2e1a22;--cs-anchor:#6b1f3f;--cs-accent:#f2b705;--cs-accent-text:#6b4e00;--cs-badge-bg:#6b1f3f;--cs-badge-text:#ffffff}
+  }
+  /* Everyday Adventure adaptations — CSS variables switch Light / Dark / System */
+  .cs-palette[data-palette="adv-warm"][data-appearance="light"]{--cs-bg:#faf1e3;--cs-surface:#efe6d3;--cs-text:#12211e;--cs-anchor:#0d4f45;--cs-accent:#e9b44c;--cs-accent-text:#7c3d06;--cs-badge-bg:#0d4f45;--cs-badge-text:#ffffff}
+  .cs-palette[data-palette="adv-warm"][data-appearance="dark"]{--cs-bg:#0b2622;--cs-surface:#143c34;--cs-text:#faf1e3;--cs-anchor:#f0c46a;--cs-accent:#f0c46a;--cs-accent-text:#f0c46a;--cs-badge-bg:#f0c46a;--cs-badge-text:#12211e}
+  .cs-palette[data-palette="adv-soft"][data-appearance="light"]{--cs-bg:#fbf8f1;--cs-surface:#e8efe4;--cs-text:#12211e;--cs-anchor:#256f68;--cs-accent:#eec96a;--cs-accent-text:#8a4a35;--cs-badge-bg:#256f68;--cs-badge-text:#ffffff}
+  .cs-palette[data-palette="adv-soft"][data-appearance="dark"]{--cs-bg:#1c2f2b;--cs-surface:#2a4238;--cs-text:#fbf8f1;--cs-anchor:#f2d27e;--cs-accent:#f2d27e;--cs-accent-text:#f2d27e;--cs-badge-bg:#f2d27e;--cs-badge-text:#12211e}
+  .cs-palette[data-palette="adv-deep"][data-appearance="light"]{--cs-bg:#f7f0e2;--cs-surface:#e9dfcd;--cs-text:#12211e;--cs-anchor:#07332e;--cs-accent:#d9a41f;--cs-accent-text:#8a3200;--cs-badge-bg:#07332e;--cs-badge-text:#ffffff}
+  .cs-palette[data-palette="adv-deep"][data-appearance="dark"]{--cs-bg:#061a15;--cs-surface:#0d2b24;--cs-text:#f7f0e2;--cs-anchor:#e8b93e;--cs-accent:#e8b93e;--cs-accent-text:#e8b93e;--cs-badge-bg:#e8b93e;--cs-badge-text:#12211e}
+  @media (prefers-color-scheme:dark){
+    .cs-palette[data-palette="adv-warm"][data-appearance="system"]{--cs-bg:#0b2622;--cs-surface:#143c34;--cs-text:#faf1e3;--cs-anchor:#f0c46a;--cs-accent:#f0c46a;--cs-accent-text:#f0c46a;--cs-badge-bg:#f0c46a;--cs-badge-text:#12211e}
+    .cs-palette[data-palette="adv-soft"][data-appearance="system"]{--cs-bg:#1c2f2b;--cs-surface:#2a4238;--cs-text:#fbf8f1;--cs-anchor:#f2d27e;--cs-accent:#f2d27e;--cs-accent-text:#f2d27e;--cs-badge-bg:#f2d27e;--cs-badge-text:#12211e}
+    .cs-palette[data-palette="adv-deep"][data-appearance="system"]{--cs-bg:#061a15;--cs-surface:#0d2b24;--cs-text:#f7f0e2;--cs-anchor:#e8b93e;--cs-accent:#e8b93e;--cs-accent-text:#e8b93e;--cs-badge-bg:#e8b93e;--cs-badge-text:#12211e}
+  }
+  @media (prefers-color-scheme:light){
+    .cs-palette[data-palette="adv-warm"][data-appearance="system"]{--cs-bg:#faf1e3;--cs-surface:#efe6d3;--cs-text:#12211e;--cs-anchor:#0d4f45;--cs-accent:#e9b44c;--cs-accent-text:#7c3d06;--cs-badge-bg:#0d4f45;--cs-badge-text:#ffffff}
+    .cs-palette[data-palette="adv-soft"][data-appearance="system"]{--cs-bg:#fbf8f1;--cs-surface:#e8efe4;--cs-text:#12211e;--cs-anchor:#256f68;--cs-accent:#eec96a;--cs-accent-text:#8a4a35;--cs-badge-bg:#256f68;--cs-badge-text:#ffffff}
+    .cs-palette[data-palette="adv-deep"][data-appearance="system"]{--cs-bg:#f7f0e2;--cs-surface:#e9dfcd;--cs-text:#12211e;--cs-anchor:#07332e;--cs-accent:#d9a41f;--cs-accent-text:#8a3200;--cs-badge-bg:#07332e;--cs-badge-text:#ffffff}
+  }
+  /* Warmer Teal, lightened — like Everyday Adventure (data-palette="adv-light") */
+  .cs-palette[data-palette="adv-light"][data-appearance="light"]{--cs-bg:#fff8ec;--cs-surface:#fdf0d8;--cs-text:#1a2b26;--cs-anchor:#14665a;--cs-accent:#f2c14e;--cs-accent-text:#8a4a08;--cs-badge-bg:#14665a;--cs-badge-text:#ffffff}
+  .cs-palette[data-palette="adv-light"][data-appearance="dark"]{--cs-bg:#173a33;--cs-surface:#214f45;--cs-text:#fff8ec;--cs-anchor:#f6cf6e;--cs-accent:#f6cf6e;--cs-accent-text:#f6cf6e;--cs-badge-bg:#f6cf6e;--cs-badge-text:#173a33}
+  @media (prefers-color-scheme:dark){
+    .cs-palette[data-palette="adv-light"][data-appearance="system"]{--cs-bg:#173a33;--cs-surface:#214f45;--cs-text:#fff8ec;--cs-anchor:#f6cf6e;--cs-accent:#f6cf6e;--cs-accent-text:#f6cf6e;--cs-badge-bg:#f6cf6e;--cs-badge-text:#173a33}
+  }
+  @media (prefers-color-scheme:light){
+    .cs-palette[data-palette="adv-light"][data-appearance="system"]{--cs-bg:#fff8ec;--cs-surface:#fdf0d8;--cs-text:#1a2b26;--cs-anchor:#14665a;--cs-accent:#f2c14e;--cs-accent-text:#8a4a08;--cs-badge-bg:#14665a;--cs-badge-text:#ffffff}
+  }
+  /* Warmer Teal with a warm white background (data-palette="adv-ww") */
+  .cs-palette[data-palette="adv-ww"][data-appearance="light"]{--cs-bg:#fdfbf7;--cs-surface:#ffffff;--cs-text:#1a2b26;--cs-anchor:#14665a;--cs-accent:#f2c14e;--cs-accent-text:#8a4a08;--cs-badge-bg:#14665a;--cs-badge-text:#ffffff;--cs-pine:#2f5d3e;--cs-amber:#8a4a08}
+  .cs-palette[data-palette="adv-ww"][data-appearance="dark"]{--cs-bg:#173a33;--cs-surface:#214f45;--cs-text:#fdfbf7;--cs-anchor:#f6cf6e;--cs-accent:#f6cf6e;--cs-accent-text:#f6cf6e;--cs-badge-bg:#f6cf6e;--cs-badge-text:#173a33;--cs-pine:#9ec49a;--cs-amber:#f2c14e}
+  @media (prefers-color-scheme:dark){
+    .cs-palette[data-palette="adv-ww"][data-appearance="system"]{--cs-bg:#173a33;--cs-surface:#214f45;--cs-text:#fdfbf7;--cs-anchor:#f6cf6e;--cs-accent:#f6cf6e;--cs-accent-text:#f6cf6e;--cs-badge-bg:#f6cf6e;--cs-badge-text:#173a33;--cs-pine:#9ec49a;--cs-amber:#f2c14e}
+  }
+  @media (prefers-color-scheme:light){
+    .cs-palette[data-palette="adv-ww"][data-appearance="system"]{--cs-bg:#fdfbf7;--cs-surface:#ffffff;--cs-text:#1a2b26;--cs-anchor:#14665a;--cs-accent:#f2c14e;--cs-accent-text:#8a4a08;--cs-badge-bg:#14665a;--cs-badge-text:#ffffff;--cs-pine:#2f5d3e;--cs-amber:#8a4a08}
+  }
+  .ww-key{font-size:.92rem;margin:8px 0}
+  .ww-key b{padding:2px 8px;border-radius:999px;margin-right:4px}
+  .ww-key .k-teal{background:#14665a;color:#fff}
+  .ww-key .k-pine{background:#2f5d3e;color:#fff}
+  .ww-key .k-amber{background:#8a4a08;color:#fff}
+  .ww-key .k-honey{background:#f2c14e;color:#1a2b26}
+  .wt-app .chip-pine{border-color:var(--cs-pine);color:var(--cs-pine)}
+  .wt-app .chip-amber{border-color:var(--cs-amber);color:var(--cs-amber)}
+  .wt-app .chip-teal{background:var(--cs-anchor);color:var(--cs-badge-text);border-color:var(--cs-anchor);font-weight:700}
+  .wt-app .badge-amber{background:var(--cs-amber);color:#fff}
+  .wt-app .badge-pine{background:var(--cs-pine);color:#fff}
+  .wt-bar-teal span{background:var(--cs-anchor)}
+  .wt-bar-pine span{background:var(--cs-pine)}
+  .wt-bar-amber span{background:var(--cs-amber)}
+  .wt-light{padding:22px}
+  /* Warmer Teal — more examples in the app (uses the adv-warm CSS variables, so Light / Dark / System switch live) */
+  .wt-app{background:var(--cs-surface);color:var(--cs-text);border-radius:12px;padding:14px;margin-top:12px}
+  .wt-app h3{color:var(--cs-anchor);margin:.2em 0}
+  .wt-app h4{color:var(--cs-anchor);margin:.8em 0 .2em}
+  .wt-app p{margin:.3em 0}
+  .wt-app .badge{background:var(--cs-badge-bg);color:var(--cs-badge-text);display:inline-block;border-radius:999px;padding:6px 12px;font-weight:700;font-size:.9rem;margin:6px 0}
+  .wt-app .chip{display:inline-block;border-radius:999px;padding:6px 11px;margin:4px 4px 0 0;font-size:.88rem;border:1px solid var(--cs-anchor);color:var(--cs-text);background:transparent}
+  .wt-app .chip[aria-pressed="true"]{background:var(--cs-badge-bg);color:var(--cs-badge-text);border-color:var(--cs-badge-bg);font-weight:700}
+  .wt-app .chip-accent{border-color:var(--cs-accent-text);color:var(--cs-accent-text)}
+  .wt-card{background:var(--cs-bg);color:var(--cs-text);border:1px solid var(--cs-anchor);border-radius:10px;padding:12px;margin:10px 0}
+  .wt-card h4{margin:.1em 0}
+  .wt-btn{display:inline-block;border-radius:999px;padding:10px 16px;font-weight:700;font-size:.95rem;min-height:44px;cursor:pointer;margin:6px 6px 0 0;border:2px solid var(--cs-badge-bg)}
+  .wt-btn-primary{background:var(--cs-badge-bg);color:var(--cs-badge-text)}
+  .wt-btn-ghost{background:transparent;color:var(--cs-anchor);border-color:var(--cs-anchor)}
+  .wt-note{font-size:.9rem}
+  .wt-bar{height:8px;border-radius:999px;background:var(--cs-bg);margin:6px 0 2px;overflow:hidden}
+  .wt-bar span{display:block;height:100%;background:var(--cs-accent);border-radius:999px}
+  .wt-row{display:flex;justify-content:space-between;gap:10px;font-size:.92rem}
+  .wt-map{width:100%;height:auto;display:block;border-radius:10px;background:var(--cs-bg)}
+  .wt-q{display:block;width:100%;text-align:left;border-radius:10px;padding:12px 14px;font-size:1rem;font-weight:700;min-height:48px;cursor:pointer;margin:8px 0 0;border:2px solid var(--cs-anchor);background:var(--cs-bg);color:var(--cs-text)}
+  .wt-q:hover,.wt-q:focus-visible{outline:3px solid var(--cs-accent);outline-offset:2px}
+  .wt-suggest{background:var(--cs-bg);border-left:5px solid var(--cs-accent);border-radius:8px;padding:10px 12px;margin:8px 0}
+  /* Fonts to choose: four pairings, all in the locked Warmer Teal palette (adv-ww vars) */
+  .font-pair .cs-controls button{font-family:inherit}
+  .font-pair h2{line-height:1.2}
+  .font-specimen{font-size:2rem;line-height:1.2;margin:.2em 0;color:var(--cs-anchor)}
+  .font-sample p{font-size:1rem;line-height:1.6}
+  .font-sample h3{font-size:1.5rem;line-height:1.25}
+  .font-sample h4{font-size:1.15rem;line-height:1.3}
+  .font-sample .wt-btn{font-family:inherit}
+  .font-sub{font-size:1.05rem;line-height:1.6}
+  .font-label{display:block;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cs-anchor)}
+  .font-caption{font-size:.9rem;line-height:1.6}
+  .font-a{font-family:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif}
+  .font-a h2,.font-a h3,.font-a h4,.font-a .font-specimen{font-family:"Fraunces",Georgia,"Times New Roman",serif}
+  .font-b{font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif}
+  .font-b h2,.font-b h3,.font-b h4,.font-b .font-specimen{font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif}
+  .font-c{font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif}
+  .font-c h2,.font-c h3,.font-c h4,.font-c .font-specimen{font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif}
+  .font-d{font-family:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif}
+  .font-d h2,.font-d h3,.font-d h4,.font-d .font-specimen{font-family:"Baloo 2",system-ui,-apple-system,"Segoe UI",sans-serif}
+  /* Spacing: more air around elements */
+  .sp-scale{list-style:none;margin:12px 0;padding:0}
+  .sp-scale li{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #d8d2c4}
+  .sp-scale li:last-child{border-bottom:0}
+  .sp-scale .sp-bar{flex:0 0 auto;height:12px;border-radius:999px;background:#f2c14e;border:1px solid #8a4a08}
+  .sp-scale code{flex:0 0 52px;font-weight:700}
+  .sp-scale span{font-size:1rem;line-height:1.6}
+  .sp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:12px 0}
+  .sp-grid h3{font-size:1.15rem;line-height:1.3;margin:.2em 0}
+  .sp-rec{display:inline-block;background:#14665a;color:#fff;border-radius:999px;padding:3px 10px;font-size:.85rem;font-weight:700;margin-left:6px}
+  .sp-demo{background:var(--cs-surface);color:var(--cs-text);border-radius:12px;padding:var(--sp-pad)}
+  .sp-demo h3{color:var(--cs-anchor);font-size:1.25rem;line-height:1.25;margin:0 0 var(--sp-gap)}
+  .sp-demo h4{color:var(--cs-anchor);font-size:1.05rem;line-height:1.3;margin:0 0 6px}
+  .sp-demo p{margin:0 0 var(--sp-gap);font-size:1rem;line-height:1.6}
+  .sp-demo p:last-child{margin-bottom:0}
+  .sp-demo .font-label{margin:0 0 6px}
+  .sp-chips{display:flex;flex-wrap:wrap;gap:var(--sp-chip-gap);margin:0 0 var(--sp-gap)}
+  .sp-chip{border:1px solid var(--cs-anchor);border-radius:999px;padding:6px 11px;font-size:.88rem;line-height:1.4}
+  .sp-chip-picked{background:var(--cs-badge-bg);color:var(--cs-badge-text);border-color:var(--cs-badge-bg);font-weight:700}
+  .sp-card{background:var(--cs-bg);border:1px solid var(--cs-anchor);border-radius:10px;padding:var(--sp-card);margin:0 0 var(--sp-gap)}
+  .sp-card p{margin:0 0 6px}
+  .sp-card p:last-child{margin-bottom:0}
+  .sp-badge{display:inline-block;background:var(--cs-badge-bg);color:var(--cs-badge-text);border-radius:999px;padding:6px 12px;font-weight:700;font-size:.9rem}
+  .sp-btn{display:inline-block;border-radius:999px;padding:10px 16px;font-weight:700;font-size:.95rem;min-height:44px;cursor:pointer;border:2px solid var(--cs-badge-bg);background:var(--cs-badge-bg);color:var(--cs-badge-text);font-family:inherit}
+  .sp-caption{font-size:.9rem}
+  .density-compact{--sp-pad:12px;--sp-gap:8px;--sp-card:12px;--sp-chip-gap:4px}
+  .density-comfortable{--sp-pad:20px;--sp-gap:16px;--sp-card:20px;--sp-chip-gap:8px}
+  .density-airy{--sp-pad:32px;--sp-gap:24px;--sp-card:24px;--sp-chip-gap:12px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="top"><a href="./index.html">← PEERSPECT prototype</a> · <a href="./logo-exploration.html">Logo &amp; brand exploration</a></p>
+  <h1>PEERSPECT colour palettes</h1>
+  <p class="lede">Four palettes, one brand core: a warm, human, steady guide, walking beside you, not pulling you. Informed autonomy first. Easy, simple, intuitive and clear, so choosing feels calm, not overwhelming.</p>
+
+  <div class="core">
+    <p><strong>Brand core, agreed Nov 23, 2026:</strong> warm and human, steady guide, informed autonomy and agency, reduce overwhelm and decision fatigue, build trust and confidence, centre customisable preferences.</p>
+    <p>Rule for every palette below: all text is WCAG 2.2 AA (4.5:1 or better). Bright colours are accents only, never small text.</p>
+  </div>
+
+  <!-- FONTS TO CHOOSE START -->
+  <section aria-labelledby="fonts-top">
+    <h2 id="fonts-top" style="color:#14665a;font-size:1.6rem;line-height:1.2;margin:6px 0 4px">Fonts to choose</h2>
+    <p class="lede">Four font pairings, all in the locked Warmer Teal palette: warm white <strong>#fdfbf7</strong> in Light, soft teal night <strong>#173a33</strong> and <strong>#214f45</strong> in Dark. Teal <strong>#14665a</strong>, pine <strong>#2f5d3e</strong>, honey gold <strong>#f2c14e</strong> and amber <strong>#8a4a08</strong> stay the same. Every sample below is a real UI moment at real sizes: an onboarding heading, a place card, buttons and a small label. Body copy is 16px or larger with line height 1.6 or more, and all text pairs pass WCAG 2.2 AA in Light and Dark. Try each pairing in Light and Dark with its toggle. If you are offline, the page falls back to system fonts and still reads fine.</p>
+
+    <section class="palette cs-palette font-pair font-a" data-palette="adv-ww" data-appearance="light" aria-labelledby="font-a">
+      <h2 id="font-a">A. Warm and friendly</h2>
+      <p class="feeling"><strong>Headings:</strong> Fraunces. <strong>Body:</strong> Nunito. A soft serif with warmth, paired with a round, friendly sans. It feels like a note from a friend who knows the way.</p>
+      <div class="cs-controls" role="group" aria-label="Option A appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <p class="font-specimen" aria-label="Fraunces specimen">AaBbCcDd 123</p>
+      <div class="wt-app font-sample">
+        <span class="font-label">Onboarding</span>
+        <h3>What matters to you today?</h3>
+        <p class="font-sub">Pick what matters, as many as you like. You decide.</p>
+        <p>PEERSPECT walks beside you, not ahead of you. Tell it what a good place feels like today, and it will show you places that fit, one calm step at a time.</p>
+        <div class="wt-card">
+          <h4>Café Lumière Douce, Villeray</h4>
+          <p>0.8 km, 10 min walk, Metro Jarry, 8 min</p>
+          <p><span class="badge">This fits today</span> <span class="badge badge-pine">Step-free</span></p>
+          <p>Matches: step-free, soft light, quiet.</p>
+        </div>
+        <p><button class="wt-btn wt-btn-primary" type="button">See places that fit</button><button class="wt-btn wt-btn-ghost" type="button">Save as a profile</button></p>
+        <p class="font-caption">3 picked today. Your profile stays on your phone only.</p>
+      </div>
+    </section>
+
+    <section class="palette cs-palette font-pair font-b" data-palette="adv-ww" data-appearance="light" aria-labelledby="font-b">
+      <h2 id="font-b">B. Clear and calm</h2>
+      <p class="feeling"><strong>Headings:</strong> Atkinson Hyperlegible. <strong>Body:</strong> Inter. High legibility, accessible. Atkinson Hyperlegible was designed for low vision readers, with distinct letter shapes that are easy to tell apart. Inter is a clear, neutral body font. This is the most readable pairing of the four.</p>
+      <div class="cs-controls" role="group" aria-label="Option B appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <p class="font-specimen" aria-label="Atkinson Hyperlegible specimen">AaBbCcDd 123</p>
+      <div class="wt-app font-sample">
+        <span class="font-label">Onboarding</span>
+        <h3>What matters to you today?</h3>
+        <p class="font-sub">Pick what matters, as many as you like. You decide.</p>
+        <p>PEERSPECT walks beside you, not ahead of you. Tell it what a good place feels like today, and it will show you places that fit, one calm step at a time.</p>
+        <div class="wt-card">
+          <h4>Café Lumière Douce, Villeray</h4>
+          <p>0.8 km, 10 min walk, Metro Jarry, 8 min</p>
+          <p><span class="badge">This fits today</span> <span class="badge badge-pine">Step-free</span></p>
+          <p>Matches: step-free, soft light, quiet.</p>
+        </div>
+        <p><button class="wt-btn wt-btn-primary" type="button">See places that fit</button><button class="wt-btn wt-btn-ghost" type="button">Save as a profile</button></p>
+        <p class="font-caption">3 picked today. Your profile stays on your phone only.</p>
+      </div>
+    </section>
+
+    <section class="palette cs-palette font-pair font-c" data-palette="adv-ww" data-appearance="light" aria-labelledby="font-c">
+      <h2 id="font-c">C. Modern guide</h2>
+      <p class="feeling"><strong>Headings:</strong> Poppins. <strong>Body:</strong> Inter. Clean, geometric and modern, with a steady, confident feel. Note: Poppins is Ginko's personal brand body font, so this pairing will feel familiar and close to Ginko's own brand. Choose it only if Ginko wants that familiarity in PEERSPECT too.</p>
+      <div class="cs-controls" role="group" aria-label="Option C appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <p class="font-specimen" aria-label="Poppins specimen">AaBbCcDd 123</p>
+      <div class="wt-app font-sample">
+        <span class="font-label">Onboarding</span>
+        <h3>What matters to you today?</h3>
+        <p class="font-sub">Pick what matters, as many as you like. You decide.</p>
+        <p>PEERSPECT walks beside you, not ahead of you. Tell it what a good place feels like today, and it will show you places that fit, one calm step at a time.</p>
+        <div class="wt-card">
+          <h4>Café Lumière Douce, Villeray</h4>
+          <p>0.8 km, 10 min walk, Metro Jarry, 8 min</p>
+          <p><span class="badge">This fits today</span> <span class="badge badge-pine">Step-free</span></p>
+          <p>Matches: step-free, soft light, quiet.</p>
+        </div>
+        <p><button class="wt-btn wt-btn-primary" type="button">See places that fit</button><button class="wt-btn wt-btn-ghost" type="button">Save as a profile</button></p>
+        <p class="font-caption">3 picked today. Your profile stays on your phone only.</p>
+      </div>
+    </section>
+
+    <section class="palette cs-palette font-pair font-d" data-palette="adv-ww" data-appearance="light" aria-labelledby="font-d">
+      <h2 id="font-d">D. Soft and human</h2>
+      <p class="feeling"><strong>Headings:</strong> Baloo 2. <strong>Body:</strong> Nunito. Baloo 2 is round and soft, with a playful warmth. Nunito keeps the body friendly and easy to read.</p>
+      <div class="cs-controls" role="group" aria-label="Option D appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <p class="font-specimen" aria-label="Baloo 2 specimen">AaBbCcDd 123</p>
+      <div class="wt-app font-sample">
+        <span class="font-label">Onboarding</span>
+        <h3>What matters to you today?</h3>
+        <p class="font-sub">Pick what matters, as many as you like. You decide.</p>
+        <p>PEERSPECT walks beside you, not ahead of you. Tell it what a good place feels like today, and it will show you places that fit, one calm step at a time.</p>
+        <div class="wt-card">
+          <h4>Café Lumière Douce, Villeray</h4>
+          <p>0.8 km, 10 min walk, Metro Jarry, 8 min</p>
+          <p><span class="badge">This fits today</span> <span class="badge badge-pine">Step-free</span></p>
+          <p>Matches: step-free, soft light, quiet.</p>
+        </div>
+        <p><button class="wt-btn wt-btn-primary" type="button">See places that fit</button><button class="wt-btn wt-btn-ghost" type="button">Save as a profile</button></p>
+        <p class="font-caption">3 picked today. Your profile stays on your phone only.</p>
+      </div>
+    </section>
+  </section>
+  <!-- FONTS TO CHOOSE END -->
+
+  <!-- SPACING START -->
+  <section aria-labelledby="spacing-top">
+    <h2 id="spacing-top" style="color:#14665a;font-size:1.6rem;line-height:1.2;margin:6px 0 4px">Spacing: more air around elements</h2>
+    <p class="lede">Spacing is the air between things. When it is too tight, everything feels condensed and hard to scan. When it is generous, each element gets room to breathe and the page feels calm. Spacing here follows Apple iOS Human Interface Guidelines: an 8pt base grid, 16pt side margins, 20pt between sections, generous card padding, and 44pt minimum touch targets. iOS points map to CSS pixels on the web, so 16pt reads as 16px here. Everything below uses the locked Warmer Teal palette: warm white <strong>#fdfbf7</strong> in Light, soft teal night <strong>#173a33</strong> and <strong>#214f45</strong> in Dark. All text still passes WCAG 2.2 AA in Light and Dark.</p>
+    <h3 style="color:#14665a">The spacing scale</h3>
+    <p class="lede">One scale, used everywhere, so spacing stays consistent instead of guessed each time. The base unit is 4px, and every step is a multiple of it. The iOS values are marked.</p>
+    <ul class="sp-scale">
+      <li><span class="sp-bar" style="width:4px"></span><code>4px</code><span>Tiny gaps: inside chips, between an icon and its text.</span></li>
+      <li><span class="sp-bar" style="width:8px"></span><code>8px</code><span>iOS base grid unit. Small gaps: between chips, between a label and the text under it.</span></li>
+      <li><span class="sp-bar" style="width:12px"></span><code>12px</code><span>Between related items: card inner spacing, list rows.</span></li>
+      <li><span class="sp-bar" style="width:16px"></span><code>16px</code><span>iOS side margins. Base unit: between paragraphs, side padding on buttons.</span></li>
+      <li><span class="sp-bar" style="width:20px"></span><code>20px</code><span>iOS section spacing, and generous card padding. Between groups of choices, between the onboarding block and the place card.</span></li>
+      <li><span class="sp-bar" style="width:24px"></span><code>24px</code><span>Between cards, airy gaps between sections.</span></li>
+      <li><span class="sp-bar" style="width:32px"></span><code>32px</code><span>Between major sections inside one screen, very generous card padding.</span></li>
+      <li><span class="sp-bar" style="width:44px"></span><code>44px</code><span>iOS minimum touch target. Buttons and tappable rows are at least 44pt tall, so they are easy to tap.</span></li>
+      <li><span class="sp-bar" style="width:48px"></span><code>48px</code><span>Between major sections, top and bottom padding of a screen.</span></li>
+      <li><span class="sp-bar" style="width:64px"></span><code>64px</code><span>Big breathing room: between screens, around the hero moment.</span></li>
+    </ul>
+    <p class="lede"><strong>iOS spacing values used here:</strong> 8pt base grid, 16pt side margins, 20pt section spacing, 20pt card padding, 44pt minimum touch targets, and 8pt gaps between chips. Clear grouping with air between sections, not condensed.</p>
+
+    <section class="palette cs-palette" data-palette="adv-ww" data-appearance="light" aria-labelledby="spacing-options">
+      <h2 id="spacing-options">Three spacing options, same sample</h2>
+      <p class="feeling">The same onboarding card and place card, at three densities. Compact is tight and condensed, below the iOS guidance. Comfortable and Airy are the generous ones, and both are recommended. Airy is visibly roomier: more padding, more gap between sections, chips and buttons.</p>
+      <div class="cs-controls" role="group" aria-label="Spacing options appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <div class="sp-grid">
+        <div>
+          <h3>Compact</h3>
+          <p class="sp-caption">Padding 12px, gaps 8px, card padding 12px, chips 4px apart. Tight and condensed.</p>
+          <div class="sp-demo density-compact">
+            <span class="font-label">Onboarding</span>
+            <h3>What matters to you today?</h3>
+            <p>Pick what matters, as many as you like. You decide.</p>
+            <div class="sp-chips"><span class="sp-chip sp-chip-picked">Step-free entry</span><span class="sp-chip sp-chip-picked">Soft light</span><span class="sp-chip sp-chip-picked">Quiet</span><span class="sp-chip">Low scent</span></div>
+            <div class="sp-card">
+              <h4>Café Lumière Douce, Villeray</h4>
+              <p>0.8 km, 10 min walk, Metro Jarry, 8 min</p>
+              <p><span class="sp-badge">This fits today</span></p>
+              <p>Matches: step-free, soft light, quiet.</p>
+            </div>
+            <p><button class="sp-btn" type="button">See places that fit</button></p>
+            <p class="sp-caption">3 picked today. Your profile stays on your phone only.</p>
+          </div>
+        </div>
+        <div>
+          <h3>Comfortable<span class="sp-rec">Recommended</span></h3>
+          <p class="sp-caption">iOS standard: 16pt side margins, 20pt section spacing, 20pt card padding, 8pt gaps between chips, 44pt touch targets.</p>
+          <div class="sp-demo density-comfortable">
+            <span class="font-label">Onboarding</span>
+            <h3>What matters to you today?</h3>
+            <p>Pick what matters, as many as you like. You decide.</p>
+            <div class="sp-chips"><span class="sp-chip sp-chip-picked">Step-free entry</span><span class="sp-chip sp-chip-picked">Soft light</span><span class="sp-chip sp-chip-picked">Quiet</span><span class="sp-chip">Low scent</span></div>
+            <div class="sp-card">
+              <h4>Café Lumière Douce, Villeray</h4>
+              <p>0.8 km, 10 min walk, Metro Jarry, 8 min</p>
+              <p><span class="sp-badge">This fits today</span></p>
+              <p>Matches: step-free, soft light, quiet.</p>
+            </div>
+            <p><button class="sp-btn" type="button">See places that fit</button></p>
+            <p class="sp-caption">3 picked today. Your profile stays on your phone only.</p>
+          </div>
+        </div>
+        <div>
+          <h3>Airy<span class="sp-rec">Recommended</span></h3>
+          <p class="sp-caption">Generous iOS: 32px padding, 24px gaps, 24px card padding, 12px gaps between chips, 44pt touch targets. The roomiest option.</p>
+          <div class="sp-demo density-airy">
+            <span class="font-label">Onboarding</span>
+            <h3>What matters to you today?</h3>
+            <p>Pick what matters, as many as you like. You decide.</p>
+            <div class="sp-chips"><span class="sp-chip sp-chip-picked">Step-free entry</span><span class="sp-chip sp-chip-picked">Soft light</span><span class="sp-chip sp-chip-picked">Quiet</span><span class="sp-chip">Low scent</span></div>
+            <div class="sp-card">
+              <h4>Café Lumière Douce, Villeray</h4>
+              <p>0.8 km, 10 min walk, Metro Jarry, 8 min</p>
+              <p><span class="sp-badge">This fits today</span></p>
+              <p>Matches: step-free, soft light, quiet.</p>
+            </div>
+            <p><button class="sp-btn" type="button">See places that fit</button></p>
+            <p class="sp-caption">3 picked today. Your profile stays on your phone only.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="palette cs-palette" data-palette="adv-ww" data-appearance="light" aria-labelledby="spacing-before-after">
+      <h2 id="spacing-before-after">Before and after: the same place card</h2>
+      <p class="feeling">Left is the condensed version, as it felt before. Right is the same card with airy, iOS style spacing. Same words, same colours, only the air changed.</p>
+      <div class="cs-controls" role="group" aria-label="Before and after appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <div class="sp-grid">
+        <div>
+          <h3>Before: condensed</h3>
+          <p class="sp-caption">Padding 12px, gaps 8px. Everything crowds together.</p>
+          <div class="sp-demo density-compact">
+            <div class="sp-card">
+              <h4>Café Lumière Douce, Villeray</h4>
+              <p>0.8 km, 10 min walk, Metro Jarry, 8 min</p>
+              <p><span class="sp-badge">This fits today</span></p>
+              <p>Matches: step-free, soft light, quiet.</p>
+            </div>
+            <p><button class="sp-btn" type="button">Save this place</button></p>
+            <p class="sp-caption">Sample place in Montreal only.</p>
+          </div>
+        </div>
+        <div>
+          <h3>After: airy</h3>
+          <p class="sp-caption">Padding 32px, gaps 24px, card padding 24px. The same card, with room to breathe.</p>
+          <div class="sp-demo density-airy">
+            <div class="sp-card">
+              <h4>Café Lumière Douce, Villeray</h4>
+              <p>0.8 km, 10 min walk, Metro Jarry, 8 min</p>
+              <p><span class="sp-badge">This fits today</span></p>
+              <p>Matches: step-free, soft light, quiet.</p>
+            </div>
+            <p><button class="sp-btn" type="button">Save this place</button></p>
+            <p class="sp-caption">Sample place in Montreal only.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+  <!-- SPACING END -->
+
+  <!-- WARM-WHITE START -->
+  <section aria-labelledby="ww-top">
+    <h2 id="ww-top" style="color:#14665a;font-size:1.6rem;line-height:1.2;margin:6px 0 4px">Warmer Teal with a warm white background</h2>
+    <p class="lede">The cream background felt off putting, so this version uses a true warm white, <strong>#fdfbf7</strong>, not yellow cream. It keeps the warm, cute feeling of Warm Guide and the bright, adventurous feeling of Everyday Adventure. The other colours are turned up in the UI now, so you can actually see them: teal, pine, honey gold and amber are in the chips, badges, buttons, bars and the map thread, not just in the swatches.</p>
+    <p class="lede"><strong>What changed:</strong> background #fff8ec, a yellow cream, is now <strong>#fdfbf7</strong>, a warm white. Cards are white #ffffff on that warm white, so the page feels clean and bright. Teal #14665a, pine #2f5d3e, honey gold #f2c14e and amber #8a4a08 stay the same, but they are used more, and bigger, in every example. Dark is softened as before: #173a33 and #214f45, with honey light #f6cf6e.</p>
+    <p class="lede"><strong>AA check, warm white #fdfbf7, Light:</strong> teal #14665a 6.60:1, pine #2f5d3e 7.37:1, amber #8a4a08 6.63:1, ink #1a2b26 14.33:1, white on teal 6.82:1, white on pine 7.62:1, white on amber 6.85:1. <strong>Dark:</strong> warm white on #173a33 12.03:1, on #214f45 8.95:1, honey light #f6cf6e on #173a33 8.33:1, on #214f45 6.20:1. All text pairs pass WCAG 2.2 AA, 4.5:1 or better. Honey gold is a path and accent only, never small text on its own.</p>
+
+    <section class="palette cs-palette" data-palette="adv-ww" data-appearance="light" aria-labelledby="ww-0">
+      <h2 id="ww-0">Warmer Teal, warm white: swatches</h2>
+      <p class="feeling"><strong>Feeling:</strong> warm, cute and friendly, like Warm Guide, and bright and adventurous, like Everyday Adventure. Light is the default here.</p>
+      <div class="cs-controls" role="group" aria-label="Warm white swatches appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <p class="ww-key"><b class="k-teal">Teal</b> anchor, headings, main buttons <b class="k-pine">Pine</b> deep cards and bars <b class="k-amber">Amber</b> warm accents <b class="k-honey">Honey</b> the path</p>
+      <div class="swatches">
+        <div class="swatch" style="background:#14665a;color:#fff"><b>Teal</b><code>#14665a</code><span>Anchor, headings, buttons</span></div>
+        <div class="swatch" style="background:#2f5d3e;color:#fff"><b>Pine</b><code>#2f5d3e</code><span>Deep surface, cards, bars</span></div>
+        <div class="swatch" style="background:#f2c14e"><b>Honey gold</b><code>#f2c14e</code><span>Path, accent only</span></div>
+        <div class="swatch" style="background:#8a4a08;color:#fff"><b>Amber</b><code>#8a4a08</code><span>Warm text accent</span></div>
+        <div class="swatch" style="background:#fdfbf7;border:1px solid #d8d2c4"><b>Warm white</b><code>#fdfbf7</code><span>Background, not yellow cream</span></div>
+        <div class="swatch" style="background:#ffffff;border:1px solid #d8d2c4"><b>White</b><code>#ffffff</code><span>Cards on warm white</span></div>
+      </div>
+      <div class="sample cs-sample">
+        <h3>Café Lumière Douce: your place today</h3>
+        <p>Follow the thread: 0.8 km, 10 min walk, Metro Jarry</p>
+        <div class="path" role="img" aria-label="Thread path to the place"></div>
+        <p>A bright, warm find: step-free, soft light, calm.</p>
+        <span class="badge">This fits today: follow the path</span>
+        <br><span class="chip chip-teal">Step-free</span><span class="chip chip-pine">Soft light</span><span class="chip chip-amber">Calm</span>
+      </div>
+    </section>
+
+    <section class="palette cs-palette" data-palette="adv-ww" data-appearance="light" aria-labelledby="ww-1">
+      <h2 id="ww-1">1. Onboarding: What matters to you today?</h2>
+      <p class="feeling">The app asks, it does not assume. Pick as many as you like, you decide. Teal chips are picked, pine chips are options, amber chips are warm extras.</p>
+      <div class="cs-controls" role="group" aria-label="Warm white onboarding appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <div class="wt-app">
+        <h3>What matters to you today?</h3>
+        <p>Pick what matters, as many as you like, you decide.</p>
+        <p><span class="chip chip-teal" aria-pressed="true">Step-free entry</span><span class="chip chip-teal" aria-pressed="true">Soft light</span><span class="chip chip-teal" aria-pressed="true">Quiet</span><span class="chip chip-pine" aria-pressed="false">Low scent</span><span class="chip chip-pine" aria-pressed="false">Gender-neutral restroom</span><span class="chip chip-amber" aria-pressed="false">Seating with back support</span><span class="chip chip-amber" aria-pressed="false">Menu I can read first</span></p>
+        <p><button class="wt-btn wt-btn-primary" type="button">See places that fit</button><button class="wt-btn wt-btn-ghost" type="button">Save as a profile</button></p>
+        <p class="wt-note">3 picked today. Your profile is saved on your phone only.</p>
+      </div>
+    </section>
+
+    <section class="palette cs-palette" data-palette="adv-ww" data-appearance="light" aria-labelledby="ww-2">
+      <h2 id="ww-2">2. Discover: List view</h2>
+      <p class="feeling">One place at a time, with distance and how to get there. Teal is the best fit, pine is the card, amber is the note to watch, honey gold is the path.</p>
+      <div class="cs-controls" role="group" aria-label="Warm white list view appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <div class="wt-app">
+        <h3>Places that fit today</h3>
+        <div class="wt-card">
+          <h4>Café Lumière Douce, Villeray</h4>
+          <p>0.8 km, 10 min walk, Metro Jarry, 8 min</p>
+          <p><span class="badge">This fits today</span> <span class="badge badge-pine">Step-free</span></p>
+          <p>Matches: step-free, soft light, quiet.</p>
+          <div class="wt-bar wt-bar-teal" role="img" aria-label="Matches 3 of 3 priorities"><span style="width:100%"></span></div>
+        </div>
+        <div class="wt-card">
+          <h4>Café Nostalgie, Mile End</h4>
+          <p>1.4 km, 18 min walk, Bus 55, 12 min</p>
+          <p><span class="badge badge-amber">Fits 2 of 3 today</span></p>
+          <p>Matches: step-free, soft light. Louder after 5 pm.</p>
+          <div class="wt-bar wt-bar-amber" role="img" aria-label="Matches 2 of 3 priorities"><span style="width:66%"></span></div>
+        </div>
+        <p class="wt-note">Sample places in Montreal only.</p>
+      </div>
+    </section>
+
+    <section class="palette cs-palette" data-palette="adv-ww" data-appearance="light" aria-labelledby="ww-3">
+      <h2 id="ww-3">3. Discover: Map view</h2>
+      <p class="feeling">The thread is a thick honey gold path to the place that fits today. Teal marks you and the streets, pine marks the other places, amber marks the place to watch.</p>
+      <div class="cs-controls" role="group" aria-label="Warm white map view appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <div class="wt-app">
+        <h3>Near you: Villeray</h3>
+        <svg class="wt-map" viewBox="0 0 360 210" role="img" aria-label="Schematic map: a thick honey gold thread path runs from you to Café Lumière Douce, with three other sample places nearby">
+          <rect x="0" y="0" width="360" height="210" style="fill:var(--cs-bg)"/>
+          <path d="M0 70 H360 M0 140 H360 M90 0 V210 M200 0 V210 M300 0 V210" stroke="var(--cs-anchor)" stroke-width="2" opacity="0.35" fill="none"/>
+          <path d="M40 175 C 110 150, 150 120, 185 95" stroke="var(--cs-accent)" stroke-width="7" stroke-dasharray="10 7" fill="none" stroke-linecap="round"/>
+          <circle cx="40" cy="175" r="10" style="fill:var(--cs-anchor)"/><text x="40" y="198" text-anchor="middle" font-size="12" style="fill:var(--cs-text)">You</text>
+          <circle cx="185" cy="95" r="11" style="fill:var(--cs-accent)" stroke="var(--cs-anchor)" stroke-width="2"/><text x="185" y="72" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--cs-text)">Café Lumière Douce</text>
+          <circle cx="270" cy="45" r="8" style="fill:var(--cs-pine)"/><text x="270" y="30" text-anchor="middle" font-size="12" style="fill:var(--cs-text)">Café Nostalgie</text>
+          <circle cx="120" cy="35" r="8" style="fill:var(--cs-pine)"/><text x="120" y="20" text-anchor="middle" font-size="12" style="fill:var(--cs-text)">Bohemian Books</text>
+          <circle cx="305" cy="165" r="8" style="fill:var(--cs-amber)"/><text x="305" y="188" text-anchor="middle" font-size="12" style="fill:var(--cs-text)">Jardin Café</text>
+        </svg>
+        <p><span class="badge">This fits today: follow the path</span> <span class="badge badge-pine">0.8 km away</span></p>
+        <p>0.8 km, 10 min walk, Metro Jarry, 8 min. Sample map, not a live map.</p>
+      </div>
+    </section>
+
+    <section class="palette cs-palette" data-palette="adv-ww" data-appearance="light" aria-labelledby="ww-4">
+      <h2 id="ww-4">4. Place detail: Café Lumière Douce</h2>
+      <p class="feeling">How a place feels through the day, in colour: teal for calm mornings, pine for steady afternoons, amber for livelier evenings. Menu and prep list, before you go.</p>
+      <div class="cs-controls" role="group" aria-label="Warm white place detail appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <div class="wt-app">
+        <h3>Café Lumière Douce</h3>
+        <p>Villeray, 0.8 km, 10 min walk, Step-free entry</p>
+        <h4>How it feels through the day</h4>
+        <p class="wt-row"><span>Morning: calm</span><span>Peers say: calm</span></p>
+        <div class="wt-bar wt-bar-teal" role="img" aria-label="Morning: calm, 9 out of 10 peers"><span style="width:90%"></span></div>
+        <p class="wt-row"><span>Afternoon: steady</span><span>Peers say: steady</span></p>
+        <div class="wt-bar wt-bar-pine" role="img" aria-label="Afternoon: steady, 6 out of 10 peers"><span style="width:60%"></span></div>
+        <p class="wt-row"><span>Evening: livelier</span><span>Peers say: livelier</span></p>
+        <div class="wt-bar wt-bar-amber" role="img" aria-label="Evening: livelier, 4 out of 10 peers"><span style="width:40%"></span></div>
+        <h4>Menu preview</h4>
+        <p>Oat latte, Almond croissant, Soup of the day. Menu as text, not QR only.</p>
+        <h4>Your prep list</h4>
+        <p>Teal: oat latte, Pine: almond croissant, Amber: ask for the quiet corner table</p>
+        <p><button class="wt-btn wt-btn-primary" type="button">Save this place</button><button class="wt-btn wt-btn-ghost" type="button">I am here now</button></p>
+      </div>
+    </section>
+  </section>
+  <!-- WARM-WHITE END -->
+
+  <!-- WARMER-TEAL-LIGHTENED START -->
+  <section aria-labelledby="wt-lightened">
+    <h2 id="wt-lightened" style="color:#14665a;font-size:1.6rem;line-height:1.2;margin:6px 0 4px">Warmer Teal, lightened: like Everyday Adventure</h2>
+    <p class="lede">Warmer Teal felt a bit dark. This version keeps the same warm, adventurous feeling — and the same family as Everyday Adventure — but lightens it. Light is first, brighter, and airier, with more breathing room. Dark is still there, but softened: warmer and lighter, not near-black.</p>
+    <p class="lede"><strong>What was lightened, vs the previous Warmer Teal:</strong> background #faf1e3 → <strong>#fff8ec</strong> (lighter, brighter warm cream); anchor teal #0d4f45 → <strong>#14665a</strong> (lighter, still AA); pine #234d33 → <strong>#2f5d3e</strong> (lighter); amber-brown #7c3d06 → <strong>#8a4a08</strong> (lighter, still AA); honey-gold #e9b44c → <strong>#f2c14e</strong> (brighter path, accent only); dark background #0b2622 → <strong>#173a33</strong> (a warmer, lighter teal-night); dark surface #143c34 → <strong>#214f45</strong>; honey-light #f0c46a → <strong>#f6cf6e</strong>. Light examples use more white space and less heavy dark surface than before. Original Everyday Adventure for comparison: deep teal #0b5e54, forest #184b44, sun #f8c05e, tangerine-dark #9a4a00, cream #f8f7f4 — bright, warm, light. The full original is shown further down this page.</p>
+    <p class="lede"><strong>AA check — Light:</strong> teal #14665a on #fff8ec 6.46:1 · pine #2f5d3e on #fff8ec 7.22:1 · amber #8a4a08 on #fff8ec 6.49:1 · ink #1a2b26 on #fff8ec 14.03:1 · white on teal #14665a 6.82:1 · teal on surface #fdf0d8 6.05:1 · amber on surface #fdf0d8 6.08:1. <strong>Dark:</strong> cream #fff8ec on teal-night #173a33 11.77:1 · cream on surface #214f45 8.77:1 · honey-light #f6cf6e on #173a33 8.33:1 · honey-light on #214f45 6.20:1. All text pairs pass WCAG 2.2 AA (≥4.5:1). Honey-gold is a path / accent only, never small text on its own.</p>
+
+    <!-- Lightened swatches -->
+    <section class="palette cs-palette" data-palette="adv-light" data-appearance="light" aria-labelledby="wt-l-0">
+      <h2 id="wt-l-0">Warmer Teal, lightened: swatches</h2>
+      <p class="feeling"><strong>Feeling:</strong> bright, warm, light — like Everyday Adventure, but in PEERSPECT's own adapted hues. Light is the default here.</p>
+      <div class="cs-controls" role="group" aria-label="Warmer Teal, lightened appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <p><strong>Light theme — brighter</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#14665a;color:#fff"><b>Lighter teal</b><code>#14665a</code><span>Anchor / headings / buttons</span></div>
+        <div class="swatch" style="background:#2f5d3e;color:#fff"><b>Lighter pine</b><code>#2f5d3e</code><span>Deep surface / card</span></div>
+        <div class="swatch" style="background:#f2c14e"><b>Brighter honey-gold</b><code>#f2c14e</code><span>Path / accent only</span></div>
+        <div class="swatch" style="background:#8a4a08;color:#fff"><b>Lighter amber</b><code>#8a4a08</code><span>Warm text accent only</span></div>
+        <div class="swatch" style="background:#fff8ec"><b>Brighter warm cream</b><code>#fff8ec</code><span>Background</span></div>
+      </div>
+      <p><strong>Dark theme — softened, not near-black</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#173a33;color:#fff8ec"><b>Soft teal-night</b><code>#173a33</code><span>Background — warmer, lighter</span></div>
+        <div class="swatch" style="background:#214f45;color:#fff8ec"><b>Soft pine surface</b><code>#214f45</code><span>Card / soft surface</span></div>
+        <div class="swatch" style="background:#fff8ec"><b>Brighter warm cream</b><code>#fff8ec</code><span>Main text</span></div>
+        <div class="swatch" style="background:#f6cf6e"><b>Honey-light</b><code>#f6cf6e</code><span>Path / accent (dark mode) — also text-safe</span></div>
+      </div>
+      <div class="sample cs-sample">
+        <h3>Café Lumière Douce → your place today</h3>
+        <p>Follow the thread: 0.8 km · 10 min walk · Metro Jarry</p>
+        <div class="path" role="img" aria-label="Thread path to the place"></div>
+        <p>A bright, warm find — step-free, soft light, calm.</p>
+        <span class="badge">✦ This fits today — follow the path</span>
+        <br><span class="chip">Step-free</span><span class="chip">Soft light</span><span class="chip">Calm</span>
+      </div>
+    </section>
+
+    <!-- 1. Onboarding, lightened -->
+    <section class="palette cs-palette" data-palette="adv-light" data-appearance="light" aria-labelledby="wt-l-1">
+      <h2 id="wt-l-1">1. Onboarding: What matters to you today?</h2>
+      <p class="feeling">Light first, with breathing room. The app asks, it does not assume — pick as many as you like, you decide.</p>
+      <div class="cs-controls" role="group" aria-label="Lightened onboarding appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <div class="wt-app wt-light">
+        <h3>What matters to you today?</h3>
+        <p>Pick what matters — as many as you like, you decide.</p>
+        <p><span class="chip" aria-pressed="true">Step-free entry</span><span class="chip" aria-pressed="true">Soft light</span><span class="chip" aria-pressed="true">Quiet</span><span class="chip" aria-pressed="false">Low scent</span><span class="chip" aria-pressed="false">Gender-neutral restroom</span><span class="chip" aria-pressed="false">Seating with back support</span><span class="chip" aria-pressed="false">Menu I can read first</span></p>
+        <p><button class="wt-btn wt-btn-primary" type="button">See places that fit</button><button class="wt-btn wt-btn-ghost" type="button">Save as a profile</button></p>
+        <p class="wt-note">3 picked today. Your profile is saved on your phone only.</p>
+      </div>
+    </section>
+
+    <!-- 2. Discover list, lightened -->
+    <section class="palette cs-palette" data-palette="adv-light" data-appearance="light" aria-labelledby="wt-l-2">
+      <h2 id="wt-l-2">2. Discover: List view</h2>
+      <p class="feeling">One place at a time, in the light — distance and how to get there, no long list to wade through.</p>
+      <div class="cs-controls" role="group" aria-label="Lightened list view appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <div class="wt-app wt-light">
+        <h3>Places that fit today</h3>
+        <div class="wt-card">
+          <h4>Café Lumière Douce: Villeray</h4>
+          <p>0.8 km · 10 min walk · Metro Jarry, 8 min</p>
+          <p><span class="badge">✦ This fits today</span></p>
+          <p>Matches: step-free, soft light, quiet.</p>
+        </div>
+        <div class="wt-card">
+          <h4>Café Nostalgie: Mile End</h4>
+          <p>1.4 km · 18 min walk · Bus 55, 12 min</p>
+          <p><span class="chip chip-accent">Fits 2 of 3 today</span></p>
+          <p>Matches: step-free, soft light. Louder after 5 pm.</p>
+        </div>
+        <p class="wt-note">Sample places in Montreal only.</p>
+      </div>
+    </section>
+
+    <!-- 3. Discover map, lightened -->
+    <section class="palette cs-palette" data-palette="adv-light" data-appearance="light" aria-labelledby="wt-l-3">
+      <h2 id="wt-l-3">3. Discover: Map view</h2>
+      <p class="feeling">The thread is a bright path to the place that fits today — in the light, it reads as sunshine on the map, not a heavy line.</p>
+      <div class="cs-controls" role="group" aria-label="Lightened map view appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <div class="wt-app wt-light">
+        <h3>Near you: Villeray</h3>
+        <svg class="wt-map" viewBox="0 0 360 210" role="img" aria-label="Schematic map: a bright honey-gold thread path runs from you to Café Lumière Douce, with three other sample places nearby">
+          <rect x="0" y="0" width="360" height="210" style="fill:var(--cs-bg)"/>
+          <path d="M0 70 H360 M0 140 H360 M90 0 V210 M200 0 V210 M300 0 V210" stroke="var(--cs-anchor)" stroke-width="2" opacity="0.35" fill="none"/>
+          <path d="M40 175 C 110 150, 150 120, 185 95" stroke="var(--cs-accent)" stroke-width="5" stroke-dasharray="10 7" fill="none" stroke-linecap="round"/>
+          <circle cx="40" cy="175" r="10" style="fill:var(--cs-anchor)"/><text x="40" y="198" text-anchor="middle" font-size="12" style="fill:var(--cs-text)">You</text>
+          <circle cx="185" cy="95" r="11" style="fill:var(--cs-accent)" stroke="var(--cs-anchor)" stroke-width="2"/><text x="185" y="72" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--cs-text)">Café Lumière Douce</text>
+          <circle cx="270" cy="45" r="8" style="fill:var(--cs-anchor)"/><text x="270" y="30" text-anchor="middle" font-size="12" style="fill:var(--cs-text)">Café Nostalgie</text>
+          <circle cx="120" cy="35" r="8" style="fill:var(--cs-anchor)"/><text x="120" y="20" text-anchor="middle" font-size="12" style="fill:var(--cs-text)">Bohemian Books</text>
+          <circle cx="305" cy="165" r="8" style="fill:var(--cs-anchor)"/><text x="305" y="188" text-anchor="middle" font-size="12" style="fill:var(--cs-text)">Jardin Café</text>
+        </svg>
+        <p><span class="badge">✦ This fits today — follow the path</span></p>
+        <p>0.8 km · 10 min walk · Metro Jarry, 8 min. Sample map — not a live map.</p>
+      </div>
+    </section>
+
+    <!-- 4. Place detail, lightened -->
+    <section class="palette cs-palette" data-palette="adv-light" data-appearance="light" aria-labelledby="wt-l-4">
+      <h2 id="wt-l-4">4. Place detail: Café Lumière Douce</h2>
+      <p class="feeling">How a place feels through the day, the menu, and what you plan to order — before you go, in the light.</p>
+      <div class="cs-controls" role="group" aria-label="Lightened place detail appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <div class="wt-app wt-light">
+        <h3>Café Lumière Douce</h3>
+        <p>Villeray · 0.8 km · 10 min walk · Step-free entry</p>
+        <h4>How it feels through the day</h4>
+        <p class="wt-row"><span>Morning — calm</span><span>Peers say: calm</span></p>
+        <div class="wt-bar" role="img" aria-label="Morning: calm, 9 out of 10 peers"><span style="width:90%"></span></div>
+        <p class="wt-row"><span>Afternoon — steady</span><span>Peers say: steady</span></p>
+        <div class="wt-bar" role="img" aria-label="Afternoon: steady, 6 out of 10 peers"><span style="width:60%"></span></div>
+        <p class="wt-row"><span>Evening — livelier</span><span>Peers say: livelier</span></p>
+        <div class="wt-bar" role="img" aria-label="Evening: livelier, 4 out of 10 peers"><span style="width:40%"></span></div>
+        <h4>Menu preview</h4>
+        <p>Oat latte · Almond croissant · Soup of the day. Menu as text — not QR only.</p>
+        <h4>Your prep list</h4>
+        <p>☑ Oat latte &nbsp; ☑ Almond croissant &nbsp; ☐ Ask for the quiet corner table</p>
+        <p><button class="wt-btn wt-btn-primary" type="button">Save this place</button><button class="wt-btn wt-btn-ghost" type="button">I’m here now</button></p>
+      </div>
+    </section>
+  </section>
+  <!-- WARMER-TEAL-LIGHTENED END -->
+
+  <!-- WARMER-TEAL-EXAMPLES START -->
+  <section aria-labelledby="wt-more">
+    <h2 id="wt-more" style="color:#0d4f45;font-size:1.6rem;line-height:1.2;margin:6px 0 4px">Warmer Teal: more examples in the app</h2>
+    <p class="lede">The chosen palette, <strong>A. Warmer Teal</strong>, living in the app — not just one sample card. Six screens, each with its own <strong>Light / Dark / System</strong> toggle, like iOS appearance settings. System follows your device; Light and Dark override it in the app. All text is WCAG 2.2 AA: light teal 8.44:1, pine 8.60:1, amber-brown 7.42:1, white on teal 9.45:1; dark cream on teal night 14.27:1, on pine 10.87:1, honey-light 9.74:1. Honey-gold is a path / accent, never small text on its own. Sample places in Montreal only. No account needed.</p>
+
+    <!-- 1. Onboarding -->
+    <section class="palette cs-palette" data-palette="adv-warm" data-appearance="light" aria-labelledby="wt-1">
+      <h2 id="wt-1">1. Onboarding: What matters to you today?</h2>
+      <p class="feeling">First, the app asks, it does not assume. Pick as many as you like — you decide, and you can change them any time.</p>
+      <div class="cs-controls" role="group" aria-label="Onboarding example appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <div class="wt-app">
+        <h3>What matters to you today?</h3>
+        <p>Pick what matters — as many as you like, you decide.</p>
+        <p><span class="chip" aria-pressed="true">Step-free entry</span><span class="chip" aria-pressed="true">Soft light</span><span class="chip" aria-pressed="true">Quiet</span><span class="chip" aria-pressed="false">Low scent</span><span class="chip" aria-pressed="false">Gender-neutral restroom</span><span class="chip" aria-pressed="false">Seating with back support</span><span class="chip" aria-pressed="false">Menu I can read first</span></p>
+        <p><button class="wt-btn wt-btn-primary" type="button">See places that fit</button><button class="wt-btn wt-btn-ghost" type="button">Save as a profile</button></p>
+        <p class="wt-note">3 picked today. Your profile is saved on your phone only.</p>
+      </div>
+    </section>
+
+    <!-- 2. Discover Map view -->
+    <section class="palette cs-palette" data-palette="adv-warm" data-appearance="light" aria-labelledby="wt-2">
+      <h2 id="wt-2">2. Discover: Map view</h2>
+      <p class="feeling">Distance matters, so the map shows where places are — and the thread is a path to the one that fits today.</p>
+      <div class="cs-controls" role="group" aria-label="Map view example appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <div class="wt-app">
+        <h3>Near you: Villeray</h3>
+        <svg class="wt-map" viewBox="0 0 360 210" role="img" aria-label="Schematic map: a honey-gold thread path runs from you to Café Lumière Douce, with three other sample places nearby">
+          <rect x="0" y="0" width="360" height="210" style="fill:var(--cs-bg)"/>
+          <path d="M0 70 H360 M0 140 H360 M90 0 V210 M200 0 V210 M300 0 V210" stroke="var(--cs-anchor)" stroke-width="2" opacity="0.35" fill="none"/>
+          <path d="M40 175 C 110 150, 150 120, 185 95" stroke="var(--cs-accent)" stroke-width="5" stroke-dasharray="10 7" fill="none" stroke-linecap="round"/>
+          <circle cx="40" cy="175" r="10" style="fill:var(--cs-anchor)"/><text x="40" y="198" text-anchor="middle" font-size="12" style="fill:var(--cs-text)">You</text>
+          <circle cx="185" cy="95" r="11" style="fill:var(--cs-accent)" stroke="var(--cs-anchor)" stroke-width="2"/><text x="185" y="72" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--cs-text)">Café Lumière Douce</text>
+          <circle cx="270" cy="45" r="8" style="fill:var(--cs-anchor)"/><text x="270" y="30" text-anchor="middle" font-size="12" style="fill:var(--cs-text)">Café Nostalgie</text>
+          <circle cx="120" cy="35" r="8" style="fill:var(--cs-anchor)"/><text x="120" y="20" text-anchor="middle" font-size="12" style="fill:var(--cs-text)">Bohemian Books</text>
+          <circle cx="305" cy="165" r="8" style="fill:var(--cs-anchor)"/><text x="305" y="188" text-anchor="middle" font-size="12" style="fill:var(--cs-text)">Jardin Café</text>
+        </svg>
+        <p><span class="badge">✦ This fits today — follow the path</span></p>
+        <p>0.8 km · 10 min walk · Metro Jarry, 8 min. Sample map — not a live map.</p>
+      </div>
+    </section>
+
+    <!-- 3. Discover List view -->
+    <section class="palette cs-palette" data-palette="adv-warm" data-appearance="light" aria-labelledby="wt-3">
+      <h2 id="wt-3">3. Discover: List view</h2>
+      <p class="feeling">One place at a time, with distance and how to get there — no long list to wade through.</p>
+      <div class="cs-controls" role="group" aria-label="List view example appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <div class="wt-app">
+        <h3>Places that fit today</h3>
+        <div class="wt-card">
+          <h4>Café Lumière Douce: Villeray</h4>
+          <p>0.8 km · 10 min walk · Metro Jarry, 8 min</p>
+          <p><span class="badge">✦ This fits today</span></p>
+          <p>Matches: step-free, soft light, quiet.</p>
+        </div>
+        <div class="wt-card">
+          <h4>Café Nostalgie: Mile End</h4>
+          <p>1.4 km · 18 min walk · Bus 55, 12 min</p>
+          <p><span class="chip chip-accent">Fits 2 of 3 today</span></p>
+          <p>Matches: step-free, soft light. Louder after 5 pm.</p>
+        </div>
+        <p class="wt-note">Sample places in Montreal only.</p>
+      </div>
+    </section>
+
+    <!-- 4. Place detail -->
+    <section class="palette cs-palette" data-palette="adv-warm" data-appearance="light" aria-labelledby="wt-4">
+      <h2 id="wt-4">4. Place detail: Café Lumière Douce</h2>
+      <p class="feeling">How a place feels changes through the day — so the detail shows the day, the menu, and what you plan to order, before you go.</p>
+      <div class="cs-controls" role="group" aria-label="Place detail example appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <div class="wt-app">
+        <h3>Café Lumière Douce</h3>
+        <p>Villeray · 0.8 km · 10 min walk · Step-free entry</p>
+        <h4>How it feels through the day</h4>
+        <p class="wt-row"><span>Morning — calm</span><span>Peers say: calm</span></p>
+        <div class="wt-bar" role="img" aria-label="Morning: calm, 9 out of 10 peers"><span style="width:90%"></span></div>
+        <p class="wt-row"><span>Afternoon — steady</span><span>Peers say: steady</span></p>
+        <div class="wt-bar" role="img" aria-label="Afternoon: steady, 6 out of 10 peers"><span style="width:60%"></span></div>
+        <p class="wt-row"><span>Evening — livelier</span><span>Peers say: livelier</span></p>
+        <div class="wt-bar" role="img" aria-label="Evening: livelier, 4 out of 10 peers"><span style="width:40%"></span></div>
+        <h4>Menu preview</h4>
+        <p>Oat latte · Almond croissant · Soup of the day. Menu as text — not QR only.</p>
+        <h4>Your prep list</h4>
+        <p>☑ Oat latte &nbsp; ☑ Almond croissant &nbsp; ☐ Ask for the quiet corner table</p>
+        <p><button class="wt-btn wt-btn-primary" type="button">Save this place</button><button class="wt-btn wt-btn-ghost" type="button">I’m here now</button></p>
+      </div>
+    </section>
+
+    <!-- 5. I'm here check-in -->
+    <section class="palette cs-palette" data-palette="adv-warm" data-appearance="light" aria-labelledby="wt-5">
+      <h2 id="wt-5">5. “I’m here” check-in: one question at a time</h2>
+      <p class="feeling">No long form, no scoring. One easy question, three simple answers — Yes, A bit, Not really.</p>
+      <div class="cs-controls" role="group" aria-label="Check-in example appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <div class="wt-app">
+        <h3>You’re at Café Lumière Douce</h3>
+        <p class="wt-note">Question 1 of 3 · Very quick · Anonymous</p>
+        <h4>How is the sound right now?</h4>
+        <p><button class="wt-q" type="button">Yes — it’s calm</button><button class="wt-q" type="button">A bit — some background music</button><button class="wt-q" type="button">Not really — it’s loud right now</button></p>
+        <p><button class="wt-btn wt-btn-ghost" type="button">Skip this question</button></p>
+        <p class="wt-note">Your answer helps the next peer — it never shows your name.</p>
+      </div>
+    </section>
+
+    <!-- 6. Business view -->
+    <section class="palette cs-palette" data-palette="adv-warm" data-appearance="light" aria-labelledby="wt-6">
+      <h2 id="wt-6">6. Business view: insights, not raw data</h2>
+      <p class="feeling">For the café owner: what peers are experiencing, shown visually — with things they can pick and try, not a spreadsheet to dissect.</p>
+      <div class="cs-controls" role="group" aria-label="Business view example appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <div class="wt-app">
+        <h3>Your place, through peers’ eyes</h3>
+        <p class="wt-note">Anonymous peer reports · No one is named · Last 30 days, sample data</p>
+        <h4>Calm in the morning</h4>
+        <div class="wt-bar" role="img" aria-label="Calm in the morning: 9 out of 10 peers"><span style="width:90%"></span></div>
+        <p class="wt-row"><span>9 in 10 peers say calm</span><span>Morning</span></p>
+        <h4>Step-free entry noticed</h4>
+        <div class="wt-bar" role="img" aria-label="Step-free entry noticed: 8 out of 10 peers"><span style="width:80%"></span></div>
+        <p class="wt-row"><span>8 in 10 peers noticed it</span><span>All day</span></p>
+        <h4>Evenings feel louder</h4>
+        <div class="wt-bar" role="img" aria-label="Evenings feel louder: 6 out of 10 peers"><span style="width:60%"></span></div>
+        <p class="wt-row"><span>6 in 10 peers say louder</span><span>After 5 pm</span></p>
+        <h4>Try one of these</h4>
+        <div class="wt-suggest"><strong>Add a quiet-corner sign.</strong><br>Peers already use the back corner — a small sign makes it easy to find.</div>
+        <div class="wt-suggest"><strong>Offer the menu as text, not QR only.</strong><br>Peers ask for this most after step-free entry.</div>
+        <div class="wt-suggest"><strong>Dim the big light after 5 pm.</strong><br>Evenings feel louder and brighter — softer light helps both.</div>
+        <p><button class="wt-btn wt-btn-primary" type="button">Pick a suggestion to try</button></p>
+      </div>
+    </section>
+  </section>
+  <!-- WARMER-TEAL-EXAMPLES END -->
+
+  <!-- ADAPTATIONS START -->
+  <section aria-labelledby="ea-adapt">
+    <h2 id="ea-adapt" style="color:#0d4f45;font-size:1.6rem;line-height:1.2;margin:6px 0 4px">Everyday Adventure: adaptations, not exactly the same</h2>
+    <p class="lede">Ginko misses the original Everyday Adventure, but does not want it exactly the same as her personal brand. So these three adaptations stay in the same family — teal, forest, gold, warm orange, cream — and shift every colour just enough that it is close to the original feeling, but not the same palette. Try <strong>Light / Dark / System</strong> on each one, like iOS appearance settings. System follows your device; Light and Dark override it in the app.</p>
+    <p class="lede">How to read them: <strong>A. Warmer Teal</strong> is the closest cousin — same depth, warmer. <strong>B. Softer Adventure</strong> is the calmest — lighter, softer, more breathing room. <strong>C. Deeper Adventure</strong> is the boldest — darker, richer, more evening. The original is shown right underneath this section, labelled as the original, so you can see how close each one is.</p>
+
+    <!-- A. Warmer Teal -->
+    <section class="palette cs-palette" data-palette="adv-warm" data-appearance="light" aria-labelledby="ea-a">
+      <h2 id="ea-a">A. Warmer Teal</h2>
+      <p class="feeling"><strong>Feeling:</strong> the closest cousin to the original. Same depth and warmth, every colour shifted warmer and a touch deeper — the teal leans warmer, the pine leans warmer, the gold is honey, not bright sun.</p>
+      <p class="feeling"><strong>How it differs from the original:</strong> anchor teal shifted warmer/deeper; forest shifted to a warmer pine; sun path shifted to a softer honey-gold; tangerine text shifted to a deeper amber-brown; cream background shifted to a warmer cream.</p>
+      <div class="cs-controls" role="group" aria-label="Warmer Teal appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <p><strong>Light theme</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#0d4f45;color:#fff"><b>Warmer teal</b><code>#0d4f45</code><span>Anchor / headings / buttons</span></div>
+        <div class="swatch" style="background:#234d33;color:#fff"><b>Warmer pine</b><code>#234d33</code><span>Deep surface / card</span></div>
+        <div class="swatch" style="background:#e9b44c"><b>Honey-gold</b><code>#e9b44c</code><span>Path / accent only</span></div>
+        <div class="swatch" style="background:#7c3d06;color:#fff"><b>Amber-brown</b><code>#7c3d06</code><span>Warm text accent only</span></div>
+        <div class="swatch" style="background:#faf1e3"><b>Warm cream</b><code>#faf1e3</code><span>Background</span></div>
+      </div>
+      <p><strong>Dark theme — chosen deliberately, not inverted</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#0b2622;color:#faf1e3"><b>Teal night</b><code>#0b2622</code><span>Background</span></div>
+        <div class="swatch" style="background:#143c34;color:#faf1e3"><b>Pine night surface</b><code>#143c34</code><span>Card / soft surface</span></div>
+        <div class="swatch" style="background:#faf1e3"><b>Warm cream</b><code>#faf1e3</code><span>Main text</span></div>
+        <div class="swatch" style="background:#f0c46a"><b>Honey-light</b><code>#f0c46a</code><span>Path / accent (dark mode) — also text-safe</span></div>
+      </div>
+      <div class="sample cs-sample">
+        <h3>Café Lumière Douce → your place today</h3>
+        <p>Follow the thread: 0.8 km · 10 min walk · Metro Jarry</p>
+        <div class="path" role="img" aria-label="Thread path to the place"></div>
+        <p>A warm, adventurous find — step-free, soft light, calm.</p>
+        <span class="badge">✦ This fits today — follow the path</span>
+        <br><span class="chip">Step-free</span><span class="chip">Soft light</span><span class="chip">Calm</span>
+      </div>
+      <p class="aa"><strong>AA check — Light:</strong> warmer teal on warm cream 8.44:1 · warmer pine on warm cream 8.60:1 · amber-brown on warm cream 7.42:1 · white on warmer teal 9.45:1 · white on amber-brown 8.31:1. <strong>Dark:</strong> warm cream on teal night 14.27:1 · warm cream on pine night surface 10.87:1 · honey-light on teal night 9.74:1 · honey-light on pine night surface 7.42:1. Honey-gold is accent only in light mode, never text.</p>
+    </section>
+
+    <!-- B. Softer Adventure -->
+    <section class="palette cs-palette" data-palette="adv-soft" data-appearance="light" aria-labelledby="ea-b">
+      <h2 id="ea-b">B. Softer Adventure</h2>
+      <p class="feeling"><strong>Feeling:</strong> the calmest cousin. Same family, softened — lighter teal, sage-forest, pale gold path, muted terracotta text. Still warm and adventurous, with more breathing room and less contrast shouting.</p>
+      <p class="feeling"><strong>How it differs from the original:</strong> anchor teal lightened and softened; forest softened to sage-forest; sun path softened to pale gold; tangerine text muted to terracotta; cream background lightened to a soft, almost-white cream.</p>
+      <div class="cs-controls" role="group" aria-label="Softer Adventure appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <p><strong>Light theme</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#256f68;color:#fff"><b>Softer teal</b><code>#256f68</code><span>Anchor / headings / buttons</span></div>
+        <div class="swatch" style="background:#4a6b4f;color:#fff"><b>Sage-forest</b><code>#4a6b4f</code><span>Deep surface / card</span></div>
+        <div class="swatch" style="background:#eec96a"><b>Pale gold</b><code>#eec96a</code><span>Path / accent only</span></div>
+        <div class="swatch" style="background:#8a4a35;color:#fff"><b>Muted terracotta</b><code>#8a4a35</code><span>Warm text accent only</span></div>
+        <div class="swatch" style="background:#fbf8f1"><b>Soft cream</b><code>#fbf8f1</code><span>Background</span></div>
+      </div>
+      <p><strong>Dark theme — chosen deliberately, not inverted</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#1c2f2b;color:#fbf8f1"><b>Soft teal night</b><code>#1c2f2b</code><span>Background</span></div>
+        <div class="swatch" style="background:#2a4238;color:#fbf8f1"><b>Sage night surface</b><code>#2a4238</code><span>Card / soft surface</span></div>
+        <div class="swatch" style="background:#fbf8f1"><b>Soft cream</b><code>#fbf8f1</code><span>Main text</span></div>
+        <div class="swatch" style="background:#f2d27e"><b>Pale gold light</b><code>#f2d27e</code><span>Path / accent (dark mode) — also text-safe</span></div>
+      </div>
+      <div class="sample cs-sample">
+        <h3>Café Lumière Douce → your place today</h3>
+        <p>Follow the thread: 0.8 km · 10 min walk · Metro Jarry</p>
+        <div class="path" role="img" aria-label="Thread path to the place"></div>
+        <p>A gentle, adventurous find — step-free, soft light, calm.</p>
+        <span class="badge">✦ This fits today — follow the path</span>
+        <br><span class="chip">Step-free</span><span class="chip">Soft light</span><span class="chip">Calm</span>
+      </div>
+      <p class="aa"><strong>AA check — Light:</strong> softer teal on soft cream 5.57:1 · sage-forest on soft cream 5.65:1 · muted terracotta on soft cream 6.36:1 · white on softer teal 5.91:1 · white on muted terracotta 6.75:1. <strong>Dark:</strong> soft cream on soft teal night 13.28:1 · soft cream on sage night surface 10.23:1 · pale gold light on soft teal night 9.59:1 · pale gold light on sage night surface 7.39:1. Pale gold is accent only in light mode, never text.</p>
+    </section>
+
+    <!-- C. Deeper Adventure -->
+    <section class="palette cs-palette" data-palette="adv-deep" data-appearance="light" aria-labelledby="ea-c">
+      <h2 id="ea-c">C. Deeper Adventure</h2>
+      <p class="feeling"><strong>Feeling:</strong> the boldest cousin. Same family, deepened — darker teal-night, deep pine, richer gold path, deeper burnt-orange text. More evening, more adventure, more drama, still warm.</p>
+      <p class="feeling"><strong>How it differs from the original:</strong> anchor teal deepened to teal-night; forest deepened to deep pine; sun path deepened to a richer gold; tangerine text deepened to burnt-orange; cream background warmed to a deeper cream.</p>
+      <div class="cs-controls" role="group" aria-label="Deeper Adventure appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <p><strong>Light theme</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#07332e;color:#fff"><b>Teal-night</b><code>#07332e</code><span>Anchor / headings / buttons</span></div>
+        <div class="swatch" style="background:#0f2e22;color:#fff"><b>Deep pine</b><code>#0f2e22</code><span>Deep surface / card</span></div>
+        <div class="swatch" style="background:#d9a41f"><b>Rich gold</b><code>#d9a41f</code><span>Path / accent only</span></div>
+        <div class="swatch" style="background:#8a3200;color:#fff"><b>Burnt-orange</b><code>#8a3200</code><span>Warm text accent only</span></div>
+        <div class="swatch" style="background:#f7f0e2"><b>Deep cream</b><code>#f7f0e2</code><span>Background</span></div>
+      </div>
+      <p><strong>Dark theme — chosen deliberately, not inverted</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#061a15;color:#f7f0e2"><b>Deep teal night</b><code>#061a15</code><span>Background</span></div>
+        <div class="swatch" style="background:#0d2b24;color:#f7f0e2"><b>Pine night surface</b><code>#0d2b24</code><span>Card / soft surface</span></div>
+        <div class="swatch" style="background:#f7f0e2"><b>Deep cream</b><code>#f7f0e2</code><span>Main text</span></div>
+        <div class="swatch" style="background:#e8b93e"><b>Rich gold light</b><code>#e8b93e</code><span>Path / accent (dark mode) — also text-safe</span></div>
+      </div>
+      <div class="sample cs-sample">
+        <h3>Café Lumière Douce → your place today</h3>
+        <p>Follow the thread: 0.8 km · 10 min walk · Metro Jarry</p>
+        <div class="path" role="img" aria-label="Thread path to the place"></div>
+        <p>A bold, evening adventure — step-free, soft light, calm.</p>
+        <span class="badge">✦ This fits today — follow the path</span>
+        <br><span class="chip">Step-free</span><span class="chip">Soft light</span><span class="chip">Calm</span>
+      </div>
+      <p class="aa"><strong>AA check — Light:</strong> teal-night on deep cream 12.17:1 · deep pine on deep cream 12.91:1 · burnt-orange on deep cream 7.30:1 · white on teal-night 13.80:1 · white on burnt-orange 8.28:1. <strong>Dark:</strong> deep cream on deep teal night 15.88:1 · deep cream on pine night surface 13.34:1 · rich gold light on deep teal night 9.81:1 · rich gold light on pine night surface 8.24:1. Rich gold is accent only in light mode, never text.</p>
+    </section>
+  </section>
+  <!-- ADAPTATIONS END -->
+
+  <!-- ORIGINAL FOR COMPARISON -->
+  <section class="palette" style="background:#fff8e8" aria-labelledby="ea-original">
+    <h2 id="ea-original">Original Everyday Adventure: for comparison</h2>
+    <p class="feeling"><strong>Feeling:</strong> the original Ginko misses — warmer and brighter, finding a place is a small everyday adventure, the thread is a path, not just a line. Kept here unchanged so you can judge how close each adaptation above is. This is the original, not an adaptation.</p>
+    <div class="swatches">
+      <div class="swatch" style="background:#0b5e54;color:#fff"><b>Deep teal</b><code>#0b5e54</code><span>Anchor (original)</span></div>
+      <div class="swatch" style="background:#184b44;color:#fff"><b>Forest</b><code>#184b44</code><span>Deep surface / card (original)</span></div>
+      <div class="swatch" style="background:#f8c05e;color:#12211e"><b>Sun</b><code>#f8c05e</code><span>Path / accent only (original)</span></div>
+      <div class="swatch" style="background:#9a4a00;color:#fff"><b>Tangerine-dark</b><code>#9a4a00</code><span>Warm text accent only (original)</span></div>
+      <div class="swatch" style="background:#f8f7f4;color:#12211e"><b>Cream</b><code>#f8f7f4</code><span>Background (original)</span></div>
+    </div>
+    <div class="sample" style="background:#184b44;color:#f8f7f4">
+      <h3>Café Lumière Douce → your place today</h3>
+      <p>Follow the thread: 0.8 km · 10 min walk · Metro Jarry</p>
+      <span class="badge" style="background:#f8c05e;color:#12211e">✦ This fits today — follow the path</span>
+    </div>
+    <p class="aa"><strong>AA check (original):</strong> cream on forest 9.21:1 · white on forest 9.86:1 · tangerine-dark on cream 5.85:1 · white on tangerine-dark 6.26:1 · teal on cream 7.15:1. Sun is accent only, never text.</p>
+  </section>
+
+  <!-- WARM-ADVENTURE-REVISED START -->
+  <section aria-labelledby="warm-adv-revised">
+    <h2 id="warm-adv-revised" style="color:#6b1f3f;font-size:1.6rem;line-height:1.2;margin:6px 0 4px">Warm Adventure, revised: same feeling, new colours</h2>
+    <p class="lede">Ginko still enjoys the Warm Adventure / Everyday Adventure feeling — warm, finding a place is a small everyday adventure, the thread is a path, clean with breathing room, stimulating with one vivid pop. The colours underneath it, though, were too close to Ginko's personal brand, so they have been swapped out. The feeling stays; the hues change.</p>
+    <p class="lede"><strong>What was swapped out, and why:</strong> deep teal (the anchor), forest (the deep surface), sun (the path), tangerine-dark (the warm text accent), and cream (the background) — all too close to the personal-brand family. <strong>What replaced them:</strong> a deep berry-plum anchor instead of teal/forest, a new warm clay-cream background instead of cream, a plum-night dark background, a peach-clay surface, and a vivid citrus pop for the path instead of sun — with a citrus-dark text accent in light mode and a citrus-light accent in dark mode. No teal, no forest, no sun, no tangerine, no rust.</p>
+
+    <section class="palette cs-palette" data-palette="warmadv" data-appearance="light" aria-labelledby="wa-rev">
+      <h2 id="wa-rev">Warm Adventure, revised</h2>
+      <p class="feeling"><strong>Feeling:</strong> warm and adventurous, same as before — a small everyday adventure, following the thread as a path to a place that fits. Deep berry-plum is the steady guide; the vivid citrus thread is the stimulating moment that lights the way.</p>
+      <div class="cs-controls" role="group" aria-label="Warm Adventure, revised appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <p><strong>Light theme</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#6b1f3f;color:#fff"><b>Deep berry-plum</b><code>#6b1f3f</code><span>Anchor / headings / buttons — replaces deep teal and forest</span></div>
+        <div class="swatch" style="background:#fdf3e7;color:#2e1a22"><b>Warm clay-cream</b><code>#fdf3e7</code><span>Background — a new warm cream</span></div>
+        <div class="swatch" style="background:#f7e3d3;color:#6b1f3f"><b>Peach-clay</b><code>#f7e3d3</code><span>Soft surface / card</span></div>
+        <div class="swatch" style="background:#f2b705;color:#2e1a22"><b>Citrus vivid</b><code>#f2b705</code><span>Vivid pop only — thread, spark — replaces sun</span></div>
+        <div class="swatch" style="background:#6b4e00;color:#fff"><b>Citrus-dark</b><code>#6b4e00</code><span>Text accent for the vivid colour — replaces tangerine-dark</span></div>
+      </div>
+      <p><strong>Dark theme — chosen deliberately, not inverted</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#2a1423;color:#fdf3e7"><b>Plum night</b><code>#2a1423</code><span>Background — deep, warm, dark</span></div>
+        <div class="swatch" style="background:#402031;color:#fdf3e7"><b>Plum surface</b><code>#402031</code><span>Card / soft surface</span></div>
+        <div class="swatch" style="background:#fdf3e7;color:#2e1a22"><b>Warm clay-cream</b><code>#fdf3e7</code><span>Main text</span></div>
+        <div class="swatch" style="background:#f5c945;color:#2e1a22"><b>Citrus-light</b><code>#f5c945</code><span>Vivid pop (dark mode) — also text-safe</span></div>
+        <div class="swatch" style="background:#f7c8d8;color:#2a1423"><b>Rose-light</b><code>#f7c8d8</code><span>Warm text accent (dark mode)</span></div>
+      </div>
+      <div class="sample cs-sample">
+        <h3>Café Lumière Douce → your place today</h3>
+        <p>Follow the thread: 0.8 km · 10 min walk · Metro Jarry</p>
+        <div class="path" role="img" aria-label="Thread path to the place"></div>
+        <p>A warm, adventurous find — step-free, soft light, calm.</p>
+        <span class="badge">✦ This fits today — follow the path</span>
+        <br><span class="chip">Step-free</span><span class="chip">Soft light</span><span class="chip">Calm</span>
+      </div>
+      <p class="aa"><strong>AA check — Light:</strong> berry-plum on warm clay-cream 10.12:1 · ink on warm clay-cream 14.88:1 · citrus-dark on warm clay-cream 7.05:1 · white on berry-plum 11.09:1 · berry-plum on peach-clay 8.92:1. <strong>Dark:</strong> warm clay-cream on plum night 15.66:1 · warm clay-cream on plum surface 13.04:1 · citrus-light on plum night 10.90:1 · rose-light on plum night 11.62:1 · ink on citrus-light 10.35:1. Citrus vivid is accent only in light mode, never text.</p>
+    </section>
+  </section>
+  <!-- WARM-ADVENTURE-REVISED END -->
+
+  <!-- EARTHY START -->
+  <section aria-labelledby="earthy-warm">
+    <h2 id="earthy-warm" style="color:#7c3a26;font-size:1.6rem;line-height:1.2;margin:6px 0 4px">Earthy warmth + pops of colour: with dark backgrounds</h2>
+    <p class="lede">Warm, earthy tones as the base — clay, moss, warm ground — with <strong>one</strong> vivid pop of colour as the accent. Clean, but stimulating. And don't be afraid of dark: each palette's dark theme is shown prominently, as a proper theme, not an afterthought. Try <strong>Light / Dark / System</strong> on each one, like iOS appearance settings. System follows your device; Light and Dark override it in the app.</p>
+    <p class="lede">None of these use Ginko's personal brand colours. “Earthy” here is the feeling — clay, moss, warm ground — in new, distinct hues.</p>
+
+    <!-- A. Warm Clay -->
+    <section class="palette cs-palette" data-palette="clay" data-appearance="light" aria-labelledby="ew-a">
+      <h2 id="ew-a">A. Warm Clay</h2>
+      <p class="feeling"><strong>Feeling:</strong> warm ground underfoot, then a citrus spark. Deep clay is the steady guide; the vivid citrus thread is the stimulating moment that lights the path.</p>
+      <div class="cs-controls" role="group" aria-label="Warm Clay appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <p><strong>Light theme</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#7c3a26;color:#fff"><b>Deep clay</b><code>#7c3a26</code><span>Anchor / headings / buttons</span></div>
+        <div class="swatch" style="background:#faf3e9;color:#241a15"><b>Warm cream</b><code>#faf3e9</code><span>Background</span></div>
+        <div class="swatch" style="background:#f3e2d3;color:#7c3a26"><b>Clay-pale</b><code>#f3e2d3</code><span>Soft surface / card</span></div>
+        <div class="swatch" style="background:#e8b90a;color:#241a15"><b>Citrus vivid</b><code>#e8b90a</code><span>Vivid pop only — thread, spark</span></div>
+        <div class="swatch" style="background:#5c4a00;color:#fff"><b>Citrus-dark</b><code>#5c4a00</code><span>Text accent for the vivid colour</span></div>
+      </div>
+      <p><strong>Dark theme — shown prominently</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#2b1a14;color:#faf3e9"><b>Clay-charcoal</b><code>#2b1a14</code><span>Background — deep, warm, dark</span></div>
+        <div class="swatch" style="background:#3e271d;color:#faf3e9"><b>Clay surface</b><code>#3e271d</code><span>Card / soft surface</span></div>
+        <div class="swatch" style="background:#faf3e9;color:#241a15"><b>Warm cream</b><code>#faf3e9</code><span>Main text</span></div>
+        <div class="swatch" style="background:#f2c94c;color:#241a15"><b>Citrus-light</b><code>#f2c94c</code><span>Vivid pop (dark mode) — also text-safe</span></div>
+      </div>
+      <div class="sample cs-sample">
+        <h3>Café Lumière Douce</h3>
+        <p>0.8 km · 10 min walk · Metro Jarry</p>
+        <div class="path" role="img" aria-label="Thread path to the place"></div>
+        <p>Follow the thread — it lights up as you go.</p>
+        <span class="badge">✓ This fits today</span>
+        <br><span class="chip">Step-free</span><span class="chip">Quiet corner</span><span class="chip">Soft light</span>
+      </div>
+      <p class="aa"><strong>AA check — Light:</strong> clay on warm cream 7.65:1 · ink on warm cream 15.45:1 · citrus-dark on warm cream 7.83:1 · white on clay 8.43:1. <strong>Dark:</strong> warm cream on clay-charcoal 15.12:1 · warm cream on clay surface 12.60:1 · citrus-light on clay-charcoal 10.50:1 · ink on citrus-light 10.73:1. Citrus vivid is accent only in light mode, never text.</p>
+    </section>
+
+    <!-- B. Soft Moss -->
+    <section class="palette cs-palette" data-palette="moss" data-appearance="light" aria-labelledby="ew-b">
+      <h2 id="ew-b">B. Soft Moss</h2>
+      <p class="feeling"><strong>Feeling:</strong> soft moss and sage, breathing room, then a violet spark. Deep moss steadies the page; the vivid violet thread is the stimulating, alive moment.</p>
+      <div class="cs-controls" role="group" aria-label="Soft Moss appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <p><strong>Light theme</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#3e5231;color:#fff"><b>Deep moss</b><code>#3e5231</code><span>Anchor / headings / buttons</span></div>
+        <div class="swatch" style="background:#f4f7ee;color:#1e2418"><b>Sage-cream</b><code>#f4f7ee</code><span>Background</span></div>
+        <div class="swatch" style="background:#e2ead6;color:#3e5231"><b>Moss-pale</b><code>#e2ead6</code><span>Soft surface / card</span></div>
+        <div class="swatch" style="background:#7a4fd0;color:#fff"><b>Violet vivid</b><code>#7a4fd0</code><span>Vivid pop only — thread, spark</span></div>
+        <div class="swatch" style="background:#4c2a8a;color:#fff"><b>Violet-dark</b><code>#4c2a8a</code><span>Text accent for the vivid colour</span></div>
+      </div>
+      <p><strong>Dark theme — shown prominently</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#1d2716;color:#f4f7ee"><b>Moss-charcoal</b><code>#1d2716</code><span>Background — deep, earthy, dark</span></div>
+        <div class="swatch" style="background:#2c3a22;color:#f4f7ee"><b>Moss surface</b><code>#2c3a22</code><span>Card / soft surface</span></div>
+        <div class="swatch" style="background:#f4f7ee;color:#1e2418"><b>Sage-cream</b><code>#f4f7ee</code><span>Main text</span></div>
+        <div class="swatch" style="background:#b79bf5;color:#1d2716"><b>Violet-light</b><code>#b79bf5</code><span>Vivid pop (dark mode) — also text-safe</span></div>
+      </div>
+      <div class="sample cs-sample">
+        <h3>Café Lumière Douce</h3>
+        <p>Distance: 0.8 km · Walk: 10 min · Step-free: Yes · Seating: Yes · Quiet: Yes</p>
+        <div class="path" role="img" aria-label="Thread path to the place"></div>
+        <p>Follow the thread: 0.8 km · 10 min walk · Metro Jarry</p>
+        <span class="badge">THIS FITS TODAY — 3 of 3 priorities match</span>
+      </div>
+      <p class="aa"><strong>AA check — Light:</strong> moss on sage-cream 7.89:1 · ink on sage-cream 14.68:1 · violet-dark on sage-cream 9.67:1 · white on moss 8.55:1. <strong>Dark:</strong> sage-cream on moss-charcoal 14.32:1 · sage-cream on moss surface 11.17:1 · violet-light on moss-charcoal 6.66:1. Violet vivid is accent only in light mode, never text.</p>
+    </section>
+
+    <!-- C. Terracotta Night -->
+    <section class="palette cs-palette" data-palette="terra" data-appearance="light" aria-labelledby="ew-c">
+      <h2 id="ew-c">C. Terracotta Night</h2>
+      <p class="feeling"><strong>Feeling:</strong> warm terracotta by day, terracotta night after dark. Deep terracotta is warm and human; the vivid mint thread is the stimulating, fresh moment. No teal.</p>
+      <div class="cs-controls" role="group" aria-label="Terracotta Night appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <p><strong>Light theme</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#8c3d24;color:#fff"><b>Deep terracotta</b><code>#8c3d24</code><span>Anchor / headings / buttons</span></div>
+        <div class="swatch" style="background:#fbf0e2;color:#2a1a14"><b>Sand-cream</b><code>#fbf0e2</code><span>Background — a new sand hue</span></div>
+        <div class="swatch" style="background:#f6ddc8;color:#8c3d24"><b>Terracotta-pale</b><code>#f6ddc8</code><span>Soft surface / card</span></div>
+        <div class="swatch" style="background:#2fb98a;color:#2a1a14"><b>Mint vivid</b><code>#2fb98a</code><span>Vivid pop only — thread, spark</span></div>
+        <div class="swatch" style="background:#005c40;color:#fff"><b>Emerald-dark</b><code>#005c40</code><span>Text accent for the vivid colour</span></div>
+      </div>
+      <p><strong>Dark theme — shown prominently</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#261510;color:#fbf0e2"><b>Terracotta night</b><code>#261510</code><span>Background — deep, warm, dark</span></div>
+        <div class="swatch" style="background:#3a2016;color:#fbf0e2"><b>Terracotta surface</b><code>#3a2016</code><span>Card / soft surface</span></div>
+        <div class="swatch" style="background:#fbf0e2;color:#2a1a14"><b>Sand-cream</b><code>#fbf0e2</code><span>Main text</span></div>
+        <div class="swatch" style="background:#7fe3bd;color:#261510"><b>Mint-light</b><code>#7fe3bd</code><span>Vivid pop (dark mode) — also text-safe</span></div>
+      </div>
+      <div class="sample cs-sample">
+        <h3>Café Lumière Douce → your place today</h3>
+        <p>Follow the thread: 0.8 km · 10 min walk · Metro Jarry</p>
+        <div class="path" role="img" aria-label="Thread path to the place"></div>
+        <p>A quiet, warm corner — step-free, soft light, calm.</p>
+        <span class="badge">✦ This fits today — follow the path</span>
+        <br><span class="chip">Step-free</span><span class="chip">Soft light</span><span class="chip">Calm</span>
+      </div>
+      <p class="aa"><strong>AA check — Light:</strong> terracotta on sand-cream 6.65:1 · ink on sand-cream 14.86:1 · emerald-dark on sand-cream 7.17:1 · white on terracotta 7.48:1. <strong>Dark:</strong> sand-cream on terracotta night 15.59:1 · sand-cream on terracotta surface 13.35:1 · mint-light on terracotta night 11.38:1 · mint-light on terracotta surface 9.75:1. Mint vivid is accent only in light mode, never text.</p>
+    </section>
+  </section>
+  <!-- EARTHY END -->
+
+  <!-- CLEAN + STIMULATING START -->
+  <section aria-labelledby="clean-stim">
+    <h2 id="clean-stim" style="color:#54203f;font-size:1.6rem;line-height:1.2;margin:6px 0 4px">Clean + stimulating: new stand-apart options, each in light &amp; dark</h2>
+    <p class="lede">Clean means lots of breathing room and simple surfaces. Stimulating means <strong>one</strong> vivid accent — and the thread as a path — not noise everywhere. Each palette below is a proper theme pair: try <strong>Light / Dark / System</strong> on each one, like iOS appearance settings. System follows your device; Light and Dark override it in the app.</p>
+    <p class="lede">None of these use Ginko's personal brand colours.</p>
+
+    <!-- A. Plum + Electric -->
+    <section class="palette cs-palette" data-palette="plum" data-appearance="light" aria-labelledby="cs-a">
+      <h2 id="cs-a">A. Plum + Electric</h2>
+      <p class="feeling"><strong>Feeling:</strong> clean, calm, then one electric spark. Deep plum is the steady guide; the electric violet thread is the stimulating moment.</p>
+      <div class="cs-controls" role="group" aria-label="Plum + Electric appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <p><strong>Light theme</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#54203f;color:#fff"><b>Deep plum</b><code>#54203f</code><span>Anchor / headings / buttons</span></div>
+        <div class="swatch" style="background:#fbf5fa;color:#2a1626"><b>Lavender-white</b><code>#fbf5fa</code><span>Background</span></div>
+        <div class="swatch" style="background:#f3e6f0;color:#54203f"><b>Plum-pale</b><code>#f3e6f0</code><span>Soft surface / card</span></div>
+        <div class="swatch" style="background:#7c3aed;color:#fff"><b>Electric violet</b><code>#7c3aed</code><span>Vivid accent only — thread, spark</span></div>
+        <div class="swatch" style="background:#5b21b6;color:#fff"><b>Violet-dark</b><code>#5b21b6</code><span>Text accent for the vivid colour</span></div>
+      </div>
+      <p><strong>Dark theme</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#2a1224;color:#fbf5fa"><b>Plum night</b><code>#2a1224</code><span>Background</span></div>
+        <div class="swatch" style="background:#3d1f33;color:#fbf5fa"><b>Plum surface</b><code>#3d1f33</code><span>Card / soft surface</span></div>
+        <div class="swatch" style="background:#fbf5fa;color:#2a1626"><b>Lavender-white</b><code>#fbf5fa</code><span>Main text</span></div>
+        <div class="swatch" style="background:#a78bfa;color:#2a1224"><b>Violet-light</b><code>#a78bfa</code><span>Vivid accent (dark mode)</span></div>
+        <div class="swatch" style="background:#f9b8d0;color:#2a1224"><b>Rose-light</b><code>#f9b8d0</code><span>Warm text accent (dark mode)</span></div>
+      </div>
+      <div class="sample cs-sample">
+        <h3>Café Lumière Douce</h3>
+        <p>0.8 km · 10 min walk · Metro Jarry</p>
+        <div class="path" role="img" aria-label="Thread path to the place"></div>
+        <p>Follow the thread — it lights up as you go.</p>
+        <span class="badge">✓ This fits today</span>
+        <br><span class="chip">Step-free</span><span class="chip">Quiet corner</span><span class="chip">Soft light</span>
+      </div>
+      <p class="aa"><strong>AA check — Light:</strong> plum on lavender-white 11.81:1 · ink on lavender-white 15.75:1 · violet-dark on lavender-white 8.36:1 · white on plum 12.69:1. <strong>Dark:</strong> lavender-white on plum night 16.15:1 · lavender-white on plum surface 13.55:1 · rose-light on plum night 10.57:1 · violet-light on plum night 6.37:1. Electric violet is accent only, never text.</p>
+    </section>
+
+    <!-- B. Indigo + Citrus -->
+    <section class="palette cs-palette" data-palette="indigo" data-appearance="light" aria-labelledby="cs-b">
+      <h2 id="cs-b">B. Indigo + Citrus</h2>
+      <p class="feeling"><strong>Feeling:</strong> clean and sure, with a citrus spark. Deep indigo steadies the page; the citrus thread is the stimulating, sunny moment.</p>
+      <div class="cs-controls" role="group" aria-label="Indigo + Citrus appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <p><strong>Light theme</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#1f2a5c;color:#fff"><b>Deep indigo</b><code>#1f2a5c</code><span>Anchor / headings / buttons</span></div>
+        <div class="swatch" style="background:#f3f6fd;color:#182038"><b>Pale sky</b><code>#f3f6fd</code><span>Background</span></div>
+        <div class="swatch" style="background:#e6edfb;color:#1f2a5c"><b>Sky surface</b><code>#e6edfb</code><span>Soft surface / card</span></div>
+        <div class="swatch" style="background:#c6e626;color:#182038"><b>Citrus vivid</b><code>#c6e626</code><span>Vivid accent only — thread, spark</span></div>
+        <div class="swatch" style="background:#4d5e00;color:#fff"><b>Citrus-dark</b><code>#4d5e00</code><span>Text accent for the vivid colour</span></div>
+      </div>
+      <p><strong>Dark theme</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#141a38;color:#f3f6fd"><b>Indigo night</b><code>#141a38</code><span>Background</span></div>
+        <div class="swatch" style="background:#232c55;color:#f3f6fd"><b>Indigo surface</b><code>#232c55</code><span>Card / soft surface</span></div>
+        <div class="swatch" style="background:#f3f6fd;color:#182038"><b>Pale sky</b><code>#f3f6fd</code><span>Main text</span></div>
+        <div class="swatch" style="background:#d7e94a;color:#182038"><b>Citrus-light</b><code>#d7e94a</code><span>Vivid accent (dark mode) — also text-safe</span></div>
+      </div>
+      <div class="sample cs-sample">
+        <h3>Café Lumière Douce</h3>
+        <p>Distance: 0.8 km · Walk: 10 min · Step-free: Yes · Seating: Yes · Quiet: Yes</p>
+        <div class="path" role="img" aria-label="Thread path to the place"></div>
+        <p>Follow the thread: 0.8 km · 10 min walk · Metro Jarry</p>
+        <span class="badge">THIS FITS TODAY — 3 of 3 priorities match</span>
+      </div>
+      <p class="aa"><strong>AA check — Light:</strong> indigo on pale sky 12.57:1 · ink on pale sky 14.90:1 · citrus-dark on pale sky 6.66:1 · white on indigo 13.60:1. <strong>Dark:</strong> pale sky on indigo night 15.72:1 · pale sky on indigo surface 12.42:1 · citrus-light on indigo night 12.67:1 · ink on citrus-light 12.01:1. Citrus vivid is accent only in light mode, never text.</p>
+    </section>
+
+    <!-- C. Berry + Mint -->
+    <section class="palette cs-palette" data-palette="berry" data-appearance="light" aria-labelledby="cs-c">
+      <h2 id="cs-c">C. Berry + Mint</h2>
+      <p class="feeling"><strong>Feeling:</strong> clean and fresh, with a mint spark. Deep berry is warm and human; the vivid mint thread is the stimulating, alive moment. No teal.</p>
+      <div class="cs-controls" role="group" aria-label="Berry + Mint appearance">
+        <span>Appearance:</span>
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-mode="system" aria-pressed="false">System</button>
+      </div>
+      <p><strong>Light theme</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#7a1f3d;color:#fff"><b>Deep berry</b><code>#7a1f3d</code><span>Anchor / headings / buttons</span></div>
+        <div class="swatch" style="background:#fdf6f8;color:#2b1220"><b>Mint-white</b><code>#fdf6f8</code><span>Background</span></div>
+        <div class="swatch" style="background:#f9e6ec;color:#7a1f3d"><b>Berry-pale</b><code>#f9e6ec</code><span>Soft surface / card</span></div>
+        <div class="swatch" style="background:#34d399;color:#2b1220"><b>Mint vivid</b><code>#34d399</code><span>Vivid accent only — thread, spark</span></div>
+        <div class="swatch" style="background:#006b4a;color:#fff"><b>Emerald-dark</b><code>#006b4a</code><span>Text accent for the vivid colour</span></div>
+      </div>
+      <p><strong>Dark theme</strong></p>
+      <div class="swatches">
+        <div class="swatch" style="background:#2e0f1c;color:#fdf6f8"><b>Berry night</b><code>#2e0f1c</code><span>Background</span></div>
+        <div class="swatch" style="background:#47162c;color:#fdf6f8"><b>Berry surface</b><code>#47162c</code><span>Card / soft surface</span></div>
+        <div class="swatch" style="background:#fdf6f8;color:#2b1220"><b>Mint-white</b><code>#fdf6f8</code><span>Main text</span></div>
+        <div class="swatch" style="background:#7ce8b5;color:#2e0f1c"><b>Mint-light</b><code>#7ce8b5</code><span>Vivid accent (dark mode) — also text-safe</span></div>
+      </div>
+      <div class="sample cs-sample">
+        <h3>Café Lumière Douce → your place today</h3>
+        <p>Follow the thread: 0.8 km · 10 min walk · Metro Jarry</p>
+        <div class="path" role="img" aria-label="Thread path to the place"></div>
+        <p>A quiet, leafy corner — step-free, soft light, calm.</p>
+        <span class="badge">✦ This fits today — follow the path</span>
+        <br><span class="chip">Step-free</span><span class="chip">Soft light</span><span class="chip">Calm</span>
+      </div>
+      <p class="aa"><strong>AA check — Light:</strong> berry on mint-white 9.43:1 · ink on mint-white 16.29:1 · emerald-dark on mint-white 6.16:1 · white on berry 10.04:1. <strong>Dark:</strong> mint-white on berry night 16.41:1 · mint-white on berry surface 13.89:1 · mint-light on berry night 11.71:1 · mint-light on berry surface 9.91:1. Mint vivid is accent only in light mode, never text.</p>
+    </section>
+  </section>
+  <!-- CLEAN + STIMULATING END -->
+
+  <!-- LIGHT / DARK THEMES START -->
+  <section aria-labelledby="light-dark">
+    <h2 id="light-dark" style="color:#0b5e54;font-size:1.6rem;line-height:1.2;margin:6px 0 4px">Light &amp; dark themes: Warm Guide &amp; Everyday Adventure</h2>
+    <p class="lede">Ginko's two favourites, each in both a light theme and a dark theme. Dark themes are <strong>not</strong> just inverted — their backgrounds, surfaces and text colours were chosen deliberately, and every text colour is WCAG 2.2 AA on its background. The app should respect <code>prefers-color-scheme</code> <em>and</em> let the user choose light or dark in the app, regardless of their system setting.</p>
+    <p>
+      <button type="button" id="theme-toggle" aria-pressed="false" style="background:#0b5e54;color:#fff;border:none;border-radius:999px;padding:10px 16px;font-weight:700;font-size:1rem;cursor:pointer">Switch the two live demos to dark</button>
+      <span id="theme-note" style="font-size:.92rem;margin-left:8px">Live demos below are in light now — tap to preview them dark. All four static variants are shown underneath, light and dark side by side.</span>
+    </p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:12px 0 22px">
+      <div class="sample" id="demo-warm" style="background:#f2ddd0;color:#12211e">
+        <h3>Warm Guide: live demo</h3>
+        <p>Café Lumière Douce · 0.8 km · 10 min walk</p>
+        <span class="badge" style="background:#0b5e54;color:#fff">✓ This fits today</span>
+        <br><span class="chip">Step-free</span><span class="chip">Quiet corner</span>
+      </div>
+      <div class="sample" id="demo-adventure" style="background:#184b44;color:#f8f7f4">
+        <h3>Everyday Adventure: live demo</h3>
+        <p>Follow the thread: 0.8 km · 10 min walk · Metro Jarry</p>
+        <span class="badge" style="background:#f8c05e;color:#12211e">✦ This fits today — follow the path</span>
+      </div>
+    </div>
+
+    <!-- Warm Guide Light -->
+    <section class="palette" style="background:#fdf6ee" aria-labelledby="wg-light">
+      <h2 id="wg-light">Warm Guide Light</h2>
+      <p class="feeling"><strong>Feeling:</strong> warm, soft, human — as before. Calm and welcoming, like a hand on your shoulder.</p>
+      <div class="swatches">
+        <div class="swatch" style="background:#0b5e54;color:#fff"><b>Deep teal</b><code>#0b5e54</code><span>Anchor / headings / buttons</span></div>
+        <div class="swatch" style="background:#f8f7f4;color:#12211e"><b>Warm cream</b><code>#f8f7f4</code><span>Background</span></div>
+        <div class="swatch" style="background:#f2ddd0;color:#12211e"><b>Peach</b><code>#f2ddd0</code><span>Soft surface / card</span></div>
+        <div class="swatch" style="background:#f8c05e;color:#12211e"><b>Sun</b><code>#f8c05e</code><span>Accent only — path, spark</span></div>
+        <div class="swatch" style="background:#8c4a24;color:#fff"><b>Rust-dark</b><code>#8c4a24</code><span>Warm text accent</span></div>
+      </div>
+      <div class="sample" style="background:#f2ddd0;color:#12211e">
+        <h3>Café Lumière Douce</h3>
+        <p>0.8 km · 10 min walk · Metro Jarry</p>
+        <span class="badge" style="background:#0b5e54;color:#fff">✓ This fits today</span>
+        <br><span class="chip">Step-free</span><span class="chip">Quiet corner</span><span class="chip">Soft light</span>
+      </div>
+      <p class="aa"><strong>AA check:</strong> teal on cream 7.15:1 · ink on cream 15.53:1 · rust-dark on cream 6.28:1 · white on teal 7.65:1. Sun is accent only, never text.</p>
+    </section>
+
+    <!-- Warm Guide Dark -->
+    <section class="palette" style="background:#102e2a;color:#f8f7f4" aria-labelledby="wg-dark">
+      <h2 id="wg-dark" style="color:#f8f7f4">Warm Guide Dark</h2>
+      <p class="feeling" style="color:#f8f7f4"><strong>Feeling:</strong> the same warmth, after dark — a deep teal-charcoal room, cream text, peach surfaces. Not an inversion: the background is a warm dark teal, and the rust accent is lightened so it stays readable.</p>
+      <div class="swatches">
+        <div class="swatch" style="background:#102e2a;color:#f8f7f4;border-color:#3a5a53"><b>Dark teal-charcoal</b><code>#102e2a</code><span>Background</span></div>
+        <div class="swatch" style="background:#1e423b;color:#f8f7f4"><b>Dark teal surface</b><code>#1e423b</code><span>Card / soft surface</span></div>
+        <div class="swatch" style="background:#f8f7f4;color:#12211e"><b>Warm cream</b><code>#f8f7f4</code><span>Main text</span></div>
+        <div class="swatch" style="background:#f2ddd0;color:#12211e"><b>Peach</b><code>#f2ddd0</code><span>Secondary text / soft surface</span></div>
+        <div class="swatch" style="background:#f8c05e;color:#12211e"><b>Sun</b><code>#f8c05e</code><span>Accent only — path, spark</span></div>
+        <div class="swatch" style="background:#e8a87c;color:#12211e"><b>Light rust</b><code>#e8a87c</code><span>Warm text accent (dark mode)</span></div>
+      </div>
+      <div class="sample" style="background:#1e423b;color:#f8f7f4">
+        <h3>Café Lumière Douce</h3>
+        <p style="color:#f2ddd0">0.8 km · 10 min walk · Metro Jarry</p>
+        <span class="badge" style="background:#f8c05e;color:#12211e">✓ This fits today</span>
+        <br><span class="chip">Step-free</span><span class="chip">Quiet corner</span><span class="chip">Soft light</span>
+      </div>
+      <p class="aa" style="background:rgba(0,0,0,.35);color:#f8f7f4"><strong>AA check:</strong> cream on dark teal-charcoal 13.55:1 · cream on dark teal surface 10.33:1 · peach on dark teal-charcoal 11.08:1 · light rust on dark teal-charcoal 7.14:1 · ink on sun 10.06:1. Sun is accent only, never text.</p>
+    </section>
+
+    <!-- Everyday Adventure Light -->
+    <section class="palette" style="background:#fff8e8" aria-labelledby="ea-light">
+      <h2 id="ea-light">Everyday Adventure Light</h2>
+      <p class="feeling"><strong>Feeling:</strong> warmer and brighter — finding a place is a small everyday adventure. The thread is a path, not just a line.</p>
+      <div class="swatches">
+        <div class="swatch" style="background:#0b5e54;color:#fff"><b>Deep teal</b><code>#0b5e54</code><span>Anchor</span></div>
+        <div class="swatch" style="background:#184b44;color:#fff"><b>Forest</b><code>#184b44</code><span>Deep surface / card</span></div>
+        <div class="swatch" style="background:#f8c05e;color:#12211e"><b>Sun</b><code>#f8c05e</code><span>Path / accent only</span></div>
+        <div class="swatch" style="background:#9a4a00;color:#fff"><b>Tangerine-dark</b><code>#9a4a00</code><span>Warm text accent only</span></div>
+        <div class="swatch" style="background:#f8f7f4;color:#12211e"><b>Cream</b><code>#f8f7f4</code><span>Background</span></div>
+      </div>
+      <div class="sample" style="background:#184b44;color:#f8f7f4">
+        <h3>Café Lumière Douce → your place today</h3>
+        <p>Follow the thread: 0.8 km · 10 min walk · Metro Jarry</p>
+        <span class="badge" style="background:#f8c05e;color:#12211e">✦ This fits today — follow the path</span>
+      </div>
+      <p class="aa"><strong>AA check:</strong> cream on forest 9.21:1 · white on forest 9.86:1 · tangerine-dark on cream 5.85:1 · white on tangerine-dark 6.26:1 · teal on cream 7.15:1. Sun is accent only, never text.</p>
+    </section>
+
+    <!-- Everyday Adventure Dark -->
+    <section class="palette" style="background:#0f2a24;color:#f8f7f4" aria-labelledby="ea-dark">
+      <h2 id="ea-dark" style="color:#f8f7f4">Everyday Adventure Dark</h2>
+      <p class="feeling" style="color:#f8f7f4"><strong>Feeling:</strong> the adventure at dusk — deep forest-charcoal, cream text, and the sun thread still glowing as the path. The tangerine accent is lightened for dark mode so it stays readable.</p>
+      <div class="swatches">
+        <div class="swatch" style="background:#0f2a24;color:#f8f7f4;border-color:#2a4a42"><b>Forest-charcoal</b><code>#0f2a24</code><span>Background</span></div>
+        <div class="swatch" style="background:#184b44;color:#f8f7f4"><b>Forest</b><code>#184b44</code><span>Card / deep surface</span></div>
+        <div class="swatch" style="background:#f8f7f4;color:#12211e"><b>Cream</b><code>#f8f7f4</code><span>Main text</span></div>
+        <div class="swatch" style="background:#f8c05e;color:#12211e"><b>Sun</b><code>#f8c05e</code><span>Path / accent only — still visible on dark</span></div>
+        <div class="swatch" style="background:#f2a95e;color:#12211e"><b>Tangerine-light</b><code>#f2a95e</code><span>Warm text accent (dark mode)</span></div>
+        <div class="swatch" style="background:#bfe3d4;color:#12211e"><b>Pale mint</b><code>#bfe3d4</code><span>Secondary text / calm surface</span></div>
+      </div>
+      <div class="sample" style="background:#184b44;color:#f8f7f4">
+        <h3>Café Lumière Douce → your place today</h3>
+        <p style="color:#bfe3d4">Follow the thread: 0.8 km · 10 min walk · Metro Jarry</p>
+        <span class="badge" style="background:#f8c05e;color:#12211e">✦ This fits today — follow the path</span>
+      </div>
+      <p class="aa" style="background:rgba(0,0,0,.35);color:#f8f7f4"><strong>AA check:</strong> cream on forest-charcoal 14.24:1 · cream on forest 9.21:1 · pale mint on forest-charcoal 11.01:1 · tangerine-light on forest-charcoal 7.71:1 · ink on sun 10.06:1. Sun is accent only, never text.</p>
+    </section>
+  </section>
+  <!-- LIGHT / DARK THEMES END -->
+
+  <!-- STAND-APART START -->
+  <section aria-labelledby="standapart">
+    <h2 id="standapart" style="color:#5b2a4a;font-size:1.6rem;line-height:1.2;margin:6px 0 4px">Stand-apart palettes: PEERSPECT's own colours, not Ginko's personal brand</h2>
+    <p class="lede">These four palettes do <strong>not</strong> borrow Ginko's personal brand colours. No egg, earth, brown, sun, tangerine, forest-green, rust, lizard, lime, sand — and no deep teal anchor. PEERSPECT gets its own world, while keeping the same brand core: a warm, human, steady guide, walking beside you.</p>
+
+    <!-- Stand-apart A -->
+    <section class="palette" style="background:#f9f1f6" aria-labelledby="sap-a">
+      <h2 id="sap-a" style="color:#5b2a4a">A. Plum Guide</h2>
+      <p class="feeling"><strong>Feeling:</strong> warm, soft, human — a steady guide in berry tones. Gentle and confident, not loud. Plum feels caring and grown-up, rose keeps it warm.</p>
+      <div class="swatches">
+        <div class="swatch" style="background:#5b2a4a;color:#fff"><b>Deep plum</b><code>#5b2a4a</code><span>Anchor / headings / buttons</span></div>
+        <div class="swatch" style="background:#f9f1f6;color:#2e1a28"><b>Lavender-cream</b><code>#f9f1f6</code><span>Background</span></div>
+        <div class="swatch" style="background:#f3dde6;color:#5b2a4a"><b>Rose-pale</b><code>#f3dde6</code><span>Soft surface / card</span></div>
+        <div class="swatch" style="background:#d96a8a;color:#2e1a28"><b>Warm rose</b><code>#d96a8a</code><span>Accent only — thread, spark</span></div>
+        <div class="swatch" style="background:#8a2f4d;color:#fff"><b>Rose-dark</b><code>#8a2f4d</code><span>Warm text accent</span></div>
+      </div>
+      <div class="sample" style="background:#f3dde6;color:#2e1a28">
+        <h3>Café Lumière Douce</h3>
+        <p>0.8 km · 10 min walk · Metro Jarry</p>
+        <span class="badge" style="background:#5b2a4a;color:#fff">✓ This fits today</span>
+        <br><span class="chip">Step-free</span><span class="chip">Quiet corner</span><span class="chip">Soft light</span>
+      </div>
+      <p class="aa"><strong>AA check:</strong> plum on lavender-cream 10.10:1 · rose-dark on lavender-cream 7.30:1 · plum on rose-pale 8.69:1 · white on plum 11.20:1. Warm rose is accent only, never text.</p>
+    </section>
+
+    <!-- Stand-apart B -->
+    <section class="palette" style="background:#f2f5fc" aria-labelledby="sap-b">
+      <h2 id="sap-b" style="color:#25305e">B. Indigo Way</h2>
+      <p class="feeling"><strong>Feeling:</strong> calm, clear, trustworthy — a steady guide at dusk. Indigo feels sure and unhurried; amber is the warm light on the path.</p>
+      <div class="swatches">
+        <div class="swatch" style="background:#25305e;color:#fff"><b>Deep indigo</b><code>#25305e</code><span>Anchor / headings / buttons</span></div>
+        <div class="swatch" style="background:#f2f5fc;color:#1e2438"><b>Pale sky</b><code>#f2f5fc</code><span>Background</span></div>
+        <div class="swatch" style="background:#e8eefb;color:#25305e"><b>Sky surface</b><code>#e8eefb</code><span>Soft surface / card</span></div>
+        <div class="swatch" style="background:#e8a838;color:#1e2438"><b>Warm amber</b><code>#e8a838</code><span>Accent only — path, spark</span></div>
+        <div class="swatch" style="background:#7a5200;color:#fff"><b>Amber-dark</b><code>#7a5200</code><span>Warm text accent</span></div>
+      </div>
+      <div class="sample" style="background:#e8eefb;color:#1e2438">
+        <h3>Café Lumière Douce</h3>
+        <p>Distance: 0.8 km · Walk: 10 min · Step-free: Yes · Seating: Yes · Quiet: Yes</p>
+        <span class="badge" style="background:#25305e;color:#fff">THIS FITS TODAY — 3 of 3 priorities match</span>
+      </div>
+      <p class="aa"><strong>AA check:</strong> indigo on pale sky 11.57:1 · amber-dark on pale sky 6.34:1 · ink on pale sky 14.10:1 · white on indigo 12.63:1. Warm amber is accent only, never text.</p>
+    </section>
+
+    <!-- Stand-apart C -->
+    <section class="palette" style="background:#fdf1ea" aria-labelledby="sap-c">
+      <h2 id="sap-c" style="color:#8f2d23">C. Coral Harbour</h2>
+      <p class="feeling"><strong>Feeling:</strong> warm, welcoming, a little bold — a harbour, not a rush. Deep coral-red feels human and inviting, with no teal in sight.</p>
+      <div class="swatches">
+        <div class="swatch" style="background:#8f2d23;color:#fff"><b>Deep coral-red</b><code>#8f2d23</code><span>Anchor / headings / buttons</span></div>
+        <div class="swatch" style="background:#fdf1ea;color:#2b1a17"><b>Peach-cream</b><code>#fdf1ea</code><span>Background</span></div>
+        <div class="swatch" style="background:#fbe3d6;color:#8f2d23"><b>Pale peach</b><code>#fbe3d6</code><span>Soft surface / card</span></div>
+        <div class="swatch" style="background:#e0a92e;color:#2b1a17"><b>Warm gold</b><code>#e0a92e</code><span>Accent only — thread, spark</span></div>
+        <div class="swatch" style="background:#6d5200;color:#fff"><b>Gold-dark</b><code>#6d5200</code><span>Warm text accent</span></div>
+      </div>
+      <div class="sample" style="background:#fbe3d6;color:#2b1a17">
+        <h3>Café Lumière Douce → your place today</h3>
+        <p>Follow the thread: 0.8 km · 10 min walk · Metro Jarry</p>
+        <span class="badge" style="background:#8f2d23;color:#fff">✦ This fits today — follow the path</span>
+      </div>
+      <p class="aa"><strong>AA check:</strong> coral on peach-cream 7.38:1 · gold-dark on peach-cream 6.63:1 · coral on pale peach 6.64:1 · white on coral 8.18:1. Warm gold is accent only, never text.</p>
+    </section>
+
+    <!-- Stand-apart D -->
+    <section class="palette" style="background:#f4f8f5" aria-labelledby="sap-d">
+      <h2 id="sap-d" style="color:#16233f">D. Moss + Midnight</h2>
+      <p class="feeling"><strong>Feeling:</strong> grounded and calm, like evening in a garden — midnight for steadiness, moss and sage-mint for breathing room, honey for warmth.</p>
+      <div class="swatches">
+        <div class="swatch" style="background:#16233f;color:#fff"><b>Midnight navy</b><code>#16233f</code><span>Anchor / headings / buttons</span></div>
+        <div class="swatch" style="background:#e9f2ec;color:#16233f"><b>Sage-mint</b><code>#e9f2ec</code><span>Background / calm surface</span></div>
+        <div class="swatch" style="background:#3f5a34;color:#fff"><b>Moss</b><code>#3f5a34</code><span>Second anchor / card</span></div>
+        <div class="swatch" style="background:#d9a441;color:#16233f"><b>Warm honey</b><code>#d9a441</code><span>Accent only — thread, spark</span></div>
+        <div class="swatch" style="background:#6e4e00;color:#fff"><b>Honey-dark</b><code>#6e4e00</code><span>Warm text accent</span></div>
+      </div>
+      <div class="sample" style="background:#e9f2ec;color:#16233f">
+        <h3>Café Lumière Douce</h3>
+        <p>0.8 km · 10 min walk · A quiet, leafy corner</p>
+        <span class="badge" style="background:#16233f;color:#fff">✓ This fits today</span>
+        <br><span class="chip">Step-free</span><span class="chip">Soft light</span><span class="chip">Calm</span>
+      </div>
+      <p class="aa"><strong>AA check:</strong> navy on sage-mint 13.65:1 · moss on sage-mint 6.75:1 · honey-dark on sage-mint 6.68:1 · white on navy 15.60:1 · white on moss 7.71:1. Warm honey is accent only, never text.</p>
+    </section>
+  </section>
+  <!-- STAND-APART END -->
+
+  <h2 id="earlier" style="color:#5b2a4a;font-size:1.4rem;margin:28px 0 4px">Earlier palettes: the first set, for comparison</h2>
+  <p class="lede">These four came first and borrowed Ginko's personal brand colours. They stay here so Ginko can compare — the stand-apart set above is the focus now.</p>
+
+  <!-- A -->
+  <section class="palette" style="background:#fdf6ee" aria-labelledby="pal-a">
+    <h2 id="pal-a">A. Warm Guide</h2>
+    <p class="feeling"><strong>Feeling:</strong> warm, soft, human. Calm and welcoming, like a hand on your shoulder. The closest to a friendly guide.</p>
+    <div class="swatches">
+      <div class="swatch" style="background:#0b5e54;color:#fff"><b>Deep teal</b><code>#0b5e54</code><span>Anchor / headings / buttons</span></div>
+      <div class="swatch" style="background:#f8f7f4;color:#12211e"><b>Warm cream</b><code>#f8f7f4</code><span>Background</span></div>
+      <div class="swatch" style="background:#f2ddd0;color:#12211e"><b>Peach</b><code>#f2ddd0</code><span>Soft surface / card</span></div>
+      <div class="swatch" style="background:#f8c05e;color:#12211e"><b>Sun</b><code>#f8c05e</code><span>Accent only — path, spark</span></div>
+      <div class="swatch" style="background:#8c4a24;color:#fff"><b>Rust-dark</b><code>#8c4a24</code><span>Warm text accent</span></div>
+    </div>
+    <div class="sample" style="background:#f2ddd0;color:#12211e">
+      <h3>Café Lumière Douce</h3>
+      <p>0.8 km · 10 min walk · Metro Jarry</p>
+      <span class="badge" style="background:#0b5e54;color:#fff">✓ This fits today</span>
+      <br><span class="chip">Step-free</span><span class="chip">Quiet corner</span><span class="chip">Soft light</span>
+    </div>
+    <p class="aa"><strong>AA check:</strong> teal on cream 7.15:1 · ink on cream 15.53:1 · rust-dark on cream 6.28:1 · white on teal 7.65:1. Sun #f8c05e is never used for text.</p>
+  </section>
+
+  <!-- B -->
+  <section class="palette" style="background:#ffffff" aria-labelledby="pal-b">
+    <h2 id="pal-b">B. Clear Calm</h2>
+    <p class="feeling"><strong>Feeling:</strong> accessibility-first, lowest noise. Highest contrast, simplest, most trustworthy. Nothing competing for attention.</p>
+    <div class="swatches">
+      <div class="swatch" style="background:#0b5e54;color:#fff"><b>Deep teal</b><code>#0b5e54</code><span>Anchor / headings / buttons</span></div>
+      <div class="swatch" style="background:#12211e;color:#fff"><b>Ink</b><code>#12211e</code><span>Main text</span></div>
+      <div class="swatch" style="background:#cfe8e2;color:#12211e"><b>Pale teal</b><code>#cfe8e2</code><span>Calm surface / card</span></div>
+      <div class="swatch" style="background:#ffffff;color:#12211e"><b>White</b><code>#ffffff</code><span>Background / card</span></div>
+      <div class="swatch" style="background:#f8f7f4;color:#12211e"><b>Cream</b><code>#f8f7f4</code><span>Soft background</span></div>
+    </div>
+    <div class="sample" style="background:#cfe8e2;color:#12211e">
+      <h3>Café Lumière Douce</h3>
+      <p>Distance: 0.8 km · Walk: 10 min · Step-free: Yes · Seating: Yes · Quiet: Yes</p>
+      <span class="badge" style="background:#0b5e54;color:#fff">THIS FITS TODAY — 3 of 3 priorities match</span>
+    </div>
+    <p class="aa"><strong>AA check:</strong> teal on white 7.65:1 · ink on white 16.64:1 · teal on pale teal 5.94:1 · ink on pale teal 12.91:1 · white on teal 7.65:1.</p>
+  </section>
+
+  <!-- C -->
+  <section class="palette" style="background:#fff8e8" aria-labelledby="pal-c">
+    <h2 id="pal-c">C. Everyday Adventure</h2>
+    <p class="feeling"><strong>Feeling:</strong> warmer and brighter. Finding a place is a small everyday adventure. The thread is a path, not just a line.</p>
+    <div class="swatches">
+      <div class="swatch" style="background:#0b5e54;color:#fff"><b>Deep teal</b><code>#0b5e54</code><span>Anchor</span></div>
+      <div class="swatch" style="background:#184b44;color:#fff"><b>Forest</b><code>#184b44</code><span>Deep surface / card</span></div>
+      <div class="swatch" style="background:#f8c05e;color:#12211e"><b>Sun</b><code>#f8c05e</code><span>Path / accent only</span></div>
+      <div class="swatch" style="background:#9a4a00;color:#fff"><b>Tangerine-dark</b><code>#9a4a00</code><span>Warm text accent only</span></div>
+      <div class="swatch" style="background:#f8f7f4;color:#12211e"><b>Cream</b><code>#f8f7f4</code><span>Background</span></div>
+    </div>
+    <div class="sample" style="background:#184b44;color:#f8f7f4">
+      <h3>Café Lumière Douce → your place today</h3>
+      <p>Follow the thread: 0.8 km · 10 min walk · Metro Jarry</p>
+      <span class="badge" style="background:#f8c05e;color:#12211e">✦ This fits today — follow the path</span>
+    </div>
+    <p class="aa"><strong>AA check:</strong> cream on forest 9.21:1 · white on forest 9.86:1 · tangerine-dark on cream 5.85:1 · white on tangerine-dark 6.26:1 · teal on cream 7.15:1. Sun is accent only, never text.</p>
+  </section>
+
+  <!-- D -->
+  <section class="palette" style="background:#f6f3e8" aria-labelledby="pal-d">
+    <h2 id="pal-d">D. Soft Meadow / Nature</h2>
+    <p class="feeling"><strong>Feeling:</strong> gentle greens and earth tones, grounded and restful. Like a quiet walk, not a busy street. Calm, outdoors, breathing room.</p>
+    <div class="swatches">
+      <div class="swatch" style="background:#184b44;color:#fff"><b>Forest</b><code>#184b44</code><span>Anchor / deep surface</span></div>
+      <div class="swatch" style="background:#0b5e54;color:#fff"><b>Deep teal</b><code>#0b5e54</code><span>Headings / buttons</span></div>
+      <div class="swatch" style="background:#e6eee3;color:#184b44"><b>Pale sage</b><code>#e6eee3</code><span>Calm surface / card</span></div>
+      <div class="swatch" style="background:#5a3e2b;color:#fff"><b>Warm brown</b><code>#5a3e2b</code><span>Earth text accent</span></div>
+      <div class="swatch" style="background:#e9c46a;color:#12211e"><b>Soft sun</b><code>#e9c46a</code><span>Accent only — thread, spark</span></div>
+    </div>
+    <div class="sample" style="background:#e6eee3;color:#184b44">
+      <h3>Café Lumière Douce</h3>
+      <p>0.8 km · 10 min walk · A quiet, leafy corner</p>
+      <span class="badge" style="background:#184b44;color:#fff">✓ This fits today</span>
+      <br><span class="chip">Step-free</span><span class="chip">Soft light</span><span class="chip">Calm</span>
+    </div>
+    <p class="aa"><strong>AA check:</strong> forest on cream 9.21:1 · warm brown on cream 8.76:1 · forest on pale sage 8.32:1 · teal on cream 7.15:1 · white on forest 9.86:1. Soft sun is accent only, never text.</p>
+  </section>
+
+  <section class="choose" style="background:#5b2a4a" aria-labelledby="choose">
+    <h2 id="choose">Which stand-apart palette feels most like PEERSPECT's own world? A, B, C or D, or a mix?</h2>
+    <p>Tell me a letter — A, B, C or D — or a mix. For example: B's clarity with A's warm surfaces, or C's gold path in D's midnight greens. The palette you choose will shape the loading thread, the place cards, and the “This fits today” moment.</p>
+    <p><a href="./index.html" style="color:#fff">← Back to the PEERSPECT prototype</a> · <a href="./logo-exploration.html" style="color:#fff">Logo &amp; brand exploration</a></p>
+  </section>
+</main>
+<script>
+(function(){
+  var btn=document.getElementById('theme-toggle'), note=document.getElementById('theme-note'),
+      warm=document.getElementById('demo-warm'), adv=document.getElementById('demo-adventure'), dark=false;
+  if(!btn) return;
+  btn.addEventListener('click', function(){
+    dark=!dark;
+    btn.setAttribute('aria-pressed', String(dark));
+    btn.textContent = dark ? 'Switch the two live demos back to light' : 'Switch the two live demos to dark';
+    if(note) note.textContent = dark ? 'Live demos are in dark now — tap again to preview them light.' : 'Live demos below are in light now — tap to preview them dark. All four static variants are shown underneath, light and dark side by side.';
+    warm.style.background = dark ? '#1e423b' : '#f2ddd0';
+    warm.style.color = dark ? '#f8f7f4' : '#12211e';
+    adv.style.background = dark ? '#0f2a24' : '#184b44';
+    adv.style.color = '#f8f7f4';
+  });
+})();
+</script>
+<script>
+(function(){
+  // Clean + stimulating palettes: Light / Dark / System per palette, via CSS variables.
+  document.querySelectorAll('.cs-palette').forEach(function(palette){
+    var buttons = palette.querySelectorAll('.cs-controls button[data-mode]');
+    buttons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        palette.setAttribute('data-appearance', btn.getAttribute('data-mode'));
+        buttons.forEach(function(b){ b.setAttribute('aria-pressed', String(b === btn)); });
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

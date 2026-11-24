@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PEERSPECT: Content Standards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fdfbf7; --surface:#ffffff; --surface-soft:#f7efe0;
+    --ink:#1a2b26; --muted:#3d4a44;
+    --teal:#14665a; --pine:#2f5d3e; --amber:#8a4a08; --honey:#f2c14e;
+    --border:#d8cdb8; --good:#2f5d3e; --bad:#8a3200;
+  }
+  [data-theme="dark"]{
+    --bg:#173a33; --surface:#214f45; --surface-soft:#1a4038;
+    --ink:#fdfbf7; --muted:#d9e6dd;
+    --teal:#7fd6c4; --pine:#a8d5a2; --amber:#f6cf6e; --honey:#f6cf6e;
+    --border:#3d6b5c; --good:#a8d5a2; --bad:#f6a88a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.6}
+  h1,h2,h3{font-family:"Atkinson Hyperlegible",Inter,system-ui,sans-serif;line-height:1.25;margin:0 0 12px}
+  h1{font-size:32px;color:var(--teal)}
+  h2{font-size:24px;color:var(--teal)}
+  h3{font-size:19px;color:var(--pine)}
+  p{margin:0 0 12px}
+  .wrap{max-width:760px;margin:0 auto;padding:16px 16px 64px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0 8px;flex-wrap:wrap}
+  .back{color:var(--teal);font-weight:600;text-decoration:none}
+  .toggle{display:flex;gap:8px;flex-wrap:wrap}
+  .toggle button{min-height:44px;min-width:64px;border:2px solid var(--teal);background:transparent;color:var(--teal);border-radius:999px;padding:8px 14px;font:inherit;font-weight:600;cursor:pointer}
+  .toggle button[aria-pressed="true"]{background:var(--teal);color:var(--bg)}
+  .lead{font-size:18px;color:var(--muted)}
+  .rule{border:1px solid var(--border);background:var(--surface);border-radius:16px;padding:20px;margin:20px 0}
+  .tag{display:inline-block;background:var(--surface-soft);color:var(--teal);border:1px solid var(--border);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:600;margin-bottom:12px}
+  .examples{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+  @media (max-width:640px){.examples{grid-template-columns:1fr}}
+  .do,.dont{border-radius:12px;padding:16px;border:2px solid var(--good)}
+  .dont{border-color:var(--bad)}
+  .do h3,.dont h3{margin-top:0}
+  .sample{border:1px solid var(--border);background:var(--bg);border-radius:12px;padding:16px;margin-top:12px}
+  .chip{display:inline-block;border:2px solid var(--teal);color:var(--teal);border-radius:999px;padding:8px 14px;margin:4px 4px 4px 0;min-height:44px;font-weight:600}
+  .chip.on{background:var(--teal);color:var(--bg)}
+  .btn{display:inline-block;background:var(--teal);color:#fff;border:none;border-radius:999px;padding:12px 20px;min-height:44px;font:inherit;font-weight:700;cursor:pointer;margin:8px 8px 0 0}
+  .btn.ghost{background:transparent;color:var(--teal);border:2px solid var(--teal)}
+  [data-theme="dark"] .btn{color:#173a33}
+  .badge{display:inline-block;background:var(--honey);color:#1a2b26;border-radius:999px;padding:6px 12px;font-weight:700;font-size:14px}
+  .bar{height:12px;border-radius:999px;background:var(--surface-soft);overflow:hidden;margin:8px 0 16px}
+  .bar span{display:block;height:100%;background:var(--teal)}
+  .bar.pine span{background:var(--pine)}
+  .bar.amber span{background:var(--amber)}
+  .note{font-size:14px;color:var(--muted)}
+  .checklist{list-style:none;padding:0;margin:16px 0 0}
+  .checklist li{padding:12px 0;border-bottom:1px solid var(--border)}
+  .checklist li:last-child{border-bottom:none}
+  a{color:var(--teal)}
+  :focus-visible{outline:3px solid var(--honey);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body data-theme="light">
+<div class="wrap">
+  <div class="topbar">
+    <a class="back" href="./index.html">Back to PEERSPECT</a>
+    <div class="toggle" role="group" aria-label="Theme">
+      <button type="button" data-mode="light" aria-pressed="true">Light</button>
+      <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+      <button type="button" data-mode="system" aria-pressed="false">System</button>
+    </div>
+  </div>
+
+  <h1>PEERSPECT: Content Standards</h1>
+  <p class="lead">How we write in PEERSPECT, so every screen feels warm, clear, and easy to use. These standards apply to every screen, in light and dark.</p>
+  <p class="note">Brand: warm, human, steady guide. Informed autonomy. Easy, simple, intuitive, clear. Reduce overwhelm and decision fatigue. Build trust and confidence. Colours: warm white #fdfbf7, teal #14665a, pine #2f5d3e, honey #f2c14e, amber #8a4a08, ink #1a2b26. Fonts: Atkinson Hyperlegible headings, Inter body, 16px, line height 1.6. Spacing: iOS, 16pt side margins, 20pt sections, 44pt targets.</p>
+
+  <section class="rule" id="tone">
+    <span class="tag">1. Tone and voice</span>
+    <h2>Tone and voice: warm, human, steady guide</h2>
+    <p>Write like a kind guide walking beside the reader. Warm and human, never clinical, never hype. Soft, gentle language. No fluff, no pressure, no promises we cannot keep.</p>
+    <div class="examples">
+      <div class="do"><h3>Do</h3><div class="sample"><p><strong>Take your time.</strong></p><p>Pick what matters to you today. You can change it any time.</p></div></div>
+      <div class="dont"><h3>Do not</h3><div class="sample"><p><strong>Unlock your perfect day now!</strong></p><p>Our revolutionary AI will optimise your lifestyle in seconds.</p></div></div>
+    </div>
+  </section>
+
+  <section class="rule" id="plain">
+    <span class="tag">2. Plain language</span>
+    <h2>Plain language: short, clear, one idea at a time</h2>
+    <p>Use short sentences. One idea per line. Plain words first. Explain a specialist term the first time it appears, in the same sentence if you can.</p>
+    <div class="examples">
+      <div class="do"><h3>Do</h3><div class="sample"><p>This place has step-free entry.</p><p>That means no steps at the door. A ramp or flat entry is there instead.</p></div></div>
+      <div class="dont"><h3>Do not</h3><div class="sample"><p>This venue demonstrates exemplary universal design compliance across multiple accessibility vectors, facilitating unimpeded ingress for diverse mobility profiles.</p></div></div>
+    </div>
+  </section>
+
+  <section class="rule" id="onboarding">
+    <span class="tag">3. Onboarding wording</span>
+    <h2>Onboarding: What matters to you today</h2>
+    <p>Ask what matters today, not how the person feels. Let them pick as many as they like. Agency first. They can add, remove, or change choices any time, and save them as a profile.</p>
+    <div class="examples">
+      <div class="do"><h3>Do</h3><div class="sample"><h3>What matters to you today?</h3><p>Pick what matters, as many as you like. You decide.</p><p><span class="chip on">Step-free entry</span><span class="chip on">Soft light</span><span class="chip">Quiet</span><span class="chip">Low scent</span></p><button class="btn" type="button">See places that fit</button></div></div>
+      <div class="dont"><h3>Do not</h3><div class="sample"><h3>How do you feel today?</h3><p>Pick up to 3 only. You cannot change this later.</p><p><span class="chip">Step-free entry</span></p></div></div>
+    </div>
+  </section>
+
+  <section class="rule" id="places">
+    <span class="tag">4. Place descriptions</span>
+    <h2>Place descriptions: by how a place feels</h2>
+    <p>Describe a place by how it feels, using these factors:</p>
+    <ul class="checklist">
+      <li>Access</li>
+      <li>Sensory experience</li>
+      <li>Environment</li>
+      <li>Context</li>
+    </ul>
+    <p>Not by stars, and not by long reviews. Name what is true, and when it is true, because places change through the day.</p>
+    <div class="examples">
+      <div class="do"><h3>Do</h3><div class="sample"><h3>Cafe Lumiere Douce</h3><p>Calm in the morning. Soft light. Quiet corners. Step-free entry.</p><p><span class="badge">This fits today</span></p><p class="note">0.8 km, 10 min walk, Metro Jarry</p></div></div>
+      <div class="dont"><h3>Do not</h3><div class="sample"><h3>Cafe Lumiere Douce: 4.8 stars</h3><p>Amazing!!! Best cafe ever, everyone loves it, you HAVE to go, the vibes are unmatched and the owner is so sweet, I went there last Tuesday and...</p></div></div>
+    </div>
+  </section>
+
+  <section class="rule" id="checkin">
+    <span class="tag">5. Check-in questions</span>
+    <h2>Check-in questions: one at a time, easy to answer</h2>
+    <p>Ask one simple question at a time. Simple multiple choice, with answers that fit the question asked. Low cognitive load. Anonymous. Easy to skip. No scoring, no bombardment.</p>
+    <div class="examples">
+      <div class="do"><h3>Do</h3><div class="sample"><p class="note">Question 1 of 3, anonymous</p><h3>How is the sound right now?</h3><button class="btn" type="button">Calm</button><button class="btn ghost" type="button">A bit loud</button><button class="btn ghost" type="button">Loud</button><p><button class="btn ghost" type="button">Skip</button></p></div><p class="note">Answers fit the question. "How is the light right now?" Bright / Just right / Too dim. "How crowded is it?" Quiet / A few people / Busy. "Is the entry step-free?" Yes / No, there is a step / Not sure.</p></div>
+      <div class="dont"><h3>Do not</h3><div class="sample"><h3>Rate this venue</h3><p>On a scale of 1 to 10, how would you rate the acoustic environment, lighting quality, spatial layout, staff responsiveness, and overall inclusivity, with detailed comments for each?</p></div></div>
+    </div>
+  </section>
+
+  <section class="rule" id="trust">
+    <span class="tag">6. Trust signals</span>
+    <h2>Trust signals: peer confirmed, never personal</h2>
+    <p>Show that peers agree, without identifying anyone. Use confirmed by X peers, and badges like Reliable observer. Never name an individual reporter. Make it easy to report misuse.</p>
+    <div class="examples">
+      <div class="do"><h3>Do</h3><div class="sample"><p><span class="badge">Confirmed by 12 peers</span></p><p>Reports from Reliable observers hold more weight.</p><p><a href="#trust">Report a problem</a></p></div></div>
+      <div class="dont"><h3>Do not</h3><div class="sample"><p>Alex M. reported this at 2:14 pm. Alex has 98 trust points and lives nearby.</p><p>Click here to see who reported what.</p></div></div>
+    </div>
+  </section>
+
+  <section class="rule" id="business">
+    <span class="tag">7. Business suggestions</span>
+    <h2>Business suggestions: visual, pickable, kind</h2>
+    <p>Show business owners what peers experience, visually and intuitively. No raw data as the default. Offer pre-written options they can pick, so they can act without dissecting data.</p>
+    <div class="examples">
+      <div class="do"><h3>Do</h3><div class="sample"><p><strong>Calm in the morning</strong></p><div class="bar" role="img" aria-label="Calm in the morning, 9 out of 10"><span style="width:90%"></span></div><p><strong>Evenings are louder</strong></p><div class="bar amber" role="img" aria-label="Evenings louder, 6 out of 10"><span style="width:60%"></span></div><button class="btn" type="button">Try a quiet corner sign</button></div></div>
+      <div class="dont"><h3>Do not</h3><div class="sample"><p>Raw data export: n=412, mean=6.42, SD=1.87, p=0.03, decibel variance by hour, full CSV attached. Analyse it yourself.</p></div></div>
+    </div>
+  </section>
+
+  <section class="rule" id="empty">
+    <span class="tag">8. Empty states, errors, and loading</span>
+    <h2>Empty states, errors, and loading: kind, clear next step</h2>
+    <p>When nothing is found, or something goes wrong, say so kindly. Give one clear next step. No dead ends. No blame. Loading is brief, honest, and skippable.</p>
+    <div class="examples">
+      <div class="do"><h3>Do</h3><div class="sample"><h3>No places match yet</h3><p>Try removing one filter, or widen the distance a little.</p><button class="btn" type="button">Show all places</button></div></div>
+      <div class="dont"><h3>Do not</h3><div class="sample"><h3>Error 404: No results</h3><p>You chose the wrong filters. Try again.</p></div></div>
+    </div>
+  </section>
+
+  <section class="rule" id="labels">
+    <span class="tag">9. Labels and buttons</span>
+    <h2>Labels and buttons: clear action, one next step</h2>
+    <p>Every button says what it does, in plain words. One clear next step per screen. Buttons are at least 44pt tall, easy to tap, and easy to see.</p>
+    <div class="examples">
+      <div class="do"><h3>Do</h3><div class="sample"><button class="btn" type="button">Save this place</button><button class="btn ghost" type="button">See places that fit</button><p class="note">One clear next step, in plain words.</p></div></div>
+      <div class="dont"><h3>Do not</h3><div class="sample"><button class="btn" type="button">Click here</button><button class="btn ghost" type="button">Submit</button><p class="note">Three small links, none saying what happens next.</p></div></div>
+    </div>
+  </section>
+
+  <section class="rule" id="sample">
+    <span class="tag">10. Sample data labelling</span>
+    <h2>Sample data: label it clearly, never present it as real</h2>
+    <p>Sample places, sample quotes, and sample data are labelled as sample, every time. No invented quotes, names, or results presented as real. No account needed for the demo.</p>
+    <div class="examples">
+      <div class="do"><h3>Do</h3><div class="sample"><p><span class="badge">Demo: sample places in Montreal only</span></p><p>These places are examples, to show how PEERSPECT works. No account needed.</p></div></div>
+      <div class="dont"><h3>Do not</h3><div class="sample"><p>"I love this place, it changed my life!" says a regular, who asked to stay anonymous, in a real review from last week.</p></div></div>
+    </div>
+  </section>
+
+  <section class="rule" id="checklist">
+    <span class="tag">Checklist</span>
+    <h2>Checklist: before new content ships</h2>
+    <p>Use this list for every new screen, message, or place description.</p>
+    <ul class="checklist">
+      <li>Is the tone warm, human, and steady, not clinical or hype?</li>
+      <li>Is it plain language, short sentences, one idea at a time?</li>
+      <li>Does it ask what matters today, and let the person choose freely?</li>
+      <li>Does it describe how a place feels, not just stars or long reviews?</li>
+      <li>Is a check-in one question at a time, with answers that fit the question asked?</li>
+      <li>Are trust signals peer confirmed, with no one identified?</li>
+      <li>Are business suggestions visual and pickable, not raw data first?</li>
+      <li>Do empty states and errors offer one kind, clear next step?</li>
+      <li>Do buttons say what they do, with one clear next step per screen?</li>
+      <li>Is sample data clearly labelled as sample?</li>
+      <li>Does it pass WCAG 2.2 AA in light and dark?</li>
+      <li>Is there generous iOS spacing, 16pt margins, 44pt targets?</li>
+      <li>Are there no em dashes in headings?</li>
+    </ul>
+  </section>
+
+  <p class="note">Demo note: all places, people, and quotes on this page are samples, to show the standards in use. No account needed.</p>
+  <p><a href="./index.html">Back to PEERSPECT</a> | <a href="./colour-palettes.html">Colour palettes, fonts, and spacing</a> | <a href="../../index.html">Back to Playground</a></p>
+</div>
+<script>
+(function(){
+  var body=document.body;
+  function apply(mode){
+    if(mode==="system"){
+      var dark=window.matchMedia("(prefers-color-scheme: dark)").matches;
+      body.setAttribute("data-theme", dark?"dark":"light");
+    } else {
+      body.setAttribute("data-theme", mode);
+    }
+    document.querySelectorAll(".toggle button").forEach(function(b){
+      b.setAttribute("aria-pressed", b.getAttribute("data-mode")===mode ? "true":"false");
+    });
+  }
+  document.querySelectorAll(".toggle button").forEach(function(b){
+    b.addEventListener("click", function(){ apply(b.getAttribute("data-mode")); });
+  });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){
+    var pressed=document.querySelector('.toggle button[aria-pressed="true"]');
+    if(pressed && pressed.getAttribute("data-mode")==="system") apply("system");
+  });
+})();
+</script>
+</body>
+</html>

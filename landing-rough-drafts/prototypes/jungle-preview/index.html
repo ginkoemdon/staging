@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tropical jungle — Ginko's Prototype Playground</title>
+  <meta name="description" content="A tropical jungle drawn in code: a river streaming through the middle, light beaming through the canopy, day and night." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css?v=20261123e" />
+  <style>
+    .preview-wrap { max-width: 1080px; margin: 0 auto; padding: 2rem clamp(1.5rem, 4vw, 4rem); }
+    .preview-wrap h1 { margin: 0.5rem 0; }
+    .preview-wrap p { max-width: 640px; }
+    .theme-buttons { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1rem 0 2rem; }
+    .theme-buttons button { font-family: "Poppins", system-ui, sans-serif; font-size: 1rem; padding: 0.6rem 1.25rem; border-radius: 999px; border: 2px solid var(--earth); background: var(--cream); color: var(--earth); cursor: pointer; }
+    .theme-buttons button[aria-pressed="true"] { background: var(--earth); color: var(--egg); }
+    .back-link { display: inline-block; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="preview-wrap">
+    <p><a href="../../index.html">&larr; Back to the Playground</a></p>
+    <h1>Tropical jungle</h1>
+    <p>A jungle drawn in code, not a picture file. A river streams through the middle, sunlight beams through the canopy, and after dark the moon comes out and fireflies blink in the undergrowth. Nothing slides or fades: clouds step, the breeze and the river shimmer step one shade at a time, and butterflies step one cell at a time.</p>
+    <p>Day or night follows the light or dark setting. Try it:</p>
+    <div class="theme-buttons" role="group" aria-label="See the jungle in day or night">
+      <button type="button" data-jungle-theme="light">Day</button>
+      <button type="button" data-jungle-theme="dark">Night</button>
+      <button type="button" data-jungle-theme="system" aria-pressed="true">Follow my device</button>
+    </div>
+
+    <figure class="jungle" data-jungle style="margin-top: 0;">
+      <canvas class="jungle__canvas" data-jungle-canvas width="180" height="72" role="img" aria-label="A pixel-art tropical jungle: a river streams through the middle, sunlight beams through the canopy, birds and butterflies above the water, fireflies after dark."></canvas>
+      <figcaption>The same scene sits above the footer on the Playground landing page.</figcaption>
+    </figure>
+
+    <p>How it is built: one scene, built once as a grid of coloured cells from a fixed seed, so it looks the same on every load. Day and night are the same grid lit twice. If you use reduced motion, you get the finished scene in one still picture, with no breeze, no shimmer, and no blinking fireflies.</p>
+    <p><a class="back-link" href="../../index.html">&larr; Back to the Playground</a></p>
+  </div>
+  <script src="../../assets/js/jungle.js?v=20261124a"></script>
+  <script>
+  (function () {
+    var buttons = document.querySelectorAll("[data-jungle-theme]");
+    function press(name) {
+      buttons.forEach(function (b) {
+        b.setAttribute("aria-pressed", b.getAttribute("data-jungle-theme") === name ? "true" : "false");
+      });
+    }
+    buttons.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var name = b.getAttribute("data-jungle-theme");
+        if (name === "system") delete document.documentElement.dataset.theme;
+        else document.documentElement.dataset.theme = name;
+        press(name);
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

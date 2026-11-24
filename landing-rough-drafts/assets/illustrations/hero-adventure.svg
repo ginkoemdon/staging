@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120" role="img" aria-label="A winding dotted path leading to a little flag on a hill, with a sun, stars and a sprouting flower">
+  <!-- sun -->
+  <g stroke="#e26c00" stroke-width="3" stroke-linecap="round">
+    <line x1="272" y1="8" x2="272" y2="18"/>
+    <line x1="296" y1="16" x2="289" y2="24"/>
+    <line x1="248" y1="16" x2="255" y2="24"/>
+  </g>
+  <circle cx="272" cy="34" r="16" fill="#f8c05e"/>
+  <circle cx="267" cy="31" r="2" fill="#3b342f"/>
+  <circle cx="277" cy="31" r="2" fill="#3b342f"/>
+  <path d="M266 38 Q272 42 278 38" stroke="#3b342f" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- stars / sparkles -->
+  <path d="M40 22 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z" fill="#c9c972"/>
+  <path d="M150 12 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" fill="#f8c05e"/>
+  <path d="M210 58 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" fill="#a35f3c"/>
+  <!-- winding dotted path -->
+  <path d="M8 108 C 60 92, 90 112, 140 100 S 230 84, 262 92" stroke="#184b44" stroke-width="3" stroke-dasharray="1 9" stroke-linecap="round" fill="none"/>
+  <!-- hill + flag -->
+  <path d="M228 108 Q 262 78 312 106 L 312 112 L 228 112 Z" fill="#c9c972"/>
+  <line x1="272" y1="84" x2="272" y2="52" stroke="#3b342f" stroke-width="3" stroke-linecap="round"/>
+  <path d="M272 52 L 296 58 L 272 66 Z" fill="#e26c00"/>
+  <!-- sprout -->
+  <path d="M48 108 L 48 92" stroke="#184b44" stroke-width="3" stroke-linecap="round"/>
+  <path d="M48 96 Q 36 90 32 78 Q 44 80 48 92" fill="#184b44"/>
+  <path d="M48 96 Q 60 88 64 76 Q 52 80 48 92" fill="#a35f3c"/>
+  <!-- little paper plane -->
+  <path d="M120 34 L 152 44 L 124 52 L 130 42 Z" fill="#f8c05e" stroke="#e26c00" stroke-width="2" stroke-linejoin="round"/>
+</svg>

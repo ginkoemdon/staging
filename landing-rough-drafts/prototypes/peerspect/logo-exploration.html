@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PEERSPECT — Logo &amp; Font Exploration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@600;700&family=Nunito:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{--teal:#0b5e54;--teal2:#128276;--pale:#cfe8e2;--bg:#f8f7f4;--ink:#1d2b28;--sun:#f8c05e;--rust:#a35f3c;--line:#d8d2c4}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.45}
+  .wrap{max-width:960px;margin:0 auto;padding:20px 16px 32px}
+  a{color:var(--teal)}
+  .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .back{font-weight:700;text-decoration:none}
+  h1{font-family:"Poppins",system-ui,sans-serif;font-size:1.6rem;line-height:1.15;margin:10px 0 4px;color:var(--teal)}
+  .intro{margin:0 0 16px;max-width:62ch}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:680px){.grid{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px}
+  .card h2{margin:0 0 2px;font-size:1.15rem}
+  .meaning{margin:0 0 12px;color:#43514d}
+  .wordmark{font-size:1.7rem;letter-spacing:.04em;color:var(--teal);line-height:1.1;margin:0 0 4px}
+  .font-note{font-size:.9rem;color:#43514d;margin:0 0 12px}
+  .font-note b{color:var(--ink)}
+  .sizes{display:flex;align-items:flex-end;gap:18px;padding:12px;background:var(--bg);border-radius:12px;margin-bottom:8px}
+  .size{text-align:center;font-size:.75rem;color:#5a6864}
+  .size svg{display:block;margin:0 auto 4px}
+  .lg{width:96px;height:64px}.md{width:56px;height:38px}.sm{width:32px;height:32px;border-radius:9px;background:var(--teal);padding:3px}
+  .f-poppins{font-family:"Poppins",system-ui,sans-serif;font-weight:700}
+  .f-fraunces{font-family:"Fraunces",Georgia,serif;font-weight:700;letter-spacing:.01em}
+  .f-atkinson{font-family:"Atkinson Hyperlegible",system-ui,sans-serif;font-weight:700;letter-spacing:.02em}
+  .f-baloo{font-family:"Baloo 2",system-ui,sans-serif;font-weight:700;letter-spacing:.02em}
+  .body-poppins{font-family:"Nunito",system-ui,sans-serif}
+  .body-fraunces{font-family:"Inter",system-ui,sans-serif}
+  .bottom{margin:18px 0 0;padding:14px 16px;border:2px solid var(--teal);border-radius:14px;background:#eaf3f0}
+  .bottom p{margin:0}
+  .note{font-size:.85rem;color:#5a6864;margin-top:12px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="top">
+    <a class="back" href="./index.html">← Back to PEERSPECT prototype</a>
+    <span>Logo &amp; font exploration · sample only</span>
+  </div>
+  <h1>PEERSPECT — logo &amp; font options</h1>
+  <p class="intro">Four directions, same idea: peer perspectives coming together, so a place feels like it fits. Pick the one that feels most like PEERSPECT.</p>
+
+  <div class="grid">
+    <!-- 1 Shared Eye -->
+    <section class="card" aria-labelledby="c1">
+      <h2 id="c1">1. Shared Eye</h2>
+      <p class="meaning">The current mark, refined: two peers sharing one eye. Clean, simple, instantly readable.</p>
+      <p class="wordmark f-poppins">PEERSPECT</p>
+      <p class="font-note"><b>Poppins + Nunito</b> — warm geometric sans. Friendly, rounded, everyday. Good at small sizes; dark teal on off-white is AA.</p>
+      <div class="sizes">
+        <div class="size"><svg class="lg" viewBox="0 0 120 80" role="img" aria-label="Shared Eye logo, large"><circle cx="38" cy="34" r="22" fill="#0b5e54"/><circle cx="82" cy="34" r="22" fill="#128276"/><path d="M48 44 Q60 30 72 44 Q60 58 48 44 Z" fill="#fff"/><circle cx="60" cy="44" r="6" fill="#1d2b28"/><path d="M52 62 Q60 68 68 62" stroke="#f8c05e" stroke-width="3" fill="none" stroke-linecap="round"/></svg>Large</div>
+        <div class="size"><svg class="md" viewBox="0 0 120 80" role="img" aria-label="Shared Eye logo, medium"><circle cx="38" cy="34" r="22" fill="#0b5e54"/><circle cx="82" cy="34" r="22" fill="#128276"/><path d="M48 44 Q60 30 72 44 Q60 58 48 44 Z" fill="#fff"/><circle cx="60" cy="44" r="6" fill="#1d2b28"/></svg>Medium</div>
+        <div class="size"><svg class="sm" viewBox="0 0 120 80" role="img" aria-label="Shared Eye app icon"><circle cx="38" cy="34" r="22" fill="#fff"/><circle cx="82" cy="34" r="22" fill="#cfe8e2"/><path d="M48 44 Q60 30 72 44 Q60 58 48 44 Z" fill="#f8c05e"/><circle cx="60" cy="44" r="6" fill="#1d2b28"/></svg>App icon</div>
+      </div>
+    </section>
+
+    <!-- 2 Map + Thread -->
+    <section class="card" aria-labelledby="c2">
+      <h2 id="c2">2. Map + Thread / Path</h2>
+      <p class="meaning">Peer dots on a small map, joined by a warm thread that is a path — leading to the shared eye.</p>
+      <p class="wordmark f-fraunces">PEERSPECT</p>
+      <p class="font-note"><b>Fraunces + Inter</b> — distinctive display serif, warm and editorial, peer-led. Strong at large sizes; keep body text in Inter for legibility.</p>
+      <div class="sizes">
+        <div class="size"><svg class="lg" viewBox="0 0 120 80" role="img" aria-label="Map and Thread logo, large"><rect x="6" y="6" width="108" height="68" rx="12" fill="#eaf3f0"/><path d="M6 40 H114 M42 6 V74 M78 6 V74" stroke="#fff" stroke-width="5"/><path d="M18 58 C40 62 52 30 60 30 C70 30 84 52 102 22" stroke="#a35f3c" stroke-width="3" fill="none" stroke-dasharray="1 0" stroke-linecap="round"/><circle cx="18" cy="58" r="6" fill="#0b5e54"/><circle cx="102" cy="22" r="6" fill="#f8c05e" stroke="#a35f3c" stroke-width="2"/><path d="M50 30 Q60 20 70 30 Q60 40 50 30 Z" fill="#fff"/><circle cx="60" cy="30" r="4" fill="#1d2b28"/></svg>Large</div>
+        <div class="size"><svg class="md" viewBox="0 0 120 80" role="img" aria-label="Map and Thread logo, medium"><rect x="6" y="6" width="108" height="68" rx="12" fill="#eaf3f0"/><path d="M18 58 C40 62 52 30 60 30 C70 30 84 52 102 22" stroke="#a35f3c" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="18" cy="58" r="7" fill="#0b5e54"/><circle cx="102" cy="22" r="7" fill="#f8c05e"/><path d="M50 30 Q60 20 70 30 Q60 40 50 30 Z" fill="#fff"/><circle cx="60" cy="30" r="4" fill="#1d2b28"/></svg>Medium</div>
+        <div class="size"><svg class="sm" viewBox="0 0 120 80" role="img" aria-label="Map and Thread app icon"><rect x="6" y="6" width="108" height="68" rx="12" fill="#128276"/><path d="M18 58 C40 62 52 30 60 30 C70 30 84 52 102 22" stroke="#f8c05e" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="60" cy="30" r="8" fill="#fff"/></svg>App icon</div>
+      </div>
+    </section>
+
+    <!-- 3 Two Peers, One View -->
+    <section class="card" aria-labelledby="c3">
+      <h2 id="c3">3. Two Peers, One View</h2>
+      <p class="meaning">Two overlapping circles — two peers — and one eye forms in the overlap. The view only exists together.</p>
+      <p class="wordmark f-atkinson">PEERSPECT</p>
+      <p class="font-note"><b>Atkinson Hyperlegible + Inter</b> — accessibility-first, clear at small sizes. Designed for low vision; the most legible of the four.</p>
+      <div class="sizes">
+        <div class="size"><svg class="lg" viewBox="0 0 120 80" role="img" aria-label="Two Peers One View logo, large"><circle cx="48" cy="40" r="26" fill="#0b5e54"/><circle cx="72" cy="40" r="26" fill="#128276" opacity=".85"/><path d="M52 40 Q60 28 68 40 Q60 52 52 40 Z" fill="#fff"/><circle cx="60" cy="40" r="5" fill="#1d2b28"/><circle cx="48" cy="32" r="3" fill="#fff"/><circle cx="72" cy="32" r="3" fill="#fff"/></svg>Large</div>
+        <div class="size"><svg class="md" viewBox="0 0 120 80" role="img" aria-label="Two Peers One View logo, medium"><circle cx="48" cy="40" r="26" fill="#0b5e54"/><circle cx="72" cy="40" r="26" fill="#128276" opacity=".85"/><path d="M52 40 Q60 28 68 40 Q60 52 52 40 Z" fill="#fff"/><circle cx="60" cy="40" r="5" fill="#1d2b28"/></svg>Medium</div>
+        <div class="size"><svg class="sm" viewBox="0 0 120 80" role="img" aria-label="Two Peers One View app icon"><circle cx="48" cy="40" r="26" fill="#fff"/><circle cx="72" cy="40" r="26" fill="#cfe8e2"/><path d="M52 40 Q60 28 68 40 Q60 52 52 40 Z" fill="#f8c05e"/><circle cx="60" cy="40" r="5" fill="#1d2b28"/></svg>App icon</div>
+      </div>
+    </section>
+
+    <!-- 4 Compass Eye -->
+    <section class="card" aria-labelledby="c4">
+      <h2 id="c4">4. Compass Eye</h2>
+      <p class="meaning">An eye inside a soft compass / map pin. Finding your way to a place that fits — adventure, but everyday.</p>
+      <p class="wordmark f-baloo">PEERSPECT</p>
+      <p class="font-note"><b>Baloo 2 + Nunito</b> — playful rounded display. Cute, adventure, everyday. Best for headings; keep body text in Nunito.</p>
+      <div class="sizes">
+        <div class="size"><svg class="lg" viewBox="0 0 120 80" role="img" aria-label="Compass Eye logo, large"><circle cx="60" cy="34" r="28" fill="#0b5e54"/><circle cx="60" cy="34" r="22" fill="none" stroke="#f8c05e" stroke-width="2" stroke-dasharray="3 4"/><path d="M60 8 L64 16 L56 16 Z" fill="#f8c05e"/><path d="M44 34 Q60 20 76 34 Q60 48 44 34 Z" fill="#fff"/><circle cx="60" cy="34" r="6" fill="#1d2b28"/><path d="M60 62 L52 74 L68 74 Z" fill="#0b5e54"/></svg>Large</div>
+        <div class="size"><svg class="md" viewBox="0 0 120 80" role="img" aria-label="Compass Eye logo, medium"><circle cx="60" cy="34" r="28" fill="#0b5e54"/><path d="M44 34 Q60 20 76 34 Q60 48 44 34 Z" fill="#fff"/><circle cx="60" cy="34" r="6" fill="#1d2b28"/><path d="M60 62 L52 74 L68 74 Z" fill="#0b5e54"/></svg>Medium</div>
+        <div class="size"><svg class="sm" viewBox="0 0 120 80" role="img" aria-label="Compass Eye app icon"><circle cx="60" cy="36" r="30" fill="#fff"/><path d="M44 36 Q60 22 76 36 Q60 50 44 36 Z" fill="#0b5e54"/><circle cx="60" cy="36" r="6" fill="#f8c05e"/></svg>App icon</div>
+      </div>
+    </section>
+  </div>
+
+  <h2 style="font-family:'Poppins',system-ui,sans-serif;color:#0b5e54;margin:22px 0 4px">Whole-brand directions</h2>
+  <p class="intro">Three complete mini-brands. Same PEERSPECT idea, three different feelings. Each keeps the peer perspective / map + thread / path idea visible, and deep teal #0b5e54 as an anchor.</p>
+
+  <div class="grid">
+    <!-- Brand A: Warm / Soft -->
+    <section class="card" aria-labelledby="b1">
+      <h2 id="b1">A. Warm Together — warm / soft</h2>
+      <p class="meaning">Warm, peer-led, gentle. Like a friend who already knows what a good day feels like. Soft edges, warm light, no hurry.</p>
+      <p><strong>Palette (AA on off-white #f8f7f4):</strong></p>
+      <p>
+        <span style="display:inline-block;background:#0b5e54;color:#fff;padding:4px 8px;border-radius:6px">#0b5e54 teal — text AA</span>
+        <span style="display:inline-block;background:#f8c05e;color:#1d2b28;padding:4px 8px;border-radius:6px">#f8c05e sun — accents only</span>
+        <span style="display:inline-block;background:#8c4a24;color:#fff;padding:4px 8px;border-radius:6px">#8c4a24 rust dark — text AA</span>
+        <span style="display:inline-block;background:#f2ddd0;color:#1d2b28;padding:4px 8px;border-radius:6px">#f2ddd0 peach — surfaces</span>
+        <span style="display:inline-block;background:#f8f7f4;color:#1d2b28;padding:4px 8px;border-radius:6px;border:1px solid #d8d2c4">#f8f7f4 cream — background</span>
+      </p>
+      <p class="font-note"><b>Pairs with:</b> Logo 1 Shared Eye · <b>Font:</b> Poppins + Nunito</p>
+      <div style="background:#f2ddd0;border-radius:12px;padding:12px">
+        <p style="margin:0 0 4px"><strong style="font-family:'Poppins',system-ui,sans-serif">Café Lumière Douce</strong> · Villeray · 0.8 km · 10 min walk</p>
+        <p style="margin:0 0 8px">☀ Soft light · step-free · quiet corner</p>
+        <span style="background:#0b5e54;color:#fff;padding:5px 10px;border-radius:999px;font-weight:700">✓ This fits today</span>
+      </div>
+    </section>
+
+    <!-- Brand B: Calm / Clear -->
+    <section class="card" aria-labelledby="b2">
+      <h2 id="b2">B. Clear Way — calm / accessibility-first</h2>
+      <p class="meaning">Calm, clear, no noise. Everything is easy to read, easy to scan, easy to trust. The most legible direction — built for low vision and low cognitive load first.</p>
+      <p><strong>Palette (AA, high contrast):</strong></p>
+      <p>
+        <span style="display:inline-block;background:#0b5e54;color:#fff;padding:4px 8px;border-radius:6px">#0b5e54 teal — text AA</span>
+        <span style="display:inline-block;background:#12211e;color:#fff;padding:4px 8px;border-radius:6px">#12211e ink — text AA</span>
+        <span style="display:inline-block;background:#cfe8e2;color:#12211e;padding:4px 8px;border-radius:6px">#cfe8e2 pale teal — surfaces</span>
+        <span style="display:inline-block;background:#fff;color:#12211e;padding:4px 8px;border-radius:6px;border:1px solid #d8d2c4">#ffffff — cards</span>
+        <span style="display:inline-block;background:#f8f7f4;color:#12211e;padding:4px 8px;border-radius:6px;border:1px solid #d8d2c4">#f8f7f4 cream — background</span>
+      </p>
+      <p class="font-note"><b>Pairs with:</b> Logo 3 Two Peers, One View · <b>Font:</b> Atkinson Hyperlegible + Inter</p>
+      <div style="background:#fff;border:2px solid #0b5e54;border-radius:12px;padding:12px">
+        <p style="margin:0 0 4px"><strong>Café Lumière Douce</strong></p>
+        <p style="margin:0 0 4px">Distance: 0.8 km · Walk: 10 min · Metro Jarry: 8 min</p>
+        <p style="margin:0 0 8px">Step-free: Yes · Seating: Yes · Quiet: Yes</p>
+        <span style="background:#0b5e54;color:#fff;padding:5px 10px;border-radius:6px;font-weight:700">THIS FITS TODAY — 3 of 3 priorities match</span>
+      </div>
+    </section>
+
+    <!-- Brand C: Bold / Adventurous -->
+    <section class="card" aria-labelledby="b3">
+      <h2 id="b3">C. Everyday Adventure — bold / wayfinding</h2>
+      <p class="meaning">Bolder, brighter, more adventurous. Finding a place is a small adventure, everyday. The thread is a path — follow it, and it leads somewhere that fits.</p>
+      <p><strong>Palette (AA for text — bright colours are accents only):</strong></p>
+      <p>
+        <span style="display:inline-block;background:#0b5e54;color:#fff;padding:4px 8px;border-radius:6px">#0b5e54 teal — anchor, text AA</span>
+        <span style="display:inline-block;background:#9a4a00;color:#fff;padding:4px 8px;border-radius:6px">#9a4a00 tangerine dark — text AA</span>
+        <span style="display:inline-block;background:#f8c05e;color:#1d2b28;padding:4px 8px;border-radius:6px">#f8c05e sun — path / accents</span>
+        <span style="display:inline-block;background:#184b44;color:#fff;padding:4px 8px;border-radius:6px">#184b44 forest — depth</span>
+        <span style="display:inline-block;background:#f8f7f4;color:#1d2b28;padding:4px 8px;border-radius:6px;border:1px solid #d8d2c4">#f8f7f4 cream — background</span>
+      </p>
+      <p class="font-note"><b>Pairs with:</b> Logo 2 Map + Thread / Path (Compass Eye, 4, also works here) · <b>Font:</b> Baloo 2 + Inter</p>
+      <div style="background:#184b44;color:#fff;border-radius:12px;padding:12px">
+        <p style="margin:0 0 4px"><strong style="font-family:'Baloo 2',system-ui,sans-serif;font-size:1.15rem">Café Lumière Douce → your place today</strong></p>
+        <p style="margin:0 0 8px">Follow the thread: 0.8 km · 10 min walk · Metro Jarry</p>
+        <span style="background:#f8c05e;color:#1d2b28;padding:5px 10px;border-radius:999px;font-weight:700">✦ This fits today — follow the path</span>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="b4">
+      <h2 id="b4">How to choose</h2>
+      <p class="meaning">A is the warmest, B is the clearest, C is the most adventurous. All three keep deep teal as the anchor, the thread/path visible, and text at AA contrast.</p>
+      <p class="font-note"><b>Mixing is welcome:</b> e.g. Brand B's clarity with Brand A's warm peach surfaces, or Brand C's thread with Brand A's Shared Eye.</p>
+      <p class="meaning">Logo 4 Compass Eye is not paired above, but it swaps cleanly into Brand C — same compass / wayfinding feeling, same Baloo 2 wordmark.</p>
+    </section>
+  </div>
+
+  <div class="bottom">
+    <p><strong>Which feels most like PEERSPECT?</strong> Tell me a number — 1, 2, 3 or 4 for the logo, and A, B or C for the whole brand — or mix them: e.g. the Map + Thread mark with the Atkinson Hyperlegible wordmark, in Brand B.</p>
+  </div>
+  <p class="note">All marks are code-only SVG, no images. Colours are the PEERSPECT teal #0b5e54 on off-white #f8f7f4, AA contrast for text. Fonts load from Google Fonts, with system fallbacks if offline.</p>
+</main>
+</body>
+</html>
