@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hero directions A, B, C, Ginko's Prototype Playground</title>
+  <meta name="description" content="Three hero directions for the Prototype Playground landing page. Preview only, for Ginko to pick one before any final hero is coded." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Directions preview only. Palette from Ginko's Webflow portfolio.
+       No green backdrop anywhere. Text colours are the AA pairs from
+       css/style.css: earth on egg, rust-text #8c4a24 (5.10:1 on egg),
+       tangerine-text #9a4a00 (4.75:1 on egg, 6.00:1 on cream),
+       forest #184b44, muted #49433d. Sun and bright tangerine are
+       shapes and highlights only, never text. No animation, so
+       reduced motion needs nothing extra. */
+    :root {
+      --egg: #e3e0d8; --cream: #fafafa; --warm: #fdfbf7;
+      --earth: #3b342f; --brown: #372c1f; --sun: #f8c05e;
+      --tangerine: #e26c00; --tangerine-text: #9a4a00;
+      --rust: #a35f3c; --rust-text: #8c4a24;
+      --forest: #184b44; --lizard: #c9c972; --lime: #afa477; --sand: #e1d8c7;
+      --muted: #49433d;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--egg); color: var(--earth);
+      font-family: "Poppins", system-ui, sans-serif; font-size: 1rem; line-height: 1.6; }
+    :focus-visible { outline: 3px solid var(--forest); outline-offset: 3px; border-radius: 4px; }
+    h1, h2, h3 { font-family: "Krona One", sans-serif; line-height: 1.2; font-weight: 700; color: var(--earth); }
+    a { color: var(--forest); }
+    .page { max-width: 1440px; margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 4rem); }
+    .intro { padding: 4.5rem 0 2rem; max-width: 720px; }
+    .intro .eyebrow { font-size: .85rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--rust-text); margin: 0 0 1rem; }
+    .intro h1 { font-size: clamp(1.8rem, 3vw, 2.6rem); margin: 0 0 .75rem; }
+    .intro p { color: var(--muted); margin: 0 0 .5rem; }
+    .intro nav { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 1.25rem; }
+    .intro nav a { border: 1.5px solid var(--earth); border-radius: 999px; padding: .5rem 1rem; text-decoration: none; font-weight: 600; font-size: .9rem; color: var(--earth); min-height: 44px; display: inline-flex; align-items: center; }
+    .intro nav a:hover { background: var(--sun); border-color: var(--sun); }
+    .direction { margin: 0 0 4rem; }
+    .direction-head { display: flex; gap: 1rem; align-items: baseline; flex-wrap: wrap; margin: 0 0 1rem; }
+    .direction-head h2 { font-size: 1.4rem; margin: 0; }
+    .direction-head .tag { font-size: .8rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--rust-text); }
+    .direction-head p { margin: 0; color: var(--muted); flex-basis: 100%; max-width: 720px; }
+    .frame { border: 1px solid rgba(59,52,47,.2); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 24px -4px rgba(0,0,0,.08), 0 8px 8px -4px rgba(0,0,0,.03); background: var(--warm); }
+    .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(1.5rem, 4vw, 4rem); align-items: center; padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 4vw, 4rem); }
+    .hero .eyebrow { font-size: .85rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--rust-text); margin: 0 0 1rem; }
+    .hero h3 { font-size: clamp(2rem, 3.4vw, 3.1rem); margin: 0 0 1rem; max-width: 12em; }
+    .hero .sub { color: var(--muted); max-width: 34em; margin: 0 0 1.75rem; }
+    .hero .sub strong { color: var(--earth); font-weight: 600; }
+    .btn { display: inline-block; padding: .8rem 1.4rem; border-radius: 999px; font-weight: 600; font-size: .95rem; text-decoration: none; border: 2px solid var(--earth); background: var(--earth); color: var(--egg); min-height: 44px; }
+    .btn:hover { background: var(--forest); border-color: var(--forest); color: #fff; }
+    .hero .fine { font-size: .85rem; color: var(--muted); margin: 1rem 0 0; }
+    .hero .fine strong { color: var(--earth); }
+    .visual { width: 100%; height: auto; display: block; }
+    .hl { background: linear-gradient(transparent 55%, var(--sun) 55%); padding: 0 .1em; }
+    @media (max-width: 899px) {
+      .hero { grid-template-columns: 1fr; padding: 2.5rem 1.5rem; }
+      .hero h3 { font-size: 1.9rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
+    .foot { padding: 0 0 4rem; color: var(--muted); max-width: 720px; }
+    .foot a { color: var(--forest); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="intro">
+      <p class="eyebrow">Hero directions, preview only</p>
+      <h1>Three ways the landing hero could look</h1>
+      <p>Nothing here is final. Each direction below is a full hero, rendered as it would look on the landing page, with the same headline and the same View experiments button. Pick one in chat, then that one gets coded as the real hero.</p>
+      <p>No green backdrop in any of them. All three use Ginko's palette and pass WCAG 2.2 AA for text.</p>
+      <nav aria-label="Jump to a direction">
+        <a href="#direction-a">Direction A</a>
+        <a href="#direction-b">Direction B</a>
+        <a href="#direction-c">Direction C</a>
+        <a href="./index.html">Back to the landing page</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- ============ DIRECTION A ============ -->
+      <section class="direction" id="direction-a" aria-labelledby="dir-a-h">
+        <div class="direction-head">
+          <h2 id="dir-a-h">Direction A</h2>
+          <span class="tag">Webflow-like, lab twist</span>
+          <p>Closest to the portfolio hero: text on the left, a visual on the right, egg backdrop. The mountains and path are kept, but tidied into clean, flat shapes with plenty of air around them.</p>
+        </div>
+        <div class="frame">
+          <section class="hero" style="background: var(--egg);" aria-label="Direction A hero preview">
+            <div>
+              <p class="eyebrow">AI prototyping lab</p>
+              <h3>AI-first design, with critical judgment and <span class="hl">human exploration</span>.</h3>
+              <p class="sub">Small working prototypes, built in the open. <strong>PEERSPECT</strong> and <strong>Form to Function</strong> are featured, with six rough concepts behind them.</p>
+              <a class="btn" href="./index.html#featured-work">View experiments</a>
+              <p class="fine"><strong>2 featured</strong> &middot; 6 rough concepts</p>
+            </div>
+            <div>
+              <!-- Refined mountains and path: smooth flat layers, one plain
+                   sun disc, one dotted path to a small stepped form. No face,
+                   no rays, no extra icons, no pixel art. -->
+              <svg class="visual" viewBox="0 0 560 420" role="img" aria-label="Clean layered mountains with a dotted path leading to a small stepped building">
+                <rect width="560" height="420" fill="#e1d8c7" rx="12"/>
+                <circle cx="452" cy="82" r="42" fill="#f8c05e"/>
+                <path d="M0 300 L120 190 L220 290 L330 170 L460 300 L560 230 L560 420 L0 420 Z" fill="#afa477" opacity="0.55"/>
+                <path d="M0 340 L150 220 L300 340 L430 240 L560 340 L560 420 L0 420 Z" fill="#184b44"/>
+                <path d="M0 380 L180 300 L360 380 L560 300 L560 420 L0 420 Z" fill="#3b342f"/>
+                <path d="M60 400 C 160 360, 220 330, 300 300 S 420 250, 470 220" fill="none" stroke="#9a4a00" stroke-width="3" stroke-dasharray="1 10" stroke-linecap="round"/>
+                <g fill="#f8c05e" stroke="#3b342f" stroke-width="2">
+                  <rect x="448" y="196" width="44" height="14"/>
+                  <rect x="456" y="182" width="28" height="14"/>
+                  <rect x="464" y="168" width="12" height="14"/>
+                </g>
+                <circle cx="60" cy="400" r="6" fill="#e26c00"/>
+              </svg>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ DIRECTION B ============ -->
+      <section class="direction" id="direction-b" aria-labelledby="dir-b-h">
+        <div class="direction-head">
+          <h2 id="dir-b-h">Direction B</h2>
+          <span class="tag">Bold editorial lab</span>
+          <p>The most different from the portfolio. Large type does the work, a strong sun shape and a tangerine rule carry the accent, and there is almost no illustration, just one thin dotted path.</p>
+        </div>
+        <div class="frame">
+          <section class="hero" style="background: var(--warm); position: relative; overflow: hidden; grid-template-columns: 1.15fr .85fr;" aria-label="Direction B hero preview">
+            <div style="position: relative; z-index: 1;">
+              <p class="eyebrow" style="display: flex; align-items: center; gap: .75rem;"><span style="display: inline-block; width: 2.5rem; height: 3px; background: var(--tangerine);"></span>AI prototyping lab</p>
+              <h3 style="font-size: clamp(2.4rem, 4.6vw, 4rem); max-width: 11em;">AI-first design,<br />with critical judgment<br />and <span style="color: var(--tangerine-text);">human exploration</span>.</h3>
+              <p class="sub">Working prototypes, not mockups. Built, tested, and changed in the open.</p>
+              <a class="btn" href="./index.html#featured-work">View experiments</a>
+              <p class="fine"><strong>2 featured</strong> &middot; 6 rough concepts</p>
+            </div>
+            <div style="position: relative; min-height: 280px;" aria-hidden="true">
+              <!-- One large sun disc, cropped by the frame, and one thin
+                   dotted path. No mountains, no building, no icons. -->
+              <svg class="visual" viewBox="0 0 400 420" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+                <circle cx="330" cy="70" r="150" fill="#f8c05e"/>
+                <circle cx="330" cy="70" r="150" fill="none" stroke="#3b342f" stroke-width="2" opacity="0.15"/>
+                <path d="M20 380 C 120 340, 180 300, 240 240 S 340 140, 370 110" fill="none" stroke="#9a4a00" stroke-width="3" stroke-dasharray="1 10" stroke-linecap="round"/>
+                <circle cx="20" cy="380" r="7" fill="#e26c00"/>
+                <circle cx="370" cy="110" r="7" fill="#184b44"/>
+              </svg>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ DIRECTION C ============ -->
+      <section class="direction" id="direction-c" aria-labelledby="dir-c-h">
+        <div class="direction-head">
+          <h2 id="dir-c-h">Direction C</h2>
+          <span class="tag">Calm gallery</span>
+          <p>The calmest option. Warm white, a headline with small inline icons like the portfolio, and a small framed prototype preview on the right instead of an illustration, so the work itself is the visual.</p>
+        </div>
+        <div class="frame">
+          <section class="hero" style="background: var(--warm);" aria-label="Direction C hero preview">
+            <div>
+              <p class="eyebrow">AI prototyping lab</p>
+              <h3>AI-first design, with critical judgment and <span class="hl">human&nbsp;exploration</span>.</h3>
+              <p class="sub">Each prototype is a small working product. <strong>PEERSPECT</strong> helps people find places by how they feel. <strong>Form to Function</strong> turns hard forms into plain steps.</p>
+              <a class="btn" href="./index.html#featured-work">View experiments</a>
+              <p class="fine"><strong>2 featured</strong> &middot; 6 rough concepts</p>
+            </div>
+            <div>
+              <!-- Framed prototype preview: a small PEERSPECT Discover card,
+                   built in HTML and CSS, no image. -->
+              <div style="background: #fff; border: 1px solid rgba(59,52,47,.2); border-radius: 16px; box-shadow: 0 12px 30px rgba(59,52,47,.10); padding: 1.25rem;">
+                <p style="margin: 0 0 .25rem; font-family: 'Krona One', sans-serif; font-size: .9rem; letter-spacing: .04em; color: var(--forest);">PEERSPECT</p>
+                <p style="margin: 0 0 1rem; color: var(--muted); font-size: .9rem;">Your guide to how places actually feel.</p>
+                <p style="margin: 0 0 .75rem; font-weight: 600; font-size: .95rem;">What matters today?</p>
+                <div style="display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                  <span style="border: 1.5px solid var(--earth); border-radius: 999px; padding: .3rem .8rem; font-size: .8rem; font-weight: 600;">Step-free entry</span>
+                  <span style="border: 1.5px solid var(--earth); border-radius: 999px; padding: .3rem .8rem; font-size: .8rem; font-weight: 600;">Quiet nook</span>
+                  <span style="border: 1.5px solid var(--earth); border-radius: 999px; padding: .3rem .8rem; font-size: .8rem; font-weight: 600;">Soft light</span>
+                </div>
+                <div style="border-top: 1px solid rgba(59,52,47,.15); padding-top: .75rem;">
+                  <p style="margin: 0; font-weight: 600;">Caf&eacute; Pinocchio <span style="float: right; color: var(--forest);">&#10003; 5 of 5</span></p>
+                  <p style="margin: .25rem 0 0; color: var(--muted); font-size: .85rem;">0.4 km &middot; 6 min walk &middot; Villeray</p>
+                </div>
+                <p style="margin: 1rem 0 0;"><a href="./prototypes/peerspect/index.html" style="font-weight: 600;">View prototype &rsaquo;</a></p>
+              </div>
+              <p style="margin: .75rem 0 0; font-size: .85rem; color: var(--muted); text-align: center;">A real screen from PEERSPECT, at a glance.</p>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p>Directions A, B and C share the same headline, the same button, and the same palette. Tell me which one to build as the real hero, or what to mix from each, and I will code that one only.</p>
+      <p><a href="./index.html">Back to the landing page</a></p>
+    </footer>
+  </div>
+</body>
+</html>

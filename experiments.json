@@ -48,6 +48,13 @@
       "description": "Hamburger X + menu spacing; Discover dots removed; map expand and zoom; visits list and calendar views; needs wording",
       "upstream_sha": "9234877861fdf7ab3bb9ba40b459df4f6291f9ac",
       "staged": "2026-11-24"
+    },
+    {
+      "name": "hero-polish",
+      "branch": "experiment/hero-polish",
+      "description": "Hero directions A, B, C for Ginko to pick",
+      "upstream_sha": "9923f99ce9a34632ed8e00cb6faa79b39d8e32b6",
+      "staged": "2026-11-24"
     }
   ],
   "upstream": "ginkoemdon/ginkoemdon.github.io",
