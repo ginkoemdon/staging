@@ -246,6 +246,17 @@
     .ps-chips.wrap { flex-wrap:wrap; overflow-x:visible; }
     /* Onboarding groups: a category first, its filters inside.
        Closed by default except the first, so the list stays short. */
+    /* Onboarding quick start, Nov 23 2026: the old page was a
+       static wall of 92 filters, so returning users just wanted
+       to get past it. Start with a day in one tap, or reuse a
+       saved profile / last time's picks, and see live how many
+       places fit as you pick. */
+    .onboard-quick { display:grid; gap:12px; margin:0 0 16px; }
+    .onboard-quick h3 { font-size:1rem; margin:8px 0 0; color:var(--teal-dark); }
+    .quick-card { text-align:left; background:var(--card); border:1.5px solid var(--line); border-radius:16px; padding:16px 20px; font:inherit; color:var(--ink); cursor:pointer; min-height:44px; }
+    .quick-card strong { display:block; color:var(--teal-dark); font-size:1.05rem; }
+    .quick-card span { display:block; font-size:.95rem; color:var(--muted); margin-top:.25rem; }
+    .quick-card[aria-pressed="true"] { border-color:var(--teal); border-width:3px; background:var(--soft); }
     .onboard-group { border:1px solid var(--line); border-radius:12px; background:var(--card); margin:0 0 8px; }
     .onboard-group summary { list-style:none; display:flex; align-items:center; gap:8px; padding:14px 16px; font-weight:700; color:var(--teal-dark); cursor:pointer; min-height:44px; }
     .onboard-group summary::-webkit-details-marker { display:none; }
@@ -933,7 +944,7 @@
           <p class="ps-muted">Demo: sample Montreal establishments only.</p>
         </div>
         <div class="screen-foot">
-          <button class="ps-btn" id="enter-app" type="button">Enter</button>
+          <button class="ps-btn" id="enter-app" type="button">Tell us what matters</button>
           <button class="back-web" id="skip-landing" type="button">Skip, show all places</button>
         </div>
       </section>
@@ -941,9 +952,11 @@
       <section class="screen" id="screen-onboard" aria-labelledby="onboard-h" hidden>
         <div class="screen-head">
           <h2 id="onboard-h">What matters today?</h2>
-          <p>Open a category, pick what fits.</p>
+          <p>Start with a day, or open a category and pick what fits. About a minute, and you can change it anytime.</p>
         </div>
         <div class="screen-scroll">
+          <div id="onboard-quick" aria-label="Quick start"></div>
+          <p id="onboard-fit" class="ps-muted" aria-live="polite">Pick a starting point, or open a category below.</p>
           <div id="priority-groups"></div>
           <p id="priority-count" class="ps-muted" aria-live="polite">0 picked</p>
         </div>
@@ -1258,6 +1271,63 @@
         var c = d.querySelector(".group-count");
         if(c) c.textContent = n ? n + " picked" : "";
       });
+      var fit=$("onboard-fit");
+      if(fit){
+        if(!selectedFilters.length){ fit.textContent="Pick a starting point, or open a category below."; }
+        else {
+          var fits=PLACES.filter(function(p){ return alignmentFor(p); }).length;
+          fit.textContent=selectedFilters.length+" picked · "+fits+" of "+PLACES.length+" places fit today. Tap “See places for today” when you are ready.";
+        }
+      }
+    }
+    /* Quick start, Nov 23 2026: one tap picks a whole day, instead
+       of starting from a blank list. Presets are starting points,
+       not locked in — tap filters on or off after, or save the
+       result as a profile for next time. Returning users get
+       their saved profiles and last time's picks here, so they
+       can go straight to places in one tap. */
+    var ONBOARD_PRESETS=[
+      {name:"Quiet morning", desc:"Quiet, calm, and easy to settle into.", filters:["sound-quiet","crowding-low","sensory-quiet-nook","lighting-dim","quiet-chat"]},
+      {name:"Work session", desc:"Good for working, calls, and staying a while.", filters:["coworking","online-meetings","seating-comfy","temp-comfortable","menu-preview"]},
+      {name:"Social evening", desc:"Lively, chatty, and easy to order in.", filters:["socialising","service-calm","menu-physical","lighting-ambient","sensory-no-music"]}
+    ];
+    function applyOnboardFilters(keys){
+      selectedFilters=keys.slice(); activeFilters=new Set(selectedFilters);
+      priorityList.querySelectorAll("button").forEach(function(b){ b.setAttribute("aria-pressed", selectedFilters.indexOf(b.dataset.filter)>=0?"true":"false"); });
+      updateOnboardCounts(); renderTailored(); renderPlaces(); renderAllFilters();
+    }
+    function renderOnboardQuick(){
+      var box=$("onboard-quick"); if(!box) return; box.innerHTML="";
+      var h=document.createElement("h3"); h.textContent="Start with a day"; box.appendChild(h);
+      ONBOARD_PRESETS.forEach(function(pr){
+        var b=document.createElement("button"); b.type="button"; b.className="quick-card"; b.setAttribute("aria-pressed","false");
+        b.innerHTML="<strong>"+pr.name+"</strong><span>"+pr.desc+" "+pr.filters.length+" filters.</span>";
+        b.addEventListener("click", function(){
+          box.querySelectorAll(".quick-card").forEach(function(x){ x.setAttribute("aria-pressed","false"); });
+          b.setAttribute("aria-pressed","true"); applyOnboardFilters(pr.filters);
+        });
+        box.appendChild(b);
+      });
+      if(profiles && profiles.length){
+        var hp=document.createElement("h3"); hp.textContent="Your profiles — tap one to go straight to places"; box.appendChild(hp);
+        profiles.forEach(function(prof){
+          var b=document.createElement("button"); b.type="button"; b.className="quick-card";
+          b.innerHTML="<strong>"+prof.name+"</strong><span>"+prof.filters.length+" filters, saved.</span>";
+          b.addEventListener("click", function(){
+            activeFilters=new Set(prof.filters); selectedFilters=(prof.priorities||prof.filters).slice();
+            save("peerspect-last-filters-v1", selectedFilters);
+            updateOnboardCounts(); renderTailored(); renderPlaces(); renderAllFilters(); finishOnboarding();
+          });
+          box.appendChild(b);
+        });
+      }
+      var last=load("peerspect-last-filters-v1", []);
+      if(last && last.length){
+        var bl=document.createElement("button"); bl.type="button"; bl.className="quick-card";
+        bl.innerHTML="<strong>Use last time</strong><span>"+last.length+" filters from your last visit.</span>";
+        bl.addEventListener("click", function(){ applyOnboardFilters(last); finishOnboarding(); });
+        box.appendChild(bl);
+      }
     }
     GROUPS.forEach(function(g, gi){
       var det = document.createElement("details");
@@ -1292,6 +1362,7 @@
     });
     function applyPriorities(){
       activeFilters = new Set(selectedFilters);
+      if(selectedFilters.length) save("peerspect-last-filters-v1", selectedFilters.slice());
       renderTailored(); renderPlaces(); renderAllFilters();
     }
     $("see-places").addEventListener("click", function(){ applyPriorities(); finishOnboarding(); });
@@ -1515,7 +1586,7 @@
     /* Saved */
     function renderProfiles(){
       var ul=$("profile-list"); ul.innerHTML="";
-      if(!profiles.length){ ul.innerHTML="<li class='ps-muted'>No profiles saved yet.</li>"; return; }
+      if(!profiles.length){ ul.innerHTML="<li class='ps-muted'>No profiles saved yet.</li>"; if(typeof renderOnboardQuick==="function") renderOnboardQuick(); return; }
       profiles.forEach(function(prof, idx){
         var li=document.createElement("li");
         li.textContent=prof.name+" — "+prof.filters.length+" filter(s): "+prof.filters.map(function(f){ return FILTER_LABELS[f]||f; }).join(", ")+" ";
@@ -1875,7 +1946,7 @@
     }); });
     /* Init: web page view first. */
     showWeb(); showScreen("landing");
-    renderTailored(); renderPlaces(); renderAllFilters(); renderProfiles(); renderPrep(); renderVisits(); renderTrust(); renderBiz(); renderCheckinIntro();
+    renderTailored(); renderPlaces(); renderAllFilters(); renderProfiles(); renderPrep(); renderVisits(); renderTrust(); renderBiz(); renderCheckinIntro(); renderOnboardQuick();
   })();
   </script>
 </body>
