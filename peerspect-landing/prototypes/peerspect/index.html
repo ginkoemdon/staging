@@ -1661,7 +1661,7 @@
 
       <!-- 6. BUSINESS -->
       <section class="screen" id="screen-business" aria-labelledby="biz-h" hidden>
-        <div class="screen-head"><h2 id="biz-h">Business insights</h2><p>Calm and visual. No one is identified.</p></div>
+        <div class="screen-head"><h2 id="biz-h">Business insights</h2><p>A calm dashboard for your place, from many anonymous peer check-ins. Counts and patterns only, no names and no individual reports, with gentle suggestions for small changes.</p></div>
         <div class="screen-scroll">
           <label for="biz-place">Choose a place</label>
           <select class="ps-input" id="biz-place"></select>
@@ -3329,7 +3329,7 @@
         {label:"Pronouns respected", value:p.tags.indexOf("pronoun-respect")>=0?91:58, colour:"#8a4a08", note:"Confirmed by peers, anonymously."},
         {label:"Step-free entry is clear", value:p.tags.indexOf("step-free")>=0?82:35, colour:"#14665a", note:"People plan around the entrance."}
       ];
-      var html="<p class='ps-muted'>Sample data · Last 7 days · No one is identified.</p>";
+      var html="<p class='ps-muted'>Sample data from the last 7 days. Counts and patterns from many anonymous peer check-ins, no names and no individual reports.</p>";
       html+="<div class='biz-stats'>"
         +"<div class='biz-stat'><p class='num'>"+p.confirmed+"</p><p>Peer confirmations</p></div>"
         +"<div class='biz-stat'><p class='num'>"+calmVal+"%</p><p>Say it feels calm</p></div>"
@@ -3362,13 +3362,13 @@
       }
       sugg.push({t:"Try a quiet hour on weekday mornings.", why:"Based on: "+calmVal+"% say it feels calm, and mornings are the calmest part of the day.", try:"Peers often note the room is calmest then. A named quiet hour makes that easy to find."});
       sugg=sugg.slice(0,3);
-      html+="<div class='biz-ai'><span class='biz-ai-tag'>AI suggestions</span><h3 style='margin-top:12px;'>Suggestions to try, based on the data above</h3><p class='ps-muted'>Generated from this place's peer check-ins. Nothing here names a person.</p>";
+      html+="<div class='biz-ai'><span class='biz-ai-tag'>AI suggestions</span><h3 style='margin-top:12px;'>Suggestions to try, based on the data above</h3><p class='ps-muted'>Gentle, pre-written suggestions for small changes, based on the patterns above. No names and no individual reports.</p>";
       sugg.forEach(function(s){
         html+="<div class='biz-sugg'><strong>"+s.t+"</strong><p>"+s.try+"</p><p class='based'>"+s.why+"</p></div>";
       });
       html+="</div>";
       html+="</div>";
-      html+="<p class='ps-muted'>Private and anonymous. No individual report, name, or visit is shown here.</p>";
+      html+="<p class='ps-muted'>Private and anonymous. Only counts and patterns, never a name or an individual report.</p>";
       $("biz-body").innerHTML=html;
       $("biz-raw").textContent="Demo counts for "+p.name+": "+p.confirmed+" peer confirmations in total. The rings and percentages above are sample data, not real data.";
     }
