@@ -45,8 +45,8 @@
     {
       "name": "hamburger-fix",
       "branch": "experiment/hamburger-fix",
-      "description": "Hamburger icon turns into an X on open; mobile menu spacing fix",
-      "upstream_sha": "1012ce450fc50b40a239896acd1ed3714d88030a",
+      "description": "Hamburger X + mobile menu spacing; Discover pagination dots removed",
+      "upstream_sha": "236ed5c41ea33c785d46f6049e12bb0258325781",
       "staged": "2026-11-24"
     }
   ],

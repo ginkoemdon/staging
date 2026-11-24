@@ -647,19 +647,10 @@
     .ps-answer { display:block; width:100%; text-align:left; background:var(--card); border:2px solid var(--teal); color:var(--teal-dark); border-radius:12px; padding:16px; margin:8px 0; font-weight:700; min-height:52px; }
     .ps-answer:hover { background:var(--soft); }
     .ps-panel { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; margin-bottom:20px; }
-    /* Pagination dots, Nov 24 2026: cleaned up on mobile. The old
-       active rule shrank the button itself to 20px wide while it
-       stayed 44px tall, with a 3px border and outline, so the
-       active dot looked like a thin vertical pill. Now every
-       button stays a 44px touch target, every dot is a circle,
-       and the active one is simply filled and a touch bigger,
-       never colour alone, with the "1 of 4" count beside Back /
-       Next underneath. */
-    .dots { display:flex; flex-wrap:wrap; gap:4px; justify-content:center; align-items:center; padding:12px 0 4px; min-width:0; max-width:100%; box-sizing:border-box; }
-    .dots button { width:44px; height:44px; min-height:44px; min-width:44px; border:0; background:none; padding:0; display:grid; place-items:center; cursor:pointer; }
-    .dots button::after { content:""; width:10px; height:10px; border-radius:50%; border:2px solid var(--teal); background:var(--card); box-sizing:border-box; }
-    .dots button[aria-current="true"]::after { background:var(--teal); width:12px; height:12px; }
-    .dots button:focus-visible { outline:3px solid var(--focus); outline-offset:2px; border-radius:8px; }
+    /* Pagination dots removed, Nov 24 2026: with 12 places there
+       were 12 dots, far too many. The count between Back and Next
+       ("1 of 12") already says where you are, so the dots are
+       gone and the count is the only pagination. */
     /* Bookmark polish, Nov 24 2026: the old toggle rebuilt the
        whole card or place page on every tap, so it flashed and
        jumped, and the button changed width as Bookmark became
@@ -894,8 +885,6 @@
     #view-app .app-nav .ico { font-size:1.25rem; }
     #view-app .screen { animation:ps-screen-in .18s ease; }
     @keyframes ps-screen-in { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
-    #view-app .dots button::after { width:10px; height:10px; border-width:2px; }
-    #view-app .dots button[aria-current="true"]::after { width:12px; height:12px; border-radius:50%; background:var(--teal); }
     #view-app .step { gap:8px; }
     #view-app .step .ps-btn { background:none; border:0; box-shadow:none; text-decoration:underline; padding:10px 8px; min-height:44px; width:auto; flex:0 0 auto; color:var(--teal-dark); }
     #view-app .step .ps-btn-secondary { background:none; }
@@ -1069,10 +1058,11 @@
     #view-app .app-nav button[aria-current="page"] { border:0; outline:0; text-decoration:none; font-weight:700; }
     #view-app .app-nav button[aria-current="page"] .nav-label { text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:2px; }
     #view-app .app-nav .ico { text-decoration:none; }
-    /* Removed Nov 24 2026: this rule shrank the active dot button
-       to 20px wide, which made it look like a thin vertical pill
-       on mobile. Active is now just a filled, slightly bigger
-       circle, set in the base .dots rules above. */
+    /* Removed Nov 24 2026: this rule shrank the active pagination
+       dot button to 20px wide, which made it look like a thin
+       vertical pill on mobile. The pagination dots were removed
+       entirely later the same day; only the "1 of 12" count
+       between Back and Next remains. */
     #view-app .rate-btn[aria-pressed="true"] { border-width:3px; outline:2px solid var(--ink); outline-offset:1px; }
     #view-app .rate-btn[aria-pressed="true"]::before { content:"\2713  "; }
     #view-app .ps-answer[aria-pressed="true"], #view-app .ps-answer[aria-checked="true"] { border-width:3px; outline:2px solid var(--ink); outline-offset:1px; }
@@ -1194,7 +1184,6 @@
     #view-app .onboard-group summary:hover, #view-app .discover-filters summary:hover, #view-app .save-preview summary:hover, #view-app .biz-why summary:hover { background:var(--soft); border-radius:12px; }
     #view-app .onboard-group .group-chev { transition:transform .18s ease; }
     #view-app .back-web:hover { background:var(--soft); border-radius:8px; }
-    #view-app .dots button:hover::after { border-color:var(--teal-dark); }
     #view-app .discover-filters[open] > *:not(summary), #view-app .onboard-group[open] > *:not(summary), #view-app .biz-why[open] > *:not(summary), #view-app #all-filters:not([hidden]), #view-app #view-map:not([hidden]), #view-app #view-list:not([hidden]) { animation:ps-drop-in .18s ease; }
     #view-app .ps-confirm { font-weight:700; color:var(--teal-dark); animation:ps-confirm-in .18s ease; }
     #view-app .ps-confirm::before { content:"\2713  "; font-weight:800; }
@@ -1737,7 +1726,6 @@
           <div id="view-list">
           <div class="discover-main">
           <article class="ps-card" id="focus-card" aria-live="polite"></article>
-          <div class="dots" id="place-dots" role="group" aria-label="Choose a place"></div>
           <div class="step">
             <button class="ps-btn ps-btn-secondary" id="prev-place" type="button">← Back</button>
             <span class="ps-muted" id="place-count"></span>
@@ -2783,7 +2771,7 @@
       });
     }
     function renderFocus(){
-      var card = $("focus-card"), dots = $("place-dots");
+      var card = $("focus-card");
       if(!scored.length) return;
       var s = scored[focusIndex], p = s.place;
       var align = alignmentFor(p);
@@ -2813,13 +2801,6 @@
       paintBmBtn($("focus-bm"), bookmarks.has(p.id));
       $("focus-bm").addEventListener("click", function(){ toggleBookmark(p.id, $("focus-bm")); });
       $("place-count").textContent = (focusIndex+1) + " of " + scored.length;
-      dots.innerHTML = "";
-      scored.forEach(function(_, i){
-        var d = document.createElement("button"); d.type="button"; d.setAttribute("aria-label","Show place " + (i+1));
-        d.setAttribute("aria-current", i===focusIndex?"true":"false");
-        d.addEventListener("click", function(){ focusIndex=i; renderFocus(); var nd=$("place-dots").children[i]; if(nd) nd.focus({preventScroll:true}); });
-        dots.appendChild(d);
-      });
     }
     $("prev-place").addEventListener("click", function(){ focusIndex = (focusIndex-1+scored.length)%scored.length; renderFocus(); $("prev-place").focus({preventScroll:true}); });
     $("next-place").addEventListener("click", function(){ focusIndex = (focusIndex+1)%scored.length; renderFocus(); $("next-place").focus({preventScroll:true}); });
