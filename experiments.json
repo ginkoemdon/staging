@@ -38,8 +38,8 @@
     {
       "name": "hero-adventure-illustration",
       "branch": "experiment/hero-adventure-illustration",
-      "description": "New smooth hero illustration, pixel jungle as preview-only experiment, Rough concepts page",
-      "upstream_sha": "530302a38c49836a1e2b650feba45e324e4fa4de",
+      "description": "Remove Featured work heading",
+      "upstream_sha": "8ee455974a9f0156394966bed69a7f89e130723e",
       "staged": "2026-11-24"
     }
   ],
