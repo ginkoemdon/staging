@@ -6,6 +6,13 @@
       "description": "PEERSPECT \u2014 your guide to how places actually feel",
       "upstream_sha": "f5d8a7e9a169c9d586539d9c089a05514129b8b7",
       "staged": "2026-11-23"
+    },
+    {
+      "name": "jungle",
+      "branch": "experiment/jungle",
+      "description": "Tropical jungle pixel scene above the footer",
+      "upstream_sha": "76b4fdee93b07882a9aa0db9c581cd52fe3dc422",
+      "staged": "2026-11-24"
     }
   ],
   "upstream": "ginkoemdon/ginkoemdon.github.io",

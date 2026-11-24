@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Voice-First AI for Low Vision — Ginko's Prototype Playground</title>
+  <meta name="description" content="Voice-First AI for Low Vision — a prototype in Ginko's Prototype Playground. Speak, listen, then confirm before anything happens. Sample data only." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <style>
+    /* Prototype-only styles — large text, high contrast, big touch targets */
+    .voice-demo { background: var(--cream); border: 2px solid var(--earth); border-radius: 24px; padding: 2rem; box-shadow: 0 12px 30px rgba(59,52,47,.12); }
+    .voice-demo h2 { font-size: 1.6rem; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0; padding: 0; list-style: none; }
+    .steps li { border: 2px solid var(--earth); border-radius: 16px; padding: 1rem; background: #fff; }
+    .steps li.active { background: var(--sun); }
+    .steps li.done { background: var(--lizard); }
+    .steps strong { display: block; font-family: "Krona One", sans-serif; font-size: 1rem; margin-bottom: .25rem; }
+    .steps span { color: var(--muted); font-size: .95rem; }
+    .big-btn {
+      display: inline-block; min-height: 64px; padding: 1rem 1.5rem; border-radius: 16px;
+      font-family: "Poppins", sans-serif; font-size: 1.25rem; font-weight: 700; line-height: 1.3;
+      border: 3px solid var(--earth); background: var(--earth); color: var(--egg);
+      cursor: pointer; text-decoration: none; text-align: center;
+    }
+    .big-btn:hover, .big-btn:focus-visible { background: var(--forest); border-color: var(--forest); color: #fff; outline: 3px solid var(--sun); outline-offset: 3px; }
+    .big-btn.secondary { background: transparent; color: var(--earth); }
+    .big-btn.secondary:hover, .big-btn.secondary:focus-visible { background: var(--sun); border-color: var(--sun); color: var(--earth); }
+    .big-btn.sun { background: var(--sun); border-color: var(--sun); color: var(--brown); }
+    .big-btn.sun:hover, .big-btn.sun:focus-visible { background: var(--forest); border-color: var(--forest); color: #fff; }
+    .big-btn:disabled { opacity: .45; cursor: not-allowed; }
+    .btn-row { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
+    .readout {
+      font-size: 1.75rem; line-height: 1.5; font-weight: 600; color: var(--brown);
+      background: #fff; border: 2px solid var(--earth); border-radius: 16px; padding: 1.5rem; margin: 1rem 0;
+    }
+    .status-box, .transcript-box, .result-box {
+      border-radius: 16px; padding: 1.25rem 1.5rem; margin: 1rem 0; font-size: 1.15rem; line-height: 1.5;
+    }
+    .status-box { background: var(--sand); border: 2px solid var(--earth); }
+    .transcript-box { background: #fff; border: 2px dashed var(--forest); }
+    .result-box { background: var(--forest); color: #fff; }
+    .result-box strong { color: var(--sun); }
+    .sample-picker { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
+    .sample-picker .big-btn { font-size: 1.1rem; min-height: 56px; }
+    .sample-picker .big-btn[aria-pressed="true"] { background: var(--sun); border-color: var(--sun); color: var(--brown); }
+    .text-size-toggle { display: flex; gap: .75rem; flex-wrap: wrap; align-items: center; margin: 1rem 0; }
+    .text-size-toggle .big-btn { font-size: 1rem; min-height: 52px; padding: .75rem 1.1rem; }
+    .text-size-toggle .big-btn[aria-pressed="true"] { background: var(--forest); border-color: var(--forest); color: #fff; }
+    .typed-fallback { display: flex; gap: .75rem; flex-wrap: wrap; margin: 1rem 0; }
+    .typed-fallback input {
+      flex: 1; min-width: 220px; min-height: 64px; padding: .75rem 1rem;
+      font-family: "Poppins", sans-serif; font-size: 1.25rem;
+      border: 3px solid var(--earth); border-radius: 16px; background: #fff; color: var(--earth);
+    }
+    .typed-fallback input:focus-visible { outline: 3px solid var(--tangerine); outline-offset: 2px; }
+    .sample-badge {
+      display: inline-block; background: var(--sun); color: var(--brown); border: 2px solid var(--earth);
+      border-radius: 999px; padding: .4rem 1rem; font-weight: 700; font-size: .95rem;
+    }
+    /* Text-size modes — applied to the demo area */
+    .voice-demo.text-large { font-size: 1.25rem; }
+    .voice-demo.text-large .readout { font-size: 2.1rem; }
+    .voice-demo.text-large .big-btn { font-size: 1.4rem; }
+    .voice-demo.text-xlarge { font-size: 1.5rem; }
+    .voice-demo.text-xlarge .readout { font-size: 2.5rem; }
+    .voice-demo.text-xlarge .big-btn { font-size: 1.6rem; }
+    .voice-demo.text-xlarge .status-box, .voice-demo.text-xlarge .transcript-box, .voice-demo.text-xlarge .result-box { font-size: 1.4rem; }
+    @media (max-width: 640px) {
+      .steps { grid-template-columns: 1fr; }
+      .readout { font-size: 1.4rem; }
+      .voice-demo { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <!-- Nav — style copied from Webflow (mindfullydesign.webflow.io), own simple JS, no Webflow JS.
+       Services / About / Resumé are placeholder buttons for now, mirroring the original Webflow menu. -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="logo" href="../../index.html" aria-label="Ginko's Prototype Playground — home">
+        <img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/67b6998f1db3d0b64a9c19e6_apple-touch-icon.png" loading="lazy" width="32" alt="" class="logo-g" />
+        <img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" class="logo-img" />
+      </a>
+      <button class="menu-button" type="button" aria-label="Menu" aria-expanded="false">
+        <span class="menu-icon1"><span class="menu-icon1_line-top"></span><span class="menu-icon1_line-middle"></span><span class="menu-icon1_line-bottom"></span></span>
+      </button>
+      <nav class="nav-links" aria-label="Main">
+        <div class="nav-dropdown">
+          <button class="nav-link nav-toggle" type="button" aria-expanded="false" aria-haspopup="true">Prototypes <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.55806 6.29544C2.46043 6.19781 2.46043 6.03952 2.55806 5.94189L3.44195 5.058C3.53958 4.96037 3.69787 4.96037 3.7955 5.058L8.00001 9.26251L12.2045 5.058C12.3021 4.96037 12.4604 4.96037 12.5581 5.058L13.4419 5.94189C13.5396 6.03952 13.5396 6.19781 13.4419 6.29544L8.17678 11.5606C8.07915 11.6582 7.92086 11.6582 7.82323 11.5606L2.55806 6.29544Z" fill="currentColor"/></svg></button>
+          <div class="nav-dropdown-list">
+            <a class="nav-dropdown-link" href="../peerspect/index.html"><span class="thumb sun">P</span><span><strong>PEERSPECT</strong><span>One of Ginko's prototypes — details to come.</span></span></a>
+            <a class="nav-dropdown-link" href="../kate-ai/index.html"><span class="thumb">AI</span><span><strong>AI prototype for Kate</strong><span>The AI prototype Ginko is putting together for Kate.</span></span></a>
+            <a class="nav-dropdown-link" href="./index.html"><span class="thumb">V</span><span><strong>Voice-First AI for Low Vision</strong><span>Speak, listen, then confirm — nothing happens until you say so.</span></span></a>
+            <a class="nav-dropdown-link" href="../index.html"><span class="thumb">All</span><span><strong>All prototypes</strong><span>See every prototype subpage in one place.</span></span></a>
+          </div>
+        </div>
+        <a class="nav-link" href="https://mindfullydesign.webflow.io/#offerings">Services</a>
+        <a class="nav-link" href="https://mindfullydesign.webflow.io/about">About</a>
+        <a class="nav-link" href="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/67aea44f506169a16be6fd36_95d3807660de7d4d3415709f6ff2e4eb_Ginko%20Emdon%20-%20Product%20Designer%20-%20Resume%20-%202025.pdf">Resumé</a>
+        <a class="flower-button" href="https://mindfullydesign.webflow.io/" target="_blank" rel="noopener"><span class="button-line-left"></span><span class="button-inner-text">Ginko's Portfolio</span><span class="button-line-right"></span></a>
+      </nav>
+    </div>
+  </header>
+  <div class="wrap">
+
+    <main id="main">
+      <section class="product-shell" style="--product-accent: #2f2a6b;" aria-labelledby="product-title">
+        <p><a class="back" href="../../index.html">← Back to Ginko's Prototype Playground</a></p>
+        <div class="product-head">
+          <span class="product-mark" aria-hidden="true">V</span>
+          <div>
+            <p class="product-meta">Voice-First AI for Low Vision · A product by Ginko · 2026</p>
+            <h1 id="product-title">Voice-First AI for Low Vision</h1>
+            <p class="product-tagline">Speak, listen, then confirm. Nothing happens until you say so.</p>
+          </div>
+        </div>
+        <div class="how-to">
+          <h2>How to use this product</h2>
+          <ol>
+            <li><strong>Choose a sample</strong> — pick a product label or an appointment below.</li>
+            <li><strong>Press “Read it aloud”</strong> — the AI reads it in large text, slowly. Then answer by voice, or type instead.</li>
+            <li><strong>Press Confirm</strong> — only the Confirm button acts. A voice “yes” alone never books, sends, or saves anything.</li>
+          </ol>
+          <p style="margin:.5rem 0 0; color: var(--muted);">When you confirm, the demo shows a “Confirmed” message and nothing else changes — nothing is booked, sent, or saved, and nothing leaves your browser.</p>
+          <p style="margin:.5rem 0 0; color: var(--muted);">Sample data only. No backend, no external AI calls. It runs entirely in your browser, using the Web Speech API when your browser supports it.</p>
+        </div>
+      </section>
+
+      <section aria-label="Voice-first demo">
+        <div class="voice-demo text-normal" id="voice-demo">
+          <h2>Try it: hear it, then confirm it</h2>
+          <p>Pick a sample, press <strong>Read it aloud</strong>, then answer. Say — or type — <strong>“Yes, that’s right”</strong> or <strong>“No, read it again.”</strong></p>
+
+          <div class="text-size-toggle" role="group" aria-label="Text size">
+            <strong>Text size:</strong>
+            <button type="button" class="big-btn secondary" data-text-size="text-normal" aria-pressed="true">Normal</button>
+            <button type="button" class="big-btn secondary" data-text-size="text-large" aria-pressed="false">Large</button>
+            <button type="button" class="big-btn secondary" data-text-size="text-xlarge" aria-pressed="false">Extra large</button>
+            <button type="button" class="big-btn secondary" id="read-page-btn">Read this page aloud</button>
+            <button type="button" class="big-btn secondary" id="stop-btn">Stop reading</button>
+          </div>
+
+          <div class="status-box" id="support-status" role="status" aria-live="polite">
+            Checking your browser for voice support…
+          </div>
+
+          <ol class="steps" aria-label="Steps">
+            <li id="step-1" class="active"><strong>1 · Speak</strong><span>AI reads the sample aloud, in large text.</span></li>
+            <li id="step-2"><strong>2 · Listen</strong><span>You answer by voice, or type instead.</span></li>
+            <li id="step-3"><strong>3 · Confirm</strong><span>Only the Confirm button acts. Voice alone never does.</span></li>
+          </ol>
+
+          <h3>Choose a sample</h3>
+          <div class="sample-picker" role="group" aria-label="Choose a sample">
+            <button type="button" class="big-btn secondary" data-sample="label" aria-pressed="true">Product label</button>
+            <button type="button" class="big-btn secondary" data-sample="appointment" aria-pressed="false">Appointment</button>
+          </div>
+
+          <div class="readout" id="readout" aria-live="polite">Oat milk, 1 litre. Best before March 2, 2027. Contains oats. Shake well before use.</div>
+
+          <div class="btn-row">
+            <button type="button" class="big-btn sun" id="speak-btn">🔊 Read it aloud — Step 1: Speak</button>
+          </div>
+
+          <div class="status-box" id="status" role="status" aria-live="polite">Ready. Press “Read it aloud” to start.</div>
+
+          <h3>Step 2: Listen — did I read that right?</h3>
+          <div class="btn-row">
+            <button type="button" class="big-btn" id="listen-btn">🎙️ Listen to my answer</button>
+          </div>
+          <p>Or type your answer instead:</p>
+          <div class="typed-fallback">
+            <label for="typed-answer" class="sr-only" style="position:absolute;left:-9999px;">Type your answer</label>
+            <input id="typed-answer" type="text" placeholder='Type: Yes, that’s right — or: No, read it again' autocomplete="off" />
+            <button type="button" class="big-btn secondary" id="typed-btn">Use typed answer</button>
+          </div>
+          <div class="transcript-box" id="transcript" aria-live="polite">I heard: <strong>— nothing yet —</strong></div>
+
+          <h3>Step 3: Confirm — nothing happens until you press this</h3>
+          <p>Voice “yes” only gets you here. The action below is the only thing that counts as confirmation.</p>
+          <div class="btn-row">
+            <button type="button" class="big-btn sun" id="confirm-btn" disabled>Yes, that’s right — Confirm</button>
+            <button type="button" class="big-btn secondary" id="again-btn">No, read it again</button>
+          </div>
+
+          <div class="result-box" id="result" aria-live="polite" hidden></div>
+
+          <h3>How this prototype is designed</h3>
+          <ul>
+            <li><strong>Voice first, not voice only:</strong> every spoken step has a large button and a typed fallback.</li>
+            <li><strong>Confirm before acting:</strong> the AI reads, you answer, then you press Confirm. A voice “yes” alone never books, sends, or saves anything.</li>
+            <li><strong>Slow, clear speech:</strong> the readout is spoken at a slower rate, and shown in very large text at the same time.</li>
+            <li><strong>Uncertain? It says so:</strong> if the browser can’t hear you, or the answer isn’t clear, it asks again instead of guessing.</li>
+          </ul>
+        </div>
+      </section>
+      <p style="margin-top:1.5rem;"><a href="../../prototypes/index.html">← All prototypes</a></p>
+    </main>
+
+    <footer id="footer" class="footer-component">
+      <div class="footer-top">
+        <a href="../../index.html" class="footer-logo" aria-label="Ginko — home"><img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" /></a>
+        <div class="footer-email">
+          <div class="footer-email-label">Hit my line</div>
+          <div class="footer-block">
+            <button class="email-copy" type="button" data-email="mindfullydesign@gmail.com" aria-label="Copy email to clipboard"><span class="email-text">mindfullydesign@gmail.com</span><svg class="copy-icon" width="24" height="24" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="6.20312" y="7.20386" width="16.7972" height="16.7972" fill="transparent" stroke="#0F0602" stroke-width="2"/><rect x="1" y="1.99878" width="16.7972" height="16.7972" fill="#c9c972" stroke="#0F0602" stroke-width="2"/></svg></button>
+            <a class="footer-social" href="https://www.linkedin.com/in/ginkoemdon/" target="_blank" rel="noopener" aria-label="Visit my LinkedIn profile"><img loading="lazy" src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/673c129627b8d3c81d9be887_6491a87dcdb57d5bee063ee7_linkedin-logo-white.svg" alt="Ginko Emdon's LinkedIn profile" /></a>
+          </div>
+        </div>
+      </div>
+      <hr class="footer-divider" />
+      <div class="footer-copyright">
+        <p>made mindfully<br />© 2026 Ginko Emdon</p>
+      </div>
+      <div class="footer-thankyou">
+        <p>✿ thank you for your cyber frolick ✿</p>
+      </div>
+    </footer>
+  </div>
+  <script>
+  (function(){var h=document.querySelector('.nav');var b=document.querySelector('.menu-button');if(b&&h){b.addEventListener('click',function(){var o=h.classList.toggle('nav-open');b.setAttribute('aria-expanded',o);});}document.querySelectorAll('.nav-toggle').forEach(function(t){t.addEventListener('click',function(e){e.stopPropagation();var d=t.closest('.nav-dropdown');var o=d.classList.toggle('open');t.setAttribute('aria-expanded',o);});});document.addEventListener('click',function(e){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){if(!d.contains(e.target)){d.classList.remove('open');d.querySelector('.nav-toggle').setAttribute('aria-expanded','false');}});});document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open');});}});document.querySelectorAll('.email-copy').forEach(function(btn){btn.addEventListener('click',function(){var email=btn.getAttribute('data-email');var label=btn.querySelector('.email-text');function done(){if(label){label.textContent='Copied!';setTimeout(function(){label.textContent=email;},2000);}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(email).then(done);}else{var ta=document.createElement('textarea');ta.value=email;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);done();}});});})();
+  </script>
+  <script>
+  (function(){
+    var demo = document.getElementById('voice-demo');
+    var statusEl = document.getElementById('status');
+    var supportEl = document.getElementById('support-status');
+    var readoutEl = document.getElementById('readout');
+    var transcriptEl = document.getElementById('transcript');
+    var resultEl = document.getElementById('result');
+    var confirmBtn = document.getElementById('confirm-btn');
+    var againBtn = document.getElementById('again-btn');
+    var listenBtn = document.getElementById('listen-btn');
+    var speakBtn = document.getElementById('speak-btn');
+    var typedInput = document.getElementById('typed-answer');
+
+    var samples = {
+      label: "Oat milk, 1 litre. Best before March 2, 2027. Contains oats. Shake well before use.",
+      appointment: "Your appointment with Dr. Lee is on Thursday, December 4, at 10:30 in the morning, at 1200 Jarry Street East, Montréal."
+    };
+    var sampleNames = { label: "product label", appointment: "appointment" };
+    var currentSample = 'label';
+    var heardYes = false;
+
+    var hasSpeech = ('speechSynthesis' in window);
+    var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var hasRecognition = !!SpeechRecognition;
+
+    function supportMessage(){
+      if (hasSpeech && hasRecognition) {
+        supportEl.textContent = "Voice is on: this browser can read aloud and listen. You can also type every answer instead — voice is never required.";
+      } else if (hasSpeech && !hasRecognition) {
+        supportEl.textContent = "This browser can read aloud, but it does not support voice listening here. Use the typed answer box below — the demo works fully by typing.";
+        listenBtn.disabled = true;
+        listenBtn.textContent = "🎙️ Listening is not supported in this browser — type instead";
+      } else if (!hasSpeech && hasRecognition) {
+        supportEl.textContent = "This browser can listen, but it cannot read aloud here. The text is shown in large print, and you can still answer by voice or by typing.";
+      } else {
+        supportEl.textContent = "This browser does not support the Web Speech API for reading aloud or listening. The demo still works fully by reading the large text and typing your answer.";
+        listenBtn.disabled = true;
+        speakBtn.textContent = "Read it aloud — not supported in this browser";
+      }
+    }
+    supportMessage();
+
+    function setStep(n){
+      [1,2,3].forEach(function(i){
+        var li = document.getElementById('step-' + i);
+        if (!li) return;
+        li.classList.remove('active','done');
+        if (i < n) li.classList.add('done');
+        if (i === n) li.classList.add('active');
+      });
+    }
+    function setStatus(text){ statusEl.textContent = text; }
+    function speak(text, onEnd){
+      if (!hasSpeech) { setStatus("Reading aloud is not supported in this browser. Please read the large text on screen."); if (onEnd) onEnd(); return; }
+      try {
+        window.speechSynthesis.cancel();
+        var u = new SpeechSynthesisUtterance(text);
+        u.rate = 0.9; u.pitch = 1; u.lang = 'en-CA';
+        u.onend = function(){ if (onEnd) onEnd(); };
+        u.onerror = function(){ setStatus("I could not read that aloud. Please read the large text on screen."); if (onEnd) onEnd(); };
+        window.speechSynthesis.speak(u);
+      } catch(e) {
+        setStatus("I could not read that aloud. Please read the large text on screen.");
+        if (onEnd) onEnd();
+      }
+    }
+    function stopSpeaking(){ if (hasSpeech) { try { window.speechSynthesis.cancel(); } catch(e){} } }
+
+    // Text-size toggle
+    document.querySelectorAll('[data-text-size]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        demo.classList.remove('text-normal','text-large','text-xlarge');
+        demo.classList.add(btn.getAttribute('data-text-size'));
+        document.querySelectorAll('[data-text-size]').forEach(function(b){ b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+        setStatus("Text size changed to " + btn.textContent + ".");
+      });
+    });
+
+    // Sample picker
+    document.querySelectorAll('[data-sample]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        currentSample = btn.getAttribute('data-sample');
+        readoutEl.textContent = samples[currentSample];
+        document.querySelectorAll('[data-sample]').forEach(function(b){ b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+        heardYes = false; confirmBtn.disabled = true; resultEl.hidden = true;
+        transcriptEl.innerHTML = 'I heard: <strong>— nothing yet —</strong>';
+        setStep(1);
+        setStatus("Sample changed to the " + sampleNames[currentSample] + ". Press “Read it aloud” to hear it.");
+      });
+    });
+
+    // Step 1: Speak
+    speakBtn.addEventListener('click', function(){
+      resultEl.hidden = true; heardYes = false; confirmBtn.disabled = true;
+      setStep(1);
+      setStatus("Reading the " + sampleNames[currentSample] + " aloud…");
+      speak(samples[currentSample] + " Did I read that right? Say yes, that is right — or no, read it again.", function(){
+        setStep(2);
+        setStatus("I finished reading. Did I read that right? Press “Listen to my answer”, or type your answer.");
+      });
+    });
+
+    // Read this page aloud / Stop
+    document.getElementById('read-page-btn').addEventListener('click', function(){
+      var text = "Voice-First AI for Low Vision. Speak, listen, then confirm. Nothing happens until you say so. " +
+        "Step 1, Speak: I read the sample aloud. Step 2, Listen: you answer yes, or no, read it again. " +
+        "Step 3, Confirm: only the Confirm button acts. The sample is: " + samples[currentSample];
+      setStatus("Reading this page aloud…");
+      speak(text, function(){ setStatus("Finished reading this page aloud."); });
+    });
+    document.getElementById('stop-btn').addEventListener('click', function(){
+      stopSpeaking();
+      setStatus("Stopped reading.");
+    });
+
+    // Interpret an answer — voice or typed — but never act on it alone
+    function handleAnswer(text){
+      var lower = (text || '').toLowerCase();
+      transcriptEl.innerHTML = 'I heard: <strong></strong>';
+      transcriptEl.querySelector('strong').textContent = text || '— nothing —';
+      if (/\b(no|not right|wrong|again|repeat)\b/.test(lower)) {
+        heardYes = false; confirmBtn.disabled = true;
+        setStep(1);
+        setStatus("You said no. I will read it again — nothing was confirmed or changed.");
+        speak("Okay, I will read it again. " + samples[currentSample], function(){
+          setStep(2);
+          setStatus("I read it again. Did I read that right this time?");
+        });
+        return;
+      }
+      if (/\b(yes|that'?s right|correct|right)\b/.test(lower)) {
+        heardYes = true; confirmBtn.disabled = false;
+        setStep(3);
+        setStatus("You said yes. I have NOT acted yet. To finish, press the Confirm button — “Yes, that’s right — Confirm.”");
+        speak("You said yes. I have not acted yet. Press Confirm to finish, or say no to hear it again.");
+        return;
+      }
+      heardYes = false; confirmBtn.disabled = true;
+      setStep(2);
+      setStatus("I did not understand that answer. Please say “Yes, that’s right” or “No, read it again” — or type it.");
+      speak("I did not understand. Please say yes, that is right — or no, read it again.");
+    }
+
+    // Step 2: Listen (Web Speech API)
+    listenBtn.addEventListener('click', function(){
+      if (!hasRecognition) {
+        setStatus("Listening is not supported in this browser. Please type your answer in the box below.");
+        typedInput.focus();
+        return;
+      }
+      setStep(2);
+      setStatus("Listening… Say “Yes, that’s right” or “No, read it again.”");
+      listenBtn.disabled = true;
+      listenBtn.textContent = "🎙️ Listening… speak now";
+      try {
+        var rec = new SpeechRecognition();
+        rec.lang = 'en-CA'; rec.interimResults = false; rec.maxAlternatives = 1;
+        rec.onresult = function(e){
+          var text = e.results[0][0].transcript;
+          handleAnswer(text);
+        };
+        rec.onerror = function(){
+          setStatus("I could not hear you. Please try again, or type your answer below.");
+          speak("I could not hear you. Please try again, or type your answer.");
+        };
+        rec.onend = function(){
+          listenBtn.disabled = false;
+          listenBtn.textContent = "🎙️ Listen to my answer";
+        };
+        rec.start();
+      } catch(e) {
+        listenBtn.disabled = false;
+        listenBtn.textContent = "🎙️ Listen to my answer";
+        setStatus("Listening did not start in this browser. Please type your answer below.");
+      }
+    });
+
+    // Typed fallback
+    document.getElementById('typed-btn').addEventListener('click', function(){
+      var text = typedInput.value.trim();
+      if (!text) { setStatus("Type your answer first — for example, “Yes, that’s right”."); typedInput.focus(); return; }
+      handleAnswer(text);
+    });
+    typedInput.addEventListener('keydown', function(e){
+      if (e.key === 'Enter') { e.preventDefault(); document.getElementById('typed-btn').click(); }
+    });
+
+    // Step 3: Confirm — the ONLY action
+    confirmBtn.addEventListener('click', function(){
+      if (!heardYes) {
+        setStatus("Please answer first in Step 2 — say or type “Yes, that’s right” — then press Confirm.");
+        return;
+      }
+      stopSpeaking();
+      setStep(3);
+      resultEl.hidden = false;
+      resultEl.innerHTML = "<strong>Confirmed.</strong> You confirmed the " + sampleNames[currentSample] + " is correct: “" + samples[currentSample] + "” — This is a prototype with sample data, so nothing was booked, sent, or saved.";
+      setStatus("Confirmed. Thank you — that is the only action taken, and only because you pressed Confirm.");
+      speak("Confirmed. Thank you.");
+    });
+
+    // No, read it again
+    againBtn.addEventListener('click', function(){
+      heardYes = false; confirmBtn.disabled = true; resultEl.hidden = true;
+      setStep(1);
+      setStatus("Okay — reading it again. Nothing was confirmed or changed.");
+      speak("Okay, I will read it again. " + samples[currentSample], function(){
+        setStep(2);
+        setStatus("I read it again. Did I read that right this time?");
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

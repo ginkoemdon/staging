@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 240" role="img" aria-label="Option C: minimal editorial, one continuous line winding to a single beacon star on the horizon">
+  <rect width="640" height="240" fill="#faf7f0"/>
+  <g fill="#3b342f"><circle cx="120" cy="52" r="2"/><circle cx="520" cy="44" r="2"/><circle cx="560" cy="88" r="1.5"/><circle cx="84" cy="104" r="1.5"/></g>
+  <path d="M520 36 l4 11 11 4 -11 4 -4 11 -4 -11 -11 -4 11 -4z" fill="#c9c972"/>
+  <line x1="48" y1="188" x2="592" y2="188" stroke="#3b342f" stroke-width="1.5" opacity="0.5"/>
+  <path d="M48 188 C 140 188, 170 132, 250 140 S 380 196, 452 150 S 540 104, 592 112" stroke="#184b44" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M592 112 l5 14 14 5 -14 5 -5 14 -5 -14 -14 -5 14 -5z" fill="#e26c00"/>
+  <circle cx="250" cy="140" r="4" fill="#184b44"/>
+  <circle cx="452" cy="150" r="4" fill="#184b44"/>
+  <path d="M120 188 L 200 124 L 280 188 Z" fill="#184b44" opacity="0.18"/>
+  <path d="M200 124 L 220 146 L 200 140 L 180 146 Z" fill="#184b44" opacity="0.45"/>
+</svg>
