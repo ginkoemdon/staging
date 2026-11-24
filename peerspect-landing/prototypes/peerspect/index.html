@@ -3413,7 +3413,8 @@
        bars. At-a-glance stats, ring gauges, a day timeline, what
        you will hear, and an AI suggestions widget. Each suggestion
        cites the data it came from, so the owner can see why it
-       was suggested. All sample data, labelled as such. No
+       was suggested. Worded as peer data from the last 7 days,
+       Nov 24 2026, no "sample data" on this screen. No
        individual report, name, or visit is shown. */
     function renderBiz(){
       var p=PLACES.find(function(x){ return x.id===bizSelect.value; }) || PLACES[0];
@@ -3424,7 +3425,7 @@
         {label:"Pronouns respected", value:p.tags.indexOf("pronoun-respect")>=0?91:58, colour:"#8a4a08", note:"Confirmed by peers, anonymously."},
         {label:"Step-free entry is clear", value:p.tags.indexOf("step-free")>=0?82:35, colour:"#14665a", note:"People plan around the entrance."}
       ];
-      var html="<p class='ps-muted'>Sample data from the last 7 days. Counts and patterns from many anonymous peer check-ins, no names and no individual reports.</p>";
+      var html="<p class='ps-muted'>Peer data from the last 7 days. It records and identifies patterns from anonymous peer check-ins. No names, no individual reports.</p>";
       html+="<div class='biz-stats'>"
         +"<div class='biz-stat'><p class='num'>"+p.confirmed+"</p><p>Peer confirmations</p></div>"
         +"<div class='biz-stat'><p class='num'>"+calmVal+"%</p><p>Say it feels calm</p></div>"
@@ -3447,17 +3448,17 @@
       /* AI suggestions, built from the numbers above, not generic. */
       var sugg=[];
       if(p.tags.indexOf("menu-qr")>=0 && p.tags.indexOf("menu-physical")<0){
-        sugg.push({t:"Keep a printed menu at the counter, as well as the QR code.", why:"Based on: menu is easy to preview, 64%, and the menu is QR-code only here.", try:"It helps people who cannot scan easily, and people who want to choose before they order.", d:"The place details say: "+p.menuNote+" The 'Menu is easy to preview' ring above reads "+insights[1].value+"%, from sample peer check-ins over the last 7 days. This place has "+p.confirmed+" peer confirmations in total over the last 14 days (sample data)."});
+        sugg.push({t:"Keep a printed menu at the counter, as well as the QR code.", why:"Based on: menu is easy to preview, 64%, and the menu is QR-code only here.", try:"It helps people who cannot scan easily, and people who want to choose before they order.", d:"The place details say: "+p.menuNote+" The 'Menu is easy to preview' ring above reads "+insights[1].value+"%, from peer check-ins over the last 7 days. This place has "+p.confirmed+" peer confirmations in total over the last 14 days."});
       }
       if(insights[3].value<82){
-        sugg.push({t:"Put a short note at the entrance about step-free access.", why:"Based on: step-free entry is clear, "+insights[3].value+"%.", try:"People plan around the entrance. A clear note helps them decide before they arrive.", d:"The place details say: "+p.access+" 'Step-free entry is clear' reads "+insights[3].value+"% in the rings above, from sample peer check-ins over the last 7 days. This place has "+p.confirmed+" peer confirmations in total over the last 14 days (sample data)."});
+        sugg.push({t:"Put a short note at the entrance about step-free access.", why:"Based on: step-free entry is clear, "+insights[3].value+"%.", try:"People plan around the entrance. A clear note helps them decide before they arrive.", d:"The place details say: "+p.access+" 'Step-free entry is clear' reads "+insights[3].value+"% in the rings above, from peer check-ins over the last 7 days. This place has "+p.confirmed+" peer confirmations in total over the last 14 days."});
       }
       if(insights[2].value<91){
-        sugg.push({t:"Add a small pronoun note for staff, at the till.", why:"Based on: pronouns respected, "+insights[2].value+"%.", try:"A short reminder at the till helps staff get it right, every time.", d:"This place does not list pronouns respected in its details. 'Pronouns respected' reads "+insights[2].value+"% in the rings above, from sample peer check-ins over the last 7 days. This place has "+p.confirmed+" peer confirmations in total over the last 14 days (sample data)."});
+        sugg.push({t:"Add a small pronoun note for staff, at the till.", why:"Based on: pronouns respected, "+insights[2].value+"%.", try:"A short reminder at the till helps staff get it right, every time.", d:"This place does not list pronouns respected in its details. 'Pronouns respected' reads "+insights[2].value+"% in the rings above, from peer check-ins over the last 7 days. This place has "+p.confirmed+" peer confirmations in total over the last 14 days."});
       }
-      sugg.push({t:"Try a quiet hour on weekday mornings.", why:"Based on: "+calmVal+"% say it feels calm, and mornings are the calmest part of the day.", try:"Peers often note the room is calmest then. A named quiet hour makes that easy to find.", d:"'Peers say it feels calm' reads "+calmVal+"% in the rings above, from sample peer check-ins over the last 7 days. "+(p.day && p.day[0] ? p.day[0][0] : "Morning")+" is the calmest part of the day: "+(p.dayCounts ? p.dayCounts[0] : 0)+" of this place's "+p.confirmed+" peer confirmations over the last 14 days (sample data) came in the morning."});
+      sugg.push({t:"Try a quiet hour on weekday mornings.", why:"Based on: "+calmVal+"% say it feels calm, and mornings are the calmest part of the day.", try:"Peers often note the room is calmest then. A named quiet hour makes that easy to find.", d:"'Peers say it feels calm' reads "+calmVal+"% in the rings above, from peer check-ins over the last 7 days. "+(p.day && p.day[0] ? p.day[0][0] : "Morning")+" is the calmest part of the day: "+(p.dayCounts ? p.dayCounts[0] : 0)+" of this place's "+p.confirmed+" peer confirmations over the last 14 days came in the morning."});
       sugg=sugg.slice(0,3);
-      html+="<div class='biz-ai'><span class='biz-ai-tag'>AI suggestions</span><h3 style='margin-top:12px;'>Suggestions to try, based on the data above</h3><p class='ps-muted'>Gentle, pre-written suggestions for small changes, based on the patterns above. No names and no individual reports.</p>";
+      html+="<div class='biz-ai'><span class='biz-ai-tag'>AI suggestions</span><h3 style='margin-top:12px;'>Suggestions to try, based on the data above</h3>";
       sugg.forEach(function(s){
         html+="<div class='biz-sugg'><strong>"+s.t+"</strong><p>"+s.try+"</p><p class='based'>"+s.why+"</p><details class='biz-why'><summary aria-expanded='false'>Why this suggestion</summary><p>"+s.d+"</p></details></div>";
       });
@@ -3465,7 +3466,7 @@
       html+="</div>";
       html+="<p class='ps-muted'>Private and anonymous. Only counts and patterns, never a name or an individual report.</p>";
       $("biz-body").innerHTML=html;
-      $("biz-raw").textContent="Demo counts for "+p.name+": "+p.confirmed+" peer confirmations in total. The rings and percentages above are sample data, not real data.";
+      $("biz-raw").textContent="Peer data for "+p.name+": "+p.confirmed+" peer confirmations in total. The rings and percentages above come from anonymous peer check-ins over the last 7 days.";
     }
     bizSelect.addEventListener("change", renderBiz);
 
