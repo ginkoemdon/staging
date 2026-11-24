@@ -15,8 +15,10 @@
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
   <header class="app-bar">
-    <span class="app-bar-spacer" aria-hidden="true"></span>
-    <p class="app-mark">From Form <span>to Function</span></p>
+    <div class="app-logo" id="header-logo" role="img" aria-label="From Form to Function logo">
+      <svg viewBox="0 0 56 56" aria-hidden="true"><rect x="4" y="8" width="20" height="40" rx="4" fill="#1e293b"/><g stroke="#f6f5f1" stroke-width="2" stroke-linecap="round"><line x1="8" y1="16" x2="20" y2="16"/><line x1="8" y1="22" x2="16" y2="22"/><line x1="8" y1="28" x2="20" y2="28"/><line x1="8" y1="34" x2="14" y2="34"/><line x1="8" y1="40" x2="18" y2="40"/></g><path d="M28 28h8m-3-3l3 3-3 3" fill="none" stroke="#0f766e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><g><rect x="40" y="16" width="12" height="4" rx="2" fill="#0f766e"/><rect x="40" y="26" width="12" height="4" rx="2" fill="#1e293b"/><rect x="40" y="36" width="12" height="4" rx="2" fill="#92400e"/></g></svg>
+      <span class="visually-hidden">From Form to Function</span>
+    </div>
     <div class="app-bar-actions">
       <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">&#9789;</span></button>
       <a class="app-close" href="../../index.html" aria-label="Close prototype and return to Ginko's Prototype Playground"><span aria-hidden="true">&times;</span></a>
@@ -27,9 +29,27 @@
 
       <!-- Start / onboarding: one short line, three actions, nothing else. -->
       <section id="screen-start" aria-labelledby="product-title">
-        <p class="meta">From Form to Function · 2026</p>
-        <h1 id="product-title">From Form to Function</h1>
+        <h1 id="product-title" class="visually-hidden">From Form to Function</h1>
         <p class="tagline">A confusing form, in plain language, one step at a time.</p>
+
+        <div class="logo-picker" id="logo-picker">
+          <h2>Pick a logo for this prototype</h2>
+          <p class="hint">Tap one — it shows in the header straight away. All three are code, in this prototype's own colours.</p>
+          <div class="logo-options" role="group" aria-label="Logo options">
+            <button class="logo-option" type="button" data-logo="a" aria-pressed="true">
+              <svg viewBox="0 0 56 56" aria-hidden="true"><rect x="4" y="8" width="20" height="40" rx="4" fill="#1e293b"/><g stroke="#f6f5f1" stroke-width="2" stroke-linecap="round"><line x1="8" y1="16" x2="20" y2="16"/><line x1="8" y1="22" x2="16" y2="22"/><line x1="8" y1="28" x2="20" y2="28"/><line x1="8" y1="34" x2="14" y2="34"/><line x1="8" y1="40" x2="18" y2="40"/></g><path d="M28 28h8m-3-3l3 3-3 3" fill="none" stroke="#0f766e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><g><rect x="40" y="16" width="12" height="4" rx="2" fill="#0f766e"/><rect x="40" y="26" width="12" height="4" rx="2" fill="#1e293b"/><rect x="40" y="36" width="12" height="4" rx="2" fill="#92400e"/></g></svg>
+              <strong>A — Dense panel to clear steps</strong><span>A crowded form panel on the left, an arrow, then three clean aligned bars.</span>
+            </button>
+            <button class="logo-option" type="button" data-logo="b" aria-pressed="false">
+              <svg viewBox="0 0 56 56" aria-hidden="true"><rect x="6" y="6" width="26" height="44" rx="4" fill="#ffffff" stroke="#1e293b" stroke-width="2.5"/><g stroke="#1e293b" stroke-width="2" stroke-linecap="round"><line x1="11" y1="15" x2="27" y2="15"/><line x1="11" y1="21" x2="23" y2="21"/><line x1="11" y1="27" x2="27" y2="27"/><line x1="11" y1="33" x2="21" y2="33"/></g><rect x="36" y="6" width="14" height="6" rx="3" fill="#92400e"/><circle cx="40" cy="40" r="11" fill="#0f766e"/><path d="M35 40l3.5 3.5L46 36" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <strong>B — Form, checked and clear</strong><span>A form page with messy lines, and a teal tick — the form understood.</span>
+            </button>
+            <button class="logo-option" type="button" data-logo="c" aria-pressed="false">
+              <svg viewBox="0 0 56 56" aria-hidden="true"><g><rect x="8" y="40" width="10" height="8" rx="2" fill="#0f766e"/><rect x="20" y="32" width="10" height="16" rx="2" fill="#1e293b"/><rect x="32" y="24" width="10" height="24" rx="2" fill="#92400e"/></g><path d="M8 18h24m-6-6l6 6-6 6" fill="none" stroke="#0f766e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="48" cy="12" r="4" fill="#1e293b"/></svg>
+              <strong>C — Steps up, arrow forward</strong><span>Three steps rising left to right, with an arrow pointing the way through.</span>
+            </button>
+          </div>
+        </div>
 
         <div class="start-actions">
           <label class="btn btn-primary" for="form-upload"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5l5 5"/><path d="M4 20h16"/></svg>Upload a form</label>
@@ -142,6 +162,32 @@
     if (themeBtn) themeBtn.addEventListener('click', function () {
       applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
     });
+
+    /* Logo picker: three inline-SVG options on the start screen. The
+       picked one shows in the header (top left); the choice is
+       remembered. Default is A. */
+    var headerLogo = $('header-logo');
+    var logoBtns = document.querySelectorAll('.logo-option');
+    function setLogo(key) {
+      var chosen = null;
+      logoBtns.forEach(function (b) {
+        var on = b.getAttribute('data-logo') === key;
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        if (on) chosen = b;
+      });
+      if (chosen && headerLogo) {
+        var svg = chosen.querySelector('svg');
+        if (svg) headerLogo.innerHTML = svg.outerHTML + '<span class="visually-hidden">From Form to Function</span>';
+      }
+      try { localStorage.setItem('fftf-logo-v1', key); } catch (e) {}
+    }
+    logoBtns.forEach(function (b) {
+      b.addEventListener('click', function () { setLogo(b.getAttribute('data-logo')); });
+    });
+    var savedLogo = 'a';
+    try { savedLogo = localStorage.getItem('fftf-logo-v1') || 'a'; } catch (e) {}
+    if (!document.querySelector('.logo-option[data-logo="' + savedLogo + '"]')) savedLogo = 'a';
+    setLogo(savedLogo);
 
     // Swappable sample system.
     // MAIN_SAMPLE: the Accessible Parking Permit ('parking-permit',
@@ -584,7 +630,12 @@
       $('upload-note').style.display = 'none';
       showScreen('start');
     });
-    if (MAIN_SAMPLE && SAMPLES[MAIN_SAMPLE]) { showSample(MAIN_SAMPLE); }
+    // Do not auto-start into the steps: the start screen (tagline, upload/take
+    // a photo, logo picker, sample picker) is the landing. MAIN_SAMPLE stays
+    // pre-selected in the picker; tapping it starts the step-by-step form.
+    if (MAIN_SAMPLE && SAMPLES[MAIN_SAMPLE]) {
+      document.querySelectorAll('.sample-btn').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-sample') === MAIN_SAMPLE ? 'true' : 'false'); });
+    }
     ['form-upload', 'form-photo'].forEach(function (id) {
       $(id).addEventListener('change', function (e) {
         var file = e.target.files && e.target.files[0];

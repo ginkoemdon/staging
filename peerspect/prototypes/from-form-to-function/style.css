@@ -31,26 +31,36 @@ button, input, select { min-height: 44px; }
 }
 
 .wrap { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem 3rem; }
-/* Centred professional header (Nov 2026, like PEERSPECT): centred app name,
-   one round X close button top right, no text back-link. The header sits
-   outside the screens, so it stays visible on start, steps, and summary. */
-.app-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem 0; }
-/* Left spacer matches the right-hand actions (toggle + X + gap) so the
-   centred app name stays truly centred. */
-.app-bar-spacer { width: 96px; height: 44px; flex-shrink: 0; }
-.app-mark { font-family: "Sora", sans-serif; font-weight: 700; font-size: 1.05rem; color: #1e293b; flex: 1; text-align: center; margin: 0; }
-.app-mark span { color: #0f766e; }
-.app-bar-actions { display: flex; gap: 0.5rem; align-items: center; flex-shrink: 0; }
+/* Header (Nov 2026, revised): logo top left, theme toggle then X top
+   right, toggle immediately left of the X. No centred text name — the
+   logo is the mark, with a visually-hidden text name for screen readers.
+   The header sits outside the screens, so it stays visible on start,
+   steps, and summary. Header controls meet mobile/web sizing standards:
+   48px hit areas (Apple HIG 44pt minimum), 24px icons, 12px gap between
+   the two buttons, and 24px padding from the screen edge. */
+.app-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.75rem 1.5rem; min-height: 72px; }
+.app-logo { display: flex; align-items: center; flex-shrink: 0; }
+.app-logo svg { width: 48px; height: 48px; display: block; }
+.app-bar-actions { display: flex; gap: 12px; align-items: center; flex-shrink: 0; }
 /* Theme toggle, immediately left of the X (header rule, all prototypes):
    moon icon in light mode, sun icon in dark mode. */
-.theme-toggle { width: 44px; height: 44px; min-width: 44px; min-height: 44px; display: grid; place-items: center; flex-shrink: 0; border-radius: 50%; border: 0; background: transparent; cursor: pointer; padding: 0; }
-.theme-toggle .theme-icon { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #d9d7d0; background: #fff; color: #0f766e; font-size: 1.25rem; line-height: 1; display: grid; place-items: center; }
-.theme-toggle:hover .theme-icon, .theme-toggle:focus-visible .theme-icon { background: #e6efec; }
-.theme-toggle:focus-visible { outline: 3px solid #0f766e; outline-offset: 3px; }
-.app-close { width: 44px; height: 44px; min-width: 44px; min-height: 44px; display: grid; place-items: center; text-decoration: none; flex-shrink: 0; border-radius: 50%; }
-.app-close span { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #d9d7d0; background: #fff; color: #0f766e; font-size: 1.3rem; line-height: 1; display: grid; place-items: center; }
-.app-close:hover span, .app-close:focus-visible span { background: #e6efec; }
-.app-close:focus-visible { outline: 3px solid #0f766e; outline-offset: 3px; }
+.theme-toggle, .app-close { width: 48px; height: 48px; min-width: 48px; min-height: 48px; display: grid; place-items: center; flex-shrink: 0; border-radius: 50%; border: 1px solid #d9d7d0; background: #fff; color: #0f766e; cursor: pointer; padding: 0; text-decoration: none; }
+.theme-toggle .theme-icon { font-size: 1.5rem; line-height: 1; }
+.app-close span { font-size: 1.75rem; line-height: 1; }
+.theme-toggle:hover, .theme-toggle:focus-visible, .app-close:hover, .app-close:focus-visible { background: #e6efec; }
+.theme-toggle:focus-visible, .app-close:focus-visible { outline: 3px solid #0f766e; outline-offset: 3px; }
+/* Logo picker: three inline-SVG options, shown visually on the start
+   screen so Ginko can pick one for the header. */
+.logo-picker { background: #fff; border: 1px solid #d9d7d0; border-radius: 20px; padding: 1.5rem; box-shadow: 0 8px 24px rgba(30,41,59,.06); margin: 0 0 1.5rem; }
+.logo-picker h2 { margin-top: 0; }
+.logo-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+@media (max-width: 700px) { .logo-options { grid-template-columns: 1fr; } }
+.logo-option { display: block; width: 100%; text-align: center; background: #f6f5f1; border: 2px solid #d9d7d0; border-radius: 16px; padding: 1rem; font-family: "Atkinson Hyperlegible", sans-serif; font-size: 1rem; line-height: 1.5; color: #1e293b; cursor: pointer; min-height: 44px; }
+.logo-option:hover, .logo-option:focus-visible { border-color: #0f766e; outline: 3px solid #0f766e; outline-offset: 2px; }
+.logo-option[aria-pressed="true"] { border-color: #0f766e; background: #e6efec; }
+.logo-option svg { width: 72px; height: 72px; display: block; margin: 0 auto; }
+.logo-option strong { display: block; margin-top: 0.5rem; font-size: 1rem; }
+.logo-option span { color: #475569; font-size: 0.9rem; }
 
 .hero { background: #fff; border: 1px solid #d9d7d0; border-radius: 20px; padding: 2rem; margin: 0.5rem 0 1.5rem; box-shadow: 0 8px 24px rgba(30,41,59,.08); }
 .hero .meta { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #0f766e; margin: 0 0 0.5rem; }
@@ -128,7 +138,7 @@ button, input, select { min-height: 44px; }
 /* Onboarding (revised Nov 23, 2026): one short line, three actions, no wall of text. */
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .meta { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #0f766e; margin: 0 0 0.5rem; }
-.tagline { color: #475569; margin: 0 0 1.5rem; max-width: 640px; font-size: 1.1rem; }
+.tagline { color: #1e293b; font-weight: 700; margin: 0 0 1.5rem; max-width: 640px; font-size: 1.25rem; }
 .start-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 0 0 1.5rem; }
 .start-actions .btn { min-height: 44px; }
 .sample-picker { background: #fff; border: 1px solid #d9d7d0; border-radius: 20px; padding: 1.5rem; box-shadow: 0 8px 24px rgba(30,41,59,.06); margin: 0 0 1.5rem; }
@@ -194,12 +204,16 @@ html[data-theme="dark"] h1, html[data-theme="dark"] h2, html[data-theme="dark"] 
 html[data-theme="dark"] a { color: #5eead4; }
 html[data-theme="dark"] a:hover { color: #99f6e4; }
 html[data-theme="dark"] :focus-visible { outline-color: #5eead4; }
-html[data-theme="dark"] .app-mark { color: #f1f5f9; }
-html[data-theme="dark"] .app-mark span { color: #5eead4; }
-html[data-theme="dark"] .theme-toggle .theme-icon, html[data-theme="dark"] .app-close span { background: #1e293b; border-color: #475569; color: #5eead4; }
-html[data-theme="dark"] .theme-toggle:hover .theme-icon, html[data-theme="dark"] .theme-toggle:focus-visible .theme-icon, html[data-theme="dark"] .app-close:hover span, html[data-theme="dark"] .app-close:focus-visible span { background: #334155; }
+html[data-theme="dark"] .theme-toggle, html[data-theme="dark"] .app-close { background: #1e293b; border-color: #475569; color: #5eead4; }
+html[data-theme="dark"] .theme-toggle:hover, html[data-theme="dark"] .theme-toggle:focus-visible, html[data-theme="dark"] .app-close:hover, html[data-theme="dark"] .app-close:focus-visible { background: #334155; }
 html[data-theme="dark"] .theme-toggle:focus-visible, html[data-theme="dark"] .app-close:focus-visible { outline-color: #5eead4; }
-html[data-theme="dark"] .tagline, html[data-theme="dark"] .hint, html[data-theme="dark"] .steps-intro, html[data-theme="dark"] .app-foot, html[data-theme="dark"] .source-link, html[data-theme="dark"] .saved-note, html[data-theme="dark"] .empty-note { color: #cbd5e1; }
+html[data-theme="dark"] .logo-picker { background: #1e293b; border-color: #334155; box-shadow: none; }
+html[data-theme="dark"] .logo-option { background: #0f172a; border-color: #475569; color: #f1f5f9; }
+html[data-theme="dark"] .logo-option span { color: #cbd5e1; }
+html[data-theme="dark"] .logo-option:hover, html[data-theme="dark"] .logo-option:focus-visible { border-color: #5eead4; outline-color: #5eead4; }
+html[data-theme="dark"] .logo-option[aria-pressed="true"] { border-color: #2dd4bf; background: #134e4a; }
+html[data-theme="dark"] .tagline { color: #f1f5f9; }
+html[data-theme="dark"] .hint, html[data-theme="dark"] .steps-intro, html[data-theme="dark"] .app-foot, html[data-theme="dark"] .source-link, html[data-theme="dark"] .saved-note, html[data-theme="dark"] .empty-note { color: #cbd5e1; }
 html[data-theme="dark"] .meta, html[data-theme="dark"] .part-tag { color: #5eead4; }
 html[data-theme="dark"] .hero, html[data-theme="dark"] .panel, html[data-theme="dark"] .sample-picker, html[data-theme="dark"] .how-details, html[data-theme="dark"] .step-card, html[data-theme="dark"] .list-view-card, html[data-theme="dark"] .disclaimer { background: #1e293b; border-color: #334155; box-shadow: none; }
 html[data-theme="dark"] .how-to, html[data-theme="dark"] .practitioner-panel, html[data-theme="dark"] .submit-info, html[data-theme="dark"] .view-note { background: #134e4a; border-color: #2dd4bf; }
