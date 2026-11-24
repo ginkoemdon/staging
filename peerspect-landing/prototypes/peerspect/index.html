@@ -336,7 +336,9 @@
     @media (min-width:640px){ .milestone-track { grid-template-columns:1fr 1fr; } }
     .milestone { border:1px solid var(--line); border-radius:16px; padding:14px; background:var(--card); }
     .milestone.next { border:2px solid var(--teal); padding:18px; }
-    .milestone.next .m-badge svg { width:64px; height:75px; }
+    /* All medal/trophy icons are one size, Nov 24 2026: the
+       Next card may be larger, but its icon stays 48x56 like
+       the rest, same viewBox, same visual weight. */
     .milestone.unlocked .m-badge svg { filter:drop-shadow(0 0 6px rgba(242,193,78,.55)); }
     .milestone.locked .m-badge svg { opacity:.55; }
     .m-badge { display:block; margin-bottom:8px; }
@@ -1506,7 +1508,8 @@
             <button class="ps-btn ps-btn-secondary ps-btn-small" id="clear-visits" type="button">Clear visits</button>
           </section>
           <section class="ps-panel" aria-labelledby="trust-h">
-            <h3 id="trust-h">Trust, anonymously</h3>
+            <h3 id="trust-h">Your peer points</h3>
+            <p>Every confirmed report and peer cross-check earns you peer points, and helps the PEERSPECT community trust what it reads. Trust, anonymously — always.</p>
             <p><span class="ps-badge" id="trust-badge">Reliable observer — not earned yet</span></p>
             <p id="trust-sub"></p>
             <div id="milestone-track" class="milestone-track"></div>
@@ -2587,7 +2590,10 @@
     function trophySVG(unlocked){
       var fill = unlocked ? "#14665a" : "none", stroke = unlocked ? "#14665a" : "#8a8a7a";
       var gold = unlocked ? "#f2c14e" : "none", goldStroke = unlocked ? "#8a4a08" : "#8a8a7a";
-      return '<svg class="m-icon" viewBox="0 0 48 56" aria-hidden="true"><path d="M14 6 h20 v10 a10 10 0 0 1 -20 0 Z" fill="' + fill + '" stroke="' + stroke + '" stroke-width="2"/><path d="M14 9 h-5 a6 6 0 0 0 6 8 M34 9 h5 a6 6 0 0 1 -6 8" fill="none" stroke="' + stroke + '" stroke-width="2"/><rect x="22" y="26" width="4" height="8" fill="' + gold + '" stroke="' + goldStroke + '" stroke-width="1.5"/><rect x="13" y="34" width="22" height="7" rx="2" fill="' + gold + '" stroke="' + goldStroke + '" stroke-width="1.5"/></svg>';
+      /* Same 48x56 viewBox as the medal, and drawn to fill it
+         to the same height (y4 to y48), so the two icons carry
+         the same visual weight at the same CSS size. */
+      return '<svg class="m-icon" viewBox="0 0 48 56" aria-hidden="true"><path d="M12 4 h24 v12 a12 12 0 0 1 -24 0 Z" fill="' + fill + '" stroke="' + stroke + '" stroke-width="2"/><path d="M12 8 h-5 a7 7 0 0 0 7 9 M36 8 h5 a7 7 0 0 1 -7 9" fill="none" stroke="' + stroke + '" stroke-width="2"/><rect x="22" y="28" width="4" height="7" fill="' + gold + '" stroke="' + goldStroke + '" stroke-width="1.5"/><rect x="11" y="35" width="26" height="8" rx="2" fill="' + gold + '" stroke="' + goldStroke + '" stroke-width="1.5"/><rect x="17" y="43" width="14" height="5" rx="1" fill="' + gold + '" stroke="' + goldStroke + '" stroke-width="1.5"/></svg>';
     }
     function renderTrust(){
       if(typeof trust.crosschecks!=="number") trust.crosschecks=0;
@@ -2601,7 +2607,7 @@
       });
       save("peerspect-trust-v1", trust);
       var sub=$("trust-sub");
-      var base="Your trust so far: "+trust.confirmed+" confirmed report"+(trust.confirmed===1?"":"s")+" and "+trust.crosschecks+" peer cross-check"+(trust.crosschecks===1?"":"s")+". ";
+      var base="Your peer points so far: "+trust.confirmed+" confirmed report"+(trust.confirmed===1?"":"s")+" and "+trust.crosschecks+" peer cross-check"+(trust.crosschecks===1?"":"s")+". ";
       sub.textContent = next ? base+"Next milestone: "+next.name+" at "+next.reports+" confirmed report"+(next.reports===1?"":"s")+(next.crosschecks?" and "+next.crosschecks+" peer cross-check"+(next.crosschecks===1?"":"s"):"")+"."
                             : base+"All milestones accomplished.";
       var track=$("milestone-track"); track.innerHTML="";
