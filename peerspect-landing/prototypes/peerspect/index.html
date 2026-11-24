@@ -1629,20 +1629,6 @@
     var selectedFilters = [], activeFilters = new Set(), bookmarks = new Set(load("peerspect-bookmarks-v1", []));
     var likes = new Set(load("peerspect-likes-v1", []));
     function priceNum(s){ var n=parseFloat(String(s).replace(/[^0-9.]/g,"")); return isNaN(n)?0:n; }
-    /* Order snapshot, Nov 24 2026: when a visit is saved, the items
-       ordered on that visit are snapshotted with it (item, quantity,
-       price). "What you got" reads from that snapshot, never from
-       the current prep list, which is a different thing. */
-    function snapshotOrder(placeId, placeName){
-      var mine = prep.filter(function(it){ return it.placeId===placeId || it.place===placeName; });
-      var byItem = {}, order = [];
-      mine.forEach(function(it){
-        var k = it.item + "|" + (it.note||"");
-        if(!byItem[k]){ byItem[k] = {item:it.item, qty:0, price:it.price, note:it.note||""}; order.push(byItem[k]); }
-        byItem[k].qty++;
-      });
-      return order;
-    }
     function orderTotal(order){ var t=0; (order||[]).forEach(function(o){ t += priceNum(o.price)*o.qty; }); return t; }
     function money(n){ return "$" + n.toFixed(2); }
     /* Checkout cart, Nov 24 2026: the prep list works like a cart.
@@ -1846,12 +1832,21 @@
     }
     var prep = load("peerspect-prep-v1", []), profiles = load("peerspect-profiles-v1", []), trust = load("peerspect-trust-v1", {reports:0, confirmed:0});
     var visits = load("peerspect-visits-v1", []);
-    var gotLog = load("peerspect-got-log-v1", []);
     function todayStr(){ return new Date().toISOString().slice(0,10); }
     function ratingLabel(r){ return r==="up" ? "Loved it" : r==="down" ? "Not for me" : r==="meh" ? "So-so" : "No rating yet"; }
     function ratingVisual(r){
       var icon = r==="up" ? "👍 " : r==="meh" ? "😐 " : r==="down" ? "👎 " : "";
       return icon + ratingLabel(r);
+    }
+    /* One line for an item in a saved visit, Nov 24 2026: name,
+       quantity and price, then the order note (what was asked
+       for), the item rating, and the how-it-was note. */
+    function gotLine(o){
+      var s = o.item + (o.qty>1 ? " x"+o.qty : "") + " — " + money(priceNum(o.price)*o.qty);
+      if(o.note) s += " (Order note: " + o.note + ")";
+      if(o.rating) s += " — " + ratingVisual(o.rating);
+      if(o.gotNote) s += " — How it was: " + o.gotNote;
+      return s;
     }
     var currentPlace = null, checkin = null, focusIndex = 0, scored = PLACES.map(function(p){ return {place:p, matches:[]}; });
 
@@ -2315,15 +2310,18 @@
       peerCard.appendChild(peerDiv);
       body.appendChild(peerCard);
       /* Card 7 — Your visit, only for places you have visited.
-         Reads from the order snapshot saved with the visit, never
-         from the current prep list (that was the bug, Nov 24
-         2026: "What you got" just repeated the current order). */
-      var lastVisit = null;
-      for(var vi=visits.length-1; vi>=0; vi--){ if(visits[vi].placeId===p.id){ lastVisit=visits[vi]; break; } }
-      var logEntries = gotLog.filter(function(e){ return e.placeId===p.id; });
-      if(lastVisit || logEntries.length){
+         Read-only history, Nov 24 2026: the most recent visit in
+         full first, earlier visits below. Each visit's "What you
+         got" is the archive entry saved in I'm here after the
+         check-in questions — confirmed items only, with their
+         order notes, how-it-was notes and ratings. It reads from
+         saved visit entries, never from the current prep list.
+         Logging happens only in I'm here, not here. */
+      var placeVisits = visits.filter(function(v){ return v.placeId===p.id; }).slice().reverse();
+      if(placeVisits.length){
         var vt=document.createElement("section"); vt.className="ps-panel place-section"; vt.setAttribute("aria-label","Your visit");
         var vtH=document.createElement("h3"); vtH.textContent="Your visit"; vt.appendChild(vtH);
+        var lastVisit = placeVisits[0];
         var vtHead=document.createElement("p"); vtHead.className="visit-head";
         vtHead.innerHTML = "<strong>" + lastVisit.date + "</strong> · " + ratingVisual(lastVisit.rating);
         vt.appendChild(vtHead);
@@ -2338,7 +2336,7 @@
           var gotList=document.createElement("ul"); gotList.className="visit-order";
           lastVisit.order.forEach(function(o){
             var li=document.createElement("li");
-            li.textContent = o.item + (o.qty>1 ? " x"+o.qty : "") + " — " + money(priceNum(o.price)*o.qty) + (o.note ? " (Order note: " + o.note + ")" : "");
+            li.textContent = gotLine(o);
             gotList.appendChild(li);
           });
           var tot=document.createElement("li"); tot.className="order-total"; tot.textContent="Total: " + money(orderTotal(lastVisit.order)); gotList.appendChild(tot);
@@ -2354,83 +2352,23 @@
         } else {
           var noOrd=document.createElement("p"); noOrd.className="ps-muted"; noOrd.textContent="No order saved for this visit."; vt.appendChild(noOrd);
         }
-        /* "Log what you got", Nov 24 2026: a way to document what
-           you got and how it was, so you can see what you liked
-           next time. The archive reads from saved log entries,
-           never from the current prep list. The order note is
-           what to ask for; the log note is how it was. */
-        var logBtn=document.createElement("button"); logBtn.type="button"; logBtn.className="ps-btn"; logBtn.style.minHeight="44px"; logBtn.textContent="Log what you got";
-        vt.appendChild(logBtn);
-        var logForm=null;
-        logBtn.addEventListener("click", function(){
-          if(logForm){ logForm.remove(); logForm=null; logBtn.textContent="Log what you got"; return; }
-          logBtn.textContent="Close logging";
-          logForm=document.createElement("div"); logForm.className="log-form";
-          var lfH=document.createElement("p"); lfH.className="visit-sub"; lfH.textContent="Log what you got — " + todayStr(); logForm.appendChild(lfH);
-          var lfNote=document.createElement("p"); lfNote.className="ps-muted";
-          lfNote.textContent="Tick what you got. Items from your order prep list are ticked already — untick any that do not apply. For each item, say how it was and give it a rating.";
-          logForm.appendChild(lfNote);
-          var prepNames={}; prep.forEach(function(it){ if(it.placeId===p.id) prepNames[it.item]=true; });
-          var rows=[];
-          p.menu.forEach(function(item){
-            var row=document.createElement("div"); row.className="log-item"; row.dataset.item=item.n; row.dataset.price=item.p;
-            var check=document.createElement("label"); check.className="log-check";
-            var cb=document.createElement("input"); cb.type="checkbox";
-            if(prepNames[item.n]) cb.checked=true;
-            var cbText=document.createElement("span"); cbText.textContent=item.n+" — "+item.p;
-            check.appendChild(cb); check.appendChild(cbText); row.appendChild(check);
-            var detail=document.createElement("div"); detail.className="log-detail"; detail.hidden=!cb.checked;
-            var lab=document.createElement("label"); lab.textContent="How was it?";
-            var ni=document.createElement("input"); ni.type="text"; ni.placeholder="e.g. loved it, too sweet, too small";
-            ni.setAttribute("aria-label","How was the " + item.n + "?");
-            lab.appendChild(ni); detail.appendChild(lab);
-            var rateRow=document.createElement("div"); rateRow.className="rate-row";
-            [["up","👍 Liked"],["meh","😐 So-so"],["down","👎 Not for me"]].forEach(function(pair){
-              var rb=document.createElement("button"); rb.type="button"; rb.className="rate-btn"; rb.textContent=pair[1]; rb.setAttribute("aria-pressed","false");
-              rb.addEventListener("click", function(){
-                rateRow.querySelectorAll(".rate-btn").forEach(function(b){ b.setAttribute("aria-pressed","false"); });
-                rb.setAttribute("aria-pressed","true"); row.dataset.rating=pair[0];
-              });
-              rateRow.appendChild(rb);
-            });
-            detail.appendChild(rateRow);
-            row.appendChild(detail);
-            cb.addEventListener("change", function(){ detail.hidden=!cb.checked; });
-            rows.push({row:row, cb:cb, ni:ni, item:item});
-            logForm.appendChild(row);
-          });
-          var saveLog=document.createElement("button"); saveLog.type="button"; saveLog.className="ps-btn"; saveLog.style.minHeight="44px"; saveLog.textContent="Save this visit's log";
-          saveLog.addEventListener("click", function(){
-            var items=[];
-            rows.forEach(function(r){
-              if(!r.cb.checked) return;
-              items.push({item:r.item.n, price:r.item.p, note:r.ni.value.trim(), rating:r.row.dataset.rating||null});
-            });
-            if(!items.length){ saveLog.textContent="Tick at least one item first"; setTimeout(function(){ saveLog.textContent="Save this visit's log"; },2000); return; }
-            gotLog.push({placeId:p.id, place:p.name, date:todayStr(), items:items});
-            save("peerspect-got-log-v1", gotLog);
-            showPlace(p.id);
-          });
-          logForm.appendChild(saveLog);
-          var cancelLog=document.createElement("button"); cancelLog.type="button"; cancelLog.className="ps-btn ps-btn-secondary"; cancelLog.style.minHeight="44px"; cancelLog.textContent="Cancel";
-          cancelLog.addEventListener("click", function(){ logForm.remove(); logForm=null; logBtn.textContent="Log what you got"; });
-          logForm.appendChild(cancelLog);
-          vt.appendChild(logForm);
-        });
-        /* Archive: most recent first. */
-        if(logEntries.length){
-          var arcH=document.createElement("p"); arcH.className="visit-sub"; arcH.textContent="Your log"; vt.appendChild(arcH);
-          var arcNote=document.createElement("p"); arcNote.className="ps-muted"; arcNote.textContent="What you got on earlier visits, and how it was. The order note is what to ask for when ordering; this is how it was."; vt.appendChild(arcNote);
-          logEntries.slice().reverse().forEach(function(en){
+        if(placeVisits.length>1){
+          var arcH=document.createElement("p"); arcH.className="visit-sub"; arcH.textContent="Earlier visits"; vt.appendChild(arcH);
+          placeVisits.slice(1).forEach(function(v){
             var enDiv=document.createElement("div"); enDiv.className="log-entry";
-            var enH=document.createElement("p"); enH.innerHTML="<strong>"+en.date+"</strong>"; enDiv.appendChild(enH);
-            var enList=document.createElement("ul"); enList.className="visit-order";
-            en.items.forEach(function(o){
-              var li=document.createElement("li");
-              li.textContent = o.item + " — " + ratingVisual(o.rating||null) + (o.note ? " — How it was: " + o.note : "");
-              enList.appendChild(li);
-            });
-            enDiv.appendChild(enList); vt.appendChild(enDiv);
+            var enH=document.createElement("p"); enH.innerHTML="<strong>"+v.date+"</strong> · "+ratingVisual(v.rating); enDiv.appendChild(enH);
+            if(v.order && v.order.length){
+              var enList=document.createElement("ul"); enList.className="visit-order";
+              v.order.forEach(function(o){
+                var li=document.createElement("li");
+                li.textContent = gotLine(o);
+                enList.appendChild(li);
+              });
+              enDiv.appendChild(enList);
+            } else {
+              var enNone=document.createElement("p"); enNone.className="ps-muted"; enNone.textContent="No order saved for this visit."; enDiv.appendChild(enNone);
+            }
+            vt.appendChild(enDiv);
           });
         }
         body.appendChild(vt);
@@ -2503,7 +2441,7 @@
         var li=document.createElement("li");
         var text = v.place + " — " + v.date + " — " + ratingLabel(v.rating);
         if(v.order && v.order.length){
-          text += " — Ordered: " + v.order.map(function(o){ return o.item + (o.qty>1 ? " x"+o.qty : "") + (o.note ? " (Order note: " + o.note + ")" : ""); }).join(", ");
+          text += " — Ordered: " + v.order.map(function(o){ return gotLine(o); }).join(", ");
           text += " — Total: " + money(orderTotal(v.order));
         }
         if(v.answers && v.answers.length) text += " — " + v.answers.slice(0,3).map(function(a){ return a.q+" "+a.a; }).join("; ");
@@ -2711,15 +2649,133 @@
       var box=$("live-box");
       box.innerHTML="<h3>Live check-in</h3><p class='ps-muted'>Pick a place above and the questions start right away. One question at a time, with answers that fit the question. Skip any question you like.</p>";
     }
+    /* "What did you get?" — the step after the check-in questions,
+       Nov 24 2026. Prepped items are confirmed or denied one by
+       one; anything else comes from the menu. The order note
+       (what to ask for) carries over with each prepped item; the
+       note added here is how it was. */
+    function renderGotStep(){
+      var box=$("live-box"); if(!box || !checkin) return; box.innerHTML="";
+      var p=checkin.place;
+      var h=document.createElement("h3"); h.textContent="What did you get?"; box.appendChild(h);
+      var sub=document.createElement("p"); sub.className="ps-muted";
+      sub.textContent="At "+p.name+". Confirm what you got, so you can remember what you liked next time.";
+      box.appendChild(sub);
+      var prepped = groupPrep(prep.filter(function(it){ return it.placeId===p.id; }));
+      var rows=[];
+      if(prepped.length){
+        var ph=document.createElement("p"); ph.className="visit-sub"; ph.textContent="From your order prep list"; box.appendChild(ph);
+        prepped.forEach(function(g){
+          var row=document.createElement("div"); row.className="log-item";
+          var nm=document.createElement("p"); nm.style.margin="0 0 4px";
+          nm.innerHTML="<strong>"+g.item+(g.qty>1 ? " x"+g.qty : "")+"</strong> — "+g.price;
+          row.appendChild(nm);
+          if(g.note){ var on=document.createElement("p"); on.className="ps-muted"; on.style.margin="0 0 8px"; on.textContent="You asked for: "+g.note; row.appendChild(on); }
+          var yn=document.createElement("div"); yn.className="rate-row";
+          var yes=document.createElement("button"); yes.type="button"; yes.className="rate-btn"; yes.textContent="Yes, I got this"; yes.setAttribute("aria-pressed","false");
+          var no=document.createElement("button"); no.type="button"; no.className="rate-btn"; no.textContent="No, I did not get this"; no.setAttribute("aria-pressed","false");
+          yes.addEventListener("click", function(){ setDecision("yes"); });
+          no.addEventListener("click", function(){ setDecision("no"); });
+          function setDecision(d){
+            row.dataset.decision=d;
+            yes.setAttribute("aria-pressed", d==="yes" ? "true" : "false");
+            no.setAttribute("aria-pressed", d==="no" ? "true" : "false");
+            detail.hidden = d!=="yes";
+            hint.textContent="";
+          }
+          yn.appendChild(yes); yn.appendChild(no); row.appendChild(yn);
+          var detail=document.createElement("div"); detail.className="log-detail"; detail.hidden=true;
+          var lab=document.createElement("label"); lab.textContent="How was it?";
+          var ni=document.createElement("input"); ni.type="text"; ni.placeholder="e.g. loved it, too sweet, too small";
+          ni.setAttribute("aria-label","How was the " + g.item + "?");
+          lab.appendChild(ni); detail.appendChild(lab);
+          var rateRow=document.createElement("div"); rateRow.className="rate-row";
+          [["up","👍 Liked"],["meh","😐 So-so"],["down","👎 Not for me"]].forEach(function(pair){
+            var rb=document.createElement("button"); rb.type="button"; rb.className="rate-btn"; rb.textContent=pair[1]; rb.setAttribute("aria-pressed","false");
+            rb.addEventListener("click", function(){
+              rateRow.querySelectorAll(".rate-btn").forEach(function(b){ b.setAttribute("aria-pressed","false"); });
+              rb.setAttribute("aria-pressed","true"); row.dataset.rating=pair[0];
+            });
+            rateRow.appendChild(rb);
+          });
+          detail.appendChild(rateRow);
+          row.appendChild(detail);
+          rows.push({kind:"prepped", row:row, ni:ni, g:g});
+          box.appendChild(row);
+        });
+      }
+      var extras = p.menu.filter(function(item){ return !prepped.some(function(g){ return g.item===item.n; }); });
+      if(extras.length){
+        var eh=document.createElement("p"); eh.className="visit-sub"; eh.textContent="Anything else you got?"; box.appendChild(eh);
+        extras.forEach(function(item){
+          var row=document.createElement("div"); row.className="log-item";
+          var check=document.createElement("label"); check.className="log-check";
+          var cb=document.createElement("input"); cb.type="checkbox";
+          var cbText=document.createElement("span"); cbText.textContent=item.n+" — "+item.p;
+          check.appendChild(cb); check.appendChild(cbText); row.appendChild(check);
+          var detail=document.createElement("div"); detail.className="log-detail"; detail.hidden=true;
+          var lab=document.createElement("label"); lab.textContent="How was it?";
+          var ni=document.createElement("input"); ni.type="text"; ni.placeholder="e.g. loved it, too sweet, too small";
+          ni.setAttribute("aria-label","How was the " + item.n + "?");
+          lab.appendChild(ni); detail.appendChild(lab);
+          var rateRow=document.createElement("div"); rateRow.className="rate-row";
+          [["up","👍 Liked"],["meh","😐 So-so"],["down","👎 Not for me"]].forEach(function(pair){
+            var rb=document.createElement("button"); rb.type="button"; rb.className="rate-btn"; rb.textContent=pair[1]; rb.setAttribute("aria-pressed","false");
+            rb.addEventListener("click", function(){
+              rateRow.querySelectorAll(".rate-btn").forEach(function(b){ b.setAttribute("aria-pressed","false"); });
+              rb.setAttribute("aria-pressed","true"); row.dataset.rating=pair[0];
+            });
+            rateRow.appendChild(rb);
+          });
+          detail.appendChild(rateRow);
+          row.appendChild(detail);
+          cb.addEventListener("change", function(){ detail.hidden=!cb.checked; });
+          rows.push({kind:"extra", row:row, cb:cb, ni:ni, item:item});
+          box.appendChild(row);
+        });
+      }
+      var hint=document.createElement("p"); hint.className="ps-muted"; box.appendChild(hint);
+      var saveBtn=document.createElement("button"); saveBtn.type="button"; saveBtn.className="ps-btn"; saveBtn.style.minHeight="44px"; saveBtn.textContent="Save what I got";
+      saveBtn.addEventListener("click", function(){
+        var undecided = rows.filter(function(r){ return r.kind==="prepped" && !r.row.dataset.decision; });
+        if(undecided.length){ hint.textContent="Confirm or deny each item from your order prep list first — Yes, I got this, or No, I did not get this."; return; }
+        var items=[];
+        rows.forEach(function(r){
+          if(r.kind==="prepped"){
+            if(r.row.dataset.decision!=="yes") return;
+            items.push({item:r.g.item, qty:r.g.qty, price:r.g.price, note:r.g.note||"", gotNote:r.ni.value.trim(), rating:r.row.dataset.rating||null});
+          } else if(r.cb.checked){
+            items.push({item:r.item.n, qty:1, price:r.item.p, note:"", gotNote:r.ni.value.trim(), rating:r.row.dataset.rating||null});
+          }
+        });
+        checkin.got = items; checkin.gotDone = true; renderCheckin();
+      });
+      box.appendChild(saveBtn);
+      var skip=document.createElement("button"); skip.type="button"; skip.className="ps-btn ps-btn-secondary"; skip.style.minHeight="44px"; skip.textContent="Skip — nothing to log";
+      skip.addEventListener("click", function(){ checkin.got=[]; checkin.gotDone=true; renderCheckin(); });
+      box.appendChild(skip);
+      var back=document.createElement("button"); back.type="button"; back.className="ps-btn ps-btn-secondary ps-btn-small"; back.textContent="Back";
+      back.addEventListener("click", function(){ checkin.step=checkin.questions.length-1; renderCheckin(); });
+      box.appendChild(back);
+    }
     function renderCheckin(){
       var box=$("live-box"); if(!box) return; box.innerHTML="";
       if(!checkin){ renderCheckinIntro(); return; }
       var p=checkin.place;
       var h=document.createElement("h3"); h.textContent="You are at "+p.name; box.appendChild(h);
       if(checkin.step>=checkin.questions.length){
+        /* "What did you get?" step, Nov 24 2026: after the
+           questions, before the visit is saved. Pre-filled from
+           the order prep list for this place, so the order is
+           not redone in the app. Saving the step creates the
+           archive entry for the visit: only confirmed items, plus
+           extras, with their notes and ratings. Denied items are
+           not in the archive. The archive reads from saved visit
+           entries, never from the current prep list. */
+        if(!checkin.gotDone){ renderGotStep(); return; }
         if(!checkin.saved){
           checkin.saved = true;
-          visits.push({place:p.name, placeId:p.id, date:todayStr(), answers:checkin.answers.slice(), rating:null, order:snapshotOrder(p.id, p.name)});
+          visits.push({place:p.name, placeId:p.id, date:todayStr(), answers:checkin.answers.slice(), rating:null, order:(checkin.got||[])});
           save("peerspect-visits-v1", visits); renderVisits();
         }
         var done=document.createElement("p"); done.innerHTML="Thanks — that helps the next person. <span class='ps-badge'>Reliable observer</span>"; box.appendChild(done);
@@ -2741,7 +2797,7 @@
         var note=document.createElement("p"); note.className="ps-muted"; note.textContent="You answered "+checkin.answers.length+" question(s). In this demo your report is counted locally, anonymously."; box.appendChild(note);
         trust.reports+=1; trust.confirmed+=1; save("peerspect-trust-v1", trust); renderTrust();
         var again=document.createElement("button"); again.type="button"; again.className="ps-btn ps-btn-secondary"; again.textContent="Check in again";
-        again.addEventListener("click", function(){ checkin={place:p, step:0, answers:[]}; renderCheckin(); }); box.appendChild(again); return;
+        again.addEventListener("click", function(){ startCheckin(); }); box.appendChild(again); return;
       }
       if(checkin.generic && checkin.step===0){ var gn=document.createElement("p"); gn.className="ps-muted"; gn.textContent="No filters picked for today, so these are general questions. Pick what matters today and the questions will match what you picked."; box.appendChild(gn); }
       var prog=document.createElement("p"); prog.className="ps-muted"; prog.textContent="Question "+(checkin.step+1)+" of "+checkin.questions.length; box.appendChild(prog);
