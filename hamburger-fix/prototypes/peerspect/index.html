@@ -668,7 +668,7 @@
     .ps-bar span { display:block; height:100%; background:var(--teal); }
     .ps-badge { display:inline-block; background:var(--amber-bg); border:2px solid #8a4a08; color:var(--amber-ink); border-radius:999px; padding:.25rem .75rem; font-weight:700; }
     .ps-input { padding:12px 16px; border:2px solid var(--muted); border-radius:12px; font:inherit; width:100%; min-height:44px; background:var(--card); color:var(--ink); }
-    /* Save today's filters, Nov 24 2026: name box and save
+    /* Save today's needs, Nov 24 2026: name box and save
        button side by side, not full width; wraps to one
        column on a narrow phone. The preview below shows the
        filters being saved, as oval tags, live. */
@@ -1000,7 +1000,7 @@
     #view-app .landing .landing-list li:nth-child(4) { border-left:6px solid #8a4a08; }
     /* Match card breathing room, Nov 23 2026: more air, and a
        nested alignment card inside it, so you can see exactly
-       which of your filters this place matches, and which it
+       which of your needs this place matches, and which it
        does not. The outer card is calm, the inner card does
        the explaining. */
     #view-app #focus-card .ps-facts { gap:12px; margin:.75rem 0; }
@@ -1505,7 +1505,7 @@
         <h2 id="cs-context">Context</h2>
         <p class="cs-subtitle">A peer layer on business listings, so you can tell how an establishment feels before you go.</p>
         <div class="cs-context">
-          <div class="cs-card"><h3>What</h3><p>Experiential filters on establishment and business listings, not reviews.</p></div>
+          <div class="cs-card"><h3>What</h3><p>Experiential needs, matched to establishment and business listings, not reviews.</p></div>
           <div class="cs-card"><h3>Who</h3><p>Disabled and neurodiverse people first, and business owners who want to understand them. Useful for everyone.</p></div>
           <div class="cs-card"><h3>When</h3><p>Concept and prototype, November 2026.</p></div>
           <div class="cs-card"><h3>How</h3><p>Anonymous peer check-ins, one tap at a time.</p></div>
@@ -1533,7 +1533,7 @@
         <div class="cs-card cs-feature cs-use use-access"><p class="cs-deliverable">Discover</p><p class="cs-use-when">I need a quiet place to work</p><h3>Find a place that fits today</h3><p>Start with Quiet morning in one tap, or pick your own. As you pick, it says how many places fit. You see only those, nearest first, with distance and how to get there.</p><ul class="cs-tags"><li>Quiet morning</li><li>Low sensory</li><li>Co-working</li></ul></div>
         <div class="cs-card cs-feature cs-use use-here"><p class="cs-deliverable">Check-in</p><p class="cs-use-when">I am here now, is it still calm?</p><h3>Check in, in one tap</h3><p>One question at a time, anonymous, while you are there. Sound is multi-select, music and talking can happen at once. “Still” questions show the earlier peer report first.</p><ul class="cs-tags"><li>One question</li><li>Anonymous</li><li>Live</li></ul></div>
         <div class="cs-card cs-feature cs-use use-biz"><p class="cs-deliverable">Business dashboard</p><p class="cs-use-when">I run a place, what should I change?</p><h3>See what to fix, without raw data</h3><p>A dashboard, not just bars: stats, ring gauges, how the day feels, and AI suggestions that cite the data, like a quiet hour. No names, no raw data.</p><ul class="cs-tags"><li>Visual patterns</li><li>Gentle suggestions</li><li>Private</li></ul></div>
-        <p>Underneath all three: 92 filters in six groups, <strong>Access, Sensory, Environment, Context, Inclusion, and Menu</strong>. Returning users can start from a saved profile, or last time's picks, in one tap.</p>
+        <p>Underneath all three: 92 needs in six groups, <strong>Access, Sensory, Environment, Context, Inclusion, and Menu</strong>. Returning users can start from a saved profile, or last time's picks, in one tap.</p>
       </section>
 
       <section aria-labelledby="cs-process">
@@ -1542,7 +1542,7 @@
         <ol class="cs-timeline">
           <li><span class="cs-num">1</span><h3>Ask the question</h3><p>I could not tell from reviews if a place would work for me that day.</p></li>
           <li><span class="cs-num honey">2</span><h3>Name the model</h3><p>One star became four groups: Access, Sensory, Environment, Context.</p></li>
-          <li><span class="cs-num pine">3</span><h3>See it, don&apos;t list it</h3><p>One question at a time, options I could see, not just read. Onboarding starts with a day, not a blank list of 92 filters.</p></li>
+          <li><span class="cs-num pine">3</span><h3>See it, don&apos;t list it</h3><p>One question at a time, options I could see, not just read. Onboarding starts with a day, not a blank list of 92 needs.</p></li>
           <li><span class="cs-num">4</span><h3>Fix the words</h3><p>Yes or Not really did not answer how loud it was. Sound became level plus type, and type became multi-select, because sounds happen at once.</p></li>
           <li><span class="cs-num honey">5</span><h3>Build the system</h3><p>Palette, type, spacing, and content rules together. Accessibility as a rule.</p></li>
           <li><span class="cs-num pine">6</span><h3>Break it, fix it</h3><p>The first version felt like a page on my site. I rebuilt the frame so the app feels like its own world.</p></li>
@@ -1553,7 +1553,7 @@
         <h2 id="cs-decisions">Key decisions</h2>
         <p class="cs-subtitle">Four choices that kept the design simple, customisable, anonymous, and visual.</p>
         <p class="cs-note">Tap a card to open it.</p>
-        <details class="cs-card"><summary>Four groups, not one long list</summary><p>A long list creates overload. Four groups are easier to scan.</p><p><strong>Trade-off:</strong> some filters fit two groups. I placed each once, to keep scanning fast.</p></details>
+        <details class="cs-card"><summary>Four groups, not one long list</summary><p>A long list creates overload. Four groups are easier to scan.</p><p><strong>Trade-off:</strong> some needs fit two groups. I placed each once, to keep scanning fast.</p></details>
         <details class="cs-card"><summary>No pick limit</summary><p>A three-pick limit worked against agency. Accessibility means customisability.</p><p><strong>Trade-off:</strong> more picks can dilute a match, so a place needs at least half of them, minimum two.</p></details>
         <details class="cs-card"><summary>Anonymous prompts, not named reviews</summary><p>Low effort and safer, with peer confirmation for trust. “Still” questions now show the earlier report first, so the prompt makes sense.</p><p><strong>Trade-off:</strong> no follow-up with the reporter, so peer confirmation has to carry the trust instead.</p></details>
         <details class="cs-card"><summary>Visual dashboard, not raw data</summary><p>Owners see patterns and suggestions, never who said what.</p><p><strong>Trade-off:</strong> owners get less detail, but a suggestion they can act on.</p></details>
@@ -1610,7 +1610,7 @@
         <p class="cs-note">This is the real prototype, not a screenshot. Pick a screen on the left, use it live on the right, or open it fullscreen.</p>
         <div class="cs-hifi-layout">
         <div class="cs-screen-grid">
-          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Discover</div><div class="cs-screen-body"><h3>Discover</h3><p>Map and list views, distance and transport, only the filters you picked today.</p><button class="cs-screen-link" type="button" data-preview-screen="discover">Show this screen</button></div></article>
+          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Discover</div><div class="cs-screen-body"><h3>Discover</h3><p>Map and list views, distance and transport, only the needs you picked today.</p><button class="cs-screen-link" type="button" data-preview-screen="discover">Show this screen</button></div></article>
           <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">I am here</div><div class="cs-screen-body"><h3>I am here</h3><p>One question at a time, anonymous. Sound is multi-select, and “still” questions show the earlier peer report.</p><button class="cs-screen-link" type="button" data-preview-screen="here">Show this screen</button></div></article>
         </div>
         <p class="cs-note">The rest, including the Business dashboard, is in the live prototype. <button class="cs-screen-link" type="button" data-open-prototype>Open the live prototype</button></p>
@@ -1704,7 +1704,7 @@
       <section class="screen" id="screen-onboard" aria-labelledby="onboard-h" hidden>
         <div class="screen-head">
           <h2 id="onboard-h">What would make a place feel right today?</h2>
-          <p>Pick a type of day, like a quiet morning, or choose your own filters below. Takes about a minute. You can change it anytime.</p>
+          <p>Pick a type of day, like a quiet morning, or choose your own needs below. Takes about a minute. You can change it anytime.</p>
         </div>
         <div class="screen-scroll">
           <div id="onboard-quick" class="onboard-quick" aria-label="Quick start"></div>
@@ -1722,7 +1722,7 @@
       <section class="screen" id="screen-discover" aria-labelledby="places-h" hidden>
         <div class="screen-head">
           <h2 id="places-h">Discover</h2>
-          <p id="tailored-note">No filters picked yet. Showing all twelve real cafés.</p>
+          <p id="tailored-note">No needs picked yet. Showing all twelve real cafés.</p>
           <div class="view-toggle" role="group" aria-label="Choose map view or list view">
             <button type="button" id="view-list-btn" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg>List view</button>
             <button type="button" id="view-map-btn" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"/><path d="M9 4v14M15 6v14"/></svg>Map view</button>
@@ -1731,14 +1731,14 @@
         </div>
         <div class="screen-scroll" id="discover-scroll">
           <details class="discover-filters">
-            <summary>Filters and sort</summary>
+            <summary>Needs filters</summary>
             <label for="sort-select">Sort by</label>
             <select class="ps-input" id="sort-select">
               <option value="distance" selected>Nearest first</option>
               <option value="match">Best match first</option>
             </select>
-            <ul class="ps-chips wrap" id="tailored-chips" aria-label="Your filters for today"></ul>
-            <button class="ps-btn ps-btn-secondary ps-btn-small" id="toggle-all-filters" type="button" aria-expanded="false">See all filters</button>
+            <ul class="ps-chips wrap" id="tailored-chips" aria-label="Your needs for today"></ul>
+            <button class="ps-btn ps-btn-secondary ps-btn-small" id="toggle-all-filters" type="button" aria-expanded="false">See all needs</button>
             <div id="all-filters" hidden></div>
           </details>
           <div id="view-map" hidden>
@@ -1841,19 +1841,19 @@
         <div class="screen-head"><h2 id="profiles-h">Saved</h2><p>Profiles, order prep list, and bookmarks.</p></div>
         <div class="screen-scroll">
           <section class="ps-panel" aria-labelledby="save-profile-h">
-            <h3 id="save-profile-h">Save today's filters</h3>
-            <p>Name this set of filters so you can use it again later.</p>
+            <h3 id="save-profile-h">Save today's needs</h3>
+            <p>Name this set of needs so you can use it again later.</p>
             <div class="save-row">
               <div class="save-field">
                 <label for="profile-name">Profile name</label>
                 <input class="ps-input" id="profile-name" type="text" placeholder="e.g. Quiet morning" />
               </div>
-              <button class="ps-btn" id="save-profile" type="button">Save today's filters</button>
+              <button class="ps-btn" id="save-profile" type="button">Save today's needs</button>
             </div>
             <details class="save-preview" id="save-preview">
-              <summary id="save-preview-summary">See the filters you are saving</summary>
-              <ul class="ps-tags match-tags" id="save-preview-tags" aria-label="Filters you are saving"></ul>
-              <p class="ps-muted" id="save-preview-empty" hidden>No filters picked yet</p>
+              <summary id="save-preview-summary">See the needs you are saving</summary>
+              <ul class="ps-tags match-tags" id="save-preview-tags" aria-label="Needs you are saving"></ul>
+              <p class="ps-muted" id="save-preview-empty" hidden>No needs picked yet</p>
             </details>
             <p id="profile-status" class="ps-muted" aria-live="polite"></p>
             <ul id="profile-list"></ul>
@@ -2576,7 +2576,7 @@
       var h=document.createElement("h3"); h.textContent="Start with a day"; box.appendChild(h);
       ONBOARD_PRESETS.forEach(function(pr){
         var b=document.createElement("button"); b.type="button"; b.className="quick-card"; b.setAttribute("aria-pressed","false");
-        b.innerHTML="<strong>"+pr.name+"</strong><span>"+pr.desc+" "+pr.filters.length+" filters.</span>";
+        b.innerHTML="<strong>"+pr.name+"</strong><span>"+pr.desc+" "+pr.filters.length+" needs.</span>";
         b.addEventListener("click", function(){
           box.querySelectorAll(".quick-card").forEach(function(x){ x.setAttribute("aria-pressed","false"); });
           b.setAttribute("aria-pressed","true"); applyOnboardFilters(pr.filters);
@@ -2587,7 +2587,7 @@
         var hp=document.createElement("h3"); hp.textContent="Your profiles. Tap one to go straight to places"; box.appendChild(hp);
         profiles.forEach(function(prof){
           var b=document.createElement("button"); b.type="button"; b.className="quick-card";
-          b.innerHTML="<strong>"+prof.name+"</strong><span>"+prof.filters.length+" filters, saved.</span>";
+          b.innerHTML="<strong>"+prof.name+"</strong><span>"+prof.filters.length+" needs, saved.</span>";
           b.addEventListener("click", function(){
             activeFilters=new Set(prof.filters); selectedFilters=(prof.priorities||prof.filters).slice();
             save("peerspect-last-filters-v1", selectedFilters);
@@ -2599,7 +2599,7 @@
       var last=load("peerspect-last-filters-v1", []);
       if(last && last.length){
         var bl=document.createElement("button"); bl.type="button"; bl.className="quick-card";
-        bl.innerHTML="<strong>Use last time</strong><span>"+last.length+" filters from your last visit.</span>";
+        bl.innerHTML="<strong>Use last time</strong><span>"+last.length+" needs from your last visit.</span>";
         bl.addEventListener("click", function(){ applyOnboardFilters(last); finishOnboarding(); });
         box.appendChild(bl);
       }
@@ -2667,8 +2667,8 @@
     }
     function renderTailored(){
       var box = $("tailored-chips"); box.innerHTML = "";
-      if(activeFilters.size === 0){ $("tailored-note").textContent = "No filters picked yet. Showing all twelve real cafés."; renderSavePreview(); return; }
-      $("tailored-note").textContent = "Tailored for today. Tap a filter to turn it off.";
+      if(activeFilters.size === 0){ $("tailored-note").textContent = "No needs picked yet. Showing all twelve real cafés."; renderSavePreview(); return; }
+      $("tailored-note").textContent = "Tailored for today. Tap a need to turn it off.";
       Array.from(activeFilters).forEach(function(k){ var li=document.createElement("li"); li.appendChild(chipFor(k)); box.appendChild(li); });
       renderSavePreview();
     }
@@ -2679,7 +2679,7 @@
       var det=$("save-preview"), sum=$("save-preview-summary"), tags=$("save-preview-tags"), empty=$("save-preview-empty"), btn=$("save-profile");
       if(!det) return;
       var n=activeFilters.size;
-      sum.textContent = n ? "See the "+n+" filter"+(n===1?"":"s")+" you are saving" : "See the filters you are saving";
+      sum.textContent = n ? "See the "+n+" need"+(n===1?"":"s")+" you are saving" : "See the needs you are saving";
       btn.disabled = n===0;
       btn.setAttribute("aria-disabled", n===0 ? "true" : "false");
       tags.innerHTML="";
@@ -2706,7 +2706,7 @@
     $("sort-select").addEventListener("change", function(){ sortMode = this.value; renderPlaces(); });
     $("toggle-all-filters").addEventListener("click", function(){
       var box=$("all-filters"); var open=box.hidden; box.hidden=!open;
-      this.setAttribute("aria-expanded", open?"true":"false"); this.textContent = open?"Hide all filters":"See all filters";
+      this.setAttribute("aria-expanded", open?"true":"false"); this.textContent = open?"Hide all needs":"See all needs";
       if(open) renderAllFilters();
     });
 
@@ -2756,16 +2756,16 @@
     function matchOvalsHTML(p){
       var m = matchScore(p); if(!m) return "";
       return '<span class="match-score">✓ ' + m.count + ' of ' + m.total + '</span>' +
-        '<ul class="ps-tags match-tags" aria-label="Filters this place matches">' + matchTagItems(m, false) + '</ul>';
+        '<ul class="ps-tags match-tags" aria-label="Needs this place meets">' + matchTagItems(m, false) + '</ul>';
     }
     function matchOvalsInlineHTML(p){
       var m = matchScore(p); if(!m) return "";
       return '<span class="match-score">✓ ' + m.count + ' of ' + m.total + '</span>' +
-        '<span class="ps-tags match-tags" role="list" aria-label="Filters this place matches">' + matchTagItems(m, true) + '</span>';
+        '<span class="ps-tags match-tags" role="list" aria-label="Needs this place meets">' + matchTagItems(m, true) + '</span>';
     }
     function matchAriaText(p){
       var m = matchScore(p); if(!m) return "";
-      return "Matches " + m.count + " of " + m.total + " of your filters: " + m.matched.map(function(f){ return FILTER_LABELS[f]||f; }).join(", ");
+      return "Matches " + m.count + " of " + m.total + " of your needs: " + m.matched.map(function(f){ return FILTER_LABELS[f]||f; }).join(", ");
     }
     function renderPlaces(){
       scored = PLACES.map(function(p){
@@ -2883,7 +2883,7 @@
       var s = scored[focusIndex], p = s.place;
       var align = alignmentFor(p);
       card.className = "ps-card" + (align ? " align-good" : "");
-      var matchText = activeFilters.size===0 ? "No filters picked yet" : '<span class="match-score">✓ ' + s.matches.length + ' of ' + activeFilters.size + '</span>';
+      var matchText = activeFilters.size===0 ? "No needs picked yet" : '<span class="match-score">✓ ' + s.matches.length + ' of ' + activeFilters.size + '</span>';
       var shownTags = (s.matches.length ? s.matches : p.tags).slice(0,3);
       /* Focus card, restored to the ?v=14 content, Nov 24 2026:
          match and distance, type, area and transport, the
@@ -2898,7 +2898,7 @@
         '<p class="focus-top"><span class="ps-match">' + matchText + '</span><span class="dist-line">' + p.distLabel + '</span></p>' +
         '<h3>' + p.name + '</h3>' +
         '<p class="ps-muted" style="margin:.2rem 0;">' + p.type + ' · ' + p.area + '</p>' +
-        (function(){ if(!activeFilters.size) return ""; var m = matchScore(p); var matchedTags = m.matched.length ? '<ul class="ps-tags match-tags" aria-label="Filters this place matches">' + matchTagItems(m, false) + '</ul>' : '<p class="ps-muted">None of your filters matched here yet.</p>'; var missed = m.unmatched.length ? '<p class="align-missed-label">Not matched here</p><ul class="ps-tags match-tags" aria-label="Filters this place does not match">' + m.unmatched.map(function(f){ return '<li class="tag-missed">' + (FILTER_LABELS[f]||f) + '</li>'; }).join("") + '</ul>' : ""; return '<div class="align-card"><h4>Why this matches <span class="align-count">' + m.count + ' of ' + m.total + '</span></h4>' + matchedTags + missed + (align ? '' : '<p class="align-summary">No strong match yet, ' + m.count + ' of ' + m.total + ' of your filters.</p>') + '</div>'; })() +
+        (function(){ if(!activeFilters.size) return ""; var m = matchScore(p); var matchedTags = m.matched.length ? '<ul class="ps-tags match-tags" aria-label="Needs this place meets">' + matchTagItems(m, false) + '</ul>' : '<p class="ps-muted">None of your needs matched here yet.</p>'; var missed = m.unmatched.length ? '<p class="align-missed-label">Not matched here</p><ul class="ps-tags match-tags" aria-label="Needs this place does not meet">' + m.unmatched.map(function(f){ return '<li class="tag-missed">' + (FILTER_LABELS[f]||f) + '</li>'; }).join("") + '</ul>' : ""; return '<div class="align-card"><h4>Why this matches <span class="align-count">' + m.count + ' of ' + m.total + '</span></h4>' + matchedTags + missed + (align ? '' : '<p class="align-summary">No strong match yet, ' + m.count + ' of ' + m.total + ' of your needs.</p>') + '</div>'; })() +
         '<ul class="ps-facts"><li><strong>Lighting:</strong> ' + p.lighting + '</li><li><strong>Sound:</strong> ' + (p.soundLevel||'') + ', ' + p.sound + '</li><li><strong>What you will hear:</strong> ' + (p.soundSources||[]).join("; ") + '</li><li><strong>Crowd:</strong> ' + p.crowding + '</li></ul>' +
         '<ul class="ps-tags">' + shownTags.map(function(t){ return '<li class="'+tagClass(t)+'">'+(FILTER_LABELS[t]||t)+'</li>'; }).join("") + '</ul>' +
         '<p class="ps-muted">Confirmed by ' + p.confirmed + ' peers · Anonymous</p>' +
@@ -3009,7 +3009,7 @@
       var gH=document.createElement("h3"); gH.textContent="At a glance"; glance.appendChild(gH);
       var dl = document.createElement("dl"); dl.className="detail-kv";
       var dlHTML = '<div><dt>Address</dt><dd><a href="'+p.mapsUrl+'" target="_blank" rel="noopener">'+p.address+'</a></dd></div><div><dt>Area</dt><dd>'+p.area+'</dd></div><div><dt>Distance</dt><dd>'+p.distLabel+'</dd></div><div><dt>Getting there</dt><dd>'+p.transport+'</dd></div>' + (p.phone ? '<div><dt>Phone</dt><dd><a href="tel:'+p.phone.replace(/[^+0-9]/g,"")+'">'+p.phone+'</a></dd></div>' : '') + (p.hours ? '<div><dt>Hours</dt><dd>'+p.hours+'</dd></div>' : '') + '<div><dt>Access</dt><dd>'+p.access+'</dd></div>';
-      if(alignDetail){ var mDetail = matchScore(p); dlHTML += '<div><dt>Match</dt><dd>Matches ' + mDetail.count + ' of ' + mDetail.total + ' of your filters</dd></div>'; }
+      if(alignDetail){ var mDetail = matchScore(p); dlHTML += '<div><dt>Match</dt><dd>Matches ' + mDetail.count + ' of ' + mDetail.total + ' of your needs</dd></div>'; }
       dl.innerHTML = dlHTML;
       glance.appendChild(dl);
       grid.appendChild(glance);
@@ -3791,7 +3791,7 @@
         var again=document.createElement("button"); again.type="button"; again.className="ps-btn ps-btn-secondary checkin-again"; again.textContent="Check in again";
         again.addEventListener("click", function(){ startCheckin(); }); box.appendChild(again); return;
       }
-      if(checkin.generic && checkin.step===0){ var gn=document.createElement("p"); gn.className="ps-muted"; gn.textContent="No filters picked for today, so these are general questions. Pick filters for today and the questions will match them."; box.appendChild(gn); }
+      if(checkin.generic && checkin.step===0){ var gn=document.createElement("p"); gn.className="ps-muted"; gn.textContent="No needs picked for today, so these are general questions. Pick needs for today and the questions will match them."; box.appendChild(gn); }
       var prog=document.createElement("p"); prog.className="ps-muted"; prog.textContent="Question "+(checkin.step+1)+" of "+checkin.questions.length; box.appendChild(prog);
       var current = checkin.questions[checkin.step];
       /* Nov 23 2026: "still" questions only make sense with the
