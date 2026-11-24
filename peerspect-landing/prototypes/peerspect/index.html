@@ -359,6 +359,30 @@
     .log-detail input[type="text"] { min-height:44px; border:1px solid var(--line); border-radius:10px; padding:0 12px; font-size:1rem; background:var(--card); color:var(--ink); width:100%; }
     .log-entry { border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin:0 0 8px; background:var(--card); }
     .log-entry p { margin:0 0 6px; }
+    /* Visit cards, Nov 24 2026: "Your last visits" was raw
+       comma-joined rows. Each visit is now its own card, with
+       date, rating, experience rows, and what you got as a
+       tidy list. Same card in Saved and on place detail, so
+       the two places always match. */
+    .visit-list { display:grid; gap:16px; }
+    .visit-group h4 { margin:0 0 8px; }
+    .visits-summary { font-weight:700; margin:0 0 4px; }
+    .visit-card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px 20px; margin:0 0 12px; }
+    .visit-card-head { display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; margin:0 0 4px; }
+    .visit-card-head h4 { margin:0; font-size:1.05rem; }
+    .visit-rating { display:inline-block; background:var(--soft); border:1px solid var(--line); border-radius:999px; padding:4px 12px; font-weight:700; font-size:.9rem; }
+    .visit-tag { display:inline-block; background:var(--soft); border:1px solid var(--teal); color:var(--teal-dark); border-radius:999px; padding:4px 12px; font-weight:700; font-size:.85rem; }
+    .visit-place { margin:0 0 8px; font-weight:700; }
+    .visit-card .detail-kv { margin:8px 0; }
+    .visit-got { list-style:none; padding:0; margin:8px 0; display:grid; gap:12px; }
+    .visit-got-item { border-top:1px solid var(--line-soft); padding:10px 0 0; }
+    .visit-got-row { display:flex; justify-content:space-between; gap:16px; }
+    .visit-got-name { font-weight:700; }
+    .visit-got-price { font-weight:700; white-space:nowrap; }
+    .visit-got-note { margin:4px 0 0; font-size:.95rem; }
+    .visit-item-rating { display:inline-block; background:var(--soft); border:1px solid var(--line); border-radius:999px; padding:2px 10px; font-weight:700; font-size:.85rem; margin:4px 0 0; }
+    .visit-total { font-weight:700; color:var(--teal-dark); border-top:1px solid var(--line-soft); padding-top:10px; }
+    .visit-empty { background:var(--card); border:1px dashed var(--line); border-radius:16px; padding:20px; }
     @media (min-width: 700px) { .menu-cards { grid-template-columns:repeat(3, minmax(0,1fr)); } .menu-card { flex-direction:column; align-items:flex-start; } }
     .screen-head p { margin:.2rem 0 .4rem; color:var(--muted); font-size:.96rem; }
     .screen-scroll { padding:8px 0 20px; display:flex; flex-direction:column; gap:16px; }
@@ -1462,7 +1486,7 @@
           <section class="ps-panel" aria-labelledby="visits-h">
             <h3 id="visits-h">Your last visits</h3>
             <p class="ps-muted">Only you see this. What you ordered, and how it was for you, so you remember next time.</p>
-            <ul id="visit-list"></ul>
+            <div id="visit-list" class="visit-list"></div>
             <button class="ps-btn ps-btn-secondary ps-btn-small" id="clear-visits" type="button">Clear visits</button>
           </section>
           <section class="ps-panel" aria-labelledby="trust-h">
@@ -2192,6 +2216,61 @@
     }, {passive:true});
 
     /* Place detail screen */
+    /* One visit as a visual card, Nov 24 2026: used in Saved
+       ("Your last visits", grouped by place) and on place
+       detail ("Your visit"). Same hierarchy in both: date,
+       rating, experience as labelled rows, what you got as a
+       tidy list with per-item rating and notes, items total,
+       Order again. No information is removed, only organised. */
+    function visitCardEl(v, opts){
+      opts = opts || {};
+      var card=document.createElement("article"); card.className="visit-card";
+      var head=document.createElement("div"); head.className="visit-card-head";
+      var d=document.createElement("h4");
+      var dv=new Date(v.date+"T12:00:00");
+      d.textContent = isNaN(dv.getTime()) ? v.date : dv.toLocaleDateString(undefined, {weekday:"short", day:"numeric", month:"short", year:"numeric"});
+      head.appendChild(d);
+      if(opts.mostRecent){ var tag=document.createElement("span"); tag.className="visit-tag"; tag.textContent="Most recent"; head.appendChild(tag); }
+      var rate=document.createElement("span"); rate.className="visit-rating"; rate.textContent=ratingVisual(v.rating); head.appendChild(rate);
+      card.appendChild(head);
+      if(opts.showPlaceName){ var pl=document.createElement("p"); pl.className="visit-place"; pl.textContent=v.place; card.appendChild(pl); }
+      if(v.answers && v.answers.length){
+        var expH=document.createElement("p"); expH.className="visit-sub"; expH.textContent="Your experience"; card.appendChild(expH);
+        var expDl=document.createElement("dl"); expDl.className="detail-kv";
+        expDl.innerHTML = v.answers.map(function(a){ return '<div><dt>'+a.q+'</dt><dd>'+a.a+'</dd></div>'; }).join("");
+        card.appendChild(expDl);
+      }
+      if(v.order && v.order.length){
+        var gotH=document.createElement("p"); gotH.className="visit-sub"; gotH.textContent="What you got"; card.appendChild(gotH);
+        var gotList=document.createElement("ul"); gotList.className="visit-got";
+        v.order.forEach(function(o){
+          var li=document.createElement("li"); li.className="visit-got-item";
+          var row=document.createElement("div"); row.className="visit-got-row";
+          var nm=document.createElement("span"); nm.className="visit-got-name"; nm.textContent=o.item + (o.qty>1 ? " \u00d7"+o.qty : ""); row.appendChild(nm);
+          var pr=document.createElement("span"); pr.className="visit-got-price"; pr.textContent=money(priceNum(o.price)*o.qty); row.appendChild(pr);
+          li.appendChild(row);
+          if(o.rating){ var r=document.createElement("span"); r.className="visit-item-rating"; r.textContent=ratingVisual(o.rating); li.appendChild(r); }
+          if(o.note){ var n=document.createElement("p"); n.className="visit-got-note ps-muted"; n.textContent="Order note: "+o.note; li.appendChild(n); }
+          if(o.gotNote){ var g=document.createElement("p"); g.className="visit-got-note"; g.textContent="How it was: "+o.gotNote; li.appendChild(g); }
+          gotList.appendChild(li);
+        });
+        var tot=document.createElement("li"); tot.className="visit-total"; tot.textContent="Items total: "+money(orderTotal(v.order)); gotList.appendChild(tot);
+        card.appendChild(gotList);
+        var again=document.createElement("button"); again.type="button"; again.className="ps-btn ps-btn-secondary ps-btn-small"; again.textContent="Order again";
+        again.addEventListener("click", function(){
+          (v.order||[]).forEach(function(o){
+            for(var k=0;k<o.qty;k++){ var e={place:v.place, placeId:v.placeId, item:o.item, price:o.price, date:todayStr()}; if(o.note) e.note=o.note; prep.push(e); }
+          });
+          save("peerspect-prep-v1", prep); renderPrep();
+          if(opts.afterOrderAgain){ opts.afterOrderAgain(); }
+          else { again.textContent="Added to order prep list \u2713"; setTimeout(function(){ again.textContent="Order again"; },1500); }
+        });
+        card.appendChild(again);
+      } else {
+        var noOrd=document.createElement("p"); noOrd.className="ps-muted"; noOrd.textContent="No order saved for this visit."; card.appendChild(noOrd);
+      }
+      return card;
+    }
     function showPlace(id){
       currentPlace = PLACES.find(function(p){ return p.id===id; }); if(!currentPlace) return;
       var p = currentPlace;
@@ -2321,56 +2400,10 @@
       if(placeVisits.length){
         var vt=document.createElement("section"); vt.className="ps-panel place-section"; vt.setAttribute("aria-label","Your visit");
         var vtH=document.createElement("h3"); vtH.textContent="Your visit"; vt.appendChild(vtH);
-        var lastVisit = placeVisits[0];
-        var vtHead=document.createElement("p"); vtHead.className="visit-head";
-        vtHead.innerHTML = "<strong>" + lastVisit.date + "</strong> · " + ratingVisual(lastVisit.rating);
-        vt.appendChild(vtHead);
-        if(lastVisit.answers && lastVisit.answers.length){
-          var expH=document.createElement("p"); expH.className="visit-sub"; expH.textContent="Your experience"; vt.appendChild(expH);
-          var expDl=document.createElement("dl"); expDl.className="detail-kv";
-          expDl.innerHTML = lastVisit.answers.map(function(a){ return '<div><dt>'+a.q+'</dt><dd>'+a.a+'</dd></div>'; }).join("");
-          vt.appendChild(expDl);
-        }
-        if(lastVisit.order && lastVisit.order.length){
-          var gotH=document.createElement("p"); gotH.className="visit-sub"; gotH.textContent="What you got"; vt.appendChild(gotH);
-          var gotList=document.createElement("ul"); gotList.className="visit-order";
-          lastVisit.order.forEach(function(o){
-            var li=document.createElement("li");
-            li.textContent = gotLine(o);
-            gotList.appendChild(li);
-          });
-          var tot=document.createElement("li"); tot.className="order-total"; tot.textContent="Total: " + money(orderTotal(lastVisit.order)); gotList.appendChild(tot);
-          vt.appendChild(gotList);
-          var again=document.createElement("button"); again.type="button"; again.className="ps-btn ps-btn-secondary ps-btn-small"; again.textContent="Order again";
-          again.addEventListener("click", function(){
-            lastVisit.order.forEach(function(o){
-              for(var k=0;k<o.qty;k++){ var e={place:p.name, placeId:p.id, item:o.item, price:o.price, date:todayStr()}; if(o.note) e.note=o.note; prep.push(e); }
-            });
-            save("peerspect-prep-v1", prep); renderPrep(); showPlace(p.id);
-          });
-          vt.appendChild(again);
-        } else {
-          var noOrd=document.createElement("p"); noOrd.className="ps-muted"; noOrd.textContent="No order saved for this visit."; vt.appendChild(noOrd);
-        }
-        if(placeVisits.length>1){
-          var arcH=document.createElement("p"); arcH.className="visit-sub"; arcH.textContent="Earlier visits"; vt.appendChild(arcH);
-          placeVisits.slice(1).forEach(function(v){
-            var enDiv=document.createElement("div"); enDiv.className="log-entry";
-            var enH=document.createElement("p"); enH.innerHTML="<strong>"+v.date+"</strong> · "+ratingVisual(v.rating); enDiv.appendChild(enH);
-            if(v.order && v.order.length){
-              var enList=document.createElement("ul"); enList.className="visit-order";
-              v.order.forEach(function(o){
-                var li=document.createElement("li");
-                li.textContent = gotLine(o);
-                enList.appendChild(li);
-              });
-              enDiv.appendChild(enList);
-            } else {
-              var enNone=document.createElement("p"); enNone.className="ps-muted"; enNone.textContent="No order saved for this visit."; enDiv.appendChild(enNone);
-            }
-            vt.appendChild(enDiv);
-          });
-        }
+        placeVisits.forEach(function(v, i){
+          if(i===1){ var arcH=document.createElement("p"); arcH.className="visit-sub"; arcH.textContent="Earlier visits"; vt.appendChild(arcH); }
+          vt.appendChild(visitCardEl(v, {mostRecent:i===0, afterOrderAgain:function(){ showPlace(p.id); }}));
+        });
         body.appendChild(vt);
       }
       var foot = $("place-foot"); foot.innerHTML = "";
@@ -2434,18 +2467,38 @@
       Array.from(bookmarks).forEach(function(id){ var p=PLACES.find(function(x){ return x.id===id; }); if(p){ var li=document.createElement("li"); li.textContent=p.name+" — "+p.area; bl.appendChild(li); } });
     }
     $("clear-prep").addEventListener("click", function(){ prep=[]; save("peerspect-prep-v1", prep); renderPrep(); });
+    /* Your last visits, Nov 24 2026: was one comma-joined
+       line per visit — raw data. Now a summary line, then
+       visits grouped by place, each visit its own card
+       (visitCardEl, shared with place detail). Most recent
+       first, in each group and overall. Only saved visit
+       data is used; nothing is invented. */
     function renderVisits(){
       var ul=$("visit-list"); if(!ul) return; ul.innerHTML="";
-      if(!visits.length){ ul.innerHTML="<li class='ps-muted'>No visits yet. Check in at a place and it will show up here.</li>"; return; }
-      visits.slice().reverse().forEach(function(v){
-        var li=document.createElement("li");
-        var text = v.place + " — " + v.date + " — " + ratingLabel(v.rating);
-        if(v.order && v.order.length){
-          text += " — Ordered: " + v.order.map(function(o){ return gotLine(o); }).join(", ");
-          text += " — Total: " + money(orderTotal(v.order));
-        }
-        if(v.answers && v.answers.length) text += " — " + v.answers.slice(0,3).map(function(a){ return a.q+" "+a.a; }).join("; ");
-        li.textContent = text; ul.appendChild(li);
+      if(!visits.length){
+        var empty=document.createElement("div"); empty.className="visit-empty";
+        empty.innerHTML="<p><strong>No visits yet.</strong></p><p class='ps-muted'>Check in at a place and it will show up here, with what you got and how it was.</p>";
+        ul.appendChild(empty); return;
+      }
+      var ordered = visits.slice().reverse();
+      var places = []; ordered.forEach(function(v){ if(places.indexOf(v.placeId)<0) places.push(v.placeId); });
+      var most = null, mostCount = 0, counts = {};
+      ordered.forEach(function(v){ (v.order||[]).forEach(function(o){ counts[o.item]=(counts[o.item]||0)+o.qty; if(counts[o.item]>mostCount){ mostCount=counts[o.item]; most=o.item; } }); });
+      var sum=document.createElement("p"); sum.className="visits-summary";
+      sum.textContent = ordered.length + (ordered.length===1 ? " visit" : " visits") + " · " + places.length + (places.length===1 ? " place" : " places");
+      if(most) sum.textContent += " · Most ordered: " + most + " (" + mostCount + (mostCount===1 ? " time" : " times") + ")";
+      ul.appendChild(sum);
+      var groups = [];
+      ordered.forEach(function(v){
+        var g=null; groups.forEach(function(x){ if(x.placeId===v.placeId) g=x; });
+        if(!g){ g={placeId:v.placeId, place:v.place, list:[]}; groups.push(g); }
+        g.list.push(v);
+      });
+      groups.forEach(function(g){
+        var wrap=document.createElement("div"); wrap.className="visit-group";
+        var gh=document.createElement("h4"); gh.textContent=g.place + " — " + g.list.length + (g.list.length===1 ? " visit" : " visits"); wrap.appendChild(gh);
+        g.list.forEach(function(v, i){ wrap.appendChild(visitCardEl(v, {mostRecent:i===0, showPlaceName:false})); });
+        ul.appendChild(wrap);
       });
     }
     $("clear-visits").addEventListener("click", function(){ visits=[]; save("peerspect-visits-v1", visits); renderVisits(); });
