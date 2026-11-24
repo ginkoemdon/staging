@@ -23,14 +23,14 @@
       --amber:#8a4a08; --amber-bg:#fdf0d8; --amber-ink:#8a4a08;
       --ink:#1a2b26; --muted:#3f5148; --bg:#fdfbf7; --card:#ffffff; --line:#ddd8c9;
       --line-soft:#ece7db; --soft:#e2efe8; --tag-bg:#f0ede4; --track:#ece7db; --map-bg:#eef4ea;
-      --teal-tint:#8ecdc0; --focus:#14665a;
+      --teal-tint:#8ecdc0; --focus:#14665a; --danger:#b3261e;
     }
     html[data-theme="dark"] {
       --teal:#8ecdc0; --teal-dark:#fdfbf7; --pine:#a8c9a8; --honey:#f6cf6e; --honey-light:#f6cf6e;
       --amber:#f6cf6e; --amber-bg:#214f45; --amber-ink:#f6cf6e;
       --ink:#fdfbf7; --muted:#d5e6de; --bg:#173a33; --card:#214f45; --line:#3a5a50;
       --line-soft:#2a4a41; --soft:#214f45; --tag-bg:#2a4a41; --track:#2a4a41; --map-bg:#214f45;
-      --teal-tint:#8ecdc0; --focus:#f6cf6e;
+      --teal-tint:#8ecdc0; --focus:#f6cf6e; --danger:#ffb3ab;
     }
     @media (prefers-color-scheme: dark) {
       html:not([data-theme="light"]) {
@@ -38,7 +38,7 @@
         --amber:#f6cf6e; --amber-bg:#214f45; --amber-ink:#f6cf6e;
         --ink:#fdfbf7; --muted:#d5e6de; --bg:#173a33; --card:#214f45; --line:#3a5a50;
         --line-soft:#2a4a41; --soft:#214f45; --tag-bg:#2a4a41; --track:#2a4a41; --map-bg:#214f45;
-        --teal-tint:#8ecdc0; --focus:#f6cf6e;
+        --teal-tint:#8ecdc0; --focus:#f6cf6e; --danger:#ffb3ab;
       }
     }
     /* Card colours preview, Nov 24 2026: Ginko said the card
@@ -355,7 +355,7 @@
     .budget-row input { min-height:44px; flex:1 1 120px; border:1px solid var(--line); border-radius:10px; padding:0 12px; font-size:1rem; background:var(--card); color:var(--ink); }
     .budget-chips { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
     .budget-under { font-weight:700; color:var(--teal-dark); margin:8px 0 0; }
-    .budget-over { font-weight:800; color:var(--ink); margin:8px 0 0; }
+    .budget-over { font-weight:800; color:var(--danger); text-decoration:underline; text-underline-offset:2px; margin:8px 0 0; }
     /* "What you got" log, Nov 24 2026: checklist of the menu,
        one item at a time, with a "how it was" note and a rating
        per item. The order note is what to ask for; this note is
@@ -1475,7 +1475,7 @@
 
       <!-- 4. SAVED -->
       <section class="screen" id="screen-saved" aria-labelledby="profiles-h" hidden>
-        <div class="screen-head"><h2 id="profiles-h">Saved</h2><p>Profiles, order prep list, and bookmarks. Demo only, in this browser.</p></div>
+        <div class="screen-head"><h2 id="profiles-h">Saved</h2><p>Profiles, order prep list, and bookmarks.</p></div>
         <div class="screen-scroll">
           <section class="ps-panel" aria-labelledby="save-profile-h">
             <h3 id="save-profile-h">Save today's filters</h3>
