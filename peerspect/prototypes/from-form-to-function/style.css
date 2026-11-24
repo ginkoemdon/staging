@@ -31,12 +31,26 @@ button, input, select { min-height: 44px; }
 }
 
 .wrap { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem 3rem; }
-/* Minimal top bar — only a discreet way back to the Playground */
+/* Centred professional header (Nov 2026, like PEERSPECT): centred app name,
+   one round X close button top right, no text back-link. The header sits
+   outside the screens, so it stays visible on start, steps, and summary. */
 .app-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem 0; }
-.app-mark { font-family: "Sora", sans-serif; font-weight: 700; font-size: 1.05rem; color: #1e293b; }
+/* Left spacer matches the right-hand actions (toggle + X + gap) so the
+   centred app name stays truly centred. */
+.app-bar-spacer { width: 96px; height: 44px; flex-shrink: 0; }
+.app-mark { font-family: "Sora", sans-serif; font-weight: 700; font-size: 1.05rem; color: #1e293b; flex: 1; text-align: center; margin: 0; }
 .app-mark span { color: #0f766e; }
-.back-link { font-size: 0.9rem; font-weight: 700; color: #475569; text-decoration: none; }
-.back-link:hover { text-decoration: underline; color: #0f766e; }
+.app-bar-actions { display: flex; gap: 0.5rem; align-items: center; flex-shrink: 0; }
+/* Theme toggle, immediately left of the X (header rule, all prototypes):
+   moon icon in light mode, sun icon in dark mode. */
+.theme-toggle { width: 44px; height: 44px; min-width: 44px; min-height: 44px; display: grid; place-items: center; flex-shrink: 0; border-radius: 50%; border: 0; background: transparent; cursor: pointer; padding: 0; }
+.theme-toggle .theme-icon { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #d9d7d0; background: #fff; color: #0f766e; font-size: 1.25rem; line-height: 1; display: grid; place-items: center; }
+.theme-toggle:hover .theme-icon, .theme-toggle:focus-visible .theme-icon { background: #e6efec; }
+.theme-toggle:focus-visible { outline: 3px solid #0f766e; outline-offset: 3px; }
+.app-close { width: 44px; height: 44px; min-width: 44px; min-height: 44px; display: grid; place-items: center; text-decoration: none; flex-shrink: 0; border-radius: 50%; }
+.app-close span { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #d9d7d0; background: #fff; color: #0f766e; font-size: 1.3rem; line-height: 1; display: grid; place-items: center; }
+.app-close:hover span, .app-close:focus-visible span { background: #e6efec; }
+.app-close:focus-visible { outline: 3px solid #0f766e; outline-offset: 3px; }
 
 .hero { background: #fff; border: 1px solid #d9d7d0; border-radius: 20px; padding: 2rem; margin: 0.5rem 0 1.5rem; box-shadow: 0 8px 24px rgba(30,41,59,.08); }
 .hero .meta { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #0f766e; margin: 0 0 0.5rem; }
@@ -121,7 +135,12 @@ button, input, select { min-height: 44px; }
 .sample-picker h2 { margin-top: 0; }
 .hint { color: #475569; font-size: 0.9rem; margin: 0 0 1rem; }
 .how-details { background: #fff; border: 1px solid #d9d7d0; border-radius: 12px; padding: 1rem 1.25rem; margin: 0 0 1rem; }
-.how-details summary { font-weight: 700; cursor: pointer; min-height: 44px; display: flex; align-items: center; }
+.how-details summary { font-weight: 700; cursor: pointer; min-height: 44px; display: flex; align-items: center; list-style: none; }
+.how-details summary::-webkit-details-marker { display: none; }
+/* Universal dropdown chevron, top right, aligned with the summary text.
+   Plain CSS chevron in the app's own teal, no emoji. Rotates when open. */
+.how-details summary::after { content: ""; flex-shrink: 0; width: 10px; height: 10px; margin-left: auto; border-right: 2px solid #0f766e; border-bottom: 2px solid #0f766e; transform: rotate(45deg); transition: transform 0.2s ease; }
+.how-details[open] summary::after { transform: rotate(225deg); }
 .how-details ul { margin: 0.75rem 0 0; padding-left: 1.25rem; }
 .how-details li { margin: 0.35rem 0; }
 .how-details p { color: #475569; margin: 0.75rem 0 0; font-size: 0.95rem; }
@@ -147,3 +166,65 @@ button, input, select { min-height: 44px; }
   .app-bar, .upload-box, .sample-list, .demo-actions, .view-toggle, .walk-nav { display: none !important; }
   .panel { box-shadow: none; }
 }
+
+/* Real-form rebuild (Nov 2026): Part B practitioner steps, part tags,
+   submission info, and the PDF download note. */
+.part-tag { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #0f766e; margin: 0 0 0.25rem; }
+.practitioner-panel { background: #e6efec; border: 1px solid #0f766e; border-radius: 12px; padding: 0.9rem 1rem; margin-bottom: 0.75rem; }
+.practitioner-panel p { margin: 0 0 0.5rem; }
+.practitioner-panel p:last-child { margin-bottom: 0; }
+.submit-info { background: #e6efec; border: 1px solid rgba(15,118,110,.3); border-radius: 12px; padding: 1rem 1.25rem; margin: 1rem 0; }
+.submit-info h3 { margin: 0 0 0.5rem; }
+.submit-info ul { margin: 0; padding-left: 1.25rem; }
+.submit-info li { margin: 0.35rem 0; }
+.sample-full { display: inline-block; background: #0f766e; color: #fff; font-size: 0.8rem; font-weight: 700; border-radius: 999px; padding: 0.15rem 0.6rem; margin: 0.25rem 0; }
+.source-link { color: #475569; font-size: 0.9rem; margin: 0 0 1rem; }
+.pdf-note { background: #fef3c7; border: 1px solid #d97706; border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.9rem; color: #451a03; margin-top: 1rem; }
+.summary-part th { background: #e6efec; color: #0f766e; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* Dark theme — this prototype's own palette, in its own stylesheet.
+   Light text on dark navy; all pairs checked for WCAG 2.2 AA by
+   calculation: paper #f1f5f9 on bg #0f172a = 15.9:1; muted #cbd5e1 on
+   bg = 11.1:1; muted on card #1e293b = 9.6:1; teal-light #5eead4 on
+   bg = 11.3:1 and on card = 9.8:1; amber #fbbf24 on bg = 10.4:1;
+   amber-dark text #fde68a on guidance bg #451a03 = 9.4:1; white on
+   teal #0f766e = 5.5:1. Toggle remembered in localStorage. */
+html[data-theme="dark"] body { background: #0f172a; color: #f1f5f9; }
+html[data-theme="dark"] h1, html[data-theme="dark"] h2, html[data-theme="dark"] h3 { color: #f1f5f9; }
+html[data-theme="dark"] a { color: #5eead4; }
+html[data-theme="dark"] a:hover { color: #99f6e4; }
+html[data-theme="dark"] :focus-visible { outline-color: #5eead4; }
+html[data-theme="dark"] .app-mark { color: #f1f5f9; }
+html[data-theme="dark"] .app-mark span { color: #5eead4; }
+html[data-theme="dark"] .theme-toggle .theme-icon, html[data-theme="dark"] .app-close span { background: #1e293b; border-color: #475569; color: #5eead4; }
+html[data-theme="dark"] .theme-toggle:hover .theme-icon, html[data-theme="dark"] .theme-toggle:focus-visible .theme-icon, html[data-theme="dark"] .app-close:hover span, html[data-theme="dark"] .app-close:focus-visible span { background: #334155; }
+html[data-theme="dark"] .theme-toggle:focus-visible, html[data-theme="dark"] .app-close:focus-visible { outline-color: #5eead4; }
+html[data-theme="dark"] .tagline, html[data-theme="dark"] .hint, html[data-theme="dark"] .steps-intro, html[data-theme="dark"] .app-foot, html[data-theme="dark"] .source-link, html[data-theme="dark"] .saved-note, html[data-theme="dark"] .empty-note { color: #cbd5e1; }
+html[data-theme="dark"] .meta, html[data-theme="dark"] .part-tag { color: #5eead4; }
+html[data-theme="dark"] .hero, html[data-theme="dark"] .panel, html[data-theme="dark"] .sample-picker, html[data-theme="dark"] .how-details, html[data-theme="dark"] .step-card, html[data-theme="dark"] .list-view-card, html[data-theme="dark"] .disclaimer { background: #1e293b; border-color: #334155; box-shadow: none; }
+html[data-theme="dark"] .how-to, html[data-theme="dark"] .practitioner-panel, html[data-theme="dark"] .submit-info, html[data-theme="dark"] .view-note { background: #134e4a; border-color: #2dd4bf; }
+html[data-theme="dark"] .how-to p, html[data-theme="dark"] .practitioner-panel p, html[data-theme="dark"] .submit-info li, html[data-theme="dark"] .view-note { color: #f1f5f9; }
+html[data-theme="dark"] .sample-btn { background: #1e293b; border-color: #64748b; color: #f1f5f9; }
+html[data-theme="dark"] .sample-btn span { color: #cbd5e1; }
+html[data-theme="dark"] .sample-btn:hover, html[data-theme="dark"] .sample-btn:focus-visible { border-color: #5eead4; outline-color: #5eead4; }
+html[data-theme="dark"] .sample-btn[aria-pressed="true"] { border-color: #2dd4bf; background: #134e4a; }
+html[data-theme="dark"] .field { background: #1e293b; border-color: transparent; }
+html[data-theme="dark"] .field.active { border-color: #2dd4bf; background: #134e4a; }
+html[data-theme="dark"] .field input[type="text"], html[data-theme="dark"] .field input[type="date"], html[data-theme="dark"] .field input[type="number"], html[data-theme="dark"] .field input[type="tel"], html[data-theme="dark"] .field input[type="email"], html[data-theme="dark"] .field select { background: #0f172a; border-color: #64748b; color: #f1f5f9; color-scheme: dark; }
+html[data-theme="dark"] .field input:focus, html[data-theme="dark"] .field select:focus { outline-color: #5eead4; }
+html[data-theme="dark"] .guidance { background: #451a03; border-color: #fbbf24; }
+html[data-theme="dark"] .guidance p { color: #fef3c7; }
+html[data-theme="dark"] .guidance-step { color: #fbbf24; }
+html[data-theme="dark"] .upload-note, html[data-theme="dark"] .pdf-note, html[data-theme="dark"] .flag { background: #451a03; border-color: #fbbf24; color: #fef3c7; }
+html[data-theme="dark"] .flag strong { color: #fbbf24; }
+html[data-theme="dark"] .sample-tag { color: #fbbf24; }
+html[data-theme="dark"] .progress { background: #334155; }
+html[data-theme="dark"] .progress span { background: #2dd4bf; }
+html[data-theme="dark"] .summary-table { background: #1e293b; border-color: #334155; }
+html[data-theme="dark"] .summary-table th, html[data-theme="dark"] .summary-table td { border-color: #334155; }
+html[data-theme="dark"] .summary-part th { background: #134e4a; color: #5eead4; }
+html[data-theme="dark"] .btn { background: #1e293b; border-color: #cbd5e1; color: #f1f5f9; }
+html[data-theme="dark"] .btn-secondary:hover { background: #334155; border-color: #5eead4; }
+html[data-theme="dark"] .btn[aria-pressed="true"] { background: #0f766e; border-color: #0f766e; color: #fff; }
+html[data-theme="dark"] .terms dd, html[data-theme="dark"] .mock-form .form-sub { color: #cbd5e1; }
+html[data-theme="dark"] .uncertain { background: #451a03; color: #fde68a; border-color: #fbbf24; }

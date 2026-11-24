@@ -9,12 +9,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./style.css" />
+  <script>try { var t = localStorage.getItem('fftf-theme-v1'); if (t !== 'dark' && t !== 'light') { t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; } document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
   <header class="app-bar">
+    <span class="app-bar-spacer" aria-hidden="true"></span>
     <p class="app-mark">From Form <span>to Function</span></p>
-    <a class="back-link" href="../../index.html">← Back to Ginko's Prototype Playground</a>
+    <div class="app-bar-actions">
+      <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">&#9789;</span></button>
+      <a class="app-close" href="../../index.html" aria-label="Close prototype and return to Ginko's Prototype Playground"><span aria-hidden="true">&times;</span></a>
+    </div>
   </header>
   <div class="wrap">
     <main id="main">
@@ -37,13 +43,13 @@
 
         <div id="sample-picker" class="sample-picker">
           <h2>Try a sample form</h2>
-          <p class="hint">Pick one. Each is a simplified sample version, not the official form.</p>
+          <p class="hint">Pick one. The Accessible Parking Permit is the full real form, step by step. The other two are simplified samples, not the official forms.</p>
           <div class="sample-list" role="group" aria-label="Sample forms">
-            <button class="sample-btn" type="button" data-sample="photo-card" aria-pressed="false"><strong>Application for Ontario Photo Card — SR-LD-049E</strong><span>Government photo ID for Ontario residents who do not have a driver&apos;s licence.</span></button>
-            <button class="sample-btn" type="button" data-sample="vehicle-reg" aria-pressed="false"><strong>Application for Vehicle Registration — SR-LV-006</strong><span>Registering a vehicle at ServiceOntario.</span></button>
-            <button class="sample-btn" type="button" data-sample="parking-permit" aria-pressed="false"><strong>Application for an Accessible Parking Permit — SR-LV-129E</strong><span>For disabled users. Includes a healthcare practitioner section.</span></button>
+            <button class="sample-btn" type="button" data-sample="photo-card" aria-pressed="false"><strong>Application for Ontario Photo Card — SR-LD-049E</strong><span>Government photo ID for Ontario residents who do not have a driver&apos;s licence. Simplified sample.</span></button>
+            <button class="sample-btn" type="button" data-sample="vehicle-reg" aria-pressed="false"><strong>Application for Vehicle Registration — SR-LV-006</strong><span>Registering a vehicle at ServiceOntario. Simplified sample.</span></button>
+            <button class="sample-btn" type="button" data-sample="parking-permit" aria-pressed="false"><strong>Application for an Accessible Parking Permit — SR-LV-129E (2024/03)</strong><span class="sample-full">Full real form</span><span>The full form, in its own order. Part A is yours; Part B is for your healthcare practitioner.</span></button>
           </div>
-          <p class="view-note"><strong>Main sample: Accessible Parking Permit (SR-LV-129E).</strong> These three Ontario forms are from Ontario&apos;s Central Forms Repository. You can try any of them.</p>
+          <p class="view-note"><strong>Main form: Accessible Parking Permit (SR-LV-129E, 2024/03).</strong> The full real form from the <a href="https://forms.mgcs.gov.on.ca/dataset/002-sr-lv-129">Ontario Central Forms Repository</a>. The Photo Card and Vehicle Registration forms are simplified samples only.</p>
         </div>
 
         <details class="how-details">
@@ -63,6 +69,7 @@
         <h2 id="steps-heading" class="steps-title"></h2>
         <p class="sample-tag" id="steps-tag"></p>
         <p class="steps-intro" id="steps-intro"></p>
+        <p class="source-link" id="steps-source"></p>
 
         <div class="progress" aria-hidden="true"><span id="progress-fill"></span></div>
         <p class="walk-progress" id="walk-progress" aria-live="polite"></p>
@@ -88,6 +95,8 @@
         <p class="hint" id="summary-intro"></p>
         <div id="summary-table"></div>
 
+        <div class="submit-info" id="summary-submit"></div>
+
         <details class="how-details">
           <summary>What this form is</summary>
           <p id="summary-identified"></p>
@@ -99,15 +108,16 @@
         <details class="how-details">
           <summary>AI-checked guidance</summary>
           <ul class="check-list" id="summary-checked"></ul>
-          <p class="flag"><strong>Still uncertain?</strong> Anything marked uncertain above was not in the sample form. This prototype does not guess. Check the original form or the official source before you act.</p>
+          <p class="flag"><strong>Still uncertain?</strong> Anything marked uncertain above was not in the form itself. This prototype does not guess. Check the original form or the official source before you act.</p>
         </details>
 
         <div class="demo-actions">
-          <button class="btn btn-primary" type="button" id="download-btn">Download filled summary</button>
+          <button class="btn btn-primary" type="button" id="download-pdf">Download PDF</button>
           <button class="btn btn-secondary" type="button" id="print-btn">Print</button>
           <button class="btn btn-secondary" type="button" id="reset-btn">Start again</button>
         </div>
-        <p class="disclaimer"><strong>Before you act on a real form:</strong> this is a prototype with simplified sample versions of real Ontario forms. It does not read your photo, it does not call an AI service, and it is not legal or medical advice. Always check the original form and the official source, and ask the organisation that sent the form if anything is unclear.</p>
+        <p class="pdf-note" id="pdf-note" style="display:none;"></p>
+        <p class="disclaimer" id="summary-disclaimer"><strong>Before you act on a real form:</strong> this is a prototype with simplified sample versions of real Ontario forms. It does not read your photo, it does not call an AI service, and it is not legal or medical advice. Always check the original form and the official source, and ask the organisation that sent the form if anything is unclear.</p>
       </section>
     </main>
 
@@ -115,12 +125,28 @@
   </div>
   <script>
   (function () {
+    /* Theme: light / dark, remembered. Moon icon in light mode (tap for
+       dark), sun icon in dark mode (tap for light), like PEERSPECT. */
+    var themeBtn = $('theme-toggle');
+    function applyTheme(mode) {
+      document.documentElement.setAttribute('data-theme', mode);
+      try { localStorage.setItem('fftf-theme-v1', mode); } catch (e) {}
+      if (themeBtn) {
+        var icon = themeBtn.querySelector('.theme-icon');
+        if (icon) icon.textContent = mode === 'dark' ? '\u2600' : '\u263E';
+        themeBtn.setAttribute('aria-label', mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+      }
+    }
+    var savedTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    applyTheme(savedTheme);
+    if (themeBtn) themeBtn.addEventListener('click', function () {
+      applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+
     // Swappable sample system.
-    // MAIN_SAMPLE: Ginko has NOT picked the main sample yet. Set this to
-    // 'photo-card', 'vehicle-reg' or 'parking-permit'.
-    // Nov 23, 2026: Ginko confirmed the main sample is the
-    // Accessible Parking Permit ('parking-permit', SR-LV-129E).
-    // The other two Ontario forms are still available to try.
+    // MAIN_SAMPLE: the Accessible Parking Permit ('parking-permit',
+    // SR-LV-129E, 2024/03) is the main, full, real-form flow.
+    // The other two Ontario forms are simplified samples.
     var MAIN_SAMPLE = 'parking-permit';
     var SAMPLES = {
       'photo-card': {
@@ -185,32 +211,93 @@
       },
       'parking-permit': {
         name: "Application for an Accessible Parking Permit",
-        formNumber: "SR-LV-129E",
-        identified: "This is an application for an Accessible Parking Permit (form SR-LV-129E). It is for disabled people who need to park closer to where they are going. Part of the form is filled in by a healthcare practitioner, not by you.",
+        formNumber: "SR-LV-129E (2024/03)",
+        fullForm: true,
+        sourceUrl: "https://forms.mgcs.gov.on.ca/dataset/002-sr-lv-129",
+        sourceLabel: "Ontario Central Forms Repository, form SR-LV-129E (2024/03)",
+        identified: "This is the real Application for an Accessible Parking Permit (form SR-LV-129E, 2024/03, King's Printer for Ontario 2024). It is for people who need to park closer to where they are going because of a health condition. The permit belongs to the person, not the car. Part A is filled in by you (or an authorized representative). Part B is filled in only by a regulated healthcare practitioner — not by you.",
         steps: [
-          "Fill in your name, date of birth, and address, exactly as they appear on your ID.",
-          "Choose the type of permit. The sample covers a permanent permit and a temporary one — check the official form for the full list.",
-          "Take the practitioner section to your healthcare practitioner. They fill in and sign that part — do not fill it in yourself.",
-          "Sign the applicant section yourself, and date it.",
-          "Send the whole form in. Keep a copy, and note the date you sent it."
+          "Fill in Part A: your permit details, then your name, date of birth, and addresses, exactly as they appear on your ID.",
+          "Read the declaration in Part A carefully, then type your name and the date as a stand-in for your signature in this prototype.",
+          "Take Part B to your regulated healthcare practitioner. They tick the health condition(s) that apply, say whether the condition is permanent, subject-to-change, or temporary, and fill in and sign their section. Do not fill Part B in yourself.",
+          "Submit the completed application: online at Ontario.ca/get-an-accessible-parking-permit, at a ServiceOntario centre, or by mail to ServiceOntario, PO Box 9800, Kingston ON K7L 5N8.",
+          "Keep a copy for your records. Remember the application is valid for up to 6 months from your practitioner's signature date."
         ],
         terms: [
-          ["Accessible Parking Permit", "A permit that lets you park in accessible parking spaces. It belongs to the person, not the car."],
-          ["Healthcare practitioner", "A doctor, nurse practitioner, or other qualified health professional who can confirm your condition."],
-          ["Permanent permit", "A permit for a long-term or permanent condition. It lasts longer than a temporary one."],
-          ["Temporary permit", "A permit for a short-term condition, like recovering from an injury. It has an end date."]
+          ["Accessible Parking Permit (APP)", "A permit that lets you park in accessible parking spaces. It belongs to the person, not the car."],
+          ["Regulated healthcare practitioner", "A health professional registered with one of six Ontario colleges: Physicians & Surgeons, Occupational Therapists, Physiotherapists, Chiropractors, Nurses (Nurse Practitioner-E/C), or Chiropodists. Only they can complete and sign Part B."],
+          ["Permanent", "The condition is not expected to improve with time. A permanent renewal expired more than 1 year needs a new practitioner certification."],
+          ["Subject-to-change", "The condition needs a health assessment every 5 years."],
+          ["Temporary", "The condition is expected to last a set number of months, up to 12 months."],
+          ["Declaration", "A signed statement that the information you gave is true. Under the Highway Traffic Act, fraudulently obtaining a permit can mean a fine of up to $5,000."],
+          ["ServiceOntario", "The Ontario government office where you hand in the form, or the address you mail it to."]
         ],
         checked: [
-          "Cross-referenced with: the simplified sample form itself, and general guidance on what an Accessible Parking Permit application asks for.",
-          "The sample does not list which healthcare practitioners can sign the form. That is <span class=\"uncertain\">still uncertain</span> — check the official form SR-LV-129E before you ask someone to sign.",
-          "The sample does not say how long a decision takes, or how long each permit type lasts. That is <span class=\"uncertain\">still uncertain</span> — check the official form or ServiceOntario."
+          "Cross-referenced with: the real form SR-LV-129E (2024/03) from the Ontario Central Forms Repository, including its submission notes and both declarations.",
+          "The form does not say how long a decision takes. That is <span class=\"uncertain\">still uncertain</span> — check with ServiceOntario.",
+          "The form does not state a fee. That is <span class=\"uncertain\">still uncertain</span> — check the official source before you submit."
         ],
+        submitInfo: [
+          "Submit online at Ontario.ca/get-an-accessible-parking-permit, take it to a ServiceOntario centre, or mail it to ServiceOntario, PO Box 9800, Kingston ON K7L 5N8.",
+          "You may be asked to provide proof of full name, date of birth and signature.",
+          "Applications are valid up to 6 months from the regulated healthcare practitioner signature date.",
+          "Permanent renewals expired more than 1 year require new regulated healthcare practitioner certification.",
+          "Keep a copy for your records."
+        ],
+        disclaimer: "This is a prototype. It produces a filled summary PDF laid out in the form's order — it is not the official ServiceOntario submission. Check the original form SR-LV-129E (2024/03) and the official source before submitting, and the practitioner section (Part B) must be completed and signed by a regulated healthcare practitioner. It does not read your photo, it does not call an AI service, and it is not legal or medical advice.",
         fields: [
-          { id: "full-name", label: "Applicant — full name", type: "text", placeholder: "Your name, as on your ID", ask: "Who is the permit for?", put: "Your name, exactly as it appears on your ID. The permit belongs to you, not to your car.", why: "The permit belongs to the person, not the car." },
-          { id: "dob", label: "Date of birth", type: "date", placeholder: "", ask: "When were you born?", put: "Your date of birth. Check it twice — a wrong date can delay your permit.", why: "It helps match you to your records." },
-          { id: "address", label: "Mailing address", type: "text", placeholder: "Street, city, postal code", ask: "Where should the permit be sent?", put: "Where the permit should be mailed. Use the address where you can actually receive mail.", why: "If the address is wrong, the permit will not reach you." },
-          { id: "permit-type", label: "Type of permit", type: "text", placeholder: "e.g. Permanent", ask: "Do you need a permanent or a temporary permit?", put: "Write whether you are applying for a permanent or a temporary permit. If you are not sure, ask your healthcare practitioner.", why: "A temporary permit ends on a set date. A permanent one lasts longer." },
-          { id: "practitioner", label: "Healthcare practitioner section completed and signed", type: "checkbox", placeholder: "", ask: "Has your healthcare practitioner filled in and signed their part?", put: "Tick this only when your healthcare practitioner has filled in and signed their section. Do not fill that section in yourself.", why: "Only they can confirm your condition. Do not fill that part in yourself." }
+          /* Part A, Section 1 — APP Information */
+          { id: "permit-number", part: "Part A · Section 1 — APP Information", label: "Current or previous APP permit number (if any)", type: "text", placeholder: "Leave blank if this is your first permit", ask: "Do you already have, or have you had, an Accessible Parking Permit?", put: "If you have a permit number now, or had one before, write it here. If this is your first permit, leave it blank.", why: "It lets ServiceOntario find your old record, if there is one." },
+          { id: "app-type", part: "Part A · Section 1 — APP Information", label: "Type of application", type: "select", options: ["New permit", "Renewal permit", "Change of Information", "Replacement", "Returning Permit"], placeholder: "", ask: "What are you applying for?", put: "Pick the one that fits. New means a first permit. Renewal means your permit is running out. Replacement means you need a new copy of a permit you already have. Returning Permit means you are giving a permit back.", why: "The rest of the form changes depending on what you pick — for example, a replacement asks why the old permit is gone." },
+          { id: "change-kind", part: "Part A · Section 1 — APP Information", label: "Change of information — what is changing?", type: "select", options: ["Address Change", "Name Change", "Other"], placeholder: "", showIf: { field: "app-type", value: "Change of Information" }, ask: "What information has changed?", put: "Pick Address Change, Name Change, or Other.", why: "ServiceOntario needs to know which detail to update on your record." },
+          { id: "change-detail", part: "Part A · Section 1 — APP Information", label: "Change detail — what is the new information?", type: "text", placeholder: "e.g. your new address or your new name", showIf: { field: "app-type", value: "Change of Information" }, ask: "What is the new information?", put: "Write the changed detail — for example, your new address or your new name.", why: "This is the detail ServiceOntario will update." },
+          { id: "replacement-reason", part: "Part A · Section 1 — APP Information", label: "Replacement — why do you need a replacement?", type: "select", options: ["Lost/Missing", "Stolen", "Damaged"], placeholder: "", showIf: { field: "app-type", value: "Replacement" }, ask: "What happened to your old permit?", put: "Pick Lost/Missing, Stolen, or Damaged. If it was damaged, attach the damaged permit to your application.", why: "ServiceOntario needs to know why the old permit cannot be used." },
+          { id: "police-service", part: "Part A · Section 1 — APP Information", label: "Name of police service (stolen permit)", type: "text", placeholder: "e.g. Toronto Police Service", showIf: { field: "replacement-reason", value: "Stolen" }, ask: "Which police service did you report the theft to?", put: "Write the name of the police service you reported the stolen permit to.", why: "A stolen permit needs a police report, so ServiceOntario can check it." },
+          { id: "police-occurrence", part: "Part A · Section 1 — APP Information", label: "Police occurrence number (stolen permit)", type: "text", placeholder: "Your occurrence number", showIf: { field: "replacement-reason", value: "Stolen" }, ask: "What is the police occurrence number?", put: "Write the occurrence number the police gave you when you reported the theft.", why: "The number lets ServiceOntario match your report to the police record." },
+          { id: "returning-reason", part: "Part A · Section 1 — APP Information", label: "Returning permit — why are you returning it?", type: "select", options: ["On behalf of deceased", "No longer required", "Found", "Other"], placeholder: "", showIf: { field: "app-type", value: "Returning Permit" }, ask: "Why is the permit being returned?", put: "Pick the reason. If you are returning it for someone who has died, pick On behalf of deceased. Attach the permit to your application.", why: "ServiceOntario needs to know why the permit is coming back." },
+          { id: "returning-detail", part: "Part A · Section 1 — APP Information", label: "Other reason for returning the permit", type: "text", placeholder: "Write the reason", showIf: { field: "returning-reason", value: "Other" }, ask: "What is the other reason?", put: "Write the reason you are returning the permit.", why: "It explains a return that does not fit the other options." },
+          /* Part A, Section 2 — Applicant Information */
+          { id: "last-name", part: "Part A · Section 2 — Applicant Information", label: "Last name of applicant", type: "text", placeholder: "Your last name, as on your ID", ask: "What is your last name?", put: "Your last name, exactly as it appears on your ID.", why: "The permit is issued in your name, and it must match your ID." },
+          { id: "first-name", part: "Part A · Section 2 — Applicant Information", label: "First name of applicant", type: "text", placeholder: "Your first name, as on your ID", ask: "What is your first name?", put: "Your first name, exactly as it appears on your ID.", why: "The permit is issued in your name, and it must match your ID." },
+          { id: "middle-name", part: "Part A · Section 2 — Applicant Information", label: "Middle name of applicant (if you have one)", type: "text", placeholder: "Leave blank if you have none", ask: "Do you have a middle name?", put: "Your middle name, as on your ID. Leave it blank if you do not have one.", why: "It helps match you to your records." },
+          { id: "dob", part: "Part A · Section 2 — Applicant Information", label: "Date of birth (yyyy/mm/dd)", type: "text", placeholder: "yyyy/mm/dd", ask: "When were you born?", put: "Your date of birth in year/month/day order, for example 1985/04/12. Check it twice.", why: "It proves your age and helps match you to your records." },
+          { id: "gender", part: "Part A · Section 2 — Applicant Information", label: "Gender", type: "text", placeholder: "As on your ID", ask: "What is your gender?", put: "Write your gender as it appears on your ID.", why: "It helps match you to your records." },
+          { id: "telephone", part: "Part A · Section 2 — Applicant Information", label: "Telephone number", type: "tel", placeholder: "e.g. 416-555-0123", ask: "What number can ServiceOntario reach you at?", put: "A phone number where ServiceOntario can reach you if there is a question about your application.", why: "If something is missing, they need to be able to contact you." },
+          { id: "email", part: "Part A · Section 2 — Applicant Information", label: "Email address", type: "email", placeholder: "you@example.com", ask: "What is your email address?", put: "An email address you check. ServiceOntario may use it to contact you about your application.", why: "It is another way for them to reach you if something is missing." },
+          { id: "res-street-number", part: "Part A · Section 2 — Residential Address", label: "Residential address — street number", type: "text", placeholder: "e.g. 7737", ask: "What is your home street number?", put: "The street number of where you live.", why: "Your home address goes on your record." },
+          { id: "res-street-name", part: "Part A · Section 2 — Residential Address", label: "Residential address — street name (or lot, concession, township)", type: "text", placeholder: "e.g. Av. de Gaspé", ask: "What street do you live on?", put: "Your street name. If you live in a rural area, use the lot, concession, or township instead.", why: "Your home address goes on your record." },
+          { id: "res-unit", part: "Part A · Section 2 — Residential Address", label: "Residential address — apartment / unit number (if any)", type: "text", placeholder: "Leave blank if none", ask: "Do you have an apartment or unit number?", put: "Your apartment or unit number, if you have one. Leave it blank if you do not.", why: "It makes sure mail reaches the right door." },
+          { id: "res-city", part: "Part A · Section 2 — Residential Address", label: "Residential address — city, town or village", type: "text", placeholder: "e.g. Montréal", ask: "What city, town, or village do you live in?", put: "The city, town, or village where you live.", why: "Your home address goes on your record." },
+          { id: "res-province", part: "Part A · Section 2 — Residential Address", label: "Residential address — province", type: "text", placeholder: "Ontario", ask: "What province do you live in?", put: "The province where you live — usually Ontario for this form.", why: "Your home address goes on your record." },
+          { id: "res-postal", part: "Part A · Section 2 — Residential Address", label: "Residential address — postal code", type: "text", placeholder: "e.g. H2R 2A5", ask: "What is your postal code?", put: "Your postal code, for example H2R 2A5.", why: "It makes sure mail reaches you." },
+          { id: "mailing-different", part: "Part A · Section 2 — Mailing Address", label: "My mailing address is different from my residential address", type: "checkbox", placeholder: "", ask: "Should mail go somewhere other than your home address?", put: "Tick this only if your mail should go to a different address. If your mail goes to your home address, leave it unticked.", why: "The form only asks for a mailing address when it is different from where you live." },
+          { id: "mail-street-number", part: "Part A · Section 2 — Mailing Address", label: "Mailing address — street number", type: "text", placeholder: "e.g. 7737", showIf: { field: "mailing-different", value: true }, ask: "What is the street number of your mailing address?", put: "The street number where your mail should go.", why: "The permit will be mailed here, so it has to be right." },
+          { id: "mail-street-name", part: "Part A · Section 2 — Mailing Address", label: "Mailing address — street name (or lot, concession, township)", type: "text", placeholder: "e.g. Av. de Gaspé", showIf: { field: "mailing-different", value: true }, ask: "What street should your mail go to?", put: "The street name of your mailing address.", why: "The permit will be mailed here, so it has to be right." },
+          { id: "mail-unit", part: "Part A · Section 2 — Mailing Address", label: "Mailing address — apartment / unit number (if any)", type: "text", placeholder: "Leave blank if none", showIf: { field: "mailing-different", value: true }, ask: "Does your mailing address have an apartment or unit number?", put: "The apartment or unit number, if there is one. Leave it blank if there is not.", why: "It makes sure mail reaches the right door." },
+          { id: "mail-city", part: "Part A · Section 2 — Mailing Address", label: "Mailing address — city, town or village", type: "text", placeholder: "e.g. Montréal", showIf: { field: "mailing-different", value: true }, ask: "What city, town, or village should your mail go to?", put: "The city, town, or village of your mailing address.", why: "The permit will be mailed here, so it has to be right." },
+          { id: "mail-province", part: "Part A · Section 2 — Mailing Address", label: "Mailing address — province", type: "text", placeholder: "Ontario", showIf: { field: "mailing-different", value: true }, ask: "What province should your mail go to?", put: "The province of your mailing address.", why: "The permit will be mailed here, so it has to be right." },
+          { id: "mail-postal", part: "Part A · Section 2 — Mailing Address", label: "Mailing address — postal code", type: "text", placeholder: "e.g. H2R 2A5", showIf: { field: "mailing-different", value: true }, ask: "What is the postal code of your mailing address?", put: "The postal code of your mailing address.", why: "It makes sure mail reaches you." },
+          { id: "passenger-type", part: "Part A · Section 2 — Applicant Information", label: "Will you be a passenger or a passenger/driver?", type: "select", options: ["Passenger/Driver (P/D)", "Passenger (P)"], placeholder: "", ask: "Will you drive, or only ride as a passenger?", put: "Pick Passenger/Driver if you sometimes drive the vehicle the permit will be displayed in. Pick Passenger if you only ride in it.", why: "The permit is for you, whether you drive or ride — the form just records which one." },
+          { id: "licence-number", part: "Part A · Section 2 — Applicant Information", label: "Ontario driver's licence number (if applicable)", type: "text", placeholder: "Leave blank if you do not drive", ask: "Do you have an Ontario driver's licence?", put: "If you have an Ontario driver's licence, write the number here. If you do not drive, leave it blank.", why: "It links your licence to your permit record, if you have one." },
+          { id: "declaration", part: "Part A · Section 2 — Declaration", label: "I declare the information above is true", type: "checkbox", placeholder: "", ask: "Is everything you wrote true?", put: "Tick this only if everything you wrote is true. The form says the permit belongs to a person, not a vehicle, and that false statements can be sent to law enforcement for investigation under the Criminal Code and the Highway Traffic Act. Under the Highway Traffic Act, fraudulently obtaining a permit can mean a fine of up to $5,000. You also authorize the release of health information to complete this form.", why: "This is a legal declaration, not just a tick box. A false statement can mean losing the permit, a fine, or worse." },
+          { id: "signature-name", part: "Part A · Section 2 — Declaration", label: "Your typed name (prototype stand-in for your signature)", type: "text", placeholder: "Type your full name", ask: "How do you sign the form in this prototype?", put: "Type your full name here. In this prototype, your typed name stands in for your signature — it is not a legal signature. On the real form you sign by hand.", why: "The form needs a signature and a date to be accepted." },
+          { id: "signature-date", part: "Part A · Section 2 — Declaration", label: "Date signed (yyyy/mm/dd)", type: "text", placeholder: "yyyy/mm/dd", ask: "What is today's date?", put: "Today's date in year/month/day order, for example 2026/11/23.", why: "The date shows when you signed, and the application is time-sensitive once your practitioner signs." },
+          /* Part B — Regulated Healthcare Practitioner only.
+             These are NOT fields the applicant fills in. Each step tells
+             the applicant what to ask their practitioner. Only the final
+             checkbox is stored as the applicant's own answer. */
+          { id: "pb-names", part: "Part B · For your healthcare practitioner", label: "Part B — your practitioner's first step: your name", type: "info", practitionerOnly: true, summary: "Your practitioner writes your last name and first name at the top of Part B.", ask: "What does your practitioner need to write first?", put: "Ask your practitioner to write your last name and first name at the top of Part B. You do not write this yourself.", why: "Part B has to be linked to you, and only your practitioner completes it." },
+          { id: "pb-condition-a", part: "Part B · Section 1 — Assessment of Health Conditions", label: "Condition A — cannot walk without assistance", type: "info", practitionerOnly: true, summary: "Your practitioner ticks this only if it applies to you.", ask: "What is condition A?", put: "Ask your practitioner whether this applies to you: you cannot walk without the help of another person, or a brace, cane, crutch, lower limb prosthetic device, or similar device, or you need a wheelchair. Your practitioner ticks it if it applies — you do not tick it yourself.", why: "Only your practitioner can certify which health conditions you have." },
+          { id: "pb-condition-b", part: "Part B · Section 1 — Assessment of Health Conditions", label: "Condition B — lung disease, FEV1 less than 1 litre", type: "info", practitionerOnly: true, summary: "Your practitioner ticks this only if it applies to you.", ask: "What is condition B?", put: "Ask your practitioner whether this applies to you: you have lung disease so severe that your forced expiratory volume in one second (FEV1) is less than 1 litre. Your practitioner ticks it if it applies — you do not tick it yourself.", why: "Only your practitioner can certify which health conditions you have." },
+          { id: "pb-condition-c", part: "Part B · Section 1 — Assessment of Health Conditions", label: "Condition C — portable oxygen is a medical necessity", type: "info", practitionerOnly: true, summary: "Your practitioner ticks this only if it applies to you.", ask: "What is condition C?", put: "Ask your practitioner whether this applies to you: portable oxygen is a medical necessity for you. Your practitioner ticks it if it applies — you do not tick it yourself.", why: "Only your practitioner can certify which health conditions you have." },
+          { id: "pb-condition-d", part: "Part B · Section 1 — Assessment of Health Conditions", label: "Condition D — cardiovascular disease, Class III or IV", type: "info", practitionerOnly: true, summary: "Your practitioner ticks this only if it applies to you.", ask: "What is condition D?", put: "Ask your practitioner whether this applies to you: you have cardiovascular disease so severe that your functional capacity is Class III or Class IV. Your practitioner ticks it if it applies — you do not tick it yourself.", why: "Only your practitioner can certify which health conditions you have." },
+          { id: "pb-condition-e", part: "Part B · Section 1 — Assessment of Health Conditions", label: "Condition E — walking severely limited by arthritic, neurological, musculoskeletal, or orthopedic condition", type: "info", practitionerOnly: true, summary: "Your practitioner ticks this only if it applies to you.", ask: "What is condition E?", put: "Ask your practitioner whether this applies to you: your ability to walk is severely limited by an arthritic, neurological, musculoskeletal, or orthopedic condition. Your practitioner ticks it if it applies — you do not tick it yourself.", why: "Only your practitioner can certify which health conditions you have." },
+          { id: "pb-condition-f", part: "Part B · Section 1 — Assessment of Health Conditions", label: "Condition F — visual acuity 20/200 or poorer, or field of vision 20 degrees or less", type: "info", practitionerOnly: true, summary: "Your practitioner ticks this only if it applies to you.", ask: "What is condition F?", put: "Ask your practitioner whether this applies to you: your visual acuity is 20/200 or poorer in your better eye (with corrective lenses if needed), or your field of vision using both eyes is 20 degrees or less. Your practitioner ticks it if it applies — you do not tick it yourself.", why: "Only your practitioner can certify which health conditions you have." },
+          { id: "pb-condition-g", part: "Part B · Section 1 — Assessment of Health Conditions", label: "Condition G — mobility severely limited by one or more conditions", type: "info", practitionerOnly: true, summary: "Your practitioner ticks this only if it applies to you.", ask: "What is condition G?", put: "Ask your practitioner whether this applies to you: your mobility is severely limited by one or more conditions or functional impairments. Your practitioner ticks it if it applies — you do not tick it yourself.", why: "Only your practitioner can certify which health conditions you have." },
+          { id: "pb-status", part: "Part B · Section 2 — Status of Condition", label: "Status of condition — Permanent, Subject-to-change, or Temporary", type: "info", practitionerOnly: true, summary: "Your practitioner picks one: Permanent, Subject-to-change (every 5 years), or Temporary (months, max 12).", ask: "What does your practitioner need to decide here?", put: "Ask your practitioner to pick one: Permanent (the condition is not expected to improve), Subject-to-change (a health assessment is needed every 5 years), or Temporary (a set number of months, up to 12). Your practitioner picks it — you do not.", why: "The status decides how long the permit lasts and when it needs a new assessment." },
+          { id: "pb-practitioner-info", part: "Part B · Section 3 — Practitioner Information", label: "Practitioner information — name, college number, and registered college", type: "info", practitionerOnly: true, summary: "Your practitioner fills in their full name, college number, telephone, fax, and which college they are registered with, and prints or stamps their name and address.", ask: "What does your practitioner need to write in Section 3?", put: "Ask your practitioner to fill in their full name, college number, telephone number and extension, and fax number, and to tick which college they are registered with: College of Physicians & Surgeons of Ontario; College of Occupational Therapists of Ontario; College of Physiotherapists of Ontario; College of Chiropractors of Ontario; College of Nurses of Ontario (Nurse Practitioner-E/C); or College of Chiropodists of Ontario. They also print or stamp their name and address. You do not fill this in.", why: "ServiceOntario needs to check that the person who signed is a registered practitioner." },
+          { id: "pb-declaration", part: "Part B · Section 3 — Practitioner Declaration", label: "Practitioner declaration and signature", type: "info", practitionerOnly: true, summary: "Your practitioner signs the declaration and dates it. In this prototype, their typed name stands in for a signature.", ask: "What does your practitioner need to sign?", put: "Ask your practitioner to read the declaration — they certify that you meet the eligibility requirements, that they are not treating themselves or family members, and that the information is true and complete — then sign and date it. False statements can be sent to law enforcement and to their college for investigation. In this prototype, their typed name stands in for a signature.", why: "Without their signed declaration, the application cannot be processed." },
+          { id: "pb-completed", part: "Part B · For your healthcare practitioner", label: "My practitioner has completed and signed Part B", type: "checkbox", placeholder: "", ask: "Has your practitioner finished Part B?", put: "Tick this only when your regulated healthcare practitioner has completed and signed Part B. Do not tick it before then, and do not fill Part B in yourself.", why: "Part B is not required for permanent renewals, change of information, or replacement — but for a new application it has to be done by your practitioner before you submit." }
         ]
       }
     };
@@ -229,9 +316,21 @@
       $('saved-note').style.display = 'block';
     }
     function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+
+    /* Conditional fields: a field with showIf is shown only when the
+       named field's stored answer equals the given value. */
+    function isVisible(f) {
+      if (!f.showIf) return true;
+      return state.answers[f.showIf.field] === f.showIf.value;
+    }
+    function visibleFields() {
+      var s = SAMPLES[state.sample];
+      return s.fields.filter(isVisible);
+    }
     function fieldValue(f) {
+      if (f.type === 'info') return f.summary || 'For your healthcare practitioner — see the form.';
+      if (f.type === 'checkbox') return state.answers[f.id] ? 'Yes — ticked' : 'Not ticked';
       var v = state.answers[f.id];
-      if (f.type === 'checkbox') return v ? 'Yes — ticked' : 'Not ticked';
       return v ? String(v) : 'Not filled in yet';
     }
     function showScreen(which) {
@@ -244,34 +343,55 @@
     function fieldInputHtml(f, prefix) {
       var val = state.answers[f.id];
       var id = prefix + '-input-' + f.id;
+      if (f.type === 'info') {
+        return '<div class="practitioner-panel"><p><strong>For your healthcare practitioner — not for you to fill in.</strong></p><p>' + esc(f.label) + '</p></div>';
+      }
       if (f.type === 'checkbox') {
         return '<div class="check-row"><input type="checkbox" id="' + id + '" data-field="' + f.id + '"' + (val ? ' checked' : '') + ' /><label for="' + id + '">' + esc(f.label) + '</label></div>';
+      }
+      if (f.type === 'select') {
+        var opts = '<option value="">Choose…</option>' + f.options.map(function (o) {
+          return '<option value="' + esc(o) + '"' + (val === o ? ' selected' : '') + '>' + esc(o) + '</option>';
+        }).join('');
+        return '<label for="' + id + '">' + esc(f.label) + '</label>' +
+          '<select id="' + id + '" data-field="' + f.id + '">' + opts + '</select>';
       }
       return '<label for="' + id + '">' + esc(f.label) + '</label>' +
         '<input type="' + f.type + '" id="' + id + '" data-field="' + f.id + '" placeholder="' + esc(f.placeholder) + '" value="' + esc(val || '') + '" />';
     }
     function guidanceHtml(f, i, total) {
-      return '<div class="guidance" role="note"><p class="guidance-step">Step ' + (i + 1) + ' of ' + total + ' — ' + esc(f.label) + '</p>' +
+      var tag = f.part ? '<p class="part-tag">' + esc(f.part) + '</p>' : '';
+      return '<div class="guidance" role="note">' + tag +
+        '<p class="guidance-step">Step ' + (i + 1) + ' of ' + total + ' — ' + esc(f.label) + '</p>' +
         '<p><strong>What this is asking:</strong> ' + esc(f.ask) + '</p>' +
         '<p><strong>What to put here:</strong> ' + esc(f.put) + '</p>' +
         '<p><strong>Why it matters:</strong> ' + esc(f.why) + '</p></div>';
     }
     function bindInputs(container) {
-      container.querySelectorAll('input').forEach(function (input) {
+      container.querySelectorAll('input, select').forEach(function (input) {
         input.addEventListener('input', onFieldInput);
         input.addEventListener('change', onFieldInput);
       });
     }
+    var CONDITION_TRIGGERS = ['app-type', 'replacement-reason', 'returning-reason', 'mailing-different'];
     function onFieldInput(e) {
       var input = e.target;
-      state.answers[input.getAttribute('data-field')] = input.type === 'checkbox' ? input.checked : input.value;
+      var fieldId = input.getAttribute('data-field');
+      state.answers[fieldId] = input.type === 'checkbox' ? input.checked : input.value;
       saveAnswers();
+      /* A choice that controls conditional steps changes the step list. */
+      if (CONDITION_TRIGGERS.indexOf(fieldId) !== -1) {
+        var fields = visibleFields();
+        if (state.step > fields.length - 1) state.step = fields.length - 1;
+        renderCurrentView();
+      }
     }
 
     function renderStep() {
       var s = SAMPLES[state.sample];
-      var f = s.fields[state.step];
-      var total = s.fields.length;
+      var fields = visibleFields();
+      var f = fields[state.step];
+      var total = fields.length;
       $('walk-progress').textContent = 'Step ' + (state.step + 1) + ' of ' + total;
       $('progress-fill').style.width = ((state.step + 1) / total * 100) + '%';
       $('step-view').innerHTML = '<div class="step-card"><div class="field">' + fieldInputHtml(f, 'step') + guidanceHtml(f, state.step, total) + '</div></div>';
@@ -281,9 +401,10 @@
     }
     function renderList() {
       var s = SAMPLES[state.sample];
+      var fields = visibleFields();
       var html = '<div class="list-view-card">';
-      s.fields.forEach(function (f, i) {
-        html += '<div class="field">' + fieldInputHtml(f, 'list') + guidanceHtml(f, i, s.fields.length) + '</div>';
+      fields.forEach(function (f, i) {
+        html += '<div class="field">' + fieldInputHtml(f, 'list') + guidanceHtml(f, i, fields.length) + '</div>';
       });
       html += '</div>';
       $('list-view').innerHTML = html;
@@ -299,22 +420,13 @@
       if (guided) renderStep(); else renderList();
     }
     function goStep(n) {
-      var s = SAMPLES[state.sample];
-      if (!s) return;
-      state.step = Math.max(0, Math.min(s.fields.length - 1, n));
+      var fields = visibleFields();
+      if (!fields.length) return;
+      state.step = Math.max(0, Math.min(fields.length - 1, n));
       renderStep();
-      var f = s.fields[state.step];
+      var f = fields[state.step];
       var input = $('step-input-' + f.id);
       if (input) input.focus();
-    }
-
-    function plainText(s) {
-      var lines = [s.name + " (" + s.formNumber + ") — filled summary (simplified sample data only)", "", s.identified, "", "This is a simplified sample version, not the official form. Check the official form before submitting.", "", "Your answers:"];
-      s.fields.forEach(function (f) { lines.push('- ' + f.label + ': ' + fieldValue(f)); });
-      lines.push("", "What to do:");
-      s.steps.forEach(function (st, i) { lines.push((i + 1) + '. ' + st); });
-      lines.push("", "Note: this is a prototype. Check the original form and the official source before you act. Nothing was sent anywhere.");
-      return lines.join('\n');
     }
 
     function showSample(key) {
@@ -325,21 +437,122 @@
       state.answers = loadAnswers(key);
       document.querySelectorAll('.sample-btn').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-sample') === key ? 'true' : 'false'); });
       $('steps-heading').textContent = s.name;
-      $('steps-tag').textContent = 'Simplified sample — ' + s.formNumber + ', not the official form';
+      $('steps-tag').textContent = s.fullForm ? 'Full real form — ' + s.formNumber + ', not a simplified sample' : 'Simplified sample — ' + s.formNumber + ', not the official form';
       $('steps-intro').textContent = s.identified;
+      $('steps-source').innerHTML = s.fullForm
+        ? 'Source: <a href="' + esc(s.sourceUrl) + '">' + esc(s.sourceLabel) + '</a>.'
+        : '';
       renderCurrentView();
       showScreen('steps');
     }
 
     function showSummary() {
       var s = SAMPLES[state.sample];
-      $('summary-intro').textContent = s.name + ' (' + s.formNumber + ') — built from what you entered in the app. Simplified sample data only.';
-      var rows = s.fields.map(function (f) { return '<tr><th scope="row">' + esc(f.label) + '</th><td>' + esc(fieldValue(f)) + '</td></tr>'; }).join('');
+      $('summary-intro').textContent = s.fullForm
+        ? s.name + ' (' + s.formNumber + ') — the full real form, built from what you entered in the app, in the form\u2019s own order.'
+        : s.name + ' (' + s.formNumber + ') — built from what you entered in the app. Simplified sample data only.';
+      var rows = '';
+      var lastPart = null;
+      s.fields.forEach(function (f) {
+        if (f.part !== lastPart) {
+          rows += '<tr class="summary-part"><th colspan="2" scope="col">' + esc(f.part) + '</th></tr>';
+          lastPart = f.part;
+        }
+        var value = isVisible(f) ? fieldValue(f) : 'Not applicable — does not apply to your choices';
+        rows += '<tr><th scope="row">' + esc(f.label) + '</th><td>' + esc(value) + '</td></tr>';
+      });
       $('summary-table').innerHTML = '<table class="summary-table"><tbody>' + rows + '</tbody></table>';
+      $('summary-submit').innerHTML = s.submitInfo
+        ? '<h3>How to submit</h3><ul>' + s.submitInfo.map(function (line) { return '<li>' + esc(line) + '</li>'; }).join('') + '</ul>'
+        : '';
       $('summary-identified').textContent = s.identified;
       $('summary-terms').innerHTML = s.terms.map(function (t) { return '<dt>' + esc(t[0]) + '</dt><dd>' + esc(t[1]) + '</dd>'; }).join('');
       $('summary-checked').innerHTML = s.checked.map(function (c) { return '<li>' + c + '</li>'; }).join('');
+      $('summary-disclaimer').innerHTML = s.disclaimer
+        ? '<strong>Before you act on a real form:</strong> ' + esc(s.disclaimer)
+        : '<strong>Before you act on a real form:</strong> this is a prototype with simplified sample versions of real Ontario forms. It does not read your photo, it does not call an AI service, and it is not legal or medical advice. Always check the original form and the official source, and ask the organisation that sent the form if anything is unclear.';
+      updatePdfButton();
       showScreen('summary');
+    }
+
+    /* Real PDF download via jsPDF (CDN). If the library failed to load,
+       the button says so and offers Print instead — never a .txt
+       pretending to be a PDF. */
+    function jspdfReady() {
+      return typeof window.jspdf !== 'undefined' && window.jspdf.jsPDF;
+    }
+    function updatePdfButton() {
+      var btn = $('download-pdf');
+      var note = $('pdf-note');
+      if (jspdfReady()) {
+        btn.textContent = 'Download PDF';
+        note.style.display = 'none';
+        note.textContent = '';
+      } else {
+        btn.textContent = 'Download PDF unavailable — use Print instead';
+        note.style.display = 'block';
+        note.textContent = 'The PDF library did not load (check your connection and try again). Use Print instead — your browser can save the page as a PDF.';
+      }
+    }
+    function downloadPdf() {
+      var s = SAMPLES[state.sample];
+      if (!s) return;
+      if (!jspdfReady()) {
+        updatePdfButton();
+        window.print();
+        return;
+      }
+      var doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
+      var margin = 15, width = 180, y = 18;
+      function addPageIfNeeded(needed) {
+        if (y + needed > 282) { doc.addPage(); y = 18; }
+      }
+      function writeLines(lines, size, bold) {
+        doc.setFont('helvetica', bold ? 'bold' : 'normal');
+        doc.setFontSize(size);
+        lines.forEach(function (line) {
+          addPageIfNeeded(size * 0.6);
+          doc.text(line, margin, y);
+          y += size * 0.6;
+        });
+      }
+      function writeWrapped(text, size, bold) {
+        var lines = doc.splitTextToSize(text, width);
+        writeLines(lines, size, bold);
+      }
+      writeWrapped('From Form to Function — Your filled form', 16, true);
+      y += 2;
+      writeWrapped(s.name + ' (' + s.formNumber + ')', 12, true);
+      y += 2;
+      var lastPart = null;
+      s.fields.forEach(function (f) {
+        if (f.part !== lastPart) {
+          y += 3;
+          addPageIfNeeded(12);
+          writeWrapped(f.part, 11, true);
+          lastPart = f.part;
+        }
+        var value = isVisible(f) ? fieldValue(f) : 'Not applicable — does not apply to your choices';
+        writeWrapped(f.label + ': ' + value, 10, false);
+        y += 1;
+      });
+      y += 4;
+      addPageIfNeeded(30);
+      writeWrapped('Declarations', 11, true);
+      writeWrapped('Applicant declaration (Part A): the information above is true. Permits are assigned to an individual, not a vehicle. False statements may be forwarded to law enforcement for investigation under the Criminal Code and the Highway Traffic Act, and can result in cancellation of the permit, a fine and/or imprisonment. Under the Highway Traffic Act, fraudulently obtaining an Accessible Parking Permit can mean a fine of up to $5,000.', 10, false);
+      y += 2;
+      writeWrapped('Practitioner declaration (Part B): the practitioner certifies the applicant meets the eligibility requirements, is not treating themselves or family members, and that the information is true and complete. False statements may be forwarded to law enforcement and to the applicable College for investigation of professional misconduct.', 10, false);
+      if (s.submitInfo) {
+        y += 4;
+        addPageIfNeeded(30);
+        writeWrapped('How to submit', 11, true);
+        s.submitInfo.forEach(function (line) { writeWrapped('- ' + line, 10, false); y += 1; });
+      }
+      y += 4;
+      addPageIfNeeded(30);
+      writeWrapped('Prototype disclaimer', 11, true);
+      writeWrapped('This is a prototype. It produces a filled summary PDF in the form\u2019s layout — it is not the official ServiceOntario submission. Check the original form SR-LV-129E (2024/03) and the official source before submitting, and the practitioner section (Part B) must be completed and signed by a regulated healthcare practitioner.', 10, false);
+      doc.save('accessible-parking-permit-SR-LV-129E-filled.pdf');
     }
 
     document.querySelectorAll('.sample-btn').forEach(function (b) {
@@ -355,20 +568,11 @@
     $('view-list').addEventListener('click', function () { state.view = 'list'; renderCurrentView(); });
     $('prev-btn').addEventListener('click', function () { goStep(state.step - 1); });
     $('next-btn').addEventListener('click', function () {
-      var s = SAMPLES[state.sample];
-      if (state.step === s.fields.length - 1) { showSummary(); return; }
+      var fields = visibleFields();
+      if (state.step === fields.length - 1) { showSummary(); return; }
       goStep(state.step + 1);
     });
-    $('download-btn').addEventListener('click', function () {
-      var s = SAMPLES[state.sample];
-      if (!s) return;
-      var blob = new Blob([plainText(s)], { type: 'text/plain' });
-      var a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'from-form-to-function-filled-summary.txt';
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
-    });
+    $('download-pdf').addEventListener('click', downloadPdf);
     $('print-btn').addEventListener('click', function () { window.print(); });
     $('reset-btn').addEventListener('click', function () {
       if (state.sample) { try { sessionStorage.removeItem(storageKey(state.sample)); } catch (e) {} }
