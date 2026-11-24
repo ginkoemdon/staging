@@ -534,10 +534,11 @@ footer a { color: var(--earth); }
 /* Hero illustration — small whimsical SVG under the headline */
 .hero-illustration { display: block; width: min(320px, 70%); height: auto; margin: 1.5rem 0 0; }
 
-/* Tropical jungle — pixel scene above the footer, like Ben's meadow.
+/* Tropical jungle — pixel scene in the hero, under the headline.
    Code-drawn canvas (assets/js/jungle.js), no image file. The canvas
    is 180 x 72 cells; image-rendering: pixelated keeps the cells crisp
-   at any width. */
+   at any width. Same method as Ben's meadow, Ginko's own landscape. */
 .jungle { margin: 4rem 0 0; border: 1px solid rgba(59, 52, 47, 0.25); }
+.hero .jungle { margin: 1.5rem 0 0; }
 .jungle__canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; }
 .jungle figcaption { font-size: 0.85rem; color: var(--muted); padding: 0.6rem 0.25rem 0; }
