@@ -1513,10 +1513,6 @@
             <p><span class="ps-badge" id="trust-badge">Reliable observer — not earned yet</span></p>
             <p id="trust-sub"></p>
             <div id="milestone-track" class="milestone-track"></div>
-            <p class="ps-muted">Milestone thresholds are for this demo only. Counts are local to this device and anonymous: no name, no individual report shown.</p>
-            <p class="ps-muted" id="trust-note">Complete a live check-in and have peers confirm it, and you earn trust points. In this demo, your own confirmed reports are counted locally.</p>
-            <p><button class="ps-btn ps-btn-secondary ps-btn-small" id="report-misuse" type="button">Report misuse (demo only)</button></p>
-            <p id="misuse-note" class="ps-note" hidden>Thanks. In the real app this would go to a moderator, anonymously. In this demo nothing was sent.</p>
           </section>
         </div>
       </section>
@@ -2646,7 +2642,8 @@
         track.appendChild(card);
       });
     }
-    $("report-misuse").addEventListener("click", function(){ $("misuse-note").hidden=false; });
+    /* Report misuse button removed Nov 24 2026, with the rest
+       of the small print at the bottom of the milestones card. */
 
     /* I'm here — no Start button any more, Nov 23 2026: the
        check-in starts by itself when the screen opens, and
