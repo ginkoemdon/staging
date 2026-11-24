@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>From Form to Function — Ginko's Prototype Playground</title>
+  <meta name="description" content="From Form to Function: upload or photograph a hard-to-understand form and get plain-language instructions, with the terminology explained and the guidance AI-checked." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="app-bar">
+    <p class="app-mark">From Form <span>to Function</span></p>
+    <a class="back-link" href="../../index.html">← Back to Ginko's Prototype Playground</a>
+  </header>
+  <div class="wrap">
+    <main id="main">
+
+      <!-- Start / onboarding: one short line, three actions, nothing else. -->
+      <section id="screen-start" aria-labelledby="product-title">
+        <p class="meta">From Form to Function · 2026</p>
+        <h1 id="product-title">From Form to Function</h1>
+        <p class="tagline">A confusing form, in plain language, one step at a time.</p>
+
+        <div class="start-actions">
+          <label class="btn btn-primary" for="form-photo">Upload or take a photo</label>
+          <input type="file" id="form-photo" class="visually-hidden" accept="image/*" capture="environment" />
+          <button class="btn btn-primary" type="button" id="try-sample-btn">Try a sample form</button>
+        </div>
+        <img class="upload-preview" id="upload-preview" alt="Preview of the form photo you uploaded" />
+        <p class="upload-note" id="upload-note">Your photo is only on your device. This prototype cannot read photos yet — there is no AI running here. Try a sample form below to see how the plain-language version would work.</p>
+
+        <div id="sample-picker" class="sample-picker">
+          <h2>Try a sample form</h2>
+          <p class="hint">Pick one. Each is a simplified sample version, not the official form.</p>
+          <div class="sample-list" role="group" aria-label="Sample forms">
+            <button class="sample-btn" type="button" data-sample="photo-card" aria-pressed="false"><strong>Application for Ontario Photo Card — SR-LD-049E</strong><span>Government photo ID for Ontario residents who do not have a driver&apos;s licence.</span></button>
+            <button class="sample-btn" type="button" data-sample="vehicle-reg" aria-pressed="false"><strong>Application for Vehicle Registration — SR-LV-006</strong><span>Registering a vehicle at ServiceOntario.</span></button>
+            <button class="sample-btn" type="button" data-sample="parking-permit" aria-pressed="false"><strong>Application for an Accessible Parking Permit — SR-LV-129E</strong><span>For disabled users. Includes a healthcare practitioner section.</span></button>
+          </div>
+          <p class="view-note"><strong>Main sample: Accessible Parking Permit (SR-LV-129E).</strong> These three Ontario forms are from Ontario&apos;s Central Forms Repository. You can try any of them.</p>
+        </div>
+
+        <details class="how-details">
+          <summary>How it works</summary>
+          <ul>
+            <li>Pick a form, or try a sample.</li>
+            <li>Answer one field at a time, with guidance beside it.</li>
+            <li>Download or print your filled form.</li>
+          </ul>
+          <p>Sample data only. Nothing is sent anywhere. This prototype cannot read photos yet.</p>
+        </details>
+      </section>
+
+      <!-- Step-by-step form: one field at a time, guidance embedded in the step. -->
+      <section id="screen-steps" hidden aria-labelledby="steps-heading">
+        <button class="btn btn-secondary" type="button" id="back-to-start-btn">← Choose a different form</button>
+        <h2 id="steps-heading" class="steps-title"></h2>
+        <p class="sample-tag" id="steps-tag"></p>
+        <p class="steps-intro" id="steps-intro"></p>
+
+        <div class="progress" aria-hidden="true"><span id="progress-fill"></span></div>
+        <p class="walk-progress" id="walk-progress" aria-live="polite"></p>
+
+        <div class="view-toggle" role="group" aria-label="How to go through the form">
+          <button class="btn btn-secondary" type="button" id="view-guided" aria-pressed="true">Step by step</button>
+          <button class="btn btn-secondary" type="button" id="view-list" aria-pressed="false">See all steps</button>
+        </div>
+
+        <div id="step-view"></div>
+        <div id="list-view" hidden></div>
+
+        <div class="walk-nav" id="walk-nav">
+          <button class="btn btn-secondary" type="button" id="prev-btn">← Previous</button>
+          <button class="btn btn-primary" type="button" id="next-btn">Next →</button>
+        </div>
+        <p class="saved-note" id="saved-note" style="display:none;">Your answers are saved in this browser for this session only. Sample data only — nothing is sent anywhere.</p>
+      </section>
+
+      <!-- Filled form summary, built from what the user entered. -->
+      <section id="screen-summary" hidden aria-labelledby="summary-heading">
+        <h2 id="summary-heading">Your filled form</h2>
+        <p class="hint" id="summary-intro"></p>
+        <div id="summary-table"></div>
+
+        <details class="how-details">
+          <summary>What this form is</summary>
+          <p id="summary-identified"></p>
+        </details>
+        <details class="how-details">
+          <summary>Words on the form, in plain words</summary>
+          <dl class="terms" id="summary-terms"></dl>
+        </details>
+        <details class="how-details">
+          <summary>AI-checked guidance</summary>
+          <ul class="check-list" id="summary-checked"></ul>
+          <p class="flag"><strong>Still uncertain?</strong> Anything marked uncertain above was not in the sample form. This prototype does not guess. Check the original form or the official source before you act.</p>
+        </details>
+
+        <div class="demo-actions">
+          <button class="btn btn-primary" type="button" id="download-btn">Download filled summary</button>
+          <button class="btn btn-secondary" type="button" id="print-btn">Print</button>
+          <button class="btn btn-secondary" type="button" id="reset-btn">Start again</button>
+        </div>
+        <p class="disclaimer"><strong>Before you act on a real form:</strong> this is a prototype with simplified sample versions of real Ontario forms. It does not read your photo, it does not call an AI service, and it is not legal or medical advice. Always check the original form and the official source, and ask the organisation that sent the form if anything is unclear.</p>
+      </section>
+    </main>
+
+    <p class="app-foot">From Form to Function — a prototype by Ginko Emdon, 2026. Sample data only.</p>
+  </div>
+  <script>
+  (function () {
+    // Swappable sample system.
+    // MAIN_SAMPLE: Ginko has NOT picked the main sample yet. Set this to
+    // 'photo-card', 'vehicle-reg' or 'parking-permit'.
+    // Nov 23, 2026: Ginko confirmed the main sample is the
+    // Accessible Parking Permit ('parking-permit', SR-LV-129E).
+    // The other two Ontario forms are still available to try.
+    var MAIN_SAMPLE = 'parking-permit';
+    var SAMPLES = {
+      'photo-card': {
+        name: "Application for Ontario Photo Card",
+        formNumber: "SR-LD-049E",
+        identified: "This is an application for an Ontario Photo Card (form SR-LD-049E). It is government photo ID for Ontario residents who do not have a driver's licence. It asks for your personal details and proof of who you are.",
+        steps: [
+          "Fill in your full legal name, exactly as it appears on your ID.",
+          "Write your date of birth and your mailing address.",
+          "Choose which proof of identity you will bring. The sample lists a few common options — check the official form for the full list.",
+          "Sign the declaration. It says the information you gave is true.",
+          "Take the form to ServiceOntario. Your photo is taken there — do not attach your own photo."
+        ],
+        terms: [
+          ["Legal name", "Your full name as it appears on official documents, not a nickname or a shortened name."],
+          ["Proof of identity", "A document that proves who you are, like a birth certificate or a passport."],
+          ["Declaration", "A signed statement that the information you gave is true."],
+          ["ServiceOntario", "The Ontario government office where you hand in the form and have your photo taken."]
+        ],
+        checked: [
+          "Cross-referenced with: the simplified sample form itself, and general guidance on what an Ontario Photo Card application asks for.",
+          "The sample does not list every document that counts as proof of identity. That is <span class=\"uncertain\">still uncertain</span> — check the official form SR-LD-049E before you go.",
+          "The sample does not say what the fee is, or if there is one. That is <span class=\"uncertain\">still uncertain</span> — check the official form or ServiceOntario before you go."
+        ],
+        fields: [
+          { id: "full-name", label: "Full legal name", type: "text", placeholder: "Your name, as on your ID", ask: "Your full legal name.", put: "Write your full legal name exactly as it appears on your ID — not a nickname.", why: "The card must match your ID, or it can be refused." },
+          { id: "dob", label: "Date of birth", type: "date", placeholder: "", ask: "When were you born?", put: "Your date of birth. Check it twice — a wrong date can delay your card.", why: "It proves your age and helps match you to your records." },
+          { id: "address", label: "Mailing address", type: "text", placeholder: "Street, city, postal code", ask: "Where should the card be sent?", put: "Where the card should be mailed. Use the address where you can actually receive mail.", why: "If the address is wrong, the card will not reach you." },
+          { id: "proof-id", label: "Proof of identity I will bring", type: "text", placeholder: "e.g. birth certificate", ask: "Which ID will you bring?", put: "Write which ID document you will bring. The sample lists common options only — check the official form for the full list.", why: "ServiceOntario needs to check you are who you say you are." },
+          { id: "declaration", label: "I declare the information is true", type: "checkbox", placeholder: "", ask: "Is everything you wrote true?", put: "Tick this only if everything you wrote is true. This is a signed statement, not just a tick box.", why: "A false statement can cause problems later." }
+        ]
+      },
+      'vehicle-reg': {
+        name: "Application for Vehicle Registration",
+        formNumber: "SR-LV-006",
+        identified: "This is an application for vehicle registration (form SR-LV-006). It is the form you use to register a vehicle at ServiceOntario. It asks who owns the vehicle, what the vehicle is, and whether it is insured.",
+        steps: [
+          "Fill in the owner's name, exactly as it appears on your ID.",
+          "Write the vehicle's year, make, and model.",
+          "Write the Vehicle Identification Number (VIN). It is on the driver's side dashboard and on the ownership papers.",
+          "Write the licence plate number, if you already have one.",
+          "Confirm you have valid insurance for the vehicle, then sign and date the form."
+        ],
+        terms: [
+          ["Vehicle Identification Number (VIN)", "A 17-character number that identifies your exact vehicle. No two vehicles share one."],
+          ["Registered owner", "The person the vehicle legally belongs to. Their name goes on the registration."],
+          ["Proof of insurance", "A document showing the vehicle is insured. You need valid insurance to register it."],
+          ["Odometer reading", "How many kilometres the vehicle has travelled. Some forms ask for it — this sample does not."]
+        ],
+        checked: [
+          "Cross-referenced with: the simplified sample form itself, and general guidance on what a vehicle registration asks for.",
+          "The sample does not say whether an odometer reading is needed. That is <span class=\"uncertain\">still uncertain</span> — check the official form SR-LV-006 before you go.",
+          "The sample does not list the fees. That is <span class=\"uncertain\">still uncertain</span> — check the official form or ServiceOntario before you go."
+        ],
+        fields: [
+          { id: "owner-name", label: "Registered owner — full name", type: "text", placeholder: "Your name, as on your ID", ask: "Who owns the vehicle?", put: "The person the vehicle legally belongs to. Use the name on your ID.", why: "The registration must be in the owner's name." },
+          { id: "vehicle", label: "Vehicle — year, make, model", type: "text", placeholder: "e.g. 2019 Honda Civic", ask: "What vehicle is this?", put: "Year, make, and model of the vehicle. Copy them from the ownership papers if you have them.", why: "It links the registration to the right vehicle." },
+          { id: "vin", label: "Vehicle Identification Number (VIN)", type: "text", placeholder: "17 characters", ask: "What is the vehicle's VIN?", put: "The 17-character number for your exact vehicle. Find it on the driver's side dashboard, or on the ownership papers.", why: "The VIN identifies your exact vehicle. No two share one." },
+          { id: "plate", label: "Licence plate number (if you have one)", type: "text", placeholder: "e.g. ABCD 123", ask: "Do you already have a plate?", put: "If you already have a plate, write it here. If this is a first registration, leave it blank and ask at ServiceOntario.", why: "If you do, it stays linked to the registration. If not, leave it blank." },
+          { id: "insurance", label: "I have valid insurance for this vehicle", type: "checkbox", placeholder: "", ask: "Is the vehicle insured?", put: "Tick this only if the vehicle is actually insured. You need valid insurance to register it.", why: "You need valid insurance to register a vehicle." }
+        ]
+      },
+      'parking-permit': {
+        name: "Application for an Accessible Parking Permit",
+        formNumber: "SR-LV-129E",
+        identified: "This is an application for an Accessible Parking Permit (form SR-LV-129E). It is for disabled people who need to park closer to where they are going. Part of the form is filled in by a healthcare practitioner, not by you.",
+        steps: [
+          "Fill in your name, date of birth, and address, exactly as they appear on your ID.",
+          "Choose the type of permit. The sample covers a permanent permit and a temporary one — check the official form for the full list.",
+          "Take the practitioner section to your healthcare practitioner. They fill in and sign that part — do not fill it in yourself.",
+          "Sign the applicant section yourself, and date it.",
+          "Send the whole form in. Keep a copy, and note the date you sent it."
+        ],
+        terms: [
+          ["Accessible Parking Permit", "A permit that lets you park in accessible parking spaces. It belongs to the person, not the car."],
+          ["Healthcare practitioner", "A doctor, nurse practitioner, or other qualified health professional who can confirm your condition."],
+          ["Permanent permit", "A permit for a long-term or permanent condition. It lasts longer than a temporary one."],
+          ["Temporary permit", "A permit for a short-term condition, like recovering from an injury. It has an end date."]
+        ],
+        checked: [
+          "Cross-referenced with: the simplified sample form itself, and general guidance on what an Accessible Parking Permit application asks for.",
+          "The sample does not list which healthcare practitioners can sign the form. That is <span class=\"uncertain\">still uncertain</span> — check the official form SR-LV-129E before you ask someone to sign.",
+          "The sample does not say how long a decision takes, or how long each permit type lasts. That is <span class=\"uncertain\">still uncertain</span> — check the official form or ServiceOntario."
+        ],
+        fields: [
+          { id: "full-name", label: "Applicant — full name", type: "text", placeholder: "Your name, as on your ID", ask: "Who is the permit for?", put: "Your name, exactly as it appears on your ID. The permit belongs to you, not to your car.", why: "The permit belongs to the person, not the car." },
+          { id: "dob", label: "Date of birth", type: "date", placeholder: "", ask: "When were you born?", put: "Your date of birth. Check it twice — a wrong date can delay your permit.", why: "It helps match you to your records." },
+          { id: "address", label: "Mailing address", type: "text", placeholder: "Street, city, postal code", ask: "Where should the permit be sent?", put: "Where the permit should be mailed. Use the address where you can actually receive mail.", why: "If the address is wrong, the permit will not reach you." },
+          { id: "permit-type", label: "Type of permit", type: "text", placeholder: "e.g. Permanent", ask: "Do you need a permanent or a temporary permit?", put: "Write whether you are applying for a permanent or a temporary permit. If you are not sure, ask your healthcare practitioner.", why: "A temporary permit ends on a set date. A permanent one lasts longer." },
+          { id: "practitioner", label: "Healthcare practitioner section completed and signed", type: "checkbox", placeholder: "", ask: "Has your healthcare practitioner filled in and signed their part?", put: "Tick this only when your healthcare practitioner has filled in and signed their section. Do not fill that section in yourself.", why: "Only they can confirm your condition. Do not fill that part in yourself." }
+        ]
+      }
+    };
+
+    var state = { sample: null, view: "guided", step: 0, answers: {} };
+    var $ = function (id) { return document.getElementById(id); };
+    var startScreen = $('screen-start'), stepsScreen = $('screen-steps'), summaryScreen = $('screen-summary');
+
+    function storageKey(key) { return 'fftf-answers-' + key; }
+    function loadAnswers(key) {
+      try { return JSON.parse(sessionStorage.getItem(storageKey(key)) || '{}'); } catch (e) { return {}; }
+    }
+    function saveAnswers() {
+      if (!state.sample) return;
+      try { sessionStorage.setItem(storageKey(state.sample), JSON.stringify(state.answers)); } catch (e) {}
+      $('saved-note').style.display = 'block';
+    }
+    function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+    function fieldValue(f) {
+      var v = state.answers[f.id];
+      if (f.type === 'checkbox') return v ? 'Yes — ticked' : 'Not ticked';
+      return v ? String(v) : 'Not filled in yet';
+    }
+    function showScreen(which) {
+      startScreen.hidden = which !== 'start';
+      stepsScreen.hidden = which !== 'steps';
+      summaryScreen.hidden = which !== 'summary';
+      window.scrollTo(0, 0);
+    }
+
+    function fieldInputHtml(f, prefix) {
+      var val = state.answers[f.id];
+      var id = prefix + '-input-' + f.id;
+      if (f.type === 'checkbox') {
+        return '<div class="check-row"><input type="checkbox" id="' + id + '" data-field="' + f.id + '"' + (val ? ' checked' : '') + ' /><label for="' + id + '">' + esc(f.label) + '</label></div>';
+      }
+      return '<label for="' + id + '">' + esc(f.label) + '</label>' +
+        '<input type="' + f.type + '" id="' + id + '" data-field="' + f.id + '" placeholder="' + esc(f.placeholder) + '" value="' + esc(val || '') + '" />';
+    }
+    function guidanceHtml(f, i, total) {
+      return '<div class="guidance" role="note"><p class="guidance-step">Step ' + (i + 1) + ' of ' + total + ' — ' + esc(f.label) + '</p>' +
+        '<p><strong>What this is asking:</strong> ' + esc(f.ask) + '</p>' +
+        '<p><strong>What to put here:</strong> ' + esc(f.put) + '</p>' +
+        '<p><strong>Why it matters:</strong> ' + esc(f.why) + '</p></div>';
+    }
+    function bindInputs(container) {
+      container.querySelectorAll('input').forEach(function (input) {
+        input.addEventListener('input', onFieldInput);
+        input.addEventListener('change', onFieldInput);
+      });
+    }
+    function onFieldInput(e) {
+      var input = e.target;
+      state.answers[input.getAttribute('data-field')] = input.type === 'checkbox' ? input.checked : input.value;
+      saveAnswers();
+    }
+
+    function renderStep() {
+      var s = SAMPLES[state.sample];
+      var f = s.fields[state.step];
+      var total = s.fields.length;
+      $('walk-progress').textContent = 'Step ' + (state.step + 1) + ' of ' + total;
+      $('progress-fill').style.width = ((state.step + 1) / total * 100) + '%';
+      $('step-view').innerHTML = '<div class="step-card"><div class="field">' + fieldInputHtml(f, 'step') + guidanceHtml(f, state.step, total) + '</div></div>';
+      bindInputs($('step-view'));
+      $('prev-btn').disabled = state.step === 0;
+      $('next-btn').textContent = state.step === total - 1 ? 'See your filled form →' : 'Next →';
+    }
+    function renderList() {
+      var s = SAMPLES[state.sample];
+      var html = '<div class="list-view-card">';
+      s.fields.forEach(function (f, i) {
+        html += '<div class="field">' + fieldInputHtml(f, 'list') + guidanceHtml(f, i, s.fields.length) + '</div>';
+      });
+      html += '</div>';
+      $('list-view').innerHTML = html;
+      bindInputs($('list-view'));
+    }
+    function renderCurrentView() {
+      var guided = state.view === 'guided';
+      $('step-view').hidden = !guided;
+      $('list-view').hidden = guided;
+      $('walk-nav').style.display = guided ? 'flex' : 'none';
+      $('view-guided').setAttribute('aria-pressed', guided ? 'true' : 'false');
+      $('view-list').setAttribute('aria-pressed', guided ? 'false' : 'true');
+      if (guided) renderStep(); else renderList();
+    }
+    function goStep(n) {
+      var s = SAMPLES[state.sample];
+      if (!s) return;
+      state.step = Math.max(0, Math.min(s.fields.length - 1, n));
+      renderStep();
+      var f = s.fields[state.step];
+      var input = $('step-input-' + f.id);
+      if (input) input.focus();
+    }
+
+    function plainText(s) {
+      var lines = [s.name + " (" + s.formNumber + ") — filled summary (simplified sample data only)", "", s.identified, "", "This is a simplified sample version, not the official form. Check the official form before submitting.", "", "Your answers:"];
+      s.fields.forEach(function (f) { lines.push('- ' + f.label + ': ' + fieldValue(f)); });
+      lines.push("", "What to do:");
+      s.steps.forEach(function (st, i) { lines.push((i + 1) + '. ' + st); });
+      lines.push("", "Note: this is a prototype. Check the original form and the official source before you act. Nothing was sent anywhere.");
+      return lines.join('\n');
+    }
+
+    function showSample(key) {
+      var s = SAMPLES[key];
+      state.sample = key;
+      state.step = 0;
+      state.view = 'guided';
+      state.answers = loadAnswers(key);
+      document.querySelectorAll('.sample-btn').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-sample') === key ? 'true' : 'false'); });
+      $('steps-heading').textContent = s.name;
+      $('steps-tag').textContent = 'Simplified sample — ' + s.formNumber + ', not the official form';
+      $('steps-intro').textContent = s.identified;
+      renderCurrentView();
+      showScreen('steps');
+    }
+
+    function showSummary() {
+      var s = SAMPLES[state.sample];
+      $('summary-intro').textContent = s.name + ' (' + s.formNumber + ') — built from what you entered in the app. Simplified sample data only.';
+      var rows = s.fields.map(function (f) { return '<tr><th scope="row">' + esc(f.label) + '</th><td>' + esc(fieldValue(f)) + '</td></tr>'; }).join('');
+      $('summary-table').innerHTML = '<table class="summary-table"><tbody>' + rows + '</tbody></table>';
+      $('summary-identified').textContent = s.identified;
+      $('summary-terms').innerHTML = s.terms.map(function (t) { return '<dt>' + esc(t[0]) + '</dt><dd>' + esc(t[1]) + '</dd>'; }).join('');
+      $('summary-checked').innerHTML = s.checked.map(function (c) { return '<li>' + c + '</li>'; }).join('');
+      showScreen('summary');
+    }
+
+    document.querySelectorAll('.sample-btn').forEach(function (b) {
+      b.addEventListener('click', function () { showSample(b.getAttribute('data-sample')); });
+    });
+    $('try-sample-btn').addEventListener('click', function () {
+      $('sample-picker').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      var first = document.querySelector('.sample-btn');
+      if (first) first.focus();
+    });
+    $('back-to-start-btn').addEventListener('click', function () { showScreen('start'); });
+    $('view-guided').addEventListener('click', function () { state.view = 'guided'; renderCurrentView(); });
+    $('view-list').addEventListener('click', function () { state.view = 'list'; renderCurrentView(); });
+    $('prev-btn').addEventListener('click', function () { goStep(state.step - 1); });
+    $('next-btn').addEventListener('click', function () {
+      var s = SAMPLES[state.sample];
+      if (state.step === s.fields.length - 1) { showSummary(); return; }
+      goStep(state.step + 1);
+    });
+    $('download-btn').addEventListener('click', function () {
+      var s = SAMPLES[state.sample];
+      if (!s) return;
+      var blob = new Blob([plainText(s)], { type: 'text/plain' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'from-form-to-function-filled-summary.txt';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    });
+    $('print-btn').addEventListener('click', function () { window.print(); });
+    $('reset-btn').addEventListener('click', function () {
+      if (state.sample) { try { sessionStorage.removeItem(storageKey(state.sample)); } catch (e) {} }
+      state.sample = null; state.step = 0; state.view = 'guided'; state.answers = {};
+      document.querySelectorAll('.sample-btn').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+      $('saved-note').style.display = 'none';
+      var input = $('form-photo');
+      if (input) input.value = '';
+      $('upload-preview').style.display = 'none';
+      $('upload-note').style.display = 'none';
+      showScreen('start');
+    });
+    if (MAIN_SAMPLE && SAMPLES[MAIN_SAMPLE]) { showSample(MAIN_SAMPLE); }
+    $('form-photo').addEventListener('change', function (e) {
+      var file = e.target.files && e.target.files[0];
+      var preview = $('upload-preview');
+      var note = $('upload-note');
+      if (!file) { preview.style.display = 'none'; note.style.display = 'none'; return; }
+      preview.src = URL.createObjectURL(file);
+      preview.style.display = 'block';
+      note.style.display = 'block';
+      $('sample-picker').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  })();
+  </script>
+</body>
+</html>
