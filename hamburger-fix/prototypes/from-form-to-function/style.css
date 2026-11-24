@@ -256,3 +256,49 @@ html[data-theme="dark"] .edit-btn:hover, html[data-theme="dark"] .edit-btn:focus
 html[data-theme="dark"] .edit-in-steps { color: #5eead4; }
 html[data-theme="dark"] .edit-in-steps:hover, html[data-theme="dark"] .edit-in-steps:focus-visible { color: #99f6e4; outline-color: #5eead4; }
 html[data-theme="dark"] .uncertain { background: #451a03; color: #fde68a; border-color: #fbbf24; }
+
+/* Playground footer, Nov 24 2026: the same Webflow footer as every
+   other Playground page, so Form to Function is no longer the one
+   page without it. Full width, NO max-width, 5% side padding, logo
+   left, Hit my line and LinkedIn right, space-between, made
+   mindfully left and thank-you right. Layout, spacing and
+   breakpoints match the shared footer exactly (6rem top, 6rem under
+   the top row, 1fr 1fr grid with 4vw gap; 5rem at <=991px; 3.5rem
+   and stacked top grid at <=767px). Colours and type use this
+   prototype's own tokens (ink, muted, teal, paper, Atkinson), not
+   the shared stylesheet, so the standalone branding rule stands. */
+footer.footer-component { margin-top: 0; padding: 6rem 5% 0; color: #475569; font-size: 0.9rem; background: #f6f5f1; }
+footer.footer-component .footer-inner { max-width: none; margin: 0; padding: 0; }
+footer.footer-component a { color: #1e293b; }
+.footer-top { display: grid; grid-template-columns: 1fr 1fr; column-gap: 4vw; place-content: center space-between; align-items: start; padding-bottom: 6rem; }
+.footer-logo img { width: 144px; max-height: 3.5rem; display: block; }
+.footer-email { display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; }
+.footer-email-label { font-size: 0.75rem; font-weight: 600; line-height: 1.5; color: #1e293b; }
+.footer-block { display: flex; gap: 2rem; align-items: center; justify-content: flex-start; flex-wrap: wrap; }
+.email-copy { color: #1e293b; background: transparent; border: 2px solid #1e293b; border-radius: 4px; height: 2.5rem; padding: 0.5rem 1rem; display: inline-flex; align-items: center; gap: 0.75rem; font-family: "Atkinson Hyperlegible", sans-serif; font-size: 1rem; cursor: pointer; }
+.email-copy:hover { background: #e6efec; }
+.email-copy .copy-icon { width: 24px; height: 24px; flex-shrink: 0; display: block; }
+.footer-social { width: 4em; height: 4em; padding: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center; text-decoration: none; }
+.footer-social img { width: 2em; height: auto; filter: invert(1); display: block; }
+.footer-divider { background: #1e293b; width: 100%; height: 1px; border: 0; margin: 0; }
+.footer-copyright { display: flex; gap: 1.5rem; text-align: center; justify-content: space-between; align-items: center; color: #475569; padding: 2rem 0; font-size: 0.75rem; line-height: 1.5; flex-wrap: wrap; }
+.footer-copyright p { margin: 0; }
+.footer-thankyou { display: flex; justify-content: center; align-items: center; font-size: 0.75rem; color: #475569; }
+.footer-thankyou p { margin: 0; }
+@media (max-width: 991px) {
+  footer.footer-component { padding-top: 5rem; }
+  .footer-top { padding-bottom: 5rem; }
+}
+@media (max-width: 767px) {
+  footer.footer-component { padding-top: 3.5rem; }
+  .footer-top { grid-template-columns: 1fr; row-gap: 3rem; padding-bottom: 3.5rem; }
+  .footer-copyright { justify-content: center; flex-direction: column; gap: 1rem; }
+}
+html[data-theme="dark"] footer.footer-component { background: #0f172a; color: #cbd5e1; }
+html[data-theme="dark"] footer.footer-component a { color: #f1f5f9; }
+html[data-theme="dark"] .footer-email-label { color: #f1f5f9; }
+html[data-theme="dark"] .email-copy { color: #f1f5f9; border-color: #cbd5e1; }
+html[data-theme="dark"] .email-copy:hover { background: #134e4a; }
+html[data-theme="dark"] .footer-social img { filter: none; }
+html[data-theme="dark"] .footer-divider { background: #cbd5e1; }
+html[data-theme="dark"] .footer-copyright, html[data-theme="dark"] .footer-thankyou { color: #cbd5e1; }

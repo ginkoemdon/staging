@@ -133,6 +133,27 @@
 
     <p class="app-foot">Form to Function — a prototype by Ginko Emdon, 2026. Sample data only.</p>
   </div>
+  <footer id="footer" class="footer-component">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <a href="../../index.html" class="footer-logo" aria-label="Ginko — home"><img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" /></a>
+        <div class="footer-email">
+          <div class="footer-email-label">Hit my line</div>
+          <div class="footer-block">
+            <button class="email-copy" type="button" data-email="mindfullydesign@gmail.com" aria-label="Copy email to clipboard"><span class="email-text">mindfullydesign@gmail.com</span><svg class="copy-icon" width="24" height="24" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="6.20312" y="7.20386" width="16.7972" height="16.7972" fill="transparent" stroke="#0F0602" stroke-width="2"/><rect x="1" y="1.99878" width="16.7972" height="16.7972" fill="#c9c972" stroke="#0F0602" stroke-width="2"/></svg></button>
+            <a class="footer-social" href="https://www.linkedin.com/in/ginkoemdon/" target="_blank" rel="noopener" aria-label="Visit my LinkedIn profile"><img loading="lazy" src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/673c129627b8d3c81d9be887_6491a87dcdb57d5bee063ee7_linkedin-logo-white.svg" alt="Ginko Emdon's LinkedIn profile" /></a>
+          </div>
+        </div>
+      </div>
+      <hr class="footer-divider" />
+      <div class="footer-copyright">
+        <p>made mindfully<br />© 2026 Ginko Emdon</p>
+      <div class="footer-thankyou">
+        <p>✿ thank you for your cyber frolick ✿</p>
+      </div>
+      </div>
+    </div>
+  </footer>
   <script>
   (function () {
     var $ = function (id) { return document.getElementById(id); };
@@ -664,6 +685,10 @@
       });
     });
   })();
+  </script>
+  <script>
+  /* Footer email copy, Nov 24 2026: same as the other Playground pages. */
+  document.querySelectorAll('.email-copy').forEach(function(btn){btn.addEventListener('click',function(){var email=btn.getAttribute('data-email');var label=btn.querySelector('.email-text');function done(){if(label){label.textContent='Copied!';setTimeout(function(){label.textContent=email;},2000);}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(email).then(done);}else{var ta=document.createElement('textarea');ta.value=email;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);done();}});});
   </script>
 </body>
 </html>
