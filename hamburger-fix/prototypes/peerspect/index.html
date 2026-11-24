@@ -208,6 +208,17 @@
       .pg-footer-top { grid-template-columns:1fr; row-gap:3rem; padding-bottom:3.5rem; }
       .pg-footer-copyright { justify-content:center; flex-direction:column; gap:1rem; }
     }
+    /* Noise overlay, Nov 24 2026: Ginko's Webflow film grain, same
+       as the rest of the Playground. Same GIF and settings as
+       Webflow: fixed, full viewport, 256px tiles, opacity .1,
+       background transparent, no clipping, behind everything
+       (z-index 0), never blocking clicks or selection
+       (pointer-events none). The case-study view and the app sit
+       above it at z-index 1. In the fullscreen app the overlay
+       stays with the page, not the fullscreen layer. */
+    .noise { z-index:0; opacity:.1; background-color:transparent; background-image:url("https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/667098bd72787f95a8fd90f9_5c06f51d6e75c933fe05c728_giphy.gif"); background-size:256px; background-clip:border-box; mix-blend-mode:normal; justify-content:center; align-items:center; width:100%; display:block; position:fixed; inset:0; overflow:visible; pointer-events:none; }
+    .noise.c-noise { z-index:0; opacity:.1; mix-blend-mode:normal; background-clip:border-box; display:block; position:fixed; overflow:visible; pointer-events:none; }
+    #view-web, #view-app { position:relative; z-index:1; }
     /* App header, Nov 23 2026: one clean bar, not three back buttons.
        PEERSPECT mark on the left, theme on the right, one X to close.
        The X exits fullscreen and returns to the case study. Esc does
@@ -1505,6 +1516,7 @@
   </style>
 </head>
 <body id="top">
+  <div class="noise c-noise" aria-hidden="true"></div>
   <a class="skip-link" href="#web-main">Skip to main content</a>
   <!-- View 1: web page view (default). Ginko's Playground menu at the top,
        small and normal, then the PEERSPECT intro and a button to see the
