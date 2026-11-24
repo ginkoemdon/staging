@@ -72,6 +72,17 @@
     .pg-dropdown-link { display:grid; grid-template-columns:max-content 1fr; gap:.75rem; align-items:flex-start; padding:.25rem 0; text-decoration:none; color:#3b342f; font-family:"Poppins", sans-serif; }
     .pg-dropdown-link strong { font-weight:600; display:block; }
     .pg-dropdown-link span { font-size:.875rem; color:#49433d; display:block; }
+    /* Dropdown thumbs, Nov 24 2026: same 48px circles as the landing's
+       nav dropdown, so the Featured logos and the Rough concepts mark show
+       whole, with padding and object-fit: contain, never cropped. */
+    .pg-dropdown-group { font-family:"Krona One", sans-serif; font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:#49433d; }
+    .pg-dropdown-divider { border:0; border-top:1px solid rgba(59,52,47,.25); margin:0; }
+    .pg-dropdown-link .pg-thumb { width:48px; height:48px; border-radius:50%; flex:0 0 auto; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    .pg-dropdown-link .pg-thumb-img { background:#fff; padding:6px; }
+    .pg-dropdown-link .pg-thumb-img img { width:100%; height:100%; object-fit:contain; display:block; }
+    .pg-dropdown-link .pg-thumb-logo-peerspect { background:#0b5e54; }
+    .pg-dropdown-link .pg-thumb-logo-form { background:#fff; }
+    .pg-dropdown-link .pg-thumb-logo-rough { background:#e3e0d8; }
     .pg-flower { border:1px solid #372c1f; color:#3b342f; text-align:center; letter-spacing:1.5px; background:transparent; justify-content:center; align-items:center; gap:.5rem; padding:1rem 1.25rem; font-size:12px; font-weight:500; line-height:100%; text-decoration:none; display:inline-flex; font-family:"Krona One", sans-serif; }
     .pg-flower:hover { background:#c9c972; }
     .pg-menu-button { display:none; background:transparent; border:0; cursor:pointer; padding:0; }
@@ -720,7 +731,14 @@
        unbroken URL in Sources. Fix: clip horizontal overflow,
        let grid items shrink to zero, and break long links. */
     html, body { overflow-x:clip; }
-    #view-web, #view-web .web-wrap { overflow-x:clip; max-width:100%; }
+    #view-web, #view-web .web-wrap { overflow-x:clip; }
+    /* Fix, Nov 24 2026: the max-width:100% that used to sit on this rule
+       (same specificity as the 1080px wrap above, but later in the file)
+       overrode it, so the case study stretched the full viewport width
+       with only the fluid padding as a margin. Dropping it restores the
+       centred 1080px wrap; the overflow clip above still stops sideways
+       scroll. Measured at 1440px before: wrap 1425px wide, content from
+       x=58. After: wrap 1080px centred, content from x~230. */
     #view-web .web-wrap, #view-web .web-wrap section, #view-web .web-wrap .cs-card, #view-web .web-wrap .cs-context, #view-web .web-wrap .cs-grid4, #view-web .web-wrap .cs-beforeafter, #view-web .web-wrap .cs-screen-grid { min-width:0; }
     #view-web .web-wrap .cs-context, #view-web .web-wrap .cs-grid4, #view-web .web-wrap .cs-beforeafter { grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
     #view-web .web-wrap .cs-screen-grid { grid-template-columns:repeat(auto-fit, minmax(min(220px,100%),1fr)); }
@@ -773,9 +791,12 @@
           <div class="pg-dropdown">
             <button class="pg-link pg-toggle" type="button" aria-expanded="false" aria-haspopup="true">Prototypes &#9662;</button>
             <div class="pg-dropdown-list">
-              <a class="pg-dropdown-link" href="./index.html"><strong>PEERSPECT</strong><span>Your guide to how places actually feel.</span></a>
-              <a class="pg-dropdown-link" href="../kate-ai/index.html"><strong>AI prototype for Kate</strong><span>The AI prototype Ginko is putting together for Kate.</span></a>
-              <a class="pg-dropdown-link" href="../index.html"><strong>All prototypes</strong><span>See every prototype subpage in one place.</span></a>
+              <span class="pg-dropdown-group">Featured</span>
+              <a class="pg-dropdown-link" href="./index.html"><span class="pg-thumb pg-thumb-img pg-thumb-logo-peerspect"><img src="./favicon/logo.svg" alt="" /></span><span><strong>PEERSPECT</strong><span>Your guide to how places actually feel.</span></span></a>
+              <a class="pg-dropdown-link" href="../from-form-to-function/index.html"><span class="pg-thumb pg-thumb-img pg-thumb-logo-form"><img src="../from-form-to-function/favicon/logo.svg" alt="" /></span><span><strong>Form to Function</strong><span>Turns complicated forms into plain language instructions.</span></span></a>
+              <hr class="pg-dropdown-divider" />
+              <span class="pg-dropdown-group">Rough concepts</span>
+              <a class="pg-dropdown-link" href="../index.html#early-concepts"><span class="pg-thumb pg-thumb-img pg-thumb-logo-rough"><img src="../../assets/illustrations/rough-concepts.svg" alt="" /></span><span><strong>Rough concepts</strong><span>Six early ideas to test and break, on the Rough concepts page.</span></span></a>
             </div>
           </div>
           <a class="pg-flower" href="https://mindfullydesign.webflow.io/" target="_blank" rel="noopener">Ginko's Portfolio</a>

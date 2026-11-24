@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/style.css?v=20261123d" />
+  <link rel="stylesheet" href="../css/style.css?v=20261124a" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
@@ -33,11 +33,11 @@
           <button class="nav-link nav-toggle" type="button" aria-expanded="false" aria-haspopup="true">Prototypes <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.55806 6.29544C2.46043 6.19781 2.46043 6.03952 2.55806 5.94189L3.44195 5.058C3.53958 4.96037 3.69787 4.96037 3.7955 5.058L8.00001 9.26251L12.2045 5.058C12.3021 4.96037 12.4604 4.96037 12.5581 5.058L13.4419 5.94189C13.5396 6.03952 13.5396 6.19781 13.4419 6.29544L8.17678 11.5606C8.07915 11.6582 7.92086 11.6582 7.82323 11.5606L2.55806 6.29544Z" fill="currentColor"/></svg></button>
           <div class="nav-dropdown-list">
             <span class="nav-dropdown-group">Featured</span>
-            <a class="nav-dropdown-link" href="./peerspect/index.html"><span class="thumb thumb-img"><img src="../assets/illustrations/peerspect.svg" alt="" /></span><span><strong>PEERSPECT</strong><span>Your guide to how places actually feel.</span></span></a>
-            <a class="nav-dropdown-link" href="./from-form-to-function/index.html"><span class="thumb thumb-img"><img src="../assets/illustrations/from-form-to-function.svg" alt="" /></span><span><strong>Form to Function</strong><span>Turns complicated forms into plain language instructions.</span></span></a>
+            <a class="nav-dropdown-link" href="./peerspect/index.html"><span class="thumb thumb-img thumb-logo-peerspect"><img src="../prototypes/peerspect/favicon/logo.svg" alt="" /></span><span><strong>PEERSPECT</strong><span>Your guide to how places actually feel.</span></span></a>
+            <a class="nav-dropdown-link" href="./from-form-to-function/index.html"><span class="thumb thumb-img thumb-logo-form"><img src="../prototypes/from-form-to-function/favicon/logo.svg" alt="" /></span><span><strong>Form to Function</strong><span>Turns complicated forms into plain language instructions.</span></span></a>
             <hr class="nav-dropdown-divider" />
             <span class="nav-dropdown-group">Rough concepts</span>
-            <a class="nav-dropdown-link" href="./index.html#early-concepts"><span class="thumb">✿</span><span><strong>Rough concepts</strong><span>Six early ideas to test and break, on the Rough concepts page.</span></span></a>
+            <a class="nav-dropdown-link" href="./index.html#early-concepts"><span class="thumb thumb-img thumb-logo-rough"><img src="../assets/illustrations/rough-concepts.svg" alt="" /></span><span><strong>Rough concepts</strong><span>Six early ideas to test and break, on the Rough concepts page.</span></span></a>
           </div>
         </div>
         <a class="flower-button" href="https://mindfullydesign.webflow.io/" target="_blank" rel="noopener"><span class="button-line-left"></span><span class="button-inner-text">Ginko's Portfolio</span><span class="button-line-right"></span></a>
@@ -124,8 +124,10 @@
         <p style="margin-top: 1.5rem; color: var(--muted);">More to come — tell Ginko which prototypes to add next.</p>
       </section>
     </main>
+  </div>
 
-    <footer id="footer" class="footer-component">
+  <footer id="footer" class="footer-component">
+    <div class="footer-inner">
       <div class="footer-top">
         <a href="../index.html" class="footer-logo" aria-label="Ginko — home"><img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" /></a>
         <div class="footer-email">
@@ -143,8 +145,8 @@
       <div class="footer-thankyou">
         <p>✿ thank you for your cyber frolick ✿</p>
       </div>
-    </footer>
-  </div>
+    </div>
+  </footer>
   <script>
   (function(){var h=document.querySelector('.nav');var b=document.querySelector('.menu-button');if(b&&h){b.addEventListener('click',function(){var o=h.classList.toggle('nav-open');b.setAttribute('aria-expanded',o);});}document.querySelectorAll('.nav-toggle').forEach(function(t){t.addEventListener('click',function(e){e.stopPropagation();var d=t.closest('.nav-dropdown');var o=d.classList.toggle('open');t.setAttribute('aria-expanded',o);});});document.addEventListener('click',function(e){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){if(!d.contains(e.target)){d.classList.remove('open');d.querySelector('.nav-toggle').setAttribute('aria-expanded','false');}});});document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open');});}});document.querySelectorAll('.email-copy').forEach(function(btn){btn.addEventListener('click',function(){var email=btn.getAttribute('data-email');var label=btn.querySelector('.email-text');function done(){if(label){label.textContent='Copied!';setTimeout(function(){label.textContent=email;},2000);}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(email).then(done);}else{var ta=document.createElement('textarea');ta.value=email;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);done();}});});})();
   </script>

@@ -236,13 +236,21 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
   background: linear-gradient(135deg, var(--forest), var(--rust));
 }
 .nav-dropdown-link .thumb.sun { background: linear-gradient(135deg, var(--sun), var(--tangerine)); color: var(--brown); }
-/* Dropdown groups: Featured, then Rough ideas. Thumbs for featured
-   prototypes show the prototype's own illustration, cropped to a circle. */
+/* Dropdown groups: Featured, then Rough concepts. Thumbs show each
+   prototype's own logo, fitted whole inside the circle, never cropped:
+   object-fit contain + padding, on a background that matches the mark. */
 .nav-dropdown-group { font-family: "Krona One", sans-serif; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 .nav-dropdown-group:not(:first-child) { margin-top: 0.5rem; }
 .nav-dropdown-divider { border: 0; border-top: 1px solid rgba(59, 52, 47, 0.25); margin: 0; }
-.nav-dropdown-link .thumb-img { overflow: hidden; background: #fff; padding: 0; }
-.nav-dropdown-link .thumb-img img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; }
+.nav-dropdown-link .thumb-img { overflow: hidden; background: #fff; padding: 6px; }
+.nav-dropdown-link .thumb-img img { width: 100%; height: 100%; object-fit: contain; display: block; }
+/* PEERSPECT's logo is a teal square tile: the thumb background matches the
+   tile (#0b5e54) so the tile's rounded corners blend in and the whole
+   thread-and-eye mark shows. Form to Function's logo is transparent, so
+   it sits on white. Rough concepts sits on egg. */
+.nav-dropdown-link .thumb-logo-peerspect { background: #0b5e54; }
+.nav-dropdown-link .thumb-logo-form { background: #fff; }
+.nav-dropdown-link .thumb-logo-rough { background: var(--egg); }
 /* Hamburger — Webflow .menu-icon1, shown only under 991px */
 .menu-button {
   display: none;
@@ -452,7 +460,17 @@ section { padding: 2rem 0; }
    LinkedIn https://www.linkedin.com/in/ginkoemdon/,
    "made mindfully / © 2026 Ginko Emdon" — "in webflow" removed Nov 22, 2026, as this site was not made in Webflow,
    "thank you for your cyber frolick". */
+/* Footer is full-width like Webflow (Nov 24 2026): the footer element
+   spans the viewport (it sits outside .wrap), on the same egg background
+   as the page — Webflow has no separate footer background. Inner content
+   is centred in .footer-inner at the landing's 1440px wrap width with the
+   same fluid side padding, so logo, email, divider and copyright line up
+   with the content above. (The exact Webflow container width could not be
+   read from a text-only fetch of the site, so the landing's own 1440px
+   wrap is used; the inner values below — 1fr 1fr grid, 4vw gap, 1px earth
+   divider, centred copyright — are from the Nov 22 Webflow CSS read.) */
 footer { margin-top: 4rem; padding: 3rem 0 2rem; color: var(--muted); font-size: 0.9rem; }
+.footer-inner { max-width: 1440px; margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 4rem); }
 footer a { color: var(--earth); }
 .footer-top {
   display: grid;
