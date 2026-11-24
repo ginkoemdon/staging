@@ -30,7 +30,7 @@ button, input, select { min-height: 44px; }
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
-.wrap { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem 3rem; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
 /* Header (Nov 2026, revised): logo top left, theme toggle then X top
    right, toggle immediately left of the X. No centred text name — the
    logo is the mark, with a visually-hidden text name for screen readers.
@@ -38,16 +38,16 @@ button, input, select { min-height: 44px; }
    steps, and summary. Header controls meet mobile/web sizing standards:
    48px hit areas (Apple HIG 44pt minimum), 24px icons, 12px gap between
    the two buttons, and 24px padding from the screen edge. */
-.app-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.75rem 1.5rem; min-height: 72px; }
+.app-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.75rem 1.5rem; min-height: 72px; margin-bottom: 1rem; }
 .app-logo { display: flex; align-items: center; flex-shrink: 0; }
 .app-logo svg { width: 48px; height: 48px; display: block; }
 .app-bar-actions { display: flex; gap: 12px; align-items: center; flex-shrink: 0; }
 /* Theme toggle, immediately left of the X (header rule, all prototypes):
    moon icon in light mode, sun icon in dark mode. */
-.theme-toggle, .app-close { width: 48px; height: 48px; min-width: 48px; min-height: 48px; display: grid; place-items: center; flex-shrink: 0; border-radius: 50%; border: 1px solid #d9d7d0; background: #fff; color: #0f766e; cursor: pointer; padding: 0; text-decoration: none; }
-.theme-toggle .theme-icon { display: grid; place-items: center; line-height: 1; }
-.theme-toggle .theme-icon svg { width: 24px; height: 24px; display: block; }
-.app-close span { font-size: 1.75rem; line-height: 1; }
+.theme-toggle, .app-close { width: 48px; height: 48px; min-width: 48px; min-height: 48px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 50%; border: 1px solid #d9d7d0; background: #fff; color: #0f766e; cursor: pointer; padding: 0; text-decoration: none; }
+.theme-toggle .theme-icon { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; line-height: 0; }
+.theme-toggle .theme-icon svg { width: 24px; height: 24px; display: block; flex-shrink: 0; }
+.app-close svg { width: 24px; height: 24px; display: block; flex-shrink: 0; }
 .theme-toggle:hover, .theme-toggle:focus-visible, .app-close:hover, .app-close:focus-visible { background: #e6efec; }
 .theme-toggle:focus-visible, .app-close:focus-visible { outline: 3px solid #0f766e; outline-offset: 3px; }
 /* Logo picker: three inline-SVG options, shown visually on the start

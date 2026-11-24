@@ -48,7 +48,7 @@
        100dvh frame, no absolute screens, no inner scroll area, no sticky
        header or nav. Nothing traps the scroll. */
     /* Playground site frame (Nov 23 2026): Ginko's Playground nav/footer
-       style, Krona One / Poppins, egg/earth/forest palette. NOT sticky and
+       style, Poppins headings, egg/earth/forest palette. NOT sticky and
        NOT fixed: position static, so the whole page scrolls naturally.
        Small and normal: 4.5rem bar, 144px logo, 0.875rem menu links. */
     .pg-nav { background:rgba(227,224,216,.92); -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px); display:flex; align-items:center; width:100%; height:4.5rem; min-height:4.5rem; padding-left:4%; padding-right:4%; position:static; }
@@ -76,15 +76,15 @@
        the PEERSPECT title is 1.6rem, section titles 1.15rem. */
     .web-wrap { font-family:"Poppins", system-ui, sans-serif; }
     .web-wrap .eyebrow { font-size:.85rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#8c4a24; margin:0 0 1rem; }
-    .web-wrap h1 { font-family:"Krona One", sans-serif; font-size:1.6rem; line-height:1.2; margin:0 0 .5rem; color:#3b342f; }
-    .web-wrap h2 { font-family:"Krona One", sans-serif; font-size:1.15rem; line-height:1.2; margin:0 0 .5rem; color:#3b342f; }
+    .web-wrap h1 { font-family:"Poppins", sans-serif; font-size:1.6rem; line-height:1.2; margin:0 0 .5rem; color:#3b342f; }
+    .web-wrap h2 { font-family:"Poppins", sans-serif; font-size:1.15rem; line-height:1.2; margin:0 0 .5rem; color:#3b342f; }
     .web-wrap section { padding:1.25rem 0; }
     .web-wrap p { margin:.4rem 0 .8rem; max-width:60ch; }
     .web-wrap ul, .web-wrap ol { margin:.4rem 0 .8rem; padding-left:1.25rem; display:grid; gap:8px; }
     .web-wrap li { max-width:60ch; }
     .web-wrap .lede { font-size:1.05rem; }
     /* Case study page, scoped to #view-web only. Ginko site branding:
-       egg background, earth text, Krona One headings, Poppins body,
+       egg background, earth text, Poppins headings and body,
        sun highlight, forest green. No app colours, fonts, or look here. */
     #view-web { background:#e3e0d8; color:#3b342f; font-family:"Poppins", system-ui, sans-serif; }
     #view-web a { color:#184b44; }
@@ -95,7 +95,7 @@
     .web-wrap .cs-tldr { background:#fff; border:1px solid #d8d2c2; border-left:6px solid #f8c05e; border-radius:12px; padding:20px; margin:1.25rem 0; }
     .web-wrap .cs-tldr p { margin:.4rem 0; }
     .web-wrap .cs-card { background:#fff; border:1px solid #d8d2c2; border-radius:16px; padding:20px; margin:1rem 0; }
-    .web-wrap .cs-card h3 { font-family:"Krona One", sans-serif; font-size:1rem; line-height:1.3; margin:0 0 .5rem; color:#3b342f; }
+    .web-wrap .cs-card h3 { font-family:"Poppins", sans-serif; font-size:1rem; line-height:1.3; margin:0 0 .5rem; color:#3b342f; }
     .web-wrap .cs-glance { list-style:none; padding:0; margin:0; display:grid; gap:12px; }
     .web-wrap .cs-glance li { display:grid; grid-template-columns:9rem 1fr; gap:12px; border-bottom:1px solid #e3e0d8; padding-bottom:12px; }
     .web-wrap .cs-glance li:last-child { border-bottom:0; padding-bottom:0; }
@@ -107,7 +107,7 @@
     /* Clubhouse style, concise for a hiring manager to skim.
        Short sections, bold statements, cards with tags, no long
        paragraphs. Site branding only here, no app colours. */
-    .web-wrap .cs-statement { font-family:"Krona One", sans-serif; font-size:1.25rem; line-height:1.35; color:#184b44; margin:.5rem 0; }
+    .web-wrap .cs-statement { font-family:"Poppins", sans-serif; font-size:1.25rem; line-height:1.35; color:#184b44; margin:.5rem 0; }
     .web-wrap .cs-context { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:1rem 0; }
     .web-wrap .cs-context .cs-card { margin:0; }
     .web-wrap .cs-context h3 { margin:0 0 .25rem; }
@@ -512,7 +512,7 @@
     .skip-link:focus { left:.5rem; top:.5rem; }
     /* UI KIT, case study view only, Nov 23 2026.
        Same font and sizing as the Clubhouse case study on Ginko's
-       Webflow site (shared style.css): Krona One headings, Poppins
+       Webflow site (shared style.css): Poppins headings (was Krona One), Poppins
        body, h1 2.75rem, h2 1.9rem, h3 1.15rem, body 1rem/1.6,
        wrap 1080px, section padding 2rem 0.
        Accents use the PEERSPECT palette, not the site palette:
@@ -522,7 +522,7 @@
        cream cards, radius 24px, shadow, hover lift, pill tags,
        collapsible decision cards, clickable screen cards. */
     #view-web .web-wrap { max-width:1080px; margin:0 auto; padding:0 1.5rem 3rem; font-family:"Poppins", system-ui, sans-serif; font-size:1rem; line-height:1.6; color:#3b342f; }
-    #view-web .web-wrap h1, #view-web .web-wrap h2, #view-web .web-wrap h3 { font-family:"Krona One", sans-serif; color:#3b342f; line-height:1.2; font-weight:700; }
+    #view-web .web-wrap h1, #view-web .web-wrap h2, #view-web .web-wrap h3 { font-family:"Poppins", sans-serif; color:#3b342f; line-height:1.2; font-weight:700; }
     #view-web .web-wrap h1.cs-title { font-size:2.75rem; margin:0 0 .75rem; letter-spacing:.01em; }
     #view-web .web-wrap h2 { font-size:1.9rem; margin:0 0 1rem; }
     #view-web .web-wrap h3 { font-size:1.15rem; margin:0 0 .5rem; }
@@ -552,13 +552,13 @@
     #view-web .web-wrap .ps-btn { background:#14665a; border:2px solid #14665a; color:#fff; border-radius:999px; padding:.8rem 1.4rem; font-weight:600; font-size:.95rem; }
     #view-web .web-wrap .ps-btn:hover { background:#2f5d3e; border-color:#2f5d3e; }
     #view-web .web-wrap details.cs-card { cursor:pointer; }
-    #view-web .web-wrap details.cs-card summary { font-family:"Krona One", sans-serif; font-size:1.15rem; line-height:1.2; color:#14665a; list-style:none; display:flex; justify-content:space-between; gap:1rem; align-items:baseline; min-height:44px; }
+    #view-web .web-wrap details.cs-card summary { font-family:"Poppins", sans-serif; font-size:1.15rem; line-height:1.2; color:#14665a; list-style:none; display:flex; justify-content:space-between; gap:1rem; align-items:baseline; min-height:44px; }
     #view-web .web-wrap details.cs-card summary::-webkit-details-marker { display:none; }
     #view-web .web-wrap details.cs-card summary::after { content:"+"; font-family:"Poppins", sans-serif; font-size:1.4rem; font-weight:600; color:#8a4a08; flex:0 0 auto; }
     #view-web .web-wrap details.cs-card[open ] summary::after { content:"\2212"; }
     #view-web .web-wrap .cs-screen-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1.5rem; margin:1rem 0; }
     #view-web .web-wrap .cs-screen { padding:0; overflow:hidden; text-align:left; }
-    #view-web .web-wrap .cs-screen-media { height:140px; display:grid; place-items:center; font-family:"Krona One", sans-serif; font-size:1.1rem; color:#fff; background:linear-gradient(135deg, #14665a, #2f5d3e); }
+    #view-web .web-wrap .cs-screen-media { height:140px; display:grid; place-items:center; font-family:"Poppins", sans-serif; font-size:1.1rem; color:#fff; background:linear-gradient(135deg, #14665a, #2f5d3e); }
     #view-web .web-wrap .cs-screen:nth-child(2) .cs-screen-media { background:linear-gradient(135deg, #f2c14e, #8a4a08); color:#372c1f; }
     #view-web .web-wrap .cs-screen:nth-child(3) .cs-screen-media { background:linear-gradient(135deg, #2f5d3e, #14665a); }
     #view-web .web-wrap .cs-screen-body { padding:1.5rem; }
@@ -571,6 +571,7 @@
     #view-web .web-wrap .cs-use.use-here { border-top-color:#14665a; }
     #view-web .web-wrap .cs-use.use-biz { border-top-color:#2f5d3e; }
     #view-web .web-wrap .cs-use-when { font-weight:700; color:#8a4a08; margin:0 0 .25rem; }
+    #view-web .web-wrap .cs-deliverable { font-family:"Poppins", sans-serif; font-size:.85rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#14665a; margin:0 0 .5rem; }
     #view-web .web-wrap .cs-hifi-layout { display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:24px; align-items:start; }
     #view-web .web-wrap .cs-hifi-layout .cs-screen-grid { grid-template-columns:minmax(0,1fr); margin:0; }
     #view-web .web-wrap .cs-hifi-layout .cs-live { position:sticky; top:16px; margin:0; max-height:760px; overflow-y:auto; }
@@ -589,7 +590,7 @@
        filters and bottom nav. */
     #view-web .web-wrap .cs-live { border:2px solid #14665a; border-radius:24px; background:#fdfbf7; box-shadow:0 8px 24px rgba(26,43,38,.12); padding:1.25rem 1.25rem 0; margin:1.5rem 0; overflow:hidden; min-width:0; }
     #view-web .web-wrap .cs-live-head { display:flex; gap:1rem; align-items:center; flex-wrap:wrap; justify-content:space-between; padding-bottom:1rem; }
-    #view-web .web-wrap .cs-live-head strong { font-family:"Krona One", sans-serif; color:#14665a; font-size:1.05rem; }
+    #view-web .web-wrap .cs-live-head strong { font-family:"Poppins", sans-serif; color:#14665a; font-size:1.05rem; }
     #view-web .web-wrap .cs-live-actions { display:flex; gap:.75rem; flex-wrap:wrap; }
     #view-web .web-wrap .cs-live-actions button { min-height:44px; border-radius:999px; padding:.6rem 1rem; font-weight:600; cursor:pointer; }
     #view-web .web-wrap .cs-live-full { background:#14665a; border:2px solid #14665a; color:#fff; }
@@ -600,7 +601,7 @@
     #view-app.embedded .app-nav { position:sticky; bottom:0; left:0; right:0; max-width:none; margin:0; }
     #view-app.embedded .app-header { position:sticky; top:0; z-index:5; background:var(--bg); }
     #view-web .web-wrap .cs-swatch { display:inline-block; width:1rem; height:1rem; border-radius:50%; vertical-align:middle; margin-right:.4rem; border:1px solid rgba(59,52,47,.2); }
-    #view-web .web-wrap .cs-kit-type { font-family:"Krona One", sans-serif; }
+    #view-web .web-wrap .cs-kit-type { font-family:"Poppins", sans-serif; }
     @media (max-width:640px) {
       #view-web .web-wrap h1.cs-title { font-size:2rem; }
       #view-web .web-wrap h2 { font-size:1.5rem; }
@@ -648,7 +649,7 @@
     #view-web .web-wrap .cs-factor .cs-bar span.amber { background:#8a4a08; }
     #view-web .web-wrap .cs-timeline { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:16px; margin:1rem 0; list-style:none; padding:0; }
     #view-web .web-wrap .cs-timeline li { background:#fafafa; border:1px solid rgba(59,52,47,.08); border-radius:24px; padding:1.5rem; box-shadow:0 12px 30px rgba(59,52,47,.12); }
-    #view-web .web-wrap .cs-num { display:grid; place-items:center; width:2.5rem; height:2.5rem; border-radius:50%; background:#14665a; color:#fff; font-family:"Krona One", sans-serif; font-size:1rem; margin-bottom:.75rem; }
+    #view-web .web-wrap .cs-num { display:grid; place-items:center; width:2.5rem; height:2.5rem; border-radius:50%; background:#14665a; color:#fff; font-family:"Poppins", sans-serif; font-size:1rem; margin-bottom:.75rem; }
     #view-web .web-wrap .cs-num.honey { background:#f2c14e; color:#372c1f; }
     #view-web .web-wrap .cs-num.pine { background:#2f5d3e; }
     @media (max-width:600px) {
@@ -740,11 +741,11 @@
       <section aria-labelledby="cs-solution">
         <h2 id="cs-solution">Solution</h2>
         <p class="cs-subtitle">Five moments, not five features. Each one is a real situation, and what PEERSPECT does in it.</p>
-        <div class="cs-card cs-feature cs-use use-access"><p class="cs-use-when">I need a quiet place to work</p><h3>Find a place that fits today</h3><p>You pick quiet, low sensory, and co-working. You see only places that fit, nearest first, with distance and how to get there.</p><ul class="cs-tags"><li>Quiet nook</li><li>Low sensory</li><li>Co-working</li></ul></div>
-        <div class="cs-card cs-feature cs-use use-sensory"><p class="cs-use-when">Can I actually get in?</p><h3>Check access before you go</h3><p>Step-free entry, restrooms, seating, and vision access are up front, not buried in reviews. If it is not step-free, you know before you leave.</p><ul class="cs-tags"><li>Step-free</li><li>Accessible restroom</li><li>Vision access</li></ul></div>
-        <div class="cs-card cs-feature cs-use use-menu"><p class="cs-use-when">I want to decide before I go</p><h3>See the menu, then arrive ready</h3><p>Preview the menu online, check dietary needs, and build a prep list. Order ahead, call, or take out, so you are not deciding on the spot.</p><ul class="cs-tags"><li>Menu preview</li><li>Dietary needs</li><li>Order ahead</li></ul></div>
-        <div class="cs-card cs-feature cs-use use-here"><p class="cs-use-when">I am here now, is it still calm?</p><h3>Check in, in one tap</h3><p>One simple question at a time, anonymous, while you are there. Your answer helps the next person, and theirs helps you.</p><ul class="cs-tags"><li>One question</li><li>Anonymous</li><li>Live</li></ul></div>
-        <div class="cs-card cs-feature cs-use use-biz"><p class="cs-use-when">I run a place, what should I change?</p><h3>See what to fix, without raw data</h3><p>A calm visual dashboard shows patterns and gentle suggestions, like a quiet hour or clearer menu access. No names, no raw data to dissect.</p><ul class="cs-tags"><li>Visual patterns</li><li>Gentle suggestions</li><li>Private</li></ul></div>
+        <div class="cs-card cs-feature cs-use use-access"><p class="cs-deliverable">Discover</p><p class="cs-use-when">I need a quiet place to work</p><h3>Find a place that fits today</h3><p>You pick quiet, low sensory, and co-working. You see only places that fit, nearest first, with distance and how to get there.</p><ul class="cs-tags"><li>Quiet nook</li><li>Low sensory</li><li>Co-working</li></ul></div>
+        <div class="cs-card cs-feature cs-use use-sensory"><p class="cs-deliverable">Access check</p><p class="cs-use-when">Can I actually get in?</p><h3>Check access before you go</h3><p>Step-free entry, restrooms, seating, and vision access are up front, not buried in reviews. If it is not step-free, you know before you leave.</p><ul class="cs-tags"><li>Step-free</li><li>Accessible restroom</li><li>Vision access</li></ul></div>
+        <div class="cs-card cs-feature cs-use use-menu"><p class="cs-deliverable">Menu preview</p><p class="cs-use-when">I want to decide before I go</p><h3>See the menu, then arrive ready</h3><p>Preview the menu online, check dietary needs, and build a prep list. Order ahead, call, or take out, so you are not deciding on the spot.</p><ul class="cs-tags"><li>Menu preview</li><li>Dietary needs</li><li>Order ahead</li></ul></div>
+        <div class="cs-card cs-feature cs-use use-here"><p class="cs-deliverable">Check-in</p><p class="cs-use-when">I am here now, is it still calm?</p><h3>Check in, in one tap</h3><p>One simple question at a time, anonymous, while you are there. Your answer helps the next person, and theirs helps you.</p><ul class="cs-tags"><li>One question</li><li>Anonymous</li><li>Live</li></ul></div>
+        <div class="cs-card cs-feature cs-use use-biz"><p class="cs-deliverable">Business dashboard</p><p class="cs-use-when">I run a place, what should I change?</p><h3>See what to fix, without raw data</h3><p>A calm visual dashboard shows patterns and gentle suggestions, like a quiet hour or clearer menu access. No names, no raw data to dissect.</p><ul class="cs-tags"><li>Visual patterns</li><li>Gentle suggestions</li><li>Private</li></ul></div>
         <p>Underneath all five: four groups, <strong>Access, Sensory, Environment, Context</strong>, plus Inclusion and Menu.</p>
       </section>
 
@@ -775,7 +776,7 @@
         <h2 id="cs-brand">Branding and UI kit</h2>
         <p class="cs-subtitle">A warm, human, steady guide, in its own colours, not my site colours.</p>
         <div class="cs-card">
-          <p>Headings, Krona One. Body, Poppins 1rem, line height 1.6.</p>
+          <p>Headings, Poppins. Body, Poppins 1rem, line height 1.6.</p>
           <p><span class="cs-swatch" style="background:#14665a"></span>Teal <span class="cs-swatch" style="background:#2f5d3e"></span>Pine <span class="cs-swatch" style="background:#f2c14e"></span>Honey <span class="cs-swatch" style="background:#8a4a08"></span>Amber <span class="cs-swatch" style="background:#fdfbf7"></span>Warm white</p>
           <p><button class="ps-btn" type="button" data-open-prototype>Primary button</button></p>
           <ul class="cs-tags"><li>Tag, honey</li><li>Tag</li><li>Tag</li></ul>
