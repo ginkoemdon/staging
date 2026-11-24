@@ -174,9 +174,18 @@ button, input, select { min-height: 44px; }
 .disclaimer { background: #fff; border: 1px solid #d9d7d0; border-left: 6px solid #92400e; border-radius: 12px; padding: 1rem 1.25rem; margin-top: 1.5rem; }
 
 @media print {
-  .app-bar, .upload-box, .sample-list, .demo-actions, .view-toggle, .walk-nav { display: none !important; }
+  .app-bar, .upload-box, .sample-list, .demo-actions, .view-toggle, .walk-nav, .edit-btn, .edit-in-steps { display: none !important; }
   .panel { box-shadow: none; }
 }
+
+/* Edit flow: per-row Edit/View buttons on the filled-form summary, and
+   Edit in steps links in the list view. Small teal-outline pills, 44px
+   touch targets, same palette as the rest of the app. */
+.summary-table td:last-child { width: 1%; white-space: nowrap; }
+.edit-btn { font-family: "Atkinson Hyperlegible", sans-serif; font-size: 0.95rem; font-weight: 700; color: #0f766e; background: #fff; border: 1px solid #0f766e; border-radius: 999px; padding: 0.5rem 1rem; min-height: 44px; cursor: pointer; }
+.edit-btn:hover, .edit-btn:focus-visible { background: #e6efec; outline: 3px solid #0f766e; outline-offset: 2px; }
+.edit-in-steps { display: inline-block; margin-top: 0.5rem; font-family: "Atkinson Hyperlegible", sans-serif; font-size: 0.95rem; font-weight: 700; color: #0f766e; background: transparent; border: 0; padding: 0.5rem 0; min-height: 44px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.edit-in-steps:hover, .edit-in-steps:focus-visible { color: #115e59; outline: 3px solid #0f766e; outline-offset: 2px; }
 
 /* Real-form rebuild (Nov 2026): Part B practitioner steps, part tags,
    submission info, and the PDF download note. */
@@ -242,4 +251,8 @@ html[data-theme="dark"] .btn { background: #1e293b; border-color: #cbd5e1; color
 html[data-theme="dark"] .btn-secondary:hover { background: #334155; border-color: #5eead4; }
 html[data-theme="dark"] .btn[aria-pressed="true"] { background: #0f766e; border-color: #0f766e; color: #fff; }
 html[data-theme="dark"] .terms dd, html[data-theme="dark"] .mock-form .form-sub { color: #cbd5e1; }
+html[data-theme="dark"] .edit-btn { background: #1e293b; border-color: #5eead4; color: #5eead4; }
+html[data-theme="dark"] .edit-btn:hover, html[data-theme="dark"] .edit-btn:focus-visible { background: #134e4a; outline-color: #5eead4; }
+html[data-theme="dark"] .edit-in-steps { color: #5eead4; }
+html[data-theme="dark"] .edit-in-steps:hover, html[data-theme="dark"] .edit-in-steps:focus-visible { color: #99f6e4; outline-color: #5eead4; }
 html[data-theme="dark"] .uncertain { background: #451a03; color: #fde68a; border-color: #fbbf24; }

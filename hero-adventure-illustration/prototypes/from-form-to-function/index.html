@@ -88,7 +88,7 @@
           <button class="btn btn-secondary" type="button" id="view-list" aria-pressed="false">See all steps</button>
         </div>
 
-        <div id="step-view"></div>
+        <div id="step-view" tabindex="-1"></div>
         <div id="list-view" hidden></div>
 
         <div class="walk-nav" id="walk-nav">
@@ -121,6 +121,7 @@
         </details>
 
         <div class="demo-actions">
+          <button class="btn btn-primary" type="button" id="back-to-edit-btn">Back to edit your answers</button>
           <button class="btn btn-primary" type="button" id="download-pdf">Download PDF</button>
           <button class="btn btn-secondary" type="button" id="print-btn">Print</button>
           <button class="btn btn-secondary" type="button" id="reset-btn">Start again</button>
@@ -419,11 +420,16 @@
       var fields = visibleFields();
       var html = '<div class="list-view-card">';
       fields.forEach(function (f, i) {
-        html += '<div class="field">' + fieldInputHtml(f, 'list') + guidanceHtml(f, i, fields.length) + '</div>';
+        var jumpLabel = f.type === 'info' ? 'View in steps' : 'Edit in steps';
+        html += '<div class="field">' + fieldInputHtml(f, 'list') + guidanceHtml(f, i, fields.length) +
+          '<button type="button" class="edit-in-steps" data-edit-field="' + esc(f.id) + '">' + jumpLabel + '</button></div>';
       });
       html += '</div>';
       $('list-view').innerHTML = html;
       bindInputs($('list-view'));
+      $('list-view').querySelectorAll('[data-edit-field]').forEach(function (btn) {
+        btn.addEventListener('click', function () { editField(btn.getAttribute('data-edit-field')); });
+      });
     }
     function renderCurrentView() {
       var guided = state.view === 'guided';
@@ -442,6 +448,30 @@
       var f = fields[state.step];
       var input = $('step-input-' + f.id);
       if (input) input.focus();
+      else $('step-view').focus();
+    }
+
+    /* Edit flow: jump from the summary (or the list view) straight to one
+       field in Step by step view, answers intact. Conditional steps are
+       re-evaluated by visibleFields(), so editing a trigger (e.g. app-type)
+       shows or hides the steps it controls, without losing other answers. */
+    function editField(fieldId) {
+      var fields = visibleFields();
+      var idx = -1;
+      fields.forEach(function (f, i) { if (f.id === fieldId) idx = i; });
+      if (idx === -1) return;
+      state.view = 'guided';
+      showScreen('steps');
+      renderCurrentView();
+      goStep(idx);
+    }
+    function backToEdit() {
+      /* Back to the steps with every answer intact, landing on the step
+         the user was on when they opened the filled form. */
+      state.view = 'guided';
+      showScreen('steps');
+      renderCurrentView();
+      goStep(state.step);
     }
 
     function showSample(key) {
@@ -470,13 +500,28 @@
       var lastPart = null;
       s.fields.forEach(function (f) {
         if (f.part !== lastPart) {
-          rows += '<tr class="summary-part"><th colspan="2" scope="col">' + esc(f.part) + '</th></tr>';
+          rows += '<tr class="summary-part"><th colspan="3" scope="col">' + esc(f.part) + '</th></tr>';
           lastPart = f.part;
         }
-        var value = isVisible(f) ? fieldValue(f) : 'Not applicable — does not apply to your choices';
-        rows += '<tr><th scope="row">' + esc(f.label) + '</th><td>' + esc(value) + '</td></tr>';
+        var applicable = isVisible(f);
+        var value = applicable ? fieldValue(f) : 'Not applicable — does not apply to your choices';
+        /* Every row you can change gets an Edit button that jumps straight
+           to that field in Step by step view. Practitioner-only rows get a
+           View button instead: there is nothing for you to type, but you
+           can read it in context. Rows that do not apply to your choices
+           get no button — they have no step to jump to. */
+        var action = '<td></td>';
+        if (applicable && f.type === 'info') {
+          action = '<td><button type="button" class="edit-btn" data-edit-field="' + esc(f.id) + '" aria-label="View ' + esc(f.label) + ' in steps">View</button></td>';
+        } else if (applicable) {
+          action = '<td><button type="button" class="edit-btn" data-edit-field="' + esc(f.id) + '" aria-label="Edit ' + esc(f.label) + '">Edit</button></td>';
+        }
+        rows += '<tr><th scope="row">' + esc(f.label) + '</th><td>' + esc(value) + '</td>' + action + '</tr>';
       });
-      $('summary-table').innerHTML = '<table class="summary-table"><tbody>' + rows + '</tbody></table>';
+      $('summary-table').innerHTML = '<table class="summary-table"><thead class="visually-hidden"><tr><th scope="col">Field</th><th scope="col">Your answer</th><th scope="col">Edit</th></tr></thead><tbody>' + rows + '</tbody></table>';
+      $('summary-table').querySelectorAll('[data-edit-field]').forEach(function (btn) {
+        btn.addEventListener('click', function () { editField(btn.getAttribute('data-edit-field')); });
+      });
       $('summary-submit').innerHTML = s.submitInfo
         ? '<h3>How to submit</h3><ul>' + s.submitInfo.map(function (line) { return '<li>' + esc(line) + '</li>'; }).join('') + '</ul>'
         : '';
@@ -587,6 +632,7 @@
       if (state.step === fields.length - 1) { showSummary(); return; }
       goStep(state.step + 1);
     });
+    $('back-to-edit-btn').addEventListener('click', backToEdit);
     $('download-pdf').addEventListener('click', downloadPdf);
     $('print-btn').addEventListener('click', function () { window.print(); });
     $('reset-btn').addEventListener('click', function () {
