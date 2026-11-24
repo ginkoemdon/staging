@@ -335,6 +335,28 @@
        backgrounds, so in dark mode the white text sat on near-white.
        They now use --soft, pale in light mode, dark teal in dark. */
     .align-badge { display:inline-block; background:var(--soft); border:2px solid var(--teal); color:var(--teal-dark); border-radius:999px; padding:.3rem .8rem; font-weight:700; font-size:.95rem; margin-bottom:.4rem; }
+    /* "This fits today" section on the place cards, styled Nov 23 2026:
+       the fit verdict was getting lost as a plain white box with a
+       muted grey summary line. Now it reads as its own section:
+       a teal left bar, a heading with the match count as a pill,
+       matched rows bold in teal with a green dot and a tick,
+       unmatched rows muted with a grey dot and a dash (never
+       colour alone), and the verdict as a bold teal summary
+       above a top rule, not a muted footnote. The long fit
+       sentence on the list cards is a plain bold line
+       (.align-line), not a pill, so it never wraps inside a bubble. */
+    .align-card { background:var(--card); border:1px solid var(--line); border-left:6px solid var(--teal); border-radius:16px; padding:16px 20px; margin:16px 0; box-shadow:0 1px 3px rgba(26,43,38,.08); }
+    .align-card h4 { margin:0 0 .25rem; color:var(--teal-dark); font-size:1.05rem; display:flex; justify-content:space-between; gap:12px; align-items:baseline; }
+    .align-card .align-count { flex:0 0 auto; background:var(--soft); border:2px solid var(--teal); color:var(--teal-dark); border-radius:999px; padding:.15rem .65rem; font-weight:700; font-size:.85rem; white-space:nowrap; }
+    .align-card ul { list-style:none; padding:0; margin:.5rem 0 0; display:grid; gap:10px; }
+    .align-card li { display:flex; gap:10px; align-items:baseline; }
+    .align-card li .align-yes { font-weight:700; color:var(--teal-dark); }
+    .align-card li .align-no { color:var(--muted); }
+    .align-card .align-dot { flex:0 0 auto; width:.7rem; height:.7rem; border-radius:50%; display:inline-block; }
+    .align-card .align-dot.yes { background:#2f5d3e; }
+    .align-card .align-dot.no { background:var(--line); border:1px solid var(--muted); }
+    .align-card .align-summary { margin:.75rem 0 0; padding-top:.75rem; border-top:1px solid var(--line); font-weight:700; color:var(--teal-dark); }
+    .align-line { display:block; margin-top:.5rem; font-weight:700; color:var(--teal-dark); }
     .ps-card.align-good { border:2px solid var(--teal); background:var(--soft); box-shadow:0 4px 14px rgba(11,94,84,.12); }
     .dist-line { font-weight:700; color:var(--teal-dark); margin:.4rem 0; }
     /* Map / List toggle */
@@ -449,13 +471,18 @@
     #view-app #focus-card .ps-facts { gap:12px; margin:.75rem 0; }
     #view-app #focus-card .ps-tags { margin:16px 0; }
     #view-app #focus-card .ps-muted { margin:.5rem 0; }
-    #view-app .align-card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px 20px; margin:16px 0; box-shadow:0 1px 3px rgba(26,43,38,.08); }
-    #view-app .align-card h4 { margin:0 0 .5rem; color:var(--pine); font-size:1rem; }
-    #view-app .align-card ul { list-style:none; padding:0; margin:0; display:grid; gap:8px; }
-    #view-app .align-card li { display:flex; gap:8px; align-items:baseline; }
+    #view-app .align-card { background:var(--card); border:1px solid var(--line); border-left:6px solid var(--teal); border-radius:16px; padding:16px 20px; margin:16px 0; box-shadow:0 1px 3px rgba(26,43,38,.08); }
+    #view-app .align-card h4 { margin:0 0 .25rem; color:var(--teal-dark); font-size:1.05rem; display:flex; justify-content:space-between; gap:12px; align-items:baseline; }
+    #view-app .align-card .align-count { flex:0 0 auto; background:var(--soft); border:2px solid var(--teal); color:var(--teal-dark); border-radius:999px; padding:.15rem .65rem; font-weight:700; font-size:.85rem; white-space:nowrap; }
+    #view-app .align-card ul { list-style:none; padding:0; margin:.5rem 0 0; display:grid; gap:10px; }
+    #view-app .align-card li { display:flex; gap:10px; align-items:baseline; }
+    #view-app .align-card li .align-yes { font-weight:700; color:var(--teal-dark); }
+    #view-app .align-card li .align-no { color:var(--muted); }
     #view-app .align-card .align-dot { flex:0 0 auto; width:.7rem; height:.7rem; border-radius:50%; display:inline-block; }
     #view-app .align-card .align-dot.yes { background:#2f5d3e; }
     #view-app .align-card .align-dot.no { background:var(--line); border:1px solid var(--muted); }
+    #view-app .align-card .align-summary { margin:.75rem 0 0; padding-top:.75rem; border-top:1px solid var(--line); font-weight:700; color:var(--teal-dark); }
+    #view-app .align-line { display:block; margin-top:.5rem; font-weight:700; color:var(--teal-dark); }
     /* Responsive web app, Nov 23 2026: the prototype adapts to
        what you open it on. On a phone it stays the phone app,
        max 560px, one column, bottom nav. On a laptop / wide
@@ -1518,7 +1545,7 @@
         scored.forEach(function(s, i){
           var p = s.place, align = alignmentFor(p);
           var li = document.createElement("li"); if(align) li.className="align-good";
-          li.innerHTML = "<strong>" + (i+1) + ". " + p.name + "</strong><br/><span>" + p.distLabel + " · " + p.transport + "</span>" + (align ? "<br/><span class='align-badge'>" + align.text + "</span>" : "");
+          li.innerHTML = "<strong>" + (i+1) + ". " + p.name + "</strong><br/><span>" + p.distLabel + " · " + p.transport + "</span>" + (align ? "<br/><span class='align-line'>" + align.text + "</span>" : "");
           li.addEventListener("click", function(){ showPlace(p.id); });
           list.appendChild(li);
         });
@@ -1530,7 +1557,7 @@
         var p = s.place, align = alignmentFor(p);
         var li = document.createElement("li"); if(align) li.className="align-good";
         var b = document.createElement("button"); b.type="button";
-        b.innerHTML = "<strong>" + p.name + "</strong> — " + p.distLabel + "<br/><span class='ps-muted'>" + p.transport + " · " + p.area + "</span>" + (align ? "<br/><span class='align-badge'>" + align.text + "</span>" : "");
+        b.innerHTML = "<strong>" + p.name + "</strong> — " + p.distLabel + "<br/><span class='ps-muted'>" + p.transport + " · " + p.area + "</span>" + (align ? "<br/><span class='align-line'>" + align.text + "</span>" : "");
         b.addEventListener("click", function(){ showPlace(p.id); });
         li.appendChild(b); ul.appendChild(li);
       });
@@ -1548,7 +1575,7 @@
         '<p class="focus-top"><span class="ps-match">' + matchText + '</span><span class="dist-line">' + p.distLabel + '</span></p>' +
         '<h3>' + p.name + '</h3>' +
         '<p class="ps-muted" style="margin:.2rem 0;">' + p.type + ' · ' + p.area + ' · ' + p.transport + '</p>' +
-        (function(){ if(!activeFilters.size) return ""; var rows = Array.from(activeFilters).map(function(f){ var ok = p.tags.indexOf(f) >= 0; return '<li><span class="align-dot ' + (ok ? "yes" : "no") + '" aria-hidden="true"></span><span>' + (ok ? "✓ " : "— ") + (FILTER_LABELS[f]||f) + '</span></li>'; }).join(""); return '<div class="align-card"><h4>Why this fits today</h4><ul>' + rows + '</ul><p class="ps-muted" style="margin:.5rem 0 0;">' + (align ? align.text : "No strong match yet, this place matches " + s.matches.length + " of " + activeFilters.size + " of your filters.") + '</p></div>'; })() +
+        (function(){ if(!activeFilters.size) return ""; var rows = Array.from(activeFilters).map(function(f){ var ok = p.tags.indexOf(f) >= 0; return '<li><span class="align-dot ' + (ok ? "yes" : "no") + '" aria-hidden="true"></span><span class="' + (ok ? "align-yes" : "align-no") + '">' + (ok ? "✓ " : "— ") + (FILTER_LABELS[f]||f) + '</span></li>'; }).join(""); return '<div class="align-card"><h4>Why this fits today <span class="align-count">' + s.matches.length + ' of ' + activeFilters.size + '</span></h4><ul>' + rows + '</ul><p class="align-summary">' + (align ? align.text : "No strong match yet, this place matches " + s.matches.length + " of " + activeFilters.size + " of your filters.") + '</p></div>'; })() +
         '<ul class="ps-facts"><li><strong>Lighting:</strong> ' + p.lighting + '</li><li><strong>Sound:</strong> ' + (p.soundLevel||'') + ' — ' + p.sound + '</li><li><strong>What you will hear:</strong> ' + (p.soundSources||[]).join("; ") + '</li><li><strong>Crowd:</strong> ' + p.crowding + '</li></ul>' +
         '<ul class="ps-tags">' + shownTags.map(function(t){ return '<li class="'+tagClass(t)+'">'+(FILTER_LABELS[t]||t)+'</li>'; }).join("") + '</ul>' +
         '<p class="ps-muted">Confirmed by ' + p.confirmed + ' peers · Anonymous</p>' +
