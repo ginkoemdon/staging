@@ -1639,7 +1639,7 @@
 
       <!-- 4. SAVED -->
       <section class="screen" id="screen-saved" aria-labelledby="profiles-h" hidden>
-        <div class="screen-head"><h2 id="profiles-h">Saved</h2><p>Profiles, order prep list, and bookmarks.</p></div>
+        <div class="screen-head"><h2 id="profiles-h">Saved</h2><p>Profiles, order prep list, bookmarks, and liked places.</p></div>
         <div class="screen-scroll">
           <section class="ps-panel" aria-labelledby="save-profile-h">
             <h3 id="save-profile-h">Save today's filters</h3>
@@ -1665,6 +1665,9 @@
             <button class="ps-btn ps-btn-secondary ps-btn-small" id="clear-prep" type="button">Clear order prep list</button>
             <h3>Bookmarked places</h3>
             <ul id="bookmark-list"></ul>
+            <h3>Liked places</h3>
+            <p class="ps-muted">Places you liked from the menu preview. Tap one to open it.</p>
+            <ul id="like-list"></ul>
           </section>
           <section class="ps-panel" aria-labelledby="visits-h">
             <h3 id="visits-h">Your last visits</h3>
@@ -2158,6 +2161,10 @@
       });
       var head = document.querySelector("#screen-" + name + " h2"); if(head) head.focus && head.setAttribute("tabindex","-1"), head.focus({preventScroll:true});
       if(name === "discover") renderFocus();
+      /* Nov 24 2026: Saved never re-rendered when opened, so
+         likes and bookmarks added since load did not show.
+         Refresh it every time Saved is opened. */
+      if(name === "saved") renderPrep();
       /* Nov 23 2026: no Start check-in button. Opening I'm here
          starts the questions for the selected place right away.
          If a check-in is already in progress, keep it, so going
@@ -2676,7 +2683,7 @@
       var likeBtn=document.createElement("button"); likeBtn.type="button"; likeBtn.className="ps-btn ps-btn-secondary ps-btn-small";
       function paintLike(){ likeBtn.textContent = likes.has(p.id) ? "♥ Liked" : "♡ Like this place"; likeBtn.setAttribute("aria-pressed", likes.has(p.id) ? "true" : "false"); }
       paintLike();
-      likeBtn.addEventListener("click", function(){ if(likes.has(p.id)) likes.delete(p.id); else likes.add(p.id); save("peerspect-likes-v1", Array.from(likes)); paintLike(); });
+      likeBtn.addEventListener("click", function(){ if(likes.has(p.id)) likes.delete(p.id); else likes.add(p.id); save("peerspect-likes-v1", Array.from(likes)); paintLike(); renderPrep(); });
       menuCard.appendChild(likeBtn);
       var sumH=document.createElement("h3"); sumH.textContent="Your order prep list"; menuCard.appendChild(sumH);
       var summary=document.createElement("div"); summary.className="order-summary"; menuCard.appendChild(summary);
@@ -2818,6 +2825,16 @@
       var bl=$("bookmark-list"); bl.innerHTML="";
       if(!bookmarks.size) bl.innerHTML="<li class='ps-muted'>No places bookmarked yet.</li>";
       Array.from(bookmarks).forEach(function(id){ var p=PLACES.find(function(x){ return x.id===id; }); if(p){ var li=document.createElement("li"); li.textContent=p.name+", "+p.area; bl.appendChild(li); } });
+      /* Liked places, Nov 24 2026: the Like button on the menu
+         preview saved to peerspect-likes-v1, but Saved never
+         read that list, so liking a place showed nothing
+         anywhere except the button label. Ginko liked a place
+         and found nothing in Saved. Liked places now render
+         here, with an Open button each, like bookmarks. */
+      var ll=$("like-list"); if(ll){ ll.innerHTML="";
+        if(!likes.size) ll.innerHTML="<li class='ps-muted'>No places liked yet.</li>";
+        Array.from(likes).forEach(function(id){ var p=PLACES.find(function(x){ return x.id===id; }); if(p){ var li=document.createElement("li"); li.textContent="♥ "+p.name+", "+p.area+" "; var open=document.createElement("button"); open.type="button"; open.className="ps-btn ps-btn-secondary ps-btn-small"; open.textContent="Open place"; open.addEventListener("click", function(){ showPlace(p.id); }); li.appendChild(open); ll.appendChild(li); } });
+      }
     }
     $("clear-prep").addEventListener("click", function(){ prep=[]; save("peerspect-prep-v1", prep); renderPrep(); });
     /* Your last visits, Nov 24 2026: was one comma-joined
