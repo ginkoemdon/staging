@@ -543,8 +543,12 @@
        lined the bottom of the icon too. Active is now: top bar
        (above) + soft background + underlined bold label. Three
        cues, none of them a box, and none of them colour alone.
+       The underline sits on the label span only, never on the
+       whole button, so the icon above it stays unlined.
        Keyboard focus still gets its own outline via :focus-visible. */
-    #view-app .app-nav button[aria-current="page"] { border:0; outline:0; text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:2px; font-weight:700; }
+    #view-app .app-nav button[aria-current="page"] { border:0; outline:0; text-decoration:none; font-weight:700; }
+    #view-app .app-nav button[aria-current="page"] .nav-label { text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:2px; }
+    #view-app .app-nav .ico { text-decoration:none; }
     #view-app .dots button[aria-current="true"] { width:20px; border-radius:999px; border-width:3px; outline:2px solid var(--ink); outline-offset:1px; }
     #view-app .rate-btn[aria-pressed="true"] { border-width:3px; outline:2px solid var(--ink); outline-offset:1px; }
     #view-app .rate-btn[aria-pressed="true"]::before { content:"\2713  "; }
@@ -897,14 +901,14 @@
 
       <section aria-labelledby="cs-hifi">
         <h2 id="cs-hifi">High fidelity designs</h2>
-        <p class="cs-subtitle">Three screens, live below. Tap one and use it right here.</p>
+        <p class="cs-subtitle">Two screens, live below. Tap one and use it right here.</p>
         <p class="cs-note">This is the real prototype, not a screenshot. Pick a screen on the left, use it live on the right, or open it fullscreen.</p>
         <div class="cs-hifi-layout">
         <div class="cs-screen-grid">
           <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Discover</div><div class="cs-screen-body"><h3>Discover</h3><p>Map and list views, distance and transport, only the filters you picked today.</p><button class="cs-screen-link" type="button" data-preview-screen="discover">Show this screen</button></div></article>
           <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">I am here</div><div class="cs-screen-body"><h3>I am here</h3><p>One question at a time, anonymous. Sound is multi-select, and “still” questions show the earlier peer report.</p><button class="cs-screen-link" type="button" data-preview-screen="here">Show this screen</button></div></article>
-          <article class="cs-card cs-screen"><div class="cs-screen-media" aria-hidden="true">Business</div><div class="cs-screen-body"><h3>Business</h3><p>Dashboard with rings, how the day feels, and AI suggestions that cite the data.</p><button class="cs-screen-link" type="button" data-preview-screen="business">Show this screen</button></div></article>
         </div>
+        <p class="cs-note">The rest, including the Business dashboard, is in the live prototype. <button class="cs-screen-link" type="button" data-open-prototype>Open the live prototype</button></p>
         <div class="cs-live" id="live-preview">
           <div class="cs-live-head">
             <strong>Live preview: <span id="live-preview-name">Discover</span></strong>
@@ -1156,10 +1160,10 @@
     </main>
 
     <nav class="app-nav" id="app-nav" aria-label="PEERSPECT" hidden>
-      <button type="button" data-screen="discover" aria-current="page"><span class="ico" aria-hidden="true">◎</span>Today</button>
-      <button type="button" data-screen="saved"><span class="ico" aria-hidden="true">♥</span>Saved</button>
-      <button type="button" data-screen="here"><span class="ico" aria-hidden="true">◉</span>I'm here</button>
-      <button type="button" data-screen="business"><span class="ico" aria-hidden="true">▦</span>Business</button>
+      <button type="button" data-screen="discover" aria-current="page"><span class="ico" aria-hidden="true">◎</span><span class="nav-label">Today</span></button>
+      <button type="button" data-screen="saved"><span class="ico" aria-hidden="true">♥</span><span class="nav-label">Saved</span></button>
+      <button type="button" data-screen="here"><span class="ico" aria-hidden="true">◉</span><span class="nav-label">I'm here</span></button>
+      <button type="button" data-screen="business"><span class="ico" aria-hidden="true">▦</span><span class="nav-label">Business</span></button>
     </nav>
   </div>
   </div>
