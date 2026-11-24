@@ -1098,6 +1098,16 @@
     #view-app .discover-filters[open] > *:not(summary), #view-app .onboard-group[open] > *:not(summary), #view-app .biz-why[open] > *:not(summary), #view-app #all-filters:not([hidden]), #view-app #view-map:not([hidden]), #view-app #view-list:not([hidden]) { animation:ps-drop-in .18s ease; }
     #view-app .ps-confirm { font-weight:700; color:var(--teal-dark); animation:ps-confirm-in .18s ease; }
     #view-app .ps-confirm::before { content:"\2713  "; font-weight:800; }
+    /* Check-in done screen, Nov 24 2026: the thanks line, the
+       badge, the "How was it for you?" rating and the notes
+       were stacked tight, with no air between them. The thanks
+       now has room below it, each subheading has room above
+       it, and the last button has room above it, so the end
+       of the flow breathes. */
+    .checkin-done { margin:12px 0 28px; font-size:1.05rem; line-height:1.5; }
+    .checkin-sub { margin:28px 0 10px; }
+    .checkin-badge-line { margin:0 0 8px; }
+    .checkin-again { margin-top:24px; }
     #view-app .peer-crossed { animation:ps-confirm-in .18s ease; }
     @media (prefers-reduced-motion: reduce) {
       #view-app *, #view-app *::before, #view-app *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
@@ -1811,7 +1821,9 @@
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
          {q:"Is the music still soft right now?", c:"A peer reported 30 minutes ago: the music was soft.", cc:12, a:["Yes, still soft","A bit louder now","No, it's loud now"]},
          {q:"Are pronouns being respected today?", a:["Yes","Not today","Not sure"]},
-         {q:"Is it still calm, not crowded?", c:"A peer reported an hour ago: it was calm, not crowded.", cc:9, a:["Yes, still calm","A bit busy","No, it's crowded"]}
+         {q:"Is it still calm, not crowded?", c:"A peer reported an hour ago: it was calm, not crowded.", cc:9, a:["Yes, still calm","A bit busy","No, it's crowded"]},
+         {q:"Is the lighting still dim and warm?", c:"A peer reported an hour ago: the lighting was dim and warm.", cc:7, a:["Yes, still dim and warm","Brighter now","No, it's bright now"]},
+         {q:"Is the step-free entry still clear?", c:"A peer reported yesterday: the step-free entry was clear.", cc:5, a:["Yes, clear","A bit blocked","No, it's blocked"]}
        ]},
       {id:"nostalgie", name:"Café Nostalgie", area:"Mile End", type:"Café / diner", distKm:3.2, distLabel:"3.2 km · 12 min by Metro", transport:"Metro Jarry to Laurier, 12 min", mapX:56, mapY:30,
        tags:["seating-comfy","lighting-bright","lighting-big","sound-music","crowding-busy","retro","nostalgic","socialising","service-fast","communication-clear","price-transparent","language-french","language-english","language-italian","language-creole","menu-qr","menu-preview","written-order","diet-vegetarian","order-verbal","order-call","order-click-collect","order-takeout","sensory-no-flash","vision-contrast-tableware","vision-step-edges","vision-high-contrast-signs","hearing-captions","hearing-written-confirm","diet-sugar-free"],
@@ -1824,7 +1836,9 @@
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines","TV"]},
          {q:"Is the music still on right now?", c:"A peer reported 30 minutes ago: the music was on.", cc:8, a:["Yes","No","Not sure"]},
          {q:"Is it busy right now?", a:["Yes, it's busy","A bit busy","No, it's quiet"]},
-         {q:"Is the TV still on today?", c:"A peer reported yesterday: the TV was on in the corner.", cc:5, a:["Yes","No","Not sure"]}
+         {q:"Is the TV still on today?", c:"A peer reported yesterday: the TV was on in the corner.", cc:5, a:["Yes","No","Not sure"]},
+         {q:"Is it still busy at lunch?", c:"A peer reported an hour ago: it was busy at lunch.", cc:6, a:["Yes, still busy","Calmer now","No, it's quiet"]},
+         {q:"Are captions still on the TV?", c:"A peer reported 30 minutes ago: captions were on the TV.", cc:4, a:["Yes, captions on","No captions now","Not sure"]}
        ]},
       {id:"boheme", name:"Bohemian Books & Brew", area:"Plateau-Mont-Royal", type:"Book café", distKm:2.8, distLabel:"2.8 km · 15 min by bus", transport:"Bus 55, 15 min from Jarry", mapX:62, mapY:68,
        tags:["step-free","seating-comfy","lighting-ambient","lighting-dim","sound-quiet","sound-music","crowding-low","bohemian","artsy","coworking","quiet-chat","service-patient","service-calm","pronoun-respect","queer-friendly","staff-representation","price-transparent","language-french","language-english","language-mandarin","language-arabic","menu-physical","menu-preview","menu-accessible","diet-vegan","diet-gluten-free","diet-vegetarian","diet-halal","diet-cultural","online-meetings","temp-comfortable","clean","order-verbal","order-online","order-ahead","order-takeout","sensory-quiet-nook","sensory-no-flash","sensory-fragrance-free","sensory-no-music","sensory-no-sudden-noise","vision-contrast-tables","vision-even-light","vision-clear-paths","vision-large-print","vision-braille","vision-read-aloud","vision-high-contrast-signs","vision-no-pattern","hearing-face-you","hearing-written-confirm","restroom-sharps","restroom-private","diet-sugar-free","menu-free-water"],
@@ -1837,7 +1851,9 @@
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
          {q:"Is it still quiet enough to read?", c:"A peer reported an hour ago: it was quiet enough to read.", cc:11, a:["Yes, quiet enough","Mostly","No, too loud"]},
          {q:"Are pronouns being respected today?", a:["Yes","Not today","Not sure"]},
-         {q:"Is there still a free comfy seat?", c:"A peer reported 30 minutes ago: there were free comfy seats.", cc:6, a:["Yes","A few left","No, it's full"]}
+         {q:"Is there still a free comfy seat?", c:"A peer reported 30 minutes ago: there were free comfy seats.", cc:6, a:["Yes","A few left","No, it's full"]},
+         {q:"Is the quiet nook still free?", c:"A peer reported an hour ago: the quiet nook was free.", cc:8, a:["Yes, it's free","Someone's there now","Not sure"]},
+         {q:"Is it still fragrance-free in here?", c:"A peer reported yesterday: it was fragrance-free.", cc:3, a:["Yes, still fragrance-free","I can smell something","Not sure"]}
        ]},
       {id:"jardin", name:"Jardin Café", area:"Outremont", type:"Café / event space", distKm:2.1, distLabel:"2.1 km · 14 min by bus", transport:"Bus 160, 14 min · 20 min walk", mapX:16, mapY:60,
        tags:["step-free","restroom-accessible","lighting-bright","lighting-ambient","sound-music","crowding-busy","nostalgic","socialising","coworking","service-patient","communication-clear","price-transparent","language-french","language-english","language-spanish","language-creole","language-mandarin","menu-qr","menu-preview","menu-accessible","diet-vegan","diet-gluten-free","diet-vegetarian","diet-cultural","outdoor-space","airflow","order-verbal","order-call","order-online","order-click-collect","order-takeout","sensory-low-hours","sensory-no-flash","sensory-fragrance-free","sensory-no-music","sensory-no-sudden-noise","vision-contrast-tables","vision-even-light","vision-clear-paths","vision-marked-glass","vision-tactile-lines","vision-large-print","vision-braille","vision-read-aloud","language-lsq","lsq-order","hearing-captions","hearing-face-you","restroom-sharps","restroom-private","diet-sugar-free","menu-nutrition","menu-free-water"],
@@ -1850,7 +1866,9 @@
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
          {q:"Is there an event on right now?", a:["Yes","No","Not sure"]},
          {q:"Is it busy right now?", a:["Yes, it's busy","A bit busy","No, it's quiet"]},
-         {q:"Is the music still on today?", c:"A peer reported yesterday: the music was on.", cc:7, a:["Yes","No","Not sure"]}
+         {q:"Is the music still on today?", c:"A peer reported yesterday: the music was on.", cc:7, a:["Yes","No","Not sure"]},
+         {q:"Is the outdoor space still open?", c:"A peer reported an hour ago: the outdoor space was open.", cc:5, a:["Yes, it's open","Closed now","Not sure"]},
+         {q:"Is it still calm on a weekday?", c:"A peer reported 30 minutes ago: it was calm.", cc:6, a:["Yes, still calm","Busier now","No, it's busy"]}
        ]}
     ];
     function load(key, fallback){ try { var v = JSON.parse(localStorage.getItem(key)); return v == null ? fallback : v; } catch(e){ return fallback; } }
@@ -3075,8 +3093,8 @@
       return {questions:qs, generic:false};
     }
     /* Peer cross-check card on I'm here, Nov 24 2026: a second
-       card, separate from the general check-in. It lists the top
-       five most recent peer reports for the place you are at,
+       card, separate from the general check-in. It lists the
+       most recent peer reports for the place you are at,
        most recent first, each with its age, and a one-tap
        "Is this still true?" cross-check. Answering reuses the
        place-detail counting: it counts as a peer cross-check in
@@ -3099,7 +3117,11 @@
         out.push({q:q, key:p.id+"|"+out.length, age:age, text:text, mins:mins});
       });
       out.sort(function(a,b){ return a.mins - b.mins; });
-      return out.slice(0,5);
+      /* Nov 24 2026: was the top five, but each place only had
+         one or two peer reports to check, so the card looked
+         thin. Two more "still" reports were added per place,
+         and the cap is now eight, so nothing is hidden. */
+      return out.slice(0,8);
     }
     function renderCrosscheck(focusKey){
       var box=$("crosscheck-box"); if(!box) return; box.innerHTML="";
@@ -3311,8 +3333,15 @@
           visits.push({place:p.name, placeId:p.id, date:todayStr(), answers:checkin.answers.slice(), rating:null, order:(checkin.got||[])});
           save("peerspect-visits-v1", visits); renderVisits();
         }
-        var done=document.createElement("p"); done.className="ps-confirm"; done.setAttribute("tabindex","-1"); done.innerHTML="Thanks. That helps the next person. <span class='ps-badge'>Reliable observer</span>"; box.appendChild(done); done.focus({preventScroll:true});
-        var rateQ=document.createElement("p"); rateQ.innerHTML="<strong>How was it for you?</strong>"; box.appendChild(rateQ);
+        var done=document.createElement("p"); done.className="ps-confirm checkin-done"; done.setAttribute("tabindex","-1"); done.textContent="Thanks. That helps the next person."; box.appendChild(done); done.focus({preventScroll:true});
+        /* "You are currently a", Nov 24 2026: the Reliable
+           observer badge used to sit inline in the thanks line.
+           It now has its own subheading, in the same style as
+           "How was it for you?", with the badge on the line
+           below it. */
+        var levelQ=document.createElement("p"); levelQ.className="checkin-sub"; levelQ.innerHTML="<strong>You are currently a</strong>"; box.appendChild(levelQ);
+        var levelLine=document.createElement("p"); levelLine.className="checkin-badge-line"; levelLine.innerHTML="<span class='ps-badge'>Reliable observer</span>"; box.appendChild(levelLine);
+        var rateQ=document.createElement("p"); rateQ.className="checkin-sub"; rateQ.innerHTML="<strong>How was it for you?</strong>"; box.appendChild(rateQ);
         var rateRow=document.createElement("div"); rateRow.className="rate-row";
         [["up","\uD83D\uDC4D Loved it"],["meh","\uD83D\uDE10 So-so"],["down","\uD83D\uDC4E Not for me"]].forEach(function(pair){
           var rb=document.createElement("button"); rb.type="button"; rb.className="rate-btn"; rb.textContent=pair[1];
@@ -3329,7 +3358,7 @@
         var rateNote=document.createElement("p"); rateNote.className="ps-muted"; rateNote.setAttribute("aria-live","polite"); rateNote.textContent="Only you see your rating."; box.appendChild(rateNote);
         var note=document.createElement("p"); note.className="ps-muted"; note.textContent="You answered "+checkin.answers.length+" question"+(checkin.answers.length===1?"":"s")+". In this demo, your report is counted on this device only, anonymously."; box.appendChild(note);
         trust.reports+=1; trust.confirmed+=1; save("peerspect-trust-v1", trust); renderTrust();
-        var again=document.createElement("button"); again.type="button"; again.className="ps-btn ps-btn-secondary"; again.textContent="Check in again";
+        var again=document.createElement("button"); again.type="button"; again.className="ps-btn ps-btn-secondary checkin-again"; again.textContent="Check in again";
         again.addEventListener("click", function(){ startCheckin(); }); box.appendChild(again); return;
       }
       if(checkin.generic && checkin.step===0){ var gn=document.createElement("p"); gn.className="ps-muted"; gn.textContent="No filters picked for today, so these are general questions. Pick filters for today and the questions will match them."; box.appendChild(gn); }
