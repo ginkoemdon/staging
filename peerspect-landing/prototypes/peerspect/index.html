@@ -477,6 +477,7 @@
     .app-nav button { flex:1; border:0; background:none; color:var(--muted); padding:.55rem .2rem .6rem; font-size:.82rem; font-weight:700; min-height:56px; }
     .app-nav button[aria-current="page"] { color:var(--teal); box-shadow:inset 0 4px 0 var(--teal); background:var(--soft); }
     .app-nav .ico { display:block; font-size:1.15rem; line-height:1.1; }
+    .app-nav .ico svg { display:block; width:1.25rem; height:1.25rem; margin:0 auto; }
     /* Controls */
     .ps-btn { background:var(--teal); color:#fff; border:2px solid var(--teal); border-radius:999px; padding:12px 20px; font-weight:700; min-height:48px; }
     .ps-btn-secondary { background:var(--card); color:var(--teal); }
@@ -503,13 +504,13 @@
        to get past it. Start with a day in one tap, or reuse a
        saved profile / last time's picks, and see live how many
        places fit as you pick. */
-    .onboard-quick { display:grid; gap:12px; margin:0 0 16px; }
+    .onboard-quick { display:grid; gap:20px; margin:0 0 24px; }
     .onboard-quick h3 { font-size:1rem; margin:8px 0 0; color:var(--teal-dark); }
     .quick-card { text-align:left; background:var(--card); border:1.5px solid var(--line); border-radius:16px; padding:16px 20px; font:inherit; color:var(--ink); cursor:pointer; min-height:44px; }
     .quick-card strong { display:block; color:var(--teal-dark); font-size:1.05rem; }
     .quick-card span { display:block; font-size:.95rem; color:var(--muted); margin-top:.25rem; }
     .quick-card[aria-pressed="true"] { border-color:var(--teal); border-width:3px; background:var(--soft); }
-    .onboard-group { border:1px solid var(--line); border-radius:12px; background:var(--card); margin:0 0 8px; }
+    .onboard-group { border:1px solid var(--line); border-radius:12px; background:var(--card); margin:0 0 20px; }
     .onboard-group summary { list-style:none; display:flex; align-items:center; gap:8px; padding:14px 16px; font-weight:700; color:var(--teal-dark); cursor:pointer; min-height:44px; }
     .onboard-group summary::-webkit-details-marker { display:none; }
     .onboard-group .group-count { margin-left:auto; font-weight:400; color:var(--muted); font-size:.9rem; }
@@ -724,20 +725,29 @@
     .map-pin.align { background:#14665a; outline:3px solid #f2c14e; }
     .map-pin.here { background:#f2c14e; color:#372c1f; border-color:#fff; border-radius:12px; font-size:.85rem; max-width:200px; }
     .map-pin.here .pin-name { font-weight:800; }
-    /* "You are here" pin, Nov 24 2026: it sat at 10% / 10% with
-       translate(-50%,-100%), so on a phone its left half and
-       its top hung past the map edge and were clipped by the
-       map's overflow:hidden, and Ginko could not see it at all.
-       The here pin now sits with its top-left corner at its
-       point instead of centred above it, so it grows right
-       and down, inside the map. Place pins keep the centred
-       above-point position, they sit further in. */
-    .map-pin.here { transform:none; }
+    /* Pins near the top edge, Nov 24 2026: with the default
+       translate(-50%,-100%) the label sits above its point, so
+       a pin anchored in the top third hangs past the map edge
+       or covers the pin below it. .below flips it under its
+       point instead, so the label stays inside the map. */
+    .map-pin.below { transform:translate(-50%, 10px); }
+    /* "You are here" pin, Nov 24 2026: it sat at 12% / 14% with
+       translate(-50%,-100%), so its label hung above the Jarry
+       Park point and the Café Lumière Douce pin painted over
+       it, hiding it. It now marks the point with a honey dot
+       at the anchor, and the label sits below the dot, so it
+       grows right and down, inside the map, and no place pin
+       paints over it. The dot is positioned at 30% across the
+       pill, matching the translate(-30%) below. */
+    .map-pin.here { transform:translate(-30%, 12px); z-index:2; }
+    .map-pin.here::before { content:""; position:absolute; left:30%; top:-19px; transform:translateX(-50%); width:14px; height:14px; border-radius:50%; background:#f2c14e; border:2px solid #fff; box-shadow:0 1px 4px rgba(0,0,0,.35); }
     /* Pins at phone width, Nov 24 2026: smaller text and a
-       narrower cap, so neighbouring pins do not overlap. */
+       narrower cap, so neighbouring pins do not overlap. The
+       match count never wraps, so a pin stays two lines. */
     @media (max-width:480px) {
-      .map-pin { max-width:110px; font-size:.72rem; padding:4px 8px; }
-      .map-pin.here { max-width:140px; font-size:.78rem; }
+      .map-pin { max-width:104px; font-size:.65rem; padding:2px 6px; line-height:1.15; }
+      .map-pin .pin-score { font-size:.72rem; white-space:nowrap; }
+      .map-pin.here { max-width:120px; font-size:.72rem; }
     }
     /* Map legend, Nov 23 2026: what each pin means, in words. */
     .map-legend { list-style:none; padding:0; margin:12px 0; display:grid; gap:8px; font-size:.9rem; }
@@ -855,7 +865,7 @@
     #view-app .dots button::after { width:10px; height:10px; border-width:2px; }
     #view-app .dots button[aria-current="true"]::after { width:12px; height:12px; border-radius:50%; background:var(--teal); }
     #view-app .step { gap:8px; }
-    #view-app .step .ps-btn { background:none; border:0; box-shadow:none; text-decoration:underline; padding:10px 8px; min-height:44px; width:auto; flex:0 0 auto; }
+    #view-app .step .ps-btn { background:none; border:0; box-shadow:none; text-decoration:underline; padding:10px 8px; min-height:44px; width:auto; flex:0 0 auto; color:var(--teal-dark); }
     #view-app .step .ps-btn-secondary { background:none; }
     #view-app .ps-input { border-width:1.5px; border-radius:12px; }
     #view-app .ps-tags li { padding:3px 10px; font-size:.85rem; }
@@ -957,8 +967,8 @@
       #view-app:not(.embedded) #view-map .map-wrap { grid-column:1; }
       #view-app:not(.embedded) #view-map p.ps-muted { grid-column:1; }
       #view-app:not(.embedded) #view-map #map-distance-list { grid-column:2; grid-row:1 / span 2; margin-top:0; }
-      #view-app:not(.embedded) #priority-groups { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px; align-items:start; }
-      #view-app:not(.embedded) #priority-groups .onboard-group { margin-bottom:0; }
+      #view-app:not(.embedded) #priority-groups { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:0 20px; align-items:start; }
+      #view-app:not(.embedded) #priority-groups .onboard-group { margin-bottom:20px; }
       #view-app:not(.embedded) .ps-kv { grid-template-columns:minmax(0,1fr) minmax(0,1fr); column-gap:32px; }
       #view-app:not(.embedded) .landing { max-width:640px; margin:0 auto; }
       #view-app:not(.embedded) .app-nav { max-width:1080px; }
@@ -993,8 +1003,8 @@
     #view-app.force-web:not(.embedded) #view-map .map-wrap { grid-column:1; }
     #view-app.force-web:not(.embedded) #view-map p.ps-muted { grid-column:1; }
     #view-app.force-web:not(.embedded) #view-map #map-distance-list { grid-column:2; grid-row:1 / span 2; margin-top:0; }
-    #view-app.force-web:not(.embedded) #priority-groups { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px; align-items:start; }
-    #view-app.force-web:not(.embedded) #priority-groups .onboard-group { margin-bottom:0; }
+    #view-app.force-web:not(.embedded) #priority-groups { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:0 20px; align-items:start; }
+    #view-app.force-web:not(.embedded) #priority-groups .onboard-group { margin-bottom:20px; }
     #view-app.force-web:not(.embedded) .ps-kv { grid-template-columns:minmax(0,1fr) minmax(0,1fr); column-gap:32px; }
     #view-app.force-web:not(.embedded) .landing { max-width:640px; margin:0 auto; }
     #view-app.force-web:not(.embedded) .app-nav { max-width:1080px; }
@@ -1312,7 +1322,7 @@
        unbroken URL in Sources. Fix: clip horizontal overflow,
        let grid items shrink to zero, and break long links. */
     html, body { overflow-x:clip; }
-    #view-web, #view-web .web-wrap { overflow-x:clip; max-width:100%; }
+    #view-web, #view-web .web-wrap { overflow-x:clip; }
     #view-web .web-wrap, #view-web .web-wrap section, #view-web .web-wrap .cs-card, #view-web .web-wrap .cs-context, #view-web .web-wrap .cs-grid4, #view-web .web-wrap .cs-beforeafter, #view-web .web-wrap .cs-screen-grid { min-width:0; }
     #view-web .web-wrap .cs-context, #view-web .web-wrap .cs-grid4, #view-web .web-wrap .cs-beforeafter { grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
     #view-web .web-wrap .cs-screen-grid { grid-template-columns:repeat(auto-fit, minmax(min(220px,100%),1fr)); }
@@ -1392,7 +1402,7 @@
           <li><strong>Who</strong><span>Disabled and neurodiverse people first, and the business owners who serve them. Useful for everyone.</span></li>
           <li><strong>Type</strong><span>Mobile-first web app prototype</span></li>
           <li><strong>Status</strong><span>In progress, November 2026</span></li>
-          <li><strong>Scope</strong><span>Concept prototype. Sample Montreal establishments only. No live listing data, no user testing yet.</span></li>
+          <li><strong>Scope</strong><span>Concept prototype. Twelve real Montreal cafés, with sample peer data. No live listing data, no user testing yet.</span></li>
           <li><strong>Tools</strong><span>HTML, CSS, JavaScript, sample data. Google Places API, not yet connected.</span></li>
         </ul></div>
       </section>
@@ -1589,7 +1599,7 @@
         <div class="screen-scroll">
           <ul class="ps-tags"><li class="tag-access">Access</li><li class="tag-sensory">Sensory</li><li class="tag-env">Environment</li><li class="tag-context">Context</li></ul>
           <p>Peer reports, anonymous, one question at a time.</p>
-          <p class="ps-muted">Demo: sample Montreal places only.</p>
+          <p class="ps-muted">Demo: twelve real Montreal cafés. Peer reports, menus, tags and access details are sample data.</p>
         </div>
         <div class="screen-foot">
           <button class="ps-btn" id="enter-app" type="button">Tell us what matters</button>
@@ -1603,7 +1613,7 @@
           <p>Pick a type of day, like a quiet morning, or choose your own filters below. Takes about a minute. You can change it anytime.</p>
         </div>
         <div class="screen-scroll">
-          <div id="onboard-quick" aria-label="Quick start"></div>
+          <div id="onboard-quick" class="onboard-quick" aria-label="Quick start"></div>
           <p id="onboard-fit" class="ps-muted" aria-live="polite">Pick a starting point, or open a category below.</p>
           <div id="priority-groups"></div>
           <p id="priority-count" class="ps-muted" aria-live="polite">0 picked</p>
@@ -1618,7 +1628,7 @@
       <section class="screen" id="screen-discover" aria-labelledby="places-h" hidden>
         <div class="screen-head">
           <h2 id="places-h">Discover</h2>
-          <p id="tailored-note">No filters picked yet. Showing all sample places.</p>
+          <p id="tailored-note">No filters picked yet. Showing all twelve real cafés.</p>
           <div class="view-toggle" role="group" aria-label="Choose map view or list view">
             <button type="button" id="view-list-btn" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg>List view</button>
             <button type="button" id="view-map-btn" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"/><path d="M9 4v14M15 6v14"/></svg>Map view</button>
@@ -1639,7 +1649,7 @@
           </details>
           <div id="view-map" hidden>
             <div class="map-wrap" id="map-wrap" aria-label="Sample schematic map of Montreal places">
-              <svg viewBox="0 0 640 420" role="img" aria-label="Schematic map, not to scale: Jarry Park top left, with Rue Jarry, Rue Jean-Talon, Avenue Van Horne and Rue Rachel running east to west, crossed by Avenue du Parc, Boulevard Saint-Laurent and Rue Saint-Denis; neighbourhoods Villeray, Mile End, Plateau-Mont-Royal and Outremont; four sample places pinned">
+              <svg viewBox="0 0 640 420" role="img" aria-label="Schematic map, not to scale: Jarry Park top left, with Rue Jarry, Rue Jean-Talon, Avenue Van Horne and Rue Rachel running east to west, crossed by Avenue du Parc, Boulevard Saint-Laurent and Rue Saint-Denis; neighbourhoods Villeray, Mile End, Plateau-Mont-Royal and Outremont; twelve real cafés pinned">
                 <rect class="map-land" width="640" height="420"/>
                 <rect class="map-park" x="24" y="16" width="150" height="58" rx="14"/>
                 <text class="map-label" x="99" y="50" text-anchor="middle">Jarry Park</text>
@@ -1796,10 +1806,10 @@
     </main>
 
     <nav class="app-nav" id="app-nav" aria-label="PEERSPECT" hidden>
-      <button type="button" data-screen="discover" aria-current="page"><span class="ico" aria-hidden="true">◎</span><span class="nav-label">Discover</span></button>
+      <button type="button" data-screen="discover" aria-current="page"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5 13 13 8.5 15.5 11 11Z" fill="currentColor" stroke="none"/></svg></span><span class="nav-label">Discover</span></button>
       <button type="button" data-screen="saved"><span class="ico" aria-hidden="true">♥</span><span class="nav-label">Saved</span></button>
       <button type="button" data-screen="here"><span class="ico" aria-hidden="true">◉</span><span class="nav-label">I'm here</span></button>
-      <button type="button" data-screen="business"><span class="ico" aria-hidden="true">▦</span><span class="nav-label">Business</span></button>
+      <button type="button" data-screen="business"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17 8.5 11.5 12 14 20 5.5"/><circle cx="3" cy="17" r="1.3" fill="currentColor" stroke="none"/><circle cx="8.5" cy="11.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="14" r="1.3" fill="currentColor" stroke="none"/><circle cx="20" cy="5.5" r="1.3" fill="currentColor" stroke="none"/></svg></span><span class="nav-label">Business</span></button>
     </nav>
     <div class="bm-toast" id="bm-toast" role="status" aria-live="polite"></div>
   </div>
@@ -1868,65 +1878,185 @@
     GROUPS.forEach(function(g){ g.subs.forEach(function(sub){ sub.keys.forEach(function(k){ GROUP_FOR_KEY[k] = g.name.toLowerCase(); }); }); });
     function tagClass(t){ var g = GROUP_FOR_KEY[t]; if(g === "environment") return "tag-env"; return g ? "tag-" + g : "tag-context"; }
     var PLACES = [
-      {id:"lumiere", name:"Café Lumière Douce", area:"Villeray, near Jarry", type:"Café", distKm:0.4, distLabel:"0.4 km · 5 min walk", transport:"Walk 5 min from Jarry Park", mapX:18, mapY:22,
-       tags:["step-free","seating-comfy","restroom-accessible","gender-neutral-restroom","lighting-dim","lighting-ambient","sound-quiet","crowding-low","smell-neutral","artsy","quiet-chat","coworking","service-patient","service-calm","communication-clear","pronoun-respect","queer-friendly","price-transparent","language-french","language-english","language-spanish","language-arabic","language-italian","menu-physical","menu-preview","menu-accessible","diet-gluten-free","diet-vegan","diet-lactose-free","diet-halal","diet-vegetarian","diet-cultural","online-meetings","temp-comfortable","clean","dog-friendly","asl-service","asl-order","written-order","hearing-loop","order-verbal","order-online","order-ahead","order-takeout","sensory-quiet-nook","sensory-low-hours","sensory-no-flash","sensory-fragrance-free","sensory-no-sudden-noise","vision-contrast-tables","vision-contrast-tableware","vision-even-light","vision-clear-paths","vision-marked-glass","vision-tactile-lines","vision-step-edges","vision-large-print","vision-read-aloud","vision-high-contrast-signs","vision-no-pattern","language-lsq","lsq-order","hearing-face-you","hearing-written-confirm","restroom-sharps","restroom-private","diet-sugar-free","menu-nutrition","menu-free-water"],
-       lighting:"Dim, ambient. Good contrast at tables", sound:"Soft music, no TV", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, espresso machine, occasional"], crowding:"Usually calm, busier at 10am",
-       access:"Step-free entry, accessible restroom, gender-neutral restroom", menuNote:"Physical menu at the counter, plus a preview online. Large print on request.",
-       confirmed:42, day:[["Morning","Calm, bright at the window"],["Midday","Calm, dim and warm"],["Evening","Quiet, soft lighting"]], dayCounts:[12,18,12], openHour:7, closeHour:19, hourCounts:[1,2,2,1,2,3,2,2,2,2,1,1],
+      {id:"vito", name:"Café Vito", address:"151 Rue Villeray, Montréal, QC H2R 1G4", mapsUrl:"https://www.google.com/maps/search/?api=1&query=Caf%C3%A9+Vito%2C+151+Rue+Villeray%2C+Montr%C3%A9al%2C+QC+H2R+1G4", phone:"+1 514-564-3131", hours:null, area:"Villeray, near Jarry", type:"Italian espresso bar", distKm:0.2, distLabel:"0.2 km · 2 min walk", transport:"Walk 2 min from Jarry Park", mapX:48, mapY:60,
+       tags:["step-free","seating-comfy","lighting-bright","sound-quiet","crowding-low","smell-neutral","quiet-chat","service-patient","language-italian","language-french","language-english","language-spanish","menu-physical","menu-preview","diet-gluten-free","diet-vegetarian","price-transparent","temp-comfortable","clean","order-verbal","order-takeout","sensory-no-flash","sensory-fragrance-free","vision-even-light","vision-clear-paths","vision-large-print","online-meetings","artsy"],
+       lighting:"Bright, even light at the counter", sound:"Soft music, quiet talk", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, espresso machine, occasional"], crowding:"Usually calm, busier mid-morning",
+       access:"Step-free entry, comfy seating", menuNote:"Sample menu. Espresso, cannoli and gelato, plus a preview online.",
+       confirmed:18, day:[["Morning","Calm, bright at the counter"],["Midday","Calm, steady hum"],["Evening","Quiet, warm light"]], dayCounts:[6,8,4], openHour:7, closeHour:19, hourCounts:[1,2,2,1,2,3,2,2,2,1,1,1],
+       menu:[{n:"Espresso",p:"$3.50",k:"drink"},{n:"Cappuccino",p:"$4.50",k:"drink"},{n:"Cannoli",p:"$5.00",k:"food"},{n:"Gelato, scoop",p:"$4.50",k:"food"},{n:"Latte",p:"$5.00",k:"drink"},{n:"Macchiato",p:"$4.00",k:"drink"},{n:"Biscotti",p:"$3.00",k:"food"},{n:"Sparkling water",p:"$3.00",k:"drink"}],
+       live:[
+         {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
+         {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
+         {q:"Is the espresso bar still quiet right now?", c:"A peer reported 30 minutes ago: it was quiet.", cc:6, a:["Yes, still quiet","A bit louder now","No, it's loud now"]},
+         {q:"Are staff still patient with questions today?", a:["Yes","Not today","Not sure"]},
+         {q:"Is it still calm, not crowded?", c:"A peer reported an hour ago: it was calm, not crowded.", cc:5, a:["Yes, still calm","A bit busy","No, it's crowded"]},
+         {q:"Is the lighting still bright and even?", c:"A peer reported an hour ago: the lighting was bright and even.", cc:4, a:["Yes, still bright","Dimmer now","No, it's dim now"]},
+         {q:"Is the step-free entry still clear?", c:"A peer reported yesterday: the step-free entry was clear.", cc:3, a:["Yes, clear","A bit blocked","No, it's blocked"]}
+       ]},
+      {id:"velours", name:"Café Velours", address:"373 Rue Villeray, Montréal, QC H2R 1H1", mapsUrl:"https://www.google.com/maps/search/?api=1&query=Caf%C3%A9+Velours%2C+373+Rue+Villeray%2C+Montr%C3%A9al%2C+QC+H2R+1H1", phone:"+1 514-495-7120", hours:null, area:"Villeray, near Jarry", type:"Café", distKm:0.4, distLabel:"0.4 km · 6 min walk", transport:"Walk 6 min from Jarry Park", mapX:48, mapY:40,
+       tags:["step-free","seating-comfy","lighting-ambient","lighting-dim","sound-quiet","crowding-low","smell-neutral","quiet-chat","coworking","service-calm","communication-clear","pronoun-respect","queer-friendly","language-french","language-english","menu-physical","menu-preview","diet-vegan","diet-gluten-free","diet-lactose-free","price-transparent","temp-comfortable","clean","order-verbal","order-online","sensory-quiet-nook","sensory-low-hours","sensory-no-flash","vision-even-light","vision-contrast-tables","vision-large-print","online-meetings","artsy","dog-friendly","menu-free-water"],
+       lighting:"Dim, ambient, warm lamps", sound:"Soft music, quiet talk", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, espresso machine, occasional"], crowding:"Usually calm, good for working, busier at lunch",
+       access:"Step-free entry, comfy seating, staff happy to help", menuNote:"Sample menu. Rose cardamom latte and baklava, plus a preview online.",
+       confirmed:27, day:[["Morning","Calm, soft light"],["Midday","Calm, good for working"],["Evening","Quiet, warm lamps"]], dayCounts:[9,11,7], openHour:7, closeHour:19, hourCounts:[1,2,2,2,2,3,2,2,2,2,1,1],
+       menu:[{n:"Rose cardamom latte",p:"$6.50",k:"drink"},{n:"Baklava",p:"$5.00",k:"food"},{n:"Flat white",p:"$5.00",k:"drink"},{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Oat latte",p:"$5.50",k:"drink"},{n:"Croissant, butter",p:"$4.00",k:"food"},{n:"Banana bread",p:"$4.50",k:"food"},{n:"Sparkling water",p:"$3.00",k:"drink"}],
+       live:[
+         {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
+         {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
+         {q:"Is it still good for working right now?", c:"A peer reported 30 minutes ago: it was good for working.", cc:9, a:["Yes, still good","A bit busy now","No, it's busy now"]},
+         {q:"Are pronouns being respected today?", a:["Yes","Not today","Not sure"]},
+         {q:"Is it still calm, not crowded?", c:"A peer reported an hour ago: it was calm, not crowded.", cc:7, a:["Yes, still calm","A bit busy","No, it's crowded"]},
+         {q:"Is the lighting still dim and warm?", c:"A peer reported an hour ago: the lighting was dim and warm.", cc:6, a:["Yes, still dim and warm","Brighter now","No, it's bright now"]},
+         {q:"Is there still a quiet nook free?", c:"A peer reported yesterday: a quiet nook was free.", cc:4, a:["Yes, one free","Nearly full","No, it's full"]}
+       ]},
+      {id:"ouimaisnon", name:"Café Oui Mais Non", address:"72 Rue Jarry E, Montréal, QC H2P 1T1", mapsUrl:"https://www.google.com/maps/search/?api=1&query=Caf%C3%A9+Oui+Mais+Non%2C+72+Rue+Jarry+E%2C+Montr%C3%A9al%2C+QC+H2P+1T1", phone:"+1 514-507-5387", hours:"7am–10pm daily", area:"Villeray, near Jarry", type:"Café-boutique", distKm:0.5, distLabel:"0.5 km · 7 min walk", transport:"Walk 7 min from Jarry Park", mapX:16, mapY:60,
+       tags:["step-free","seating-comfy","restroom-accessible","lighting-ambient","lighting-bright","sound-quiet","crowding-low","smell-neutral","artsy","retro","outdoor-space","quiet-chat","coworking","service-patient","communication-clear","pronoun-respect","queer-friendly","language-french","language-english","menu-physical","menu-preview","diet-vegetarian","diet-vegan","diet-gluten-free","price-transparent","temp-comfortable","clean","order-verbal","sensory-no-flash","vision-clear-paths","vision-marked-glass","online-meetings","menu-free-water"],
+       lighting:"Bright in the day, ambient in the evening", sound:"Soft music, quiet talk", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, espresso machine, occasional"], crowding:"Calm in the morning, livelier in the evening",
+       access:"Step-free entry, accessible restroom", menuNote:"Sample menu. Café-boutique with a terrace and a basement room, preview online.",
+       confirmed:31, day:[["Morning","Calm, bright, good for studying"],["Midday","Calm, steady"],["Evening","Lively, warm light"]], dayCounts:[10,12,9], openHour:7, closeHour:22, hourCounts:[1,2,2,2,2,3,2,2,2,2,2,2,1,1,1],
+       menu:[{n:"Oat latte",p:"$5.50",k:"drink"},{n:"Flat white",p:"$5.00",k:"drink"},{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Sparkling water",p:"$3.00",k:"drink"},{n:"Croissant, butter",p:"$4.00",k:"food"},{n:"Avocado toast",p:"$11.00",k:"food"},{n:"Soup of the day",p:"$9.00",k:"food"},{n:"Cookie, chocolate",p:"$3.50",k:"food"}],
+       live:[
+         {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
+         {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
+         {q:"Is the terrace still open right now?", c:"A peer reported 30 minutes ago: the terrace was open.", cc:8, a:["Yes, still open","Closed now","Not sure"]},
+         {q:"Is it still good for studying right now?", c:"A peer reported an hour ago: it was good for studying.", cc:10, a:["Yes, still good","A bit busy now","No, it's busy now"]},
+         {q:"Is it still calm, not crowded?", c:"A peer reported an hour ago: it was calm, not crowded.", cc:6, a:["Yes, still calm","A bit busy","No, it's crowded"]},
+         {q:"Are pronouns being respected today?", a:["Yes","Not today","Not sure"]},
+         {q:"Is the lighting still bright and even?", c:"A peer reported yesterday: the lighting was bright and even.", cc:5, a:["Yes, still bright","Dimmer now","No, it's dim now"]}
+       ]},
+      {id:"pinocchio", name:"Café Pinocchio", address:"505 Rue Gounod, Montréal, QC H2R 1B8", mapsUrl:"https://www.google.com/maps/search/?api=1&query=Caf%C3%A9+Pinocchio%2C+505+Rue+Gounod%2C+Montr%C3%A9al%2C+QC+H2R+1B8", phone:"+1 438-384-4500", hours:"7am–7pm daily", area:"Villeray, near Jarry", type:"Italian deli-café", distKm:0.7, distLabel:"0.7 km · 8 min walk", transport:"Walk 8 min from Jarry Park", mapX:82, mapY:20,
+       tags:["step-free","seating-comfy","lighting-bright","sound-quiet","crowding-low","smell-neutral","quiet-chat","service-patient","language-italian","language-french","language-english","language-spanish","menu-physical","menu-preview","diet-gluten-free","diet-vegetarian","diet-halal","price-transparent","temp-comfortable","clean","order-verbal","order-takeout","sensory-no-flash","sensory-fragrance-free","vision-even-light","vision-clear-paths","vision-large-print","online-meetings","artsy"],
+       lighting:"Bright, warm, deli counter light", sound:"Soft music, quiet talk", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, deli counter, occasional"], crowding:"Usually calm, busier at lunch",
+       access:"Step-free entry, comfy seating", menuNote:"Sample menu. Italian deli-café, preview online.",
+       confirmed:22, day:[["Morning","Calm, bright"],["Midday","Calm, deli hum"],["Evening","Quiet, warm light"]], dayCounts:[7,9,6], openHour:7, closeHour:19, hourCounts:[1,2,2,1,2,3,2,2,2,1,1,1],
+       menu:[{n:"Espresso",p:"$3.50",k:"drink"},{n:"Cappuccino",p:"$4.50",k:"drink"},{n:"Latte",p:"$5.00",k:"drink"},{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Panino",p:"$9.50",k:"food"},{n:"Antipasto plate",p:"$12.00",k:"food"},{n:"Biscotti",p:"$3.00",k:"food"},{n:"Sparkling water",p:"$3.00",k:"drink"}],
+       live:[
+         {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
+         {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
+         {q:"Is the deli counter still quiet right now?", c:"A peer reported 30 minutes ago: it was quiet.", cc:5, a:["Yes, still quiet","A bit louder now","No, it's loud now"]},
+         {q:"Are staff still patient with questions today?", a:["Yes","Not today","Not sure"]},
+         {q:"Is it still calm, not crowded?", c:"A peer reported an hour ago: it was calm, not crowded.", cc:6, a:["Yes, still calm","A bit busy","No, it's crowded"]},
+         {q:"Is the lighting still bright and even?", c:"A peer reported an hour ago: the lighting was bright and even.", cc:4, a:["Yes, still bright","Dimmer now","No, it's dim now"]},
+         {q:"Is the step-free entry still clear?", c:"A peer reported yesterday: the step-free entry was clear.", cc:3, a:["Yes, clear","A bit blocked","No, it's blocked"]}
+       ]},
+      {id:"larue", name:"Café Larue & Fils", address:"244 Rue de Castelnau E, Montréal", mapsUrl:"https://www.google.com/maps/search/?api=1&query=Caf%C3%A9+Larue+%26+Fils%2C+244+Rue+de+Castelnau+E%2C+Montr%C3%A9al", phone:"+1 514-272-8087", hours:"7am–6pm weekdays, 8am–6pm weekends", area:"Villeray", type:"Café", distKm:0.9, distLabel:"0.9 km · 11 min walk", transport:"Walk 11 min from Jarry Park", mapX:16, mapY:80,
+       tags:["step-free","seating-comfy","lighting-bright","lighting-ambient","sound-quiet","crowding-low","smell-neutral","quiet-chat","coworking","service-calm","communication-clear","language-french","language-english","menu-physical","menu-preview","diet-gluten-free","diet-vegan","diet-lactose-free","diet-vegetarian","price-transparent","temp-comfortable","clean","order-verbal","sensory-quiet-nook","sensory-no-flash","vision-even-light","vision-contrast-tables","online-meetings","artsy","dog-friendly","menu-free-water"],
+       lighting:"Bright, even, good contrast at tables", sound:"Soft music, quiet talk", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, espresso machine, occasional"], crowding:"Usually calm, busier at 10am",
+       access:"Step-free entry, comfy seating, staff happy to help", menuNote:"Sample menu. Physical menu at the counter, plus a preview online.",
+       confirmed:25, day:[["Morning","Calm, bright at the window"],["Midday","Calm, steady"],["Evening","Quiet, soft lighting"]], dayCounts:[8,10,7], openHour:7, closeHour:18, hourCounts:[1,2,2,2,2,3,2,2,2,1,1],
        menu:[{n:"Oat latte",p:"$5.50",k:"drink"},{n:"Flat white",p:"$5.00",k:"drink"},{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Sparkling water",p:"$3.00",k:"drink"},{n:"Croissant, butter",p:"$4.00",k:"food"},{n:"Banana bread",p:"$4.50",k:"food"},{n:"Avocado toast",p:"$11.00",k:"food"},{n:"Soup of the day",p:"$9.00",k:"food"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
-         {q:"Is the music still soft right now?", c:"A peer reported 30 minutes ago: the music was soft.", cc:12, a:["Yes, still soft","A bit louder now","No, it's loud now"]},
+         {q:"Is it still good for working right now?", c:"A peer reported 30 minutes ago: it was good for working.", cc:7, a:["Yes, still good","A bit busy now","No, it's busy now"]},
+         {q:"Is it still calm, not crowded?", c:"A peer reported an hour ago: it was calm, not crowded.", cc:6, a:["Yes, still calm","A bit busy","No, it's crowded"]},
+         {q:"Is the lighting still bright and even?", c:"A peer reported an hour ago: the lighting was bright and even.", cc:5, a:["Yes, still bright","Dimmer now","No, it's dim now"]},
          {q:"Are pronouns being respected today?", a:["Yes","Not today","Not sure"]},
-         {q:"Is it still calm, not crowded?", c:"A peer reported an hour ago: it was calm, not crowded.", cc:9, a:["Yes, still calm","A bit busy","No, it's crowded"]},
-         {q:"Is the lighting still dim and warm?", c:"A peer reported an hour ago: the lighting was dim and warm.", cc:7, a:["Yes, still dim and warm","Brighter now","No, it's bright now"]},
+         {q:"Is there still a quiet nook free?", c:"A peer reported yesterday: a quiet nook was free.", cc:4, a:["Yes, one free","Nearly full","No, it's full"]}
+       ]},
+      {id:"sainthenri", name:"Café Saint-Henri", address:"7335 Rue Mile End, Montréal, QC H2R 2Z7", mapsUrl:"https://www.google.com/maps/search/?api=1&query=Caf%C3%A9+Saint-Henri%2C+7335+Rue+Mile+End%2C+Montr%C3%A9al%2C+QC+H2R+2Z7", phone:"+1 514-543-7468", hours:"7:30am–6pm weekdays, 8am–6pm weekends", area:"Villeray · Mile-Ex", type:"Specialty café · Micro-roaster", distKm:0.9, distLabel:"0.9 km · 12 min walk", transport:"Walk 12 min from Jarry Park", mapX:48, mapY:80,
+       tags:["step-free","seating-comfy","restroom-accessible","lighting-bright","sound-quiet","crowding-low","smell-neutral","quiet-chat","coworking","service-patient","communication-clear","pronoun-respect","language-french","language-english","language-spanish","menu-physical","menu-preview","menu-accessible","diet-gluten-free","diet-vegan","diet-lactose-free","diet-vegetarian","price-transparent","temp-comfortable","clean","order-verbal","order-online","sensory-no-flash","vision-contrast-tables","vision-clear-paths","vision-large-print","online-meetings","menu-free-water"],
+       lighting:"Bright, big light, good contrast at tables", sound:"Soft music, quiet talk", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, espresso machine, occasional"], crowding:"Calm in the morning, busier at lunch",
+       access:"Step-free entry, accessible restroom", menuNote:"Sample menu. Flat white, cortado and a raspberry-pistachio beigne, plus a preview online.",
+       confirmed:38, day:[["Morning","Calm, bright, good for working"],["Midday","Busy, bright"],["Evening","Quiet, warm light"]], dayCounts:[12,16,10], openHour:7, closeHour:18, hourCounts:[2,2,3,3,3,4,3,3,2,2,1],
+       menu:[{n:"Flat white",p:"$5.00",k:"drink"},{n:"Cortado",p:"$4.50",k:"drink"},{n:"Beigne, framboise-pistache",p:"$5.50",k:"food"},{n:"Cappuccino",p:"$5.00",k:"drink"},{n:"Croissant, butter",p:"$4.00",k:"food"},{n:"Oat latte",p:"$5.50",k:"drink"},{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Sparkling water",p:"$3.00",k:"drink"}],
+       live:[
+         {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
+         {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
+         {q:"Is it still good for working right now?", c:"A peer reported 30 minutes ago: it was good for working.", cc:11, a:["Yes, still good","A bit busy now","No, it's busy now"]},
+         {q:"Is the flat white still on the menu today?", a:["Yes","Not today","Not sure"]},
+         {q:"Is it still calm, not crowded?", c:"A peer reported an hour ago: it was calm, not crowded.", cc:8, a:["Yes, still calm","A bit busy","No, it's crowded"]},
+         {q:"Is the lighting still bright and even?", c:"A peer reported an hour ago: the lighting was bright and even.", cc:7, a:["Yes, still bright","Dimmer now","No, it's dim now"]},
+         {q:"Is the step-free entry still clear?", c:"A peer reported yesterday: the step-free entry was clear.", cc:6, a:["Yes, clear","A bit blocked","No, it's blocked"]}
+       ]},
+      {id:"baristello", name:"Baristello", address:"709B Rue Jarry E, Montréal, QC H2P 1W2", mapsUrl:"https://www.google.com/maps/search/?api=1&query=Baristello%2C+709B+Rue+Jarry+E%2C+Montr%C3%A9al%2C+QC+H2P+1W2", phone:"+1 514-272-2113", hours:"6am–3pm Mon–Fri, 7am–3pm Sat, 7:30am–2pm Sun", area:"Villeray, near Jarry", type:"Italian café", distKm:1.1, distLabel:"1.1 km · 13 min walk", transport:"Walk 13 min from Jarry Park", mapX:48, mapY:20,
+       tags:["step-free","seating-comfy","lighting-bright","sound-quiet","crowding-low","smell-neutral","quiet-chat","service-patient","language-italian","language-french","language-english","language-spanish","menu-physical","menu-preview","diet-gluten-free","diet-vegetarian","price-transparent","temp-comfortable","clean","order-verbal","order-takeout","order-ahead","sensory-no-flash","sensory-fragrance-free","vision-even-light","vision-clear-paths","vision-large-print","online-meetings"],
+       lighting:"Bright, even light at the counter", sound:"Soft music, quiet talk", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, espresso machine, occasional"], crowding:"Usually calm, counter seating, busier at 8am",
+       access:"Step-free entry, accessible seating listed", menuNote:"Sample menu. Focaccia sandwiches, tramezzini and pastries, plus a preview online.",
+       confirmed:20, day:[["Morning","Calm, bright, counter buzz"],["Midday","Calm, steady"],["Evening","Closed by mid-afternoon"]], dayCounts:[7,8,5], openHour:6, closeHour:15, hourCounts:[1,2,3,2,2,3,2,2,1],
+       menu:[{n:"Espresso",p:"$3.50",k:"drink"},{n:"Cappuccino",p:"$4.50",k:"drink"},{n:"Focaccia sandwich",p:"$9.50",k:"food"},{n:"Tramezzini",p:"$6.50",k:"food"},{n:"Pastry of the day",p:"$4.00",k:"food"},{n:"Latte",p:"$5.00",k:"drink"},{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Sparkling water",p:"$3.00",k:"drink"}],
+       live:[
+         {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
+         {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
+         {q:"Is the counter still quiet right now?", c:"A peer reported 30 minutes ago: it was quiet.", cc:5, a:["Yes, still quiet","A bit louder now","No, it's loud now"]},
+         {q:"Is takeout still quick today?", a:["Yes","A bit slow","No, it's slow"]},
+         {q:"Is it still calm, not crowded?", c:"A peer reported an hour ago: it was calm, not crowded.", cc:6, a:["Yes, still calm","A bit busy","No, it's crowded"]},
+         {q:"Is the lighting still bright and even?", c:"A peer reported an hour ago: the lighting was bright and even.", cc:4, a:["Yes, still bright","Dimmer now","No, it's dim now"]},
          {q:"Is the step-free entry still clear?", c:"A peer reported yesterday: the step-free entry was clear.", cc:5, a:["Yes, clear","A bit blocked","No, it's blocked"]}
        ]},
-      {id:"nostalgie", name:"Café Nostalgie", area:"Mile End", type:"Café / diner", distKm:3.2, distLabel:"3.2 km · 12 min by Metro", transport:"Metro Jarry to Laurier, 12 min", mapX:56, mapY:30,
-       tags:["seating-comfy","lighting-bright","lighting-big","sound-music","crowding-busy","retro","nostalgic","socialising","service-fast","communication-clear","price-transparent","language-french","language-english","language-italian","language-creole","menu-qr","menu-preview","written-order","diet-vegetarian","order-verbal","order-call","order-click-collect","order-takeout","sensory-no-flash","vision-contrast-tableware","vision-step-edges","vision-high-contrast-signs","hearing-captions","hearing-written-confirm","diet-sugar-free"],
-       lighting:"Bright, big overhead light", sound:"Music and chatter, TV on in the corner", soundLevel:"Loud", soundSources:["Music, loud","Talking, loud","TV, on in the corner"], crowding:"Busy at lunch, lively",
-       access:"Step up at the door, no gender-neutral restroom listed", menuNote:"QR-code menu only, preview online. Ask staff for a printed copy.",
-       confirmed:27, day:[["Morning","Bright, lively"],["Midday","Busy, loud"],["Evening","Lively, warm light"]], dayCounts:[7,12,8], openHour:7, closeHour:19, hourCounts:[1,1,1,1,1,2,2,1,1,1,1,1],
-       menu:[{n:"Diner breakfast",p:"$12.00",k:"food"},{n:"Coffee, bottomless",p:"$3.50",k:"drink"},{n:"Orange juice",p:"$4.50",k:"drink"},{n:"Grilled cheese",p:"$10.00",k:"food"},{n:"Poutine",p:"$11.00",k:"food"},{n:"Club sandwich",p:"$13.00",k:"food"},{n:"Milkshake",p:"$7.50",k:"drink"},{n:"Pie of the day",p:"$6.50",k:"food"}],
-       live:[
-         {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
-         {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines","TV"]},
-         {q:"Is the music still on right now?", c:"A peer reported 30 minutes ago: the music was on.", cc:8, a:["Yes","No","Not sure"]},
-         {q:"Is it busy right now?", a:["Yes, it's busy","A bit busy","No, it's quiet"]},
-         {q:"Is the TV still on today?", c:"A peer reported yesterday: the TV was on in the corner.", cc:5, a:["Yes","No","Not sure"]},
-         {q:"Is it still busy at lunch?", c:"A peer reported an hour ago: it was busy at lunch.", cc:6, a:["Yes, still busy","Calmer now","No, it's quiet"]},
-         {q:"Are captions still on the TV?", c:"A peer reported 30 minutes ago: captions were on the TV.", cc:4, a:["Yes, captions on","No captions now","Not sure"]}
-       ]},
-      {id:"boheme", name:"Bohemian Books & Brew", area:"Plateau-Mont-Royal", type:"Book café", distKm:2.8, distLabel:"2.8 km · 15 min by bus", transport:"Bus 55, 15 min from Jarry", mapX:62, mapY:68,
-       tags:["step-free","seating-comfy","lighting-ambient","lighting-dim","sound-quiet","sound-music","crowding-low","bohemian","artsy","coworking","quiet-chat","service-patient","service-calm","pronoun-respect","queer-friendly","staff-representation","price-transparent","language-french","language-english","language-mandarin","language-arabic","menu-physical","menu-preview","menu-accessible","diet-vegan","diet-gluten-free","diet-vegetarian","diet-halal","diet-cultural","online-meetings","temp-comfortable","clean","order-verbal","order-online","order-ahead","order-takeout","sensory-quiet-nook","sensory-no-flash","sensory-fragrance-free","sensory-no-music","sensory-no-sudden-noise","vision-contrast-tables","vision-even-light","vision-clear-paths","vision-large-print","vision-braille","vision-read-aloud","vision-high-contrast-signs","vision-no-pattern","hearing-face-you","hearing-written-confirm","restroom-sharps","restroom-private","diet-sugar-free","menu-free-water"],
-       lighting:"Ambient, dim corners, bright reading lamps", sound:"Quiet, occasional soft music", soundLevel:"Quiet", soundSources:["Music, soft, occasional","Talking, quiet","Machines, none noted"], crowding:"Usually calm",
-       access:"Step-free entry, comfy seating, staff happy to help", menuNote:"Physical menu, preview online. Tell staff your access needs and they will help.",
-       confirmed:38, day:[["Morning","Calm, good for working"],["Midday","Calm, a little busier"],["Evening","Quiet, bookish"]], dayCounts:[10,16,12], openHour:7, closeHour:19, hourCounts:[1,1,2,1,2,2,2,2,2,2,1,1],
-       menu:[{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Drip coffee",p:"$3.50",k:"drink"},{n:"Hot chocolate",p:"$5.00",k:"drink"},{n:"Lemonade",p:"$4.50",k:"drink"},{n:"Toast with jam",p:"$5.00",k:"food"},{n:"Veggie sandwich",p:"$10.50",k:"food"},{n:"Lentil soup",p:"$8.50",k:"food"},{n:"Scone",p:"$4.00",k:"food"}],
+      {id:"falco", name:"Le Falco", address:"5605 Avenue de Gaspé, Montréal, Mile End", mapsUrl:"https://www.google.com/maps/search/?api=1&query=Le+Falco%2C+5605+Avenue+de+Gasp%C3%A9%2C+Montr%C3%A9al", phone:"+1 514-272-7766", hours:"8am–3pm Mon–Fri", area:"Mile End", type:"Japanese-inspired café", distKm:2.5, distLabel:"2.5 km · 22 min by Metro", transport:"Metro Jarry to Laurier, then 14 min walk", mapX:82, mapY:60,
+       tags:["step-free","seating-comfy","lighting-ambient","lighting-dim","sound-quiet","crowding-low","smell-neutral","quiet-chat","service-calm","communication-clear","language-french","language-english","menu-physical","menu-preview","diet-vegetarian","diet-vegan","diet-gluten-free","price-transparent","temp-comfortable","clean","order-verbal","sensory-quiet-nook","sensory-no-flash","vision-even-light","vision-contrast-tables","online-meetings","artsy"],
+       lighting:"Dim, ambient, warm lamps", sound:"Soft music, quiet talk", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, siphon brewer, occasional"], crowding:"Usually calm, small room",
+       access:"Step-free entry, comfy seating", menuNote:"Sample menu. Siphon coffee and onigiri, plus a preview online.",
+       confirmed:15, day:[["Morning","Calm, soft light"],["Midday","Calm, steady"],["Evening","Closed by mid-afternoon"]], dayCounts:[5,6,4], openHour:8, closeHour:15, hourCounts:[1,2,2,2,3,2,1],
+       menu:[{n:"Siphon coffee",p:"$6.00",k:"drink"},{n:"Onigiri, salmon",p:"$5.50",k:"food"},{n:"Onigiri, umeboshi",p:"$5.00",k:"food"},{n:"Latte",p:"$5.00",k:"drink"},{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Pastry of the day",p:"$4.00",k:"food"},{n:"Sparkling water",p:"$3.00",k:"drink"},{n:"Cookie, matcha",p:"$4.00",k:"food"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
-         {q:"Is it still quiet enough to read?", c:"A peer reported an hour ago: it was quiet enough to read.", cc:11, a:["Yes, quiet enough","Mostly","No, too loud"]},
+         {q:"Is the siphon coffee still on today?", c:"A peer reported 30 minutes ago: the siphon coffee was on.", cc:4, a:["Yes, still on","Sold out","Not today"]},
+         {q:"Is it still calm, not crowded?", c:"A peer reported an hour ago: it was calm, not crowded.", cc:5, a:["Yes, still calm","A bit busy","No, it's crowded"]},
+         {q:"Is the lighting still dim and warm?", c:"A peer reported an hour ago: the lighting was dim and warm.", cc:4, a:["Yes, still dim and warm","Brighter now","No, it's bright now"]},
+         {q:"Are staff still patient with questions today?", a:["Yes","Not today","Not sure"]},
+         {q:"Is there still a quiet nook free?", c:"A peer reported yesterday: a quiet nook was free.", cc:3, a:["Yes, one free","Nearly full","No, it's full"]}
+       ]},
+      {id:"anglesronds", name:"Aux Angles Ronds", address:"5333 Boul Saint-Laurent, Montréal, Mile End", mapsUrl:"https://www.google.com/maps/search/?api=1&query=Aux+Angles+Ronds%2C+5333+Boul+Saint-Laurent%2C+Montr%C3%A9al", phone:null, hours:null, area:"Mile End", type:"Café · Improv space", distKm:2.8, distLabel:"2.8 km · 18 min by bus", transport:"Bus 55 south on Boul. Saint-Laurent, 18 min", mapX:48, mapY:100,
+       tags:["step-free","seating-comfy","lighting-ambient","sound-quiet","crowding-low","smell-neutral","artsy","socialising","quiet-chat","service-patient","communication-clear","pronoun-respect","queer-friendly","language-french","language-english","menu-physical","menu-preview","diet-vegetarian","diet-vegan","price-transparent","temp-comfortable","clean","order-verbal","sensory-no-flash","vision-clear-paths","menu-free-water"],
+       lighting:"Ambient, warm, good for groups", sound:"Soft music, quiet talk", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, espresso machine, occasional"], crowding:"Calm in the day, livelier in the evening",
+       access:"Step-free entry, comfy seating", menuNote:"Sample menu. Café and improv space, preview online.",
+       confirmed:19, day:[["Morning","Calm, soft light"],["Midday","Calm, steady"],["Evening","Lively, warm light"]], dayCounts:[6,8,5], openHour:7, closeHour:19, hourCounts:[1,2,2,2,2,3,2,2,2,2,1,1],
+       menu:[{n:"Oat latte",p:"$5.50",k:"drink"},{n:"Flat white",p:"$5.00",k:"drink"},{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Sparkling water",p:"$3.00",k:"drink"},{n:"Croissant, butter",p:"$4.00",k:"food"},{n:"Banana bread",p:"$4.50",k:"food"},{n:"Avocado toast",p:"$11.00",k:"food"},{n:"Soup of the day",p:"$9.00",k:"food"}],
+       live:[
+         {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
+         {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
+         {q:"Is the improv room still quiet right now?", c:"A peer reported 30 minutes ago: it was quiet.", cc:4, a:["Yes, still quiet","A bit louder now","No, it's loud now"]},
+         {q:"Is it still calm, not crowded?", c:"A peer reported an hour ago: it was calm, not crowded.", cc:5, a:["Yes, still calm","A bit busy","No, it's crowded"]},
          {q:"Are pronouns being respected today?", a:["Yes","Not today","Not sure"]},
-         {q:"Is there still a free comfy seat?", c:"A peer reported 30 minutes ago: there were free comfy seats.", cc:6, a:["Yes","A few left","No, it's full"]},
-         {q:"Is the quiet nook still free?", c:"A peer reported an hour ago: the quiet nook was free.", cc:8, a:["Yes, it's free","Someone's there now","Not sure"]},
-         {q:"Is it still fragrance-free in here?", c:"A peer reported yesterday: it was fragrance-free.", cc:3, a:["Yes, still fragrance-free","I can smell something","Not sure"]}
+         {q:"Is it still good for a group right now?", c:"A peer reported an hour ago: it was good for a group.", cc:6, a:["Yes, still good","A bit tight now","No, it's full"]},
+         {q:"Is the lighting still ambient and warm?", c:"A peer reported yesterday: the lighting was ambient and warm.", cc:4, a:["Yes, still warm","Brighter now","No, it's bright now"]}
        ]},
-      {id:"jardin", name:"Jardin Café", area:"Outremont", type:"Café / event space", distKm:2.1, distLabel:"2.1 km · 14 min by bus", transport:"Bus 160, 14 min · 20 min walk", mapX:16, mapY:60,
-       tags:["step-free","restroom-accessible","lighting-bright","lighting-ambient","sound-music","crowding-busy","nostalgic","socialising","coworking","service-patient","communication-clear","price-transparent","language-french","language-english","language-spanish","language-creole","language-mandarin","menu-qr","menu-preview","menu-accessible","diet-vegan","diet-gluten-free","diet-vegetarian","diet-cultural","outdoor-space","airflow","order-verbal","order-call","order-online","order-click-collect","order-takeout","sensory-low-hours","sensory-no-flash","sensory-fragrance-free","sensory-no-music","sensory-no-sudden-noise","vision-contrast-tables","vision-even-light","vision-clear-paths","vision-marked-glass","vision-tactile-lines","vision-large-print","vision-braille","vision-read-aloud","language-lsq","lsq-order","hearing-captions","hearing-face-you","restroom-sharps","restroom-private","diet-sugar-free","menu-nutrition","menu-free-water"],
-       lighting:"Bright by day, ambient in the evening", sound:"Music, lively at events", soundLevel:"Lively", soundSources:["Music, lively at events","Talking, loud at events","Machines, none noted"], crowding:"Busy on event days, calm on weekdays",
-       access:"Step-free entry, accessible restroom", menuNote:"QR menu, preview online, large print on request.",
-       confirmed:19, day:[["Morning","Bright, calm"],["Midday","Busy at lunch"],["Evening","Event nights are lively"]], dayCounts:[6,8,5], openHour:7, closeHour:19, hourCounts:[1,1,1,0,1,2,1,0,1,1,1,0],
-       menu:[{n:"Espresso",p:"$3.50",k:"drink"},{n:"Cappuccino",p:"$5.00",k:"drink"},{n:"Iced tea",p:"$4.50",k:"drink"},{n:"Salad bowl",p:"$11.00",k:"food"},{n:"Quiche of the day",p:"$10.00",k:"food"},{n:"Hummus plate",p:"$9.50",k:"food"},{n:"Cake of the day",p:"$6.00",k:"food"},{n:"Fruit cup",p:"$5.50",k:"food"}],
+      {id:"orr", name:"Café Orr", address:"5368 Ave Papineau, Montréal, Plateau", mapsUrl:"https://www.google.com/maps/search/?api=1&query=Caf%C3%A9+Orr%2C+5368+Ave+Papineau%2C+Montr%C3%A9al", phone:"+1 514-544-2233", hours:"7am–11pm daily", area:"Le Plateau", type:"Café-cinema", distKm:3.2, distLabel:"3.2 km · 30 min by bus", transport:"Bus 55 to Rue Rachel, then walk east", mapX:82, mapY:40,
+       tags:["step-free","seating-comfy","lighting-dim","lighting-ambient","sound-quiet","crowding-low","smell-neutral","artsy","socialising","quiet-chat","service-patient","communication-clear","language-french","language-english","menu-physical","menu-preview","diet-vegetarian","diet-vegan","diet-gluten-free","price-transparent","temp-comfortable","clean","order-verbal","sensory-no-flash","vision-even-light","menu-free-water"],
+       lighting:"Dim, ambient, cinema warm", sound:"Soft music, quiet talk", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, espresso machine, occasional"], crowding:"Calm in the day, livelier in the evening",
+       access:"Step-free entry, comfy seating", menuNote:"Sample menu. Café-cinema, preview online.",
+       confirmed:28, day:[["Morning","Calm, soft light"],["Midday","Calm, steady"],["Evening","Lively, warm light"]], dayCounts:[9,11,8], openHour:7, closeHour:23, hourCounts:[1,2,2,2,2,3,2,2,2,2,2,2,2,1,1,1],
+       menu:[{n:"Oat latte",p:"$5.50",k:"drink"},{n:"Flat white",p:"$5.00",k:"drink"},{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Sparkling water",p:"$3.00",k:"drink"},{n:"Croissant, butter",p:"$4.00",k:"food"},{n:"Banana bread",p:"$4.50",k:"food"},{n:"Avocado toast",p:"$11.00",k:"food"},{n:"Soup of the day",p:"$9.00",k:"food"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
-         {q:"Is there an event on right now?", a:["Yes","No","Not sure"]},
-         {q:"Is it busy right now?", a:["Yes, it's busy","A bit busy","No, it's quiet"]},
-         {q:"Is the music still on today?", c:"A peer reported yesterday: the music was on.", cc:7, a:["Yes","No","Not sure"]},
-         {q:"Is the outdoor space still open?", c:"A peer reported an hour ago: the outdoor space was open.", cc:5, a:["Yes, it's open","Closed now","Not sure"]},
-         {q:"Is it still calm on a weekday?", c:"A peer reported 30 minutes ago: it was calm.", cc:6, a:["Yes, still calm","Busier now","No, it's busy"]}
+         {q:"Is the cinema room still quiet right now?", c:"A peer reported 30 minutes ago: it was quiet.", cc:6, a:["Yes, still quiet","A bit louder now","No, it's loud now"]},
+         {q:"Is it still calm, not crowded?", c:"A peer reported an hour ago: it was calm, not crowded.", cc:7, a:["Yes, still calm","A bit busy","No, it's crowded"]},
+         {q:"Is the lighting still dim and warm?", c:"A peer reported an hour ago: the lighting was dim and warm.", cc:5, a:["Yes, still dim and warm","Brighter now","No, it's bright now"]},
+         {q:"Are pronouns being respected today?", a:["Yes","Not today","Not sure"]},
+         {q:"Is it still good for a group right now?", c:"A peer reported yesterday: it was good for a group.", cc:4, a:["Yes, still good","A bit tight now","No, it's full"]}
+       ]},
+      {id:"myriade", name:"Café Myriade", address:"4627 Rue Saint-Denis, Montréal, Le Plateau", mapsUrl:"https://www.google.com/maps/search/?api=1&query=Caf%C3%A9+Myriade%2C+4627+Rue+Saint-Denis%2C+Montr%C3%A9al", phone:"+1 514-940-0444", hours:"7:30am–7pm weekdays, 8am–7pm weekends", area:"Le Plateau", type:"Café", distKm:3.6, distLabel:"3.6 km · 30 min by Metro", transport:"Metro Jarry to Mont-Royal, then 18 min walk", mapX:82, mapY:100,
+       tags:["step-free","seating-comfy","lighting-bright","sound-quiet","crowding-low","smell-neutral","quiet-chat","coworking","service-patient","communication-clear","language-french","language-english","menu-physical","menu-preview","diet-gluten-free","diet-vegan","diet-lactose-free","price-transparent","temp-comfortable","clean","order-verbal","sensory-no-flash","vision-even-light","vision-contrast-tables","online-meetings","artsy"],
+       lighting:"Bright, even, good contrast at tables", sound:"Soft music, quiet talk", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, espresso machine, occasional"], crowding:"Calm in the morning, busier at lunch",
+       access:"Step-free entry, comfy seating", menuNote:"Sample menu. Physical menu at the counter, plus a preview online.",
+       confirmed:33, day:[["Morning","Calm, bright"],["Midday","Busy, bright"],["Evening","Quiet, warm light"]], dayCounts:[11,14,8], openHour:7, closeHour:19, hourCounts:[1,2,2,2,3,3,3,2,2,2,1,1],
+       menu:[{n:"Oat latte",p:"$5.50",k:"drink"},{n:"Flat white",p:"$5.00",k:"drink"},{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Sparkling water",p:"$3.00",k:"drink"},{n:"Croissant, butter",p:"$4.00",k:"food"},{n:"Banana bread",p:"$4.50",k:"food"},{n:"Avocado toast",p:"$11.00",k:"food"},{n:"Soup of the day",p:"$9.00",k:"food"}],
+       live:[
+         {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
+         {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
+         {q:"Is it still good for working right now?", c:"A peer reported 30 minutes ago: it was good for working.", cc:9, a:["Yes, still good","A bit busy now","No, it's busy now"]},
+         {q:"Is it still calm, not crowded?", c:"A peer reported an hour ago: it was calm, not crowded.", cc:8, a:["Yes, still calm","A bit busy","No, it's crowded"]},
+         {q:"Is the lighting still bright and even?", c:"A peer reported an hour ago: the lighting was bright and even.", cc:6, a:["Yes, still bright","Dimmer now","No, it's dim now"]},
+         {q:"Are pronouns being respected today?", a:["Yes","Not today","Not sure"]},
+         {q:"Is the step-free entry still clear?", c:"A peer reported yesterday: the step-free entry was clear.", cc:5, a:["Yes, clear","A bit blocked","No, it's blocked"]}
+       ]},
+      {id:"moineau", name:"Le Moineau Masqué", address:"912 Rue Marie-Anne E, Montréal, Plateau", mapsUrl:"https://www.google.com/maps/search/?api=1&query=Le+Moineau+Masqu%C3%A9%2C+912+Rue+Marie-Anne+E%2C+Montr%C3%A9al", phone:"+1 514-508-7850", hours:"8am–6pm weekdays, 9am–6pm weekends", area:"Le Plateau", type:"Café", distKm:4.0, distLabel:"4.0 km · 35 min by Metro", transport:"Metro Jarry to Mont-Royal, then bus east on Rachel", mapX:82, mapY:80,
+       tags:["step-free","seating-comfy","restroom-accessible","lighting-bright","lighting-ambient","sound-quiet","crowding-low","smell-neutral","artsy","outdoor-space","quiet-chat","coworking","service-calm","communication-clear","language-french","language-english","menu-physical","menu-preview","diet-gluten-free","diet-vegan","diet-vegetarian","price-transparent","temp-comfortable","clean","order-verbal","sensory-quiet-nook","sensory-no-flash","vision-even-light","vision-clear-paths","dog-friendly","menu-free-water"],
+       lighting:"Bright, even, garden light in summer", sound:"Soft music, quiet talk", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, espresso machine, occasional"], crowding:"Usually calm, garden terrace in summer",
+       access:"Step-free entry, accessible restroom", menuNote:"Sample menu. Garden terrace café, preview online.",
+       confirmed:24, day:[["Morning","Calm, bright"],["Midday","Calm, steady"],["Evening","Quiet, soft lighting"]], dayCounts:[8,9,7], openHour:8, closeHour:18, hourCounts:[1,2,2,2,3,2,2,2,1,1],
+       menu:[{n:"Oat latte",p:"$5.50",k:"drink"},{n:"Flat white",p:"$5.00",k:"drink"},{n:"Herbal tea",p:"$4.50",k:"drink"},{n:"Sparkling water",p:"$3.00",k:"drink"},{n:"Croissant, butter",p:"$4.00",k:"food"},{n:"Banana bread",p:"$4.50",k:"food"},{n:"Avocado toast",p:"$11.00",k:"food"},{n:"Soup of the day",p:"$9.00",k:"food"}],
+       live:[
+         {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
+         {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
+         {q:"Is the garden terrace still open right now?", c:"A peer reported 30 minutes ago: the terrace was open.", cc:6, a:["Yes, still open","Closed now","Not sure"]},
+         {q:"Is it still calm, not crowded?", c:"A peer reported an hour ago: it was calm, not crowded.", cc:7, a:["Yes, still calm","A bit busy","No, it's crowded"]},
+         {q:"Is the lighting still bright and even?", c:"A peer reported an hour ago: the lighting was bright and even.", cc:5, a:["Yes, still bright","Dimmer now","No, it's dim now"]},
+         {q:"Is there still a quiet nook free?", c:"A peer reported yesterday: a quiet nook was free.", cc:4, a:["Yes, one free","Nearly full","No, it's full"]},
+         {q:"Are pronouns being respected today?", a:["Yes","Not today","Not sure"]}
        ]}
     ];
     function load(key, fallback){ try { var v = JSON.parse(localStorage.getItem(key)); return v == null ? fallback : v; } catch(e){ return fallback; } }
@@ -2431,7 +2561,7 @@
     }
     function renderTailored(){
       var box = $("tailored-chips"); box.innerHTML = "";
-      if(activeFilters.size === 0){ $("tailored-note").textContent = "No filters picked yet. Showing all sample places."; renderSavePreview(); return; }
+      if(activeFilters.size === 0){ $("tailored-note").textContent = "No filters picked yet. Showing all twelve real cafés."; renderSavePreview(); return; }
       $("tailored-note").textContent = "Tailored for today. Tap a filter to turn it off.";
       Array.from(activeFilters).forEach(function(k){ var li=document.createElement("li"); li.appendChild(chipFor(k)); box.appendChild(li); });
       renderSavePreview();
@@ -2565,20 +2695,20 @@
        The em dashes in the ?v=14 strings are commas here, per
        the ?v=17 copy rules. */
     function listCardHTML(p, align){
-      return "<strong>" + p.name + "</strong>, " + p.distLabel + "<br/><span class='ps-muted'>" + p.transport + " · " + p.area + "</span>" + (align ? "<br/>" + matchOvalsInlineHTML(p) : "");
+      return "<strong>" + p.name + "</strong>, " + p.distLabel + "<br/><span class='ps-muted'>" + p.type + " · " + p.area + "</span>" + (align ? "<br/>" + matchOvalsInlineHTML(p) : "");
     }
     function renderMap(){
       var wrap = $("map-wrap"); if(!wrap) return;
       wrap.querySelectorAll(".map-pin").forEach(function(el){ el.remove(); });
       var here = document.createElement("span"); here.className="map-pin here";
       here.innerHTML = '<span class="pin-name">★ You are here</span><span class="pin-score">Jarry Park</span>';
-      here.style.left="12%"; here.style.top="14%"; here.title="Sample start point: Jarry Park, Villeray. Distances are sample distances from here.";
+      here.style.left="12%"; here.style.top="14%"; here.title="Start point: Jarry Park, Villeray. Distances are from here.";
       wrap.appendChild(here);
       scored.forEach(function(s, i){
         var p = s.place, align = alignmentFor(p);
         var m = matchScore(p);
         var pin = document.createElement("button"); pin.type="button";
-        pin.className = "map-pin" + (align ? " align" : "");
+        pin.className = "map-pin" + (align ? " align" : "") + (p.mapY < 18 ? " below" : "");
         pin.innerHTML = '<span class="pin-name">' + p.name + '</span>' + (m ? '<span class="pin-score">' + m.count + ' of ' + m.total + ' match</span>' : '');
         pin.style.left = p.mapX + "%"; pin.style.top = p.mapY + "%";
         pin.setAttribute("aria-label", p.name + ", " + p.distLabel + ", " + p.transport + (align ? ". " + matchAriaText(p) : ""));
@@ -2630,7 +2760,7 @@
       card.innerHTML =
         '<p class="focus-top"><span class="ps-match">' + matchText + '</span><span class="dist-line">' + p.distLabel + '</span></p>' +
         '<h3>' + p.name + '</h3>' +
-        '<p class="ps-muted" style="margin:.2rem 0;">' + p.type + ' · ' + p.area + ' · ' + p.transport + '</p>' +
+        '<p class="ps-muted" style="margin:.2rem 0;">' + p.type + ' · ' + p.area + '</p>' +
         (function(){ if(!activeFilters.size) return ""; var m = matchScore(p); var matchedTags = m.matched.length ? '<ul class="ps-tags match-tags" aria-label="Filters this place matches">' + matchTagItems(m, false) + '</ul>' : '<p class="ps-muted">None of your filters matched here yet.</p>'; var missed = m.unmatched.length ? '<p class="align-missed-label">Not matched here</p><ul class="ps-tags match-tags" aria-label="Filters this place does not match">' + m.unmatched.map(function(f){ return '<li class="tag-missed">' + (FILTER_LABELS[f]||f) + '</li>'; }).join("") + '</ul>' : ""; return '<div class="align-card"><h4>Why this matches <span class="align-count">' + m.count + ' of ' + m.total + '</span></h4>' + matchedTags + missed + (align ? '' : '<p class="align-summary">No strong match yet, ' + m.count + ' of ' + m.total + ' of your filters.</p>') + '</div>'; })() +
         '<ul class="ps-facts"><li><strong>Lighting:</strong> ' + p.lighting + '</li><li><strong>Sound:</strong> ' + (p.soundLevel||'') + ', ' + p.sound + '</li><li><strong>What you will hear:</strong> ' + (p.soundSources||[]).join("; ") + '</li><li><strong>Crowd:</strong> ' + p.crowding + '</li></ul>' +
         '<ul class="ps-tags">' + shownTags.map(function(t){ return '<li class="'+tagClass(t)+'">'+(FILTER_LABELS[t]||t)+'</li>'; }).join("") + '</ul>' +
@@ -2720,6 +2850,13 @@
       var p = currentPlace;
       $("place-detail-h").textContent = p.name;
       var body = $("place-detail-body"); body.innerHTML = "";
+      /* Sample-data note, Nov 24 2026: these are real cafés, so
+         the name, address, phone and listed hours are real. The
+         peer reports, menu, tags and access details are sample
+         data for this prototype, never facts about the business. */
+      var sampleNote = document.createElement("p"); sampleNote.className="ps-muted";
+      sampleNote.textContent="Real café. Name, address, phone and listed hours are real. Peer reports, menu, tags and access details are sample data for this prototype.";
+      body.appendChild(sampleNote);
       /* The first four cards live in a two-by-two grid on
          desktop (single column on phone); the later cards
          stay full width below the grid. */
@@ -2736,7 +2873,7 @@
       var glance = document.createElement("section"); glance.className="ps-panel place-section"; glance.setAttribute("aria-label","At a glance");
       var gH=document.createElement("h3"); gH.textContent="At a glance"; glance.appendChild(gH);
       var dl = document.createElement("dl"); dl.className="detail-kv";
-      var dlHTML = '<div><dt>Area</dt><dd>'+p.area+'</dd></div><div><dt>Distance</dt><dd>'+p.distLabel+'</dd></div><div><dt>Getting there</dt><dd>'+p.transport+'</dd></div><div><dt>Access</dt><dd>'+p.access+'</dd></div>';
+      var dlHTML = '<div><dt>Address</dt><dd><a href="'+p.mapsUrl+'" target="_blank" rel="noopener">'+p.address+'</a></dd></div><div><dt>Area</dt><dd>'+p.area+'</dd></div><div><dt>Distance</dt><dd>'+p.distLabel+'</dd></div><div><dt>Getting there</dt><dd>'+p.transport+'</dd></div>' + (p.phone ? '<div><dt>Phone</dt><dd><a href="tel:'+p.phone.replace(/[^+0-9]/g,"")+'">'+p.phone+'</a></dd></div>' : '') + (p.hours ? '<div><dt>Hours</dt><dd>'+p.hours+'</dd></div>' : '') + '<div><dt>Access</dt><dd>'+p.access+'</dd></div>';
       if(alignDetail){ var mDetail = matchScore(p); dlHTML += '<div><dt>Match</dt><dd>Matches ' + mDetail.count + ' of ' + mDetail.total + ' of your filters</dd></div>'; }
       dl.innerHTML = dlHTML;
       glance.appendChild(dl);
@@ -3499,8 +3636,8 @@
        reports it has, so the chart never relies on colour
        alone, and tapping a bar picks that hour. The bar for
        right now is marked with the word Now, from the device
-       clock. Hours would come from the listing live; in this
-       demo every place opens at 7am and closes at 7pm. */
+       clock. Hours are the real listed hours where verified,
+       and sample hours where the listing did not give them. */
     function busyWord(ratio){
       if(ratio>=0.8) return "Usually busy";
       if(ratio>=0.45) return "Usually a little busy";
