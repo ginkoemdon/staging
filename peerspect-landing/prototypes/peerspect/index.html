@@ -278,6 +278,15 @@
        used where the length is a real count or a real proportion of
        a stated total, with the number and source written next to it. */
     .place-section { margin:0 0 16px; }
+    /* Place detail top grid, Nov 24 2026: on desktop the first
+       four cards (At a glance, Why this matches, How it feels
+       right now, Through the day) sit two-by-two, instead of
+       one stretched column. Single column on phone. Later
+       cards stay full width below. Equal height per row comes
+       from the grid stretch default. */
+    .place-grid { display:grid; gap:16px; margin:0 0 16px; }
+    .place-grid .place-section { margin:0; }
+    @media (min-width: 700px) { .place-grid { grid-template-columns:1fr 1fr; } }
     .place-section > h3:first-child { margin:0 0 12px; font-size:1.05rem; color:var(--teal-dark); }
     .place-section .detail-kv { margin:0; }
     .place-section .peer-visual { margin:0; border:0; background:transparent; padding:0; }
@@ -2276,6 +2285,10 @@
       var p = currentPlace;
       $("place-detail-h").textContent = p.name;
       var body = $("place-detail-body"); body.innerHTML = "";
+      /* The first four cards live in a two-by-two grid on
+         desktop (single column on phone); the later cards
+         stay full width below the grid. */
+      var grid=document.createElement("div"); grid.className="place-grid";
       /* Place detail is built as labelled cards, Nov 24 2026, in
          this order: At a glance, Why this matches, How it feels
          right now, Through the day, Menu preview, Peer reports,
@@ -2292,14 +2305,14 @@
       if(alignDetail){ var mDetail = matchScore(p); dlHTML += '<div><dt>Match</dt><dd>Matches ' + mDetail.count + ' of ' + mDetail.total + ' of your filters</dd></div>'; }
       dl.innerHTML = dlHTML;
       glance.appendChild(dl);
-      body.appendChild(glance);
+      grid.appendChild(glance);
       /* Card 2 — Why this matches: the matched filters as oval
          tags, and the ones that did not match, dashed. */
       if(alignDetail){
         var why = document.createElement("section"); why.className="ps-panel place-section"; why.setAttribute("aria-label","Why this matches");
         var wH=document.createElement("h3"); wH.textContent="Why this matches"; why.appendChild(wH);
         var wDiv=document.createElement("div"); wDiv.innerHTML = matchOvalsHTML(p); why.appendChild(wDiv);
-        body.appendChild(why);
+        grid.appendChild(why);
       }
       /* Card 3 — How it feels right now: the words only. The old
          sound, light and crowd bars were drawn from words, not
@@ -2309,7 +2322,7 @@
       var fDl=document.createElement("dl"); fDl.className="detail-kv";
       fDl.innerHTML = '<div><dt>Sound</dt><dd>'+p.soundLevel+' — '+p.sound+'</dd></div><div><dt>Light</dt><dd>'+p.lighting+'</dd></div><div><dt>Crowd</dt><dd>'+p.crowding+'</dd></div>';
       feels.appendChild(fDl);
-      body.appendChild(feels);
+      grid.appendChild(feels);
       /* Card 4 — Through the day, its own card: real counts, not
          word-bars. Each place has dayCounts, peer reports per part
          of day over the last 14 days, totalling its confirmed
@@ -2327,7 +2340,8 @@
           '<div class="bar-track" role="img" aria-label="' + d[0] + ': ' + n + ' of ' + p.confirmed + ' peer reports"><div class="bar-fill" style="width:' + (p.confirmed ? Math.round(n/p.confirmed*100) : 0) + '%"></div></div>';
         dayCard.appendChild(row);
       });
-      body.appendChild(dayCard);
+      grid.appendChild(dayCard);
+      body.appendChild(grid);
       /* Card 5 — Menu preview, with a Like for the place and a
          "Your order prep list" summary that updates live. */
       var menuCard = document.createElement("section"); menuCard.className="ps-panel place-section"; menuCard.setAttribute("aria-label","Menu preview");
