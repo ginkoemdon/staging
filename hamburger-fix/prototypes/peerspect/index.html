@@ -735,6 +735,29 @@
     .view-toggle button[aria-pressed="true"] { background:var(--card); color:var(--teal-dark); box-shadow:0 1px 4px rgba(0,0,0,.18); }
     .map-wrap { position:relative; background:var(--map-bg); border:1px solid var(--line); border-radius:16px; overflow:hidden; margin:16px 0; }
     .map-wrap svg { display:block; width:100%; height:auto; }
+    /* Map canvas, Nov 24 2026: the SVG and the HTML pins both live
+       inside this one box, so zooming it keeps every pin on its
+       street. Pins are positioned by %, so widening the canvas
+       scales the map and the pins stay anchored. */
+    .map-canvas { position:relative; width:100%; }
+    .map-canvas svg { display:block; width:100%; height:auto; }
+    /* Expand map button, Nov 24 2026: top right of the map, 44px
+       touch target, always visible so the map can be opened big. */
+    .map-expand-btn { position:absolute; top:8px; right:8px; z-index:5; min-height:44px; padding:8px 14px; border-radius:999px; border:2px solid var(--teal); background:var(--card); color:var(--teal-dark); font-weight:700; font-size:.85rem; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.2); }
+    .map-expand-btn:hover { background:var(--soft); }
+    .map-expand-btn:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+    /* Zoom bar, Nov 24 2026: only shown while the map is expanded.
+       Zoom steps are 1x, 1.5x, 2x, 2.5x, 3x; the canvas widens
+       with the zoom and the map scrolls inside the expanded view. */
+    .map-zoom-bar { display:none; align-items:center; gap:8px; margin:0 0 12px; flex-wrap:wrap; }
+    .map-zoom-bar .ps-btn { min-height:44px; min-width:44px; }
+    .map-zoom-label { font-weight:700; min-width:52px; text-align:center; }
+    /* Expanded map, Nov 24 2026: the whole Map view becomes a
+       full-screen sheet over the app, so the map is big enough
+       to read and zoom. Escape or Close map leaves it. */
+    #view-map.map-expanded { position:fixed; inset:0; z-index:70; background:var(--card); padding:16px; overflow:auto; }
+    #view-map.map-expanded .map-wrap { margin:0; border-radius:16px; overflow:visible; }
+    #view-map.map-expanded .map-zoom-bar { display:flex; }
     /* Map pins, Nov 23 2026: bigger pins that show the place name
        plus its match count, not just a number. Fixed teal, not
        var(--teal), or in dark mode white text sat on the light
@@ -1679,7 +1702,15 @@
             <div id="all-filters" hidden></div>
           </details>
           <div id="view-map" hidden>
+            <div class="map-zoom-bar" id="map-zoom-bar" aria-label="Map zoom controls">
+              <button class="ps-btn ps-btn-secondary" id="map-zoom-out" type="button" aria-label="Zoom out">−</button>
+              <span class="map-zoom-label" id="map-zoom-label" aria-live="polite">100%</span>
+              <button class="ps-btn ps-btn-secondary" id="map-zoom-in" type="button" aria-label="Zoom in">+</button>
+              <button class="ps-btn ps-btn-secondary" id="map-zoom-reset" type="button">Reset zoom</button>
+            </div>
             <div class="map-wrap" id="map-wrap" aria-label="Sample schematic map of Montreal places">
+              <button class="map-expand-btn" id="map-expand-btn" type="button" aria-expanded="false">⤢ Expand map</button>
+              <div class="map-canvas" id="map-canvas">
               <svg viewBox="0 0 640 420" role="img" aria-label="Schematic map, not to scale: Jarry Park top left, with Rue Jarry, Rue Jean-Talon, Avenue Van Horne and Rue Rachel running east to west, crossed by Avenue du Parc, Boulevard Saint-Laurent and Rue Saint-Denis; neighbourhoods Villeray, Mile End, Plateau-Mont-Royal and Outremont; twelve real cafés pinned">
                 <rect class="map-land" width="640" height="420"/>
                 <rect class="map-park" x="24" y="16" width="150" height="58" rx="14"/>
@@ -1714,6 +1745,7 @@
                 <path class="map-thread" d="M115 92 C 240 80, 320 110, 358 126 C 380 190, 360 240, 397 286 C 300 300, 160 290, 102 252 C 80 210, 90 130, 115 92 Z" aria-hidden="true"/>
                 <text class="map-street" x="24" y="404">Metro line (sample) · Thread connecting peer insights</text>
               </svg>
+              </div>
             </div>
             <p class="ps-muted">Sample schematic map. Not to scale, no live listings. Tap a pin to open a place.</p>
             <ul class="map-legend" aria-label="Map legend">
@@ -2715,6 +2747,37 @@
          the top when switching between them, Nov 24 2026. */
       resetScroll();
     }
+    /* Expand map and zoom, Nov 24 2026: Expand map opens the Map
+       view as a full-screen sheet; Zoom in and out widen the
+       canvas in half steps from 1x to 3x, and the map scrolls
+       inside the sheet. Pins stay anchored because they are
+       positioned by % inside the canvas. Escape closes it. */
+    var mapZoom = 1;
+    function applyMapZoom(){
+      var canvas = $("map-canvas"); if(canvas) canvas.style.width = (mapZoom * 100) + "%";
+      var label = $("map-zoom-label"); if(label) label.textContent = Math.round(mapZoom * 100) + "%";
+      var out = $("map-zoom-out"); if(out) out.disabled = mapZoom <= 1;
+      var zin = $("map-zoom-in"); if(zin) zin.disabled = mapZoom >= 3;
+    }
+    function setMapExpanded(on){
+      var view = $("view-map"), btn = $("map-expand-btn"); if(!view || !btn) return;
+      view.classList.toggle("map-expanded", on);
+      btn.setAttribute("aria-expanded", on ? "true" : "false");
+      btn.textContent = on ? "✕ Close map" : "⤢ Expand map";
+      if(on){ mapZoom = 1; applyMapZoom(); $("map-zoom-out").focus({preventScroll:true}); }
+      else { btn.focus({preventScroll:true}); }
+    }
+    (function(){
+      var btn = $("map-expand-btn"); if(!btn) return;
+      btn.addEventListener("click", function(){ setMapExpanded(!$("view-map").classList.contains("map-expanded")); });
+      $("map-zoom-in").addEventListener("click", function(){ mapZoom = Math.min(3, mapZoom + 0.5); applyMapZoom(); });
+      $("map-zoom-out").addEventListener("click", function(){ mapZoom = Math.max(1, mapZoom - 0.5); applyMapZoom(); });
+      $("map-zoom-reset").addEventListener("click", function(){ mapZoom = 1; applyMapZoom(); });
+      document.addEventListener("keydown", function(e){
+        if(e.key === "Escape" && $("view-map").classList.contains("map-expanded")) setMapExpanded(false);
+      });
+      applyMapZoom();
+    })();
     /* List card, restored to the ?v=14 content, Nov 24 2026:
        name and match, distance, transport and area, and the
        full matched oval tags with the muted dashed "Not
@@ -2728,7 +2791,7 @@
       return "<strong>" + p.name + "</strong>, " + p.distLabel + "<br/><span class='ps-muted'>" + p.type + " · " + p.area + "</span>" + (align ? "<br/>" + matchOvalsInlineHTML(p) : "");
     }
     function renderMap(){
-      var wrap = $("map-wrap"); if(!wrap) return;
+      var wrap = $("map-canvas") || $("map-wrap"); if(!wrap) return;
       wrap.querySelectorAll(".map-pin").forEach(function(el){ el.remove(); });
       var here = document.createElement("span"); here.className="map-pin here";
       here.innerHTML = '<span class="pin-name">★ You are here</span><span class="pin-score">Jarry Park</span>';
