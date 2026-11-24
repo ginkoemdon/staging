@@ -38,8 +38,8 @@
     {
       "name": "hero-adventure-illustration",
       "branch": "experiment/hero-adventure-illustration",
-      "description": "Add previous portfolio favicons to every page",
-      "upstream_sha": "af67eb65e3be9e75f4bea98fab82793e7254e0c7",
+      "description": "Prototype logo favicons for PEERSPECT and Form to Function",
+      "upstream_sha": "8c24fa8b28ba8d5737e44505989c6c7435a7fbe7",
       "staged": "2026-11-24"
     }
   ],
