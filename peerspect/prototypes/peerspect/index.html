@@ -263,7 +263,12 @@
     .onboard-group .group-count { margin-left:auto; font-weight:400; color:var(--muted); font-size:.9rem; }
     .onboard-group .group-chev { color:var(--muted); }
     .onboard-group .ps-chips { padding:0 12px 12px; margin:0; }
-    .onboard-sub { font-size:.85rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin:12px 16px 0; }
+    /* Nov 23 2026: more air around sub-subcategory headings.
+       Was 12px above / 0 below, so the chips sat tight under
+       a heading and the next heading sat tight under the chips.
+       Now 20px above and 8px below, matching the 20pt section
+       spacing in the rest of the app. */
+    .onboard-sub { font-size:.85rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin:20px 16px 8px; }
     .ps-chip { flex:0 0 auto; border:2px solid var(--muted); background:var(--card); color:var(--ink); border-radius:999px; padding:12px 16px; min-height:44px; }
     .ps-chip[aria-pressed="true"] { background:var(--teal); border-color:var(--teal); color:#fff; font-weight:700; }
     .ps-card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; }
