@@ -371,10 +371,10 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
 .card-content { display: flex; flex-direction: column; padding: 3rem; }
 .card-content .tag-item.is-trans { align-self: flex-end; background: transparent; border: 0; padding: 0; font-size: .875rem; font-weight: 500; color: #504945; margin-bottom: 2.2rem; }
 .card-content .text-style-muted { opacity: .6; }
-.portfolio-card_heading { font-family: "Krona One", sans-serif; font-size: 1.875rem; font-weight: 700; line-height: 1.15; color: #3e3327; margin: 0 0 2.375rem; }
+.portfolio-card_heading { font-family: "Krona One", sans-serif; font-size: 1.5rem; font-weight: 700; line-height: 1.4; color: #3e3327; margin: 0 0 .5rem; }
 .card-content .text-size-medium { color: #52483d; font-size: 1.125rem; line-height: 1.5; margin: 0; }
 .card-content .margin-vertical.margin-medium { margin: 4.125rem 0 3.125rem; }
-.button.is-link.is-icon { display: inline-flex; align-items: center; gap: .25rem; font-size: 1.25rem; font-weight: 600; color: #1c1c1c; text-decoration: none; }
+.button.is-link.is-icon { display: inline-flex; align-items: center; gap: .5rem; min-width: 44px; min-height: 44px; padding: .25rem 0; font-family: "Krona One", sans-serif; font-size: 1rem; font-weight: 400; line-height: 1; text-transform: none; color: #000; text-decoration: none; }
 .button.is-link.is-icon:hover { text-decoration: underline; }
 .card-content .padding-top.padding-small.top-line { padding-top: 2.5rem; border-top: 1px solid rgba(59,52,47,.15); }
 .list-of-tags { display: flex; gap: .5rem; flex-wrap: wrap; }
@@ -384,7 +384,8 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
   .cs-thumnbail-card { margin-left: 0; }
   .casestudy-rows { row-gap: 6rem; }
   .card-content { padding: 2rem; }
-  .portfolio-card_heading { font-size: 1.625rem; line-height: 1.25; margin-bottom: 1.5rem; }
+  #featured-work { padding-top: 6rem; padding-bottom: 6rem; }
+  .portfolio-card_heading { font-size: 1.25rem; line-height: 1.4; margin-bottom: .5rem; }
   .card-content .tag-item.is-trans { margin-bottom: 1.5rem; }
   .card-content .margin-vertical.margin-medium { margin: 2.5rem 0 2rem; }
   .card-content .padding-top.padding-small.top-line { padding-top: 1.5rem; }
@@ -415,6 +416,7 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
 .card .cta::after { content: " →"; }
 
 section { padding: 2rem 0; }
+#featured-work { padding-top: 7rem; padding-bottom: 7rem; }
 .section-label {
   font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em;
   text-transform: uppercase; color: var(--rust-text); margin: 0 0 0.5rem;
@@ -522,8 +524,12 @@ footer a { color: var(--earth); }
   .hero h1 { font-size: 2.1rem; }
   h2 { font-size: 1.5rem; }
   .hero { padding: 2rem 0 1.5rem; }
+  #featured-work { padding-top: 4rem; padding-bottom: 4rem; }
 }
 
 /* Cover illustrations — geometric mid-century SVG, Ginko palette, decorative (alt="") */
 .card-media { padding: 0; overflow: hidden; }
 .card-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Hero illustration — small whimsical SVG under the headline */
+.hero-illustration { display: block; width: min(320px, 70%); height: auto; margin: 1.5rem 0 0; }
