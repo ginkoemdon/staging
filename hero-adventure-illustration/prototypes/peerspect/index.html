@@ -577,14 +577,17 @@
        Same font and sizing as the Clubhouse case study on Ginko's
        Webflow site (shared style.css): Poppins headings (was Krona One), Poppins
        body, h1 2.75rem, h2 1.9rem, h3 1.15rem, body 1rem/1.6,
-       wrap 1080px, section padding 2rem 0.
+       wrap 1080px, section padding 2rem 0. Page margins, Nov 24 2026:
+       same fluid side margins as the Playground landing (1.5rem up to
+       4rem) and 4rem of space above the case study, so the page does
+       not sit flush against the nav or the screen edges.
        Accents use the PEERSPECT palette, not the site palette:
        teal #14665a, pine #2f5d3e, honey #f2c14e, amber #8a4a08,
        warm white #fdfbf7. Base stays egg #e3e0d8 / earth #3b342f.
        Cards and interactions replicate the Webflow case study:
        cream cards, radius 24px, shadow, hover lift, pill tags,
        collapsible decision cards, clickable screen cards. */
-    #view-web .web-wrap { max-width:1080px; margin:0 auto; padding:0 1.5rem 3rem; font-family:"Poppins", system-ui, sans-serif; font-size:1rem; line-height:1.6; color:#3b342f; }
+    #view-web .web-wrap { max-width:1080px; margin:0 auto; padding:4rem clamp(1.5rem, 4vw, 4rem) 5rem; font-family:"Poppins", system-ui, sans-serif; font-size:1rem; line-height:1.6; color:#3b342f; }
     #view-web .web-wrap h1, #view-web .web-wrap h2, #view-web .web-wrap h3 { font-family:"Poppins", sans-serif; color:#3b342f; line-height:1.2; font-weight:700; }
     #view-web .web-wrap h1.cs-title { font-size:2.75rem; margin:0 0 .75rem; letter-spacing:.01em; }
     #view-web .web-wrap h2 { font-size:1.9rem; margin:0 0 1rem; }
