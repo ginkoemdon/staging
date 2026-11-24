@@ -21,48 +21,35 @@
     :root {
       --teal:#14665a; --teal-dark:#0e4a40; --pine:#2f5d3e; --honey:#f2c14e; --honey-light:#f6cf6e;
       --amber:#8a4a08; --amber-bg:#fdf0d8; --amber-ink:#8a4a08;
-      --ink:#1a2b26; --muted:#3f5148; --bg:#fdfbf7; --card:#ffffff; --line:#ddd8c9;
-      --line-soft:#ece7db; --soft:#e2efe8; --tag-bg:#f0ede4; --track:#ece7db; --map-bg:#eef4ea;
+      --ink:#1a2b26; --muted:#3f5148; --bg:#f4f1ea; --card:#fffefa; --line:#c9c1ac;
+      --line-soft:#e9e4d6; --soft:#e9f0ea; --tag-bg:#f1eee6; --track:#e9e4d6; --map-bg:#eef3ec;
+      --card-shadow:0 2px 10px rgba(26,43,38,.10);
       --teal-tint:#8ecdc0; --focus:#14665a; --danger:#b3261e;
     }
     html[data-theme="dark"] {
       --teal:#8ecdc0; --teal-dark:#fdfbf7; --pine:#a8c9a8; --honey:#f6cf6e; --honey-light:#f6cf6e;
       --amber:#f6cf6e; --amber-bg:#214f45; --amber-ink:#f6cf6e;
-      --ink:#fdfbf7; --muted:#d5e6de; --bg:#173a33; --card:#214f45; --line:#3a5a50;
-      --line-soft:#2a4a41; --soft:#214f45; --tag-bg:#2a4a41; --track:#2a4a41; --map-bg:#214f45;
+      --ink:#fdfbf7; --muted:#d5e6de; --bg:#14201d; --card:#243530; --line:#47645a;
+      --line-soft:#2f453d; --soft:#2a3f38; --tag-bg:#2a3f38; --track:#2f453d; --map-bg:#1d2f2a;
+      --card-shadow:0 2px 10px rgba(0,0,0,.30);
       --teal-tint:#8ecdc0; --focus:#f6cf6e; --danger:#ffb3ab;
     }
     @media (prefers-color-scheme: dark) {
       html:not([data-theme="light"]) {
         --teal:#8ecdc0; --teal-dark:#fdfbf7; --pine:#a8c9a8; --honey:#f6cf6e; --honey-light:#f6cf6e;
         --amber:#f6cf6e; --amber-bg:#214f45; --amber-ink:#f6cf6e;
-        --ink:#fdfbf7; --muted:#d5e6de; --bg:#173a33; --card:#214f45; --line:#3a5a50;
-        --line-soft:#2a4a41; --soft:#214f45; --tag-bg:#2a4a41; --track:#2a4a41; --map-bg:#214f45;
+        --ink:#fdfbf7; --muted:#d5e6de; --bg:#14201d; --card:#243530; --line:#47645a;
+        --line-soft:#2f453d; --soft:#2a3f38; --tag-bg:#2a3f38; --track:#2f453d; --map-bg:#1d2f2a;
+        --card-shadow:0 2px 10px rgba(0,0,0,.30);
         --teal-tint:#8ecdc0; --focus:#f6cf6e; --danger:#ffb3ab;
       }
     }
-    /* Card colours preview, Nov 24 2026: Ginko said the card
-       backgrounds felt off-putting, light and dark. Three switchable
-       options (A/B/C) plus Current, picked in the app header.
-       Only --bg/--card/--soft/--line/--line-soft/--tag-bg/--track/
-       --map-bg change; text and accent colours stay as they are, so
-       all text contrast stays AA (verified by calculation: lowest
-       is teal on card in B dark, 5.39:1). Card vs page separation
-       is by border plus shadow, not colour alone. This block sits
-       after the theme blocks, so it wins at equal specificity;
-       the dark variants pair data-theme="dark" with data-cards. */
-    html[data-cards="a"] { --bg:#f4f1ea; --card:#fffefa; --soft:#e9f0ea; --line:#c9c1ac; --line-soft:#e9e4d6; --tag-bg:#f1eee6; --track:#e9e4d6; --map-bg:#eef3ec; --card-shadow:0 2px 10px rgba(26,43,38,.10); }
-    html[data-theme="dark"][data-cards="a"] { --bg:#14201d; --card:#243530; --soft:#2a3f38; --line:#47645a; --line-soft:#2f453d; --tag-bg:#2a3f38; --track:#2f453d; --map-bg:#1d2f2a; --card-shadow:0 2px 10px rgba(0,0,0,.30); }
-    html[data-cards="b"] { --bg:#fdfbf7; --card:#f6efe3; --soft:#eef0e4; --line:#d9cdb2; --line-soft:#efe8d6; --tag-bg:#f3ecdd; --track:#efe8d6; --map-bg:#f0f2e6; --card-shadow:0 1px 4px rgba(26,43,38,.06); }
-    html[data-theme="dark"][data-cards="b"] { --bg:#16302c; --card:#2c4a3f; --soft:#2c4a3f; --line:#4a6a58; --line-soft:#334f44; --tag-bg:#334f44; --track:#334f44; --map-bg:#24403a; --card-shadow:0 1px 4px rgba(0,0,0,.25); }
-    html[data-cards="c"] { --bg:#fdfbf7; --card:#ffffff; --soft:#e8efe9; --line:#b9b2a0; --line-soft:#e3ddca; --tag-bg:#f0ede4; --track:#e3ddca; --map-bg:#eef4ea; --card-shadow:0 2px 12px rgba(26,43,38,.14); }
-    html[data-theme="dark"][data-cards="c"] { --bg:#101c19; --card:#2b3f38; --soft:#2b3f38; --line:#5c7a6c; --line-soft:#33473f; --tag-bg:#33473f; --track:#33473f; --map-bg:#1a2b26; --card-shadow:0 4px 16px rgba(0,0,0,.35); }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"])[data-cards="a"] { --bg:#14201d; --card:#243530; --soft:#2a3f38; --line:#47645a; --line-soft:#2f453d; --tag-bg:#2a3f38; --track:#2f453d; --map-bg:#1d2f2a; --card-shadow:0 2px 10px rgba(0,0,0,.30); }
-      html:not([data-theme="light"])[data-cards="b"] { --bg:#16302c; --card:#2c4a3f; --soft:#2c4a3f; --line:#4a6a58; --line-soft:#334f44; --tag-bg:#334f44; --track:#334f44; --map-bg:#24403a; --card-shadow:0 1px 4px rgba(0,0,0,.25); }
-      html:not([data-theme="light"])[data-cards="c"] { --bg:#101c19; --card:#2b3f38; --soft:#2b3f38; --line:#5c7a6c; --line-soft:#33473f; --tag-bg:#33473f; --track:#33473f; --map-bg:#1a2b26; --card-shadow:0 4px 16px rgba(0,0,0,.35); }
-    }
-    html[data-cards] :is(.ps-card,.ps-panel,.align-card,.menu-card,.quick-card,.biz-card,.biz-stat,.onboard-group,.peer-visual) { box-shadow:var(--card-shadow); }
+    /* Card colours, Nov 24 2026: Ginko chose Clean neutral
+       (option A). It is now the one palette: page #f4f1ea,
+       card #fffefa; dark page #14201d, card #243530. The
+       three-option preview picker is removed. Card vs page
+       separation is by border plus shadow, not colour alone. */
+    :is(.ps-card,.ps-panel,.align-card,.menu-card,.quick-card,.biz-card,.biz-stat,.onboard-group,.peer-visual) { box-shadow:var(--card-shadow); }
     * { box-sizing:border-box; }
     html, body { height:100%; }
     body { margin:0; font-family:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size:16px; color:var(--ink); background:var(--bg); line-height:1.6; }
@@ -206,10 +193,6 @@
        can compare them on real place cards in light and dark. The
        pressed button is bold with a teal border and soft background,
        never colour alone. */
-    .card-theme-picker { display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:10px 0 4px; font-size:.9rem; }
-    .card-theme-picker .card-theme-label { font-weight:700; color:var(--teal-dark); margin-right:2px; }
-    .card-theme-picker button { border:1.5px solid var(--line); background:var(--card); color:var(--ink); border-radius:999px; padding:8px 14px; min-height:44px; font-weight:600; }
-    .card-theme-picker button[aria-pressed="true"] { border:2px solid var(--teal); background:var(--soft); font-weight:700; }
     .web-wrap, .app-wrap { max-width:720px; margin:0 auto; padding:20px 16px 48px; }
     .web-wrap h2 { font-size:1.6rem; }
     .app-controls { display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:12px 0 4px; }
@@ -271,6 +254,13 @@
     .peer-visual .peer-fill { height:100%; background:var(--teal); border-radius:999px; }
     .peer-notes { list-style:none; padding:0; margin:12px 0 0; display:grid; gap:8px; }
     .peer-notes li { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--teal); border-radius:12px; padding:12px 16px; font-size:.95rem; }
+    /* Cross-check a peer report, Nov 24 2026: one question per
+       tap, anonymous, same trust count as the check-in "still"
+       questions. */
+    .peer-confirmed { margin:6px 0 0; font-size:.9rem; color:var(--muted); font-weight:700; }
+    .peer-crossed { margin:8px 0 0; font-weight:700; color:var(--teal-dark); }
+    .crosscheck-q { margin-top:10px; display:grid; gap:8px; }
+    .crosscheck-q p { margin:0; }
     /* Place detail sections, Nov 24 2026: the page reads as labelled
        cards, top to bottom: At a glance, Why this matches, How it
        feels right now, Through the day, Menu preview, Peer reports,
@@ -512,6 +502,18 @@
     .ps-bar span { display:block; height:100%; background:var(--teal); }
     .ps-badge { display:inline-block; background:var(--amber-bg); border:2px solid #8a4a08; color:var(--amber-ink); border-radius:999px; padding:.25rem .75rem; font-weight:700; }
     .ps-input { padding:12px 16px; border:2px solid var(--muted); border-radius:12px; font:inherit; width:100%; min-height:44px; background:var(--card); color:var(--ink); }
+    /* Save today's filters, Nov 24 2026: name box and save
+       button side by side, not full width; wraps to one
+       column on a narrow phone. The preview below shows the
+       filters being saved, as oval tags, live. */
+    .save-row { display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap; margin:8px 0 4px; }
+    .save-row .save-field { flex:1 1 220px; min-width:0; }
+    .save-row .save-field label { display:block; font-weight:600; margin-bottom:4px; }
+    .save-row .ps-btn { flex:0 0 auto; min-height:48px; }
+    .save-row .ps-btn:disabled { opacity:.55; cursor:not-allowed; }
+    @media (max-width:480px){ .save-row .ps-btn { flex:1 1 100%; } }
+    .save-preview { margin:8px 0 0; }
+    .save-preview summary { min-height:44px; cursor:pointer; font-weight:600; padding:10px 0; }
     /* Sort select, Nov 23 2026: a native select can lose its arrow
        under app styling, so it gets an explicit chevron, so it
        always reads as a dropdown selector. */
@@ -920,6 +922,49 @@
     #view-app .ps-tags span.tag-env, #view-app .ps-tags span.tag-context,
     #view-app .ps-tags span.tag-inclusion, #view-app .ps-tags span.tag-menu { background:var(--tag-bg); border:1px solid var(--line); color:var(--ink); font-weight:700; }
     #view-app .ps-tags li[class*="tag-"], #view-app .ps-tags span[class*="tag-"] { display:inline-flex; align-items:center; gap:6px; }
+    /* Selected filter colour, preview only, Nov 24 2026: Ginko
+       said the filter colour is bland and needs to pop. Three
+       switchable options (A/B/C) plus Current, picked under the
+       app header. Only the SELECTED state gets colour — pressed
+       chips and matched tags. Unpressed chips, landing pillar
+       tags and "Not matched here" tags stay neutral in every
+       option. The tick, bold and outline stay on pressed chips,
+       so selection is never colour alone. All fills below were
+       verified by calculation against their text colour. */
+    .chip-vibe-picker { display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:10px 0 4px; font-size:.9rem; }
+    .chip-vibe-picker .chip-vibe-label { font-weight:700; color:var(--teal-dark); margin-right:2px; }
+    .chip-vibe-picker button { border:1.5px solid var(--line); background:var(--card); color:var(--ink); border-radius:999px; padding:8px 14px; min-height:44px; font-weight:600; }
+    .chip-vibe-picker button[aria-pressed="true"] { border:2px solid var(--teal); background:var(--soft); font-weight:700; }
+    /* A — Vibrant teal: white on #0b6b5e, 6.40:1, light and dark. */
+    html[data-vibe="a"] #view-app .ps-chip[aria-pressed="true"] { background:#0b6b5e; border-color:#0b6b5e; color:#fff; }
+    html[data-vibe="a"] #view-app .ps-tags.match-tags li[class*="tag-"]:not(.tag-missed),
+    html[data-vibe="a"] #view-app .ps-tags.match-tags span[class*="tag-"]:not(.tag-missed) { background:#0b6b5e; border-color:#0b6b5e; color:#fff; }
+    /* B — Warm honey: dark #372c1f on #f0b429, 7.30:1, light and dark. */
+    html[data-vibe="b"] #view-app .ps-chip[aria-pressed="true"] { background:#f0b429; border-color:#f0b429; color:#372c1f; }
+    html[data-vibe="b"] #view-app .ps-tags.match-tags li[class*="tag-"]:not(.tag-missed),
+    html[data-vibe="b"] #view-app .ps-tags.match-tags span[class*="tag-"]:not(.tag-missed) { background:#f0b429; border-color:#f0b429; color:#372c1f; }
+    /* C — Per-group vibrant, pressed/matched only. Access pine
+       #1e5c2e white 8.00:1; Sensory #eeb31e dark 7.20:1;
+       Environment #0e6b5c white 6.41:1; Context #a35c00 white
+       5.14:1; Inclusion #5ec4b0 dark 7.05:1; Menu pine as Access. */
+    html[data-vibe="c"] #view-app .ps-chip[data-group="access"][aria-pressed="true"],
+    html[data-vibe="c"] #view-app .ps-tags.match-tags li.tag-access:not(.tag-missed),
+    html[data-vibe="c"] #view-app .ps-tags.match-tags span.tag-access:not(.tag-missed) { background:#1e5c2e; border-color:#1e5c2e; color:#fff; }
+    html[data-vibe="c"] #view-app .ps-chip[data-group="sensory"][aria-pressed="true"],
+    html[data-vibe="c"] #view-app .ps-tags.match-tags li.tag-sensory:not(.tag-missed),
+    html[data-vibe="c"] #view-app .ps-tags.match-tags span.tag-sensory:not(.tag-missed) { background:#eeb31e; border-color:#eeb31e; color:#372c1f; }
+    html[data-vibe="c"] #view-app .ps-chip[data-group="environment"][aria-pressed="true"],
+    html[data-vibe="c"] #view-app .ps-tags.match-tags li.tag-env:not(.tag-missed),
+    html[data-vibe="c"] #view-app .ps-tags.match-tags span.tag-env:not(.tag-missed) { background:#0e6b5c; border-color:#0e6b5c; color:#fff; }
+    html[data-vibe="c"] #view-app .ps-chip[data-group="context"][aria-pressed="true"],
+    html[data-vibe="c"] #view-app .ps-tags.match-tags li.tag-context:not(.tag-missed),
+    html[data-vibe="c"] #view-app .ps-tags.match-tags span.tag-context:not(.tag-missed) { background:#a35c00; border-color:#a35c00; color:#fff; }
+    html[data-vibe="c"] #view-app .ps-chip[data-group="inclusion"][aria-pressed="true"],
+    html[data-vibe="c"] #view-app .ps-tags.match-tags li.tag-inclusion:not(.tag-missed),
+    html[data-vibe="c"] #view-app .ps-tags.match-tags span.tag-inclusion:not(.tag-missed) { background:#5ec4b0; border-color:#5ec4b0; color:#1a2b26; }
+    html[data-vibe="c"] #view-app .ps-chip[data-group="menu"][aria-pressed="true"],
+    html[data-vibe="c"] #view-app .ps-tags.match-tags li.tag-menu:not(.tag-missed),
+    html[data-vibe="c"] #view-app .ps-tags.match-tags span.tag-menu:not(.tag-missed) { background:#1e5c2e; border-color:#1e5c2e; color:#fff; }
     #view-app .discover-filters { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:12px 16px; }
     #view-app .discover-filters summary { font-weight:700; color:var(--teal-dark); min-height:44px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; list-style:none; }
     #view-app .discover-filters summary::-webkit-details-marker { display:none; }
@@ -1327,12 +1372,15 @@
       <button class="theme-toggle" type="button" data-theme-btn aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">☾</span></button>
       <button class="app-close" id="close-app" type="button" aria-label="Close prototype and return to case study">&times;</button>
     </div>
-    <div class="card-theme-picker" role="group" aria-label="Card colours, preview only">
-      <span class="card-theme-label">Card colours (preview):</span>
-      <button type="button" data-cards-btn="current" aria-pressed="true">Current</button>
-      <button type="button" data-cards-btn="a" aria-pressed="false">A · Clean neutral</button>
-      <button type="button" data-cards-btn="b" aria-pressed="false">B · Soft tinted</button>
-      <button type="button" data-cards-btn="c" aria-pressed="false">C · Editorial</button>
+    <!-- Selected filter colour, preview only, Nov 24 2026: three
+         switchable options (A/B/C) plus Current. Nothing is
+         locked in; Ginko picks. Saved per device. -->
+    <div class="chip-vibe-picker" role="group" aria-label="Selected filter colour, preview only">
+      <span class="chip-vibe-label">Selected filter colour (preview):</span>
+      <button type="button" data-vibe-btn="current" aria-pressed="true">Current</button>
+      <button type="button" data-vibe-btn="a" aria-pressed="false">A · Vibrant teal</button>
+      <button type="button" data-vibe-btn="b" aria-pressed="false">B · Warm honey</button>
+      <button type="button" data-vibe-btn="c" aria-pressed="false">C · Per-group</button>
     </div>
     <main id="main" class="app-main">
       <!-- 0. LANDING — first screen, before onboarding. -->
@@ -1488,9 +1536,19 @@
         <div class="screen-scroll">
           <section class="ps-panel" aria-labelledby="save-profile-h">
             <h3 id="save-profile-h">Save today's filters</h3>
-            <label for="profile-name">Profile name</label>
-            <input class="ps-input" id="profile-name" type="text" placeholder="e.g. Quiet morning" />
-            <p><button class="ps-btn" id="save-profile" type="button">Save this profile</button></p>
+            <p>Name your collection of filters for the day so that you can return to it later.</p>
+            <div class="save-row">
+              <div class="save-field">
+                <label for="profile-name">Profile name</label>
+                <input class="ps-input" id="profile-name" type="text" placeholder="e.g. Quiet morning" />
+              </div>
+              <button class="ps-btn" id="save-profile" type="button">Save today's filters</button>
+            </div>
+            <details class="save-preview" id="save-preview">
+              <summary id="save-preview-summary">See the filters you are saving</summary>
+              <ul class="ps-tags match-tags" id="save-preview-tags" aria-label="Filters you are saving"></ul>
+              <p class="ps-muted" id="save-preview-empty" hidden>No filters picked yet</p>
+            </details>
             <p id="profile-status" class="ps-muted" aria-live="polite"></p>
             <ul id="profile-list"></ul>
           </section>
@@ -1619,9 +1677,9 @@
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
-         {q:"Is the music still soft right now?", c:"A peer reported 30 minutes ago: the music was soft.", a:["Yes, still soft","A bit louder now","No, it's loud now"]},
+         {q:"Is the music still soft right now?", c:"A peer reported 30 minutes ago: the music was soft.", cc:12, a:["Yes, still soft","A bit louder now","No, it's loud now"]},
          {q:"Are pronouns being respected today?", a:["Yes","Not today","Not sure"]},
-         {q:"Is it still calm, not crowded?", c:"A peer reported 30 minutes ago: it was calm, not crowded.", a:["Yes, still calm","A bit busy","No, it's crowded"]}
+         {q:"Is it still calm, not crowded?", c:"A peer reported an hour ago: it was calm, not crowded.", cc:9, a:["Yes, still calm","A bit busy","No, it's crowded"]}
        ]},
       {id:"nostalgie", name:"Café Nostalgie", area:"Mile End", type:"Café / diner", distKm:3.2, distLabel:"3.2 km · 12 min by Metro", transport:"Metro Jarry to Laurier, 12 min", mapX:56, mapY:30,
        tags:["seating-comfy","lighting-bright","lighting-big","sound-music","crowding-busy","retro","nostalgic","socialising","service-fast","communication-clear","price-transparent","language-french","language-english","language-italian","language-creole","menu-qr","menu-preview","written-order","diet-vegetarian","order-verbal","order-call","order-click-collect","order-takeout","sensory-no-flash","vision-contrast-tableware","vision-step-edges","vision-high-contrast-signs","hearing-captions","hearing-written-confirm","diet-sugar-free"],
@@ -1632,9 +1690,9 @@
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines","TV"]},
-         {q:"Is the music still on right now?", c:"A peer reported 30 minutes ago: the music was on.", a:["Yes","No","Not sure"]},
+         {q:"Is the music still on right now?", c:"A peer reported 30 minutes ago: the music was on.", cc:8, a:["Yes","No","Not sure"]},
          {q:"Is it busy right now?", a:["Yes, it's busy","A bit busy","No, it's quiet"]},
-         {q:"Is the TV on right now?", c:"A peer reported 30 minutes ago: the TV was on in the corner.", a:["Yes","No","Not sure"]}
+         {q:"Is the TV still on today?", c:"A peer reported yesterday: the TV was on in the corner.", cc:5, a:["Yes","No","Not sure"]}
        ]},
       {id:"boheme", name:"Bohemian Books & Brew", area:"Plateau-Mont-Royal", type:"Book café", distKm:2.8, distLabel:"2.8 km · 15 min by bus", transport:"Bus 55, 15 min from Jarry", mapX:62, mapY:68,
        tags:["step-free","seating-comfy","lighting-ambient","lighting-dim","sound-quiet","sound-music","crowding-low","bohemian","artsy","coworking","quiet-chat","service-patient","service-calm","pronoun-respect","queer-friendly","staff-representation","price-transparent","language-french","language-english","language-mandarin","language-arabic","menu-physical","menu-preview","menu-accessible","diet-vegan","diet-gluten-free","diet-vegetarian","diet-halal","diet-cultural","online-meetings","temp-comfortable","clean","order-verbal","order-online","order-ahead","order-takeout","sensory-quiet-nook","sensory-no-flash","sensory-fragrance-free","sensory-no-music","sensory-no-sudden-noise","vision-contrast-tables","vision-even-light","vision-clear-paths","vision-large-print","vision-braille","vision-read-aloud","vision-high-contrast-signs","vision-no-pattern","hearing-face-you","hearing-written-confirm","restroom-sharps","restroom-private","diet-sugar-free","menu-free-water"],
@@ -1645,9 +1703,9 @@
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
-         {q:"Is it still quiet enough to read?", c:"A peer reported 30 minutes ago: it was quiet enough to read.", a:["Yes, quiet enough","Mostly","No, too loud"]},
+         {q:"Is it still quiet enough to read?", c:"A peer reported an hour ago: it was quiet enough to read.", cc:11, a:["Yes, quiet enough","Mostly","No, too loud"]},
          {q:"Are pronouns being respected today?", a:["Yes","Not today","Not sure"]},
-         {q:"Is there still a free comfy seat?", c:"A peer reported 30 minutes ago: there were free comfy seats.", a:["Yes","A few left","No, it's full"]}
+         {q:"Is there still a free comfy seat?", c:"A peer reported 30 minutes ago: there were free comfy seats.", cc:6, a:["Yes","A few left","No, it's full"]}
        ]},
       {id:"jardin", name:"Jardin Café", area:"Outremont", type:"Café / event space", distKm:2.1, distLabel:"2.1 km · 14 min by bus", transport:"Bus 160, 14 min · 20 min walk", mapX:16, mapY:60,
        tags:["step-free","restroom-accessible","lighting-bright","lighting-ambient","sound-music","crowding-busy","nostalgic","socialising","coworking","service-patient","communication-clear","price-transparent","language-french","language-english","language-spanish","language-creole","language-mandarin","menu-qr","menu-preview","menu-accessible","diet-vegan","diet-gluten-free","diet-vegetarian","diet-cultural","outdoor-space","airflow","order-verbal","order-call","order-online","order-click-collect","order-takeout","sensory-low-hours","sensory-no-flash","sensory-fragrance-free","sensory-no-music","sensory-no-sudden-noise","vision-contrast-tables","vision-even-light","vision-clear-paths","vision-marked-glass","vision-tactile-lines","vision-large-print","vision-braille","vision-read-aloud","language-lsq","lsq-order","hearing-captions","hearing-face-you","restroom-sharps","restroom-private","diet-sugar-free","menu-nutrition","menu-free-water"],
@@ -1660,13 +1718,18 @@
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
          {q:"Is there an event on right now?", a:["Yes","No","Not sure"]},
          {q:"Is it busy right now?", a:["Yes, it's busy","A bit busy","No, it's quiet"]},
-         {q:"Is the music still on?", c:"A peer reported 30 minutes ago: the music was on.", a:["Yes","No","Not sure"]}
+         {q:"Is the music still on today?", c:"A peer reported yesterday: the music was on.", cc:7, a:["Yes","No","Not sure"]}
        ]}
     ];
     function load(key, fallback){ try { var v = JSON.parse(localStorage.getItem(key)); return v == null ? fallback : v; } catch(e){ return fallback; } }
     function save(key, val){ try { localStorage.setItem(key, JSON.stringify(val)); } catch(e){} }
     var selectedFilters = [], activeFilters = new Set(), bookmarks = new Set(load("peerspect-bookmarks-v1", []));
     var likes = new Set(load("peerspect-likes-v1", []));
+    /* Cross-checks, Nov 24 2026: per peer report, keyed
+       placeId|live-index — {answered, answer, count, date}.
+       Count is this demo's cross-checks for that report, on
+       top of its sample baseline (q.cc). */
+    var crosschecks = load("peerspect-crosschecks-v1", {});
     function priceNum(s){ var n=parseFloat(String(s).replace(/[^0-9.]/g,"")); return isNaN(n)?0:n; }
     function orderTotal(order){ var t=0; (order||[]).forEach(function(o){ t += priceNum(o.price)*o.qty; }); return t; }
     function money(n){ return "$" + n.toFixed(2); }
@@ -2083,9 +2146,27 @@
     }
     function renderTailored(){
       var box = $("tailored-chips"); box.innerHTML = "";
-      if(activeFilters.size === 0){ $("tailored-note").textContent = "No filters picked yet — showing all sample places."; return; }
+      if(activeFilters.size === 0){ $("tailored-note").textContent = "No filters picked yet — showing all sample places."; renderSavePreview(); return; }
       $("tailored-note").textContent = "Tailored for today — tap a filter to turn it off.";
       Array.from(activeFilters).forEach(function(k){ var li=document.createElement("li"); li.appendChild(chipFor(k)); box.appendChild(li); });
+      renderSavePreview();
+    }
+    /* Save preview, Nov 24 2026: show what you are saving
+       before you save it — the active filters as oval tags,
+       live as filters change. Disabled with no filters picked. */
+    function renderSavePreview(){
+      var det=$("save-preview"), sum=$("save-preview-summary"), tags=$("save-preview-tags"), empty=$("save-preview-empty"), btn=$("save-profile");
+      if(!det) return;
+      var n=activeFilters.size;
+      sum.textContent = n ? "See the "+n+" filter"+(n===1?"":"s")+" you are saving" : "See the filters you are saving";
+      btn.disabled = n===0;
+      btn.setAttribute("aria-disabled", n===0 ? "true" : "false");
+      tags.innerHTML="";
+      if(!n){ empty.hidden=false; return; }
+      empty.hidden=true;
+      Array.from(activeFilters).forEach(function(f){
+        var li=document.createElement("li"); li.className=tagClass(f); li.textContent="✓ "+(FILTER_LABELS[f]||f); tags.appendChild(li);
+      });
     }
     function renderAllFilters(){
       var box = $("all-filters"); box.innerHTML = "";
@@ -2397,12 +2478,12 @@
         var card=document.createElement("article"); card.className="menu-card"; card.dataset.item=item.n;
         var nm=document.createElement("span"); nm.className="menu-name"; nm.textContent=item.n;
         var pr=document.createElement("span"); pr.className="menu-price"; pr.textContent=item.p;
-        var add=document.createElement("button"); add.type="button"; add.className="ps-btn ps-btn-secondary ps-btn-small"; add.textContent="Add to my order";
+        var add=document.createElement("button"); add.type="button"; add.className="ps-btn ps-btn-secondary ps-btn-small"; add.textContent="Add to order";
         add.addEventListener("click", function(){
           prep.push({place:p.name, placeId:p.id, item:item.n, price:item.p, date:todayStr(), k:item.k});
           save("peerspect-prep-v1", prep); renderPrep();
           card.classList.add("is-added"); add.textContent="Added ✓";
-          setTimeout(function(){ add.textContent="Add to my order"; },1500);
+          setTimeout(function(){ add.textContent="Add to order"; },1500);
           renderOrderSummary();
         });
         card.appendChild(nm); card.appendChild(pr); card.appendChild(add); cards.appendChild(card);
@@ -2422,11 +2503,11 @@
         cards.querySelectorAll(".menu-card").forEach(function(c){
           var has = mine.some(function(it){ return it.item===c.dataset.item; });
           c.classList.toggle("is-added", has);
-          var b=c.querySelector("button"); if(b && !has) b.textContent="Add to my order";
+          var b=c.querySelector("button"); if(b && !has) b.textContent="Add to order";
         });
       }
       function renderOrderSummary(){
-        renderCartInto(summary, prep.filter(function(it){ return it.placeId===p.id; }), {emptyText:"Nothing added yet. Tap “Add to my order” on a menu item."});
+        renderCartInto(summary, prep.filter(function(it){ return it.placeId===p.id; }), {emptyText:"Nothing added yet. Tap “Add to order” on a menu item."});
         markMenuCards();
       }
       orderSummaryRefresh = renderOrderSummary;
@@ -2437,14 +2518,56 @@
          recent peer notes already in the sample data. The old
          count bar is gone, Nov 24 2026: it was a proportion
          against the most-confirmed sample place, with no stated
-         total next to it. */
+         total next to it. Cross-check, Nov 24 2026: each note
+         has a "Cross-check this report" button. Tapping asks
+         that report's "still" question once, anonymously —
+         "A peer reported 30 minutes ago: the music was soft.
+         Is the music still soft right now?" — with answers
+         "Yes, still true" / "Not really" / "Not sure". The
+         question wording follows the report's age (right now
+         for today, today for yesterday). Answering counts as a
+         peer cross-check in the trust data (milestones), bumps
+         that report's "Confirmed by X peers" line, and the
+         button becomes "You cross-checked this". */
       var peerCard = document.createElement("section"); peerCard.className="ps-panel place-section"; peerCard.setAttribute("aria-label","Peer reports");
       var peerH=document.createElement("h3"); peerH.textContent="Peer reports"; peerCard.appendChild(peerH);
       var peerDiv = document.createElement("div"); peerDiv.className="peer-visual";
-      var peerNotes = (p.live||[]).filter(function(q){ return q.c; }).map(function(q){ return q.c; });
-      peerDiv.innerHTML = '<p class="peer-num">' + p.confirmed + ' peer confirmations</p>' +
-        '<p class="ps-muted" style="margin:.25rem 0 0;">Anonymous peer reports for this place, in the last 14 days (sample data).</p>' +
-        (peerNotes.length ? '<ul class="peer-notes">' + peerNotes.map(function(n){ return '<li>“' + n + '”</li>'; }).join("") + '</ul>' : '');
+      var peerNum=document.createElement("p"); peerNum.className="peer-num"; peerNum.textContent=p.confirmed+" peer confirmations"; peerDiv.appendChild(peerNum);
+      var peerSub=document.createElement("p"); peerSub.className="ps-muted"; peerSub.style.margin=".25rem 0 0"; peerSub.textContent="Anonymous peer reports for this place, in the last 14 days (sample data)."; peerDiv.appendChild(peerSub);
+      var reportQs=(p.live||[]).filter(function(q){ return q.c; });
+      if(reportQs.length){
+        var notesUl=document.createElement("ul"); notesUl.className="peer-notes";
+        reportQs.forEach(function(q, qi){
+          var li=document.createElement("li");
+          var quote=document.createElement("p"); quote.style.margin="0"; quote.textContent="“"+q.c+"”"; li.appendChild(quote);
+          var key=p.id+"|"+qi;
+          function confirmedCount(){ return (q.cc||0) + ((crosschecks[key]&&crosschecks[key].count)||0); }
+          function confText(mine){ var n=confirmedCount(); return "Confirmed by "+n+" peer"+(n===1?"":"s")+(mine?" · including your cross-check":""); }
+          var conf=document.createElement("p"); conf.className="peer-confirmed"; conf.textContent=confText(!!(crosschecks[key]&&crosschecks[key].answered)); li.appendChild(conf);
+          var done=!!(crosschecks[key]&&crosschecks[key].answered);
+          var btn=document.createElement("button"); btn.type="button"; btn.className="ps-btn ps-btn-secondary ps-btn-small"; btn.textContent="Cross-check this report"; btn.style.minHeight="44px"; btn.hidden=done;
+          li.appendChild(btn);
+          var qBox=document.createElement("div"); qBox.className="crosscheck-q"; qBox.hidden=true;
+          var qText=document.createElement("p"); qText.innerHTML="<strong>"+q.q+"</strong>"; qBox.appendChild(qText);
+          var ansRow=document.createElement("div"); ansRow.className="rate-row"; qBox.appendChild(ansRow);
+          [["yes","Yes, still true"],["no","Not really"],["unsure","Not sure"]].forEach(function(pair){
+            var b=document.createElement("button"); b.type="button"; b.className="rate-btn"; b.textContent=pair[1];
+            b.addEventListener("click", function(){
+              crosschecks[key]={answered:true, answer:pair[0], count:((crosschecks[key]&&crosschecks[key].count)||0)+1, date:todayStr()};
+              save("peerspect-crosschecks-v1", crosschecks);
+              countCrosscheck(q); renderTrust();
+              conf.textContent=confText(true);
+              qBox.hidden=true; btn.hidden=true; crossed.hidden=false;
+            });
+            ansRow.appendChild(b);
+          });
+          li.appendChild(qBox);
+          var crossed=document.createElement("p"); crossed.className="peer-crossed"; crossed.hidden=!done; crossed.textContent="You cross-checked this"; li.appendChild(crossed);
+          btn.addEventListener("click", function(){ qBox.hidden=false; btn.hidden=true; });
+          notesUl.appendChild(li);
+        });
+        peerDiv.appendChild(notesUl);
+      }
       peerCard.appendChild(peerDiv);
       body.appendChild(peerCard);
       /* Card 7 — Your visit, only for places you have visited.
@@ -2495,6 +2618,7 @@
       });
     }
     $("save-profile").addEventListener("click", function(){
+      if(!activeFilters.size){ $("profile-status").textContent="Pick at least one filter first — there is nothing to save yet."; return; }
       var name=$("profile-name").value.trim();
       if(!name){ $("profile-status").textContent="Give the profile a name first, e.g. “Quiet morning”."; return; }
       profiles.push({name:name, filters:Array.from(activeFilters), priorities:selectedFilters.slice(), saved:new Date().toISOString().slice(0,10)});
@@ -3071,22 +3195,27 @@
       savedTheme = savedTheme === "dark" ? "light" : "dark"; applyTheme(savedTheme);
     }); });
 
-    /* Card colours preview, Nov 24 2026: three switchable options so
-       Ginko can compare them on real place cards in light and dark.
-       Saved on this device, so the choice sticks. "Current" removes
-       the override and goes back to the locked brand palette. */
-    var cardBtns = Array.prototype.slice.call(document.querySelectorAll("[data-cards-btn]"));
-    function applyCards(v){
+    /* Card colours, Nov 24 2026: Ginko chose Clean neutral.
+       It is now the base palette in the theme blocks above,
+       so there is no picker and no stored card choice; a
+       stored "peerspect-cards-v1" value is simply ignored. */
+
+    /* Selected filter colour, preview only, Nov 24 2026: three
+       switchable options (A/B/C) plus Current, saved per device
+       under "peerspect-vibe-v1". Nothing is locked in. The CSS
+       rules gated on html[data-vibe] do the recolouring. */
+    var vibeBtns = Array.prototype.slice.call(document.querySelectorAll("[data-vibe-btn]"));
+    function applyVibe(v){
       var root = document.documentElement;
-      if(v && v !== "current"){ root.setAttribute("data-cards", v); } else { root.removeAttribute("data-cards"); }
-      try { localStorage.setItem("peerspect-cards-v1", v || "current"); } catch(e){}
-      cardBtns.forEach(function(btn){ btn.setAttribute("aria-pressed", btn.getAttribute("data-cards-btn") === (v || "current") ? "true" : "false"); });
+      if(v && v !== "current"){ root.setAttribute("data-vibe", v); } else { root.removeAttribute("data-vibe"); }
+      try { localStorage.setItem("peerspect-vibe-v1", v || "current"); } catch(e){}
+      vibeBtns.forEach(function(btn){ btn.setAttribute("aria-pressed", btn.getAttribute("data-vibe-btn") === (v || "current") ? "true" : "false"); });
     }
-    var savedCards = "current";
-    try { savedCards = localStorage.getItem("peerspect-cards-v1") || "current"; } catch(e){}
-    if(["current","a","b","c"].indexOf(savedCards) < 0) savedCards = "current";
-    applyCards(savedCards);
-    cardBtns.forEach(function(btn){ btn.addEventListener("click", function(){ applyCards(btn.getAttribute("data-cards-btn")); }); });
+    var savedVibe = "current";
+    try { savedVibe = localStorage.getItem("peerspect-vibe-v1") || "current"; } catch(e){}
+    if(["current","a","b","c"].indexOf(savedVibe) < 0) savedVibe = "current";
+    applyVibe(savedVibe);
+    vibeBtns.forEach(function(btn){ btn.addEventListener("click", function(){ applyVibe(btn.getAttribute("data-vibe-btn")); }); });
 
     /* Views: web page (default), prototype, expand.
        View 1 is a normal web page with Ginko's menu. View 2 is the
