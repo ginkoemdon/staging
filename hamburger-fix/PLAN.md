@@ -72,6 +72,12 @@ Applies to every future landing page prototype card, Featured work and Rough dra
 - Gap between cards: 6rem on desktop and mobile (deliberate: Webflow's gap is about 200px, which would make eight rows an endless page).
 - Implemented in `css/style.css` (.portfolio-card_heading, .card-content, .ch_card, .list-of-tags .tag-item, .button.is-link.is-icon, and the max-width 991px mobile block).
 
+## Stylized H1 rule (Nov 24, 2026, Ginko) — all styled H1s on landing pages, and whenever Ginko says "stylize"
+- H1: Krona One, 48px desktop (3rem, clamp down on mobile), dark fill (earth #3b342f) + 1.2px amber stroke rgb(248, 192, 94) / #f8c05e, i.e. outlined gold.
+- Second line / subline under it: Krona One, 20px (1.25rem), solid cream rgb(227, 224, 216) / #e3e0d8, no stroke. Cream is the same as egg #e3e0d8, so use ONLY on a dark background, never on egg/light.
+- Example texts Ginko gave with the rule are from her Webflow typography ("Ai is the terrain. I bring the map." / "Cultivating with intention, judgment, and an inclusive designer's vigor."); they identify the treatment, they are NOT automatically Playground copy.
+- Implemented in `css/style.css` (`.hero h1`, `.hero .h1-subline`), applied to the Playground landing hero H1 keeping its current headline. The old sun-highlight on "human exploration" was removed so the outline stays uniform.
+
 ## Nav update Nov 22, 2026, 22:58 EST
 - Style copied from Webflow nav (mindfullydesign.webflow.io), implementation is our own simple CSS + tiny JS, no Webflow JS / no w-nav attributes.
 - Source values used: navbar-component 4.5rem, padding 4%, backdrop blur 20px, fixed/sticky top, z-index 10; navbar11_container space-between; logo image 144px (full) / 32px G icon on mobile; navbar11_menu gap 28px, Krona One; nav-font .875rem, letter-spacing 1.5px, min-height 44px; underline 1px black at -3px; dropdown-list white, 1px black border, 20rem wide, 1.5rem padding; dropdown-link Poppins, gap 2rem; menu-icon1 48x48, lines 24x2px; flower-button 1px brown border, 20px left line, hover lizard.

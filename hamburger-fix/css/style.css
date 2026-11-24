@@ -329,12 +329,31 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
 }
 .flower-button:hover .button-line-right { width: 20px; }
 
-/* Hero — large Krona One heading, sun highlight, like Webflow's hero */
+/* Hero — stylized H1 rule, Nov 24 2026 (Ginko, "stylize"): Krona One,
+   48px desktop, dark fill + 1.2px amber stroke = outlined gold.
+   Applies to all styled H1s on landing pages. */
 .hero { padding: 6.5rem 0 3rem; }
-.hero h1 { font-size: clamp(2rem, 3.6vw, 3.2rem); max-width: 1100px; }
+.hero h1 {
+  font-family: "Krona One", sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem); /* 48px max desktop, smaller on mobile */
+  line-height: 1.15;
+  color: var(--earth); /* dark fill #3b342f */
+  -webkit-text-stroke: 1.2px var(--sun); /* amber rgb(248, 192, 94) */
+  text-stroke: 1.2px var(--sun);
+  paint-order: stroke fill;
+  max-width: 1100px;
+}
 .hero h1 .seen { color: var(--forest); }
 .hero h1 .heard { color: var(--tangerine-text); }
-.hero h1 .valued { background: linear-gradient(transparent 55%, var(--sun) 55%); padding: 0 0.1em; }
+.hero h1 .valued { background: none; padding: 0; }
+/* Subline under a stylized H1: Krona One 20px, solid cream
+   rgb(227, 224, 216), no stroke. Cream is the same as egg #e3e0d8,
+   so use ONLY on a dark background, never on egg/light. */
+.hero .h1-subline {
+  font-family: "Krona One", sans-serif;
+  font-size: 1.25rem; /* 20px */
+  color: rgb(227, 224, 216);
+}
 .eyebrow {
   font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em;
   text-transform: uppercase; color: var(--rust-text); margin: 0 0 1rem;
