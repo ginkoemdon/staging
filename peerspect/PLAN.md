@@ -59,6 +59,19 @@ Studied from Ginko's Webflow portfolio Featured Works cards (mindfullydesign.web
 - Portfolio examples to follow: "Co-facilitated workshops with Indigenous activists, urban planners, designers, and historians to reimagine colonial monument sites in Tiohtià:ke. Together, we co-designed spaces grounded in Indigenous knowledge, care, and storytelling, transforming these sites into places of expression, healing, memory, and belonging." / "Redesigning the audio-based social media app for accessibility, so everyone can be part of the conversation." / "Led 25+ clinical user testing sessions of various optical technology prototypes to inform the design of eSight's new assistive device, eSight Go."
 - Applied Nov 23, 2026 to all seven prototype cards on both pages, plus the All prototypes card. Nav dropdown labels stay short and functional; they are navigation, not cards.
 
+## Prototype card styling rule (Nov 23, 2026, Ginko) — all future landing page prototype cards
+Applies to every future landing page prototype card, Featured work and Rough drafts alike. Measured visually from Ginko's Webflow portfolio Featured Works cards (mindfullydesign.webflow.io), screenshots only, desktop 1920px and mobile 500px, Nov 23, 2026. Do not guess from the Webflow backend; re-measure from a screenshot if in doubt.
+- Heading: Poppins, 700, 30px desktop (1.875rem), line-height 34-35px (1.15), colour #3e3327. Mobile: 26px (1.625rem), line-height 1.25.
+- Body: Poppins, 400, 18px (1.125rem), line-height 27px (1.5), colour #52483d.
+- Year: Poppins, 500, 14px, colour #504945, top-right of the text card.
+- Link: Poppins, 600, 20px (1.25rem), colour #1c1c1c, with a chevron.
+- Tag pill: Poppins, 600, 14px, text #3e3327, amber background #f7bf5e, 1px dark outline, fully rounded, about 27px high, 8px gap between pills.
+- Text card: white #fefefe, radius 12px, padding 48px desktop / 32px mobile, subtle shadow.
+- Image: radius 12px; on desktop the text card overlaps the image by 60px; on mobile the image sits above the text card with a 20px gap and no overlap.
+- Spacing inside the card (desktop): year to heading 35px, heading to body 38px, body to link 66px, link to divider 50px, divider to tags 40px, tags to card bottom about 35px.
+- Gap between cards: 6rem on desktop and mobile (deliberate: Webflow's gap is about 200px, which would make eight rows an endless page).
+- Implemented in `css/style.css` (.portfolio-card_heading, .card-content, .ch_card, .list-of-tags .tag-item, .button.is-link.is-icon, and the max-width 991px mobile block).
+
 ## Nav update Nov 22, 2026, 22:58 EST
 - Style copied from Webflow nav (mindfullydesign.webflow.io), implementation is our own simple CSS + tiny JS, no Webflow JS / no w-nav attributes.
 - Source values used: navbar-component 4.5rem, padding 4%, backdrop blur 20px, fixed/sticky top, z-index 10; navbar11_container space-between; logo image 144px (full) / 32px G icon on mobile; navbar11_menu gap 28px, Krona One; nav-font .875rem, letter-spacing 1.5px, min-height 44px; underline 1px black at -3px; dropdown-list white, 1px black border, 20rem wide, 1.5rem padding; dropdown-link Poppins, gap 2rem; menu-icon1 48x48, lines 24x2px; flower-button 1px brown border, 20px left line, hover lizard.
