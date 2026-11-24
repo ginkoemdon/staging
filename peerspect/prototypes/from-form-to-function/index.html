@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>From Form to Function — Ginko's Prototype Playground</title>
-  <meta name="description" content="From Form to Function: upload or photograph a hard-to-understand form and get plain-language instructions, with the terminology explained and the guidance AI-checked." />
+  <title>Form to Function — Ginko's Prototype Playground</title>
+  <meta name="description" content="Form to Function: upload or photograph a hard-to-understand form and get plain-language instructions, with the terminology explained and the guidance AI-checked." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
@@ -15,9 +15,9 @@
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
   <header class="app-bar">
-    <div class="app-logo" id="header-logo" role="img" aria-label="From Form to Function logo">
+    <div class="app-logo" id="header-logo" role="img" aria-label="Form to Function logo">
       <svg viewBox="0 0 56 56" aria-hidden="true"><rect x="4" y="8" width="20" height="40" rx="4" fill="#1e293b"/><g stroke="#f6f5f1" stroke-width="2" stroke-linecap="round"><line x1="8" y1="16" x2="20" y2="16"/><line x1="8" y1="22" x2="16" y2="22"/><line x1="8" y1="28" x2="20" y2="28"/><line x1="8" y1="34" x2="14" y2="34"/><line x1="8" y1="40" x2="18" y2="40"/></g><path d="M28 28h8m-3-3l3 3-3 3" fill="none" stroke="#0f766e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><g><rect x="40" y="16" width="12" height="4" rx="2" fill="#0f766e"/><rect x="40" y="26" width="12" height="4" rx="2" fill="#1e293b"/><rect x="40" y="36" width="12" height="4" rx="2" fill="#92400e"/></g></svg>
-      <span class="visually-hidden">From Form to Function</span>
+      <span class="visually-hidden">Form to Function</span>
     </div>
     <div class="app-bar-actions">
       <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">&#9789;</span></button>
@@ -29,7 +29,8 @@
 
       <!-- Start / onboarding: one short line, three actions, nothing else. -->
       <section id="screen-start" aria-labelledby="product-title">
-        <h1 id="product-title" class="visually-hidden">From Form to Function</h1>
+        <p class="meta">Experimental AI prototype</p>
+        <h1 id="product-title">Form to Function</h1>
         <p class="tagline">A confusing form, in plain language, one step at a time.</p>
 
         <div class="logo-picker" id="logo-picker">
@@ -141,10 +142,11 @@
       </section>
     </main>
 
-    <p class="app-foot">From Form to Function — a prototype by Ginko Emdon, 2026. Sample data only.</p>
+    <p class="app-foot">Form to Function — a prototype by Ginko Emdon, 2026. Sample data only.</p>
   </div>
   <script>
   (function () {
+    var $ = function (id) { return document.getElementById(id); };
     /* Theme: light / dark, remembered. Moon icon in light mode (tap for
        dark), sun icon in dark mode (tap for light), like PEERSPECT. */
     var themeBtn = $('theme-toggle');
@@ -177,7 +179,7 @@
       });
       if (chosen && headerLogo) {
         var svg = chosen.querySelector('svg');
-        if (svg) headerLogo.innerHTML = svg.outerHTML + '<span class="visually-hidden">From Form to Function</span>';
+        if (svg) headerLogo.innerHTML = svg.outerHTML + '<span class="visually-hidden">Form to Function</span>';
       }
       try { localStorage.setItem('fftf-logo-v1', key); } catch (e) {}
     }
@@ -349,7 +351,6 @@
     };
 
     var state = { sample: null, view: "guided", step: 0, answers: {} };
-    var $ = function (id) { return document.getElementById(id); };
     var startScreen = $('screen-start'), stepsScreen = $('screen-steps'), summaryScreen = $('screen-summary');
 
     function storageKey(key) { return 'fftf-answers-' + key; }
@@ -566,7 +567,7 @@
         var lines = doc.splitTextToSize(text, width);
         writeLines(lines, size, bold);
       }
-      writeWrapped('From Form to Function — Your filled form', 16, true);
+      writeWrapped('Form to Function — Your filled form', 16, true);
       y += 2;
       writeWrapped(s.name + ' (' + s.formNumber + ')', 12, true);
       y += 2;
