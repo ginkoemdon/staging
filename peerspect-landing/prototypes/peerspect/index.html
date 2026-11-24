@@ -1639,7 +1639,7 @@
 
       <!-- 4. SAVED -->
       <section class="screen" id="screen-saved" aria-labelledby="profiles-h" hidden>
-        <div class="screen-head"><h2 id="profiles-h">Saved</h2><p>Profiles, order prep list, bookmarks, and liked places.</p></div>
+        <div class="screen-head"><h2 id="profiles-h">Saved</h2><p>Profiles, order prep list, and bookmarks.</p></div>
         <div class="screen-scroll">
           <section class="ps-panel" aria-labelledby="save-profile-h">
             <h3 id="save-profile-h">Save today's filters</h3>
@@ -1665,9 +1665,6 @@
             <button class="ps-btn ps-btn-secondary ps-btn-small" id="clear-prep" type="button">Clear order prep list</button>
             <h3>Bookmarked places</h3>
             <ul id="bookmark-list"></ul>
-            <h3>Liked places</h3>
-            <p class="ps-muted">Places you liked from the menu preview. Tap one to open it.</p>
-            <ul id="like-list"></ul>
           </section>
           <section class="ps-panel" aria-labelledby="visits-h">
             <h3 id="visits-h">Your last visits</h3>
@@ -1839,7 +1836,11 @@
     function load(key, fallback){ try { var v = JSON.parse(localStorage.getItem(key)); return v == null ? fallback : v; } catch(e){ return fallback; } }
     function save(key, val){ try { localStorage.setItem(key, JSON.stringify(val)); } catch(e){} }
     var selectedFilters = [], activeFilters = new Set(), bookmarks = new Set(load("peerspect-bookmarks-v1", []));
-    var likes = new Set(load("peerspect-likes-v1", []));
+    /* Likes removed, Nov 24 2026: Bookmark is the one way to
+       save a place. Any place saved with the old Like button
+       becomes a bookmark once, so nobody loses a saved place,
+       then the old likes list is cleared. */
+    (function(){ var oldLikes = load("peerspect-likes-v1", []); if(oldLikes && oldLikes.length){ oldLikes.forEach(function(id){ bookmarks.add(id); }); save("peerspect-bookmarks-v1", Array.from(bookmarks)); save("peerspect-likes-v1", []); } })();
     /* Cross-checks, Nov 24 2026: per peer report, keyed
        placeId|live-index — {answered, answer, count, date}.
        Count is this demo's cross-checks for that report, on
@@ -2162,7 +2163,7 @@
       var head = document.querySelector("#screen-" + name + " h2"); if(head) head.focus && head.setAttribute("tabindex","-1"), head.focus({preventScroll:true});
       if(name === "discover") renderFocus();
       /* Nov 24 2026: Saved never re-rendered when opened, so
-         likes and bookmarks added since load did not show.
+         bookmarks added since load did not show.
          Refresh it every time Saved is opened. */
       if(name === "saved") renderPrep();
       /* Nov 23 2026: no Start check-in button. Opening I'm here
@@ -2657,8 +2658,9 @@
       });
       grid.appendChild(dayCard);
       body.appendChild(grid);
-      /* Card 5 — Menu preview, with a Like for the place and a
-         "Your order prep list" summary that updates live. */
+      /* Card 5 — Menu preview, with a "Your order prep list"
+         summary that updates live. No Like button: Bookmark is
+         the one way to save a place, Nov 24 2026. */
       var menuCard = document.createElement("section"); menuCard.className="ps-panel place-section"; menuCard.setAttribute("aria-label","Menu preview");
       var menuH=document.createElement("h3"); menuH.textContent="Menu preview"; menuCard.appendChild(menuH);
       var menuNote=document.createElement("p"); menuNote.className="ps-muted"; menuNote.textContent=p.menuNote; menuCard.appendChild(menuNote);
@@ -2678,13 +2680,6 @@
         card.appendChild(nm); card.appendChild(pr); card.appendChild(add); cards.appendChild(card);
       });
       menuCard.appendChild(cards);
-      /* Like, Nov 24 2026: a heart for the place, saved locally
-         like bookmarks, with a visible label, not colour alone. */
-      var likeBtn=document.createElement("button"); likeBtn.type="button"; likeBtn.className="ps-btn ps-btn-secondary ps-btn-small";
-      function paintLike(){ likeBtn.textContent = likes.has(p.id) ? "♥ Liked" : "♡ Like this place"; likeBtn.setAttribute("aria-pressed", likes.has(p.id) ? "true" : "false"); }
-      paintLike();
-      likeBtn.addEventListener("click", function(){ if(likes.has(p.id)) likes.delete(p.id); else likes.add(p.id); save("peerspect-likes-v1", Array.from(likes)); paintLike(); renderPrep(); });
-      menuCard.appendChild(likeBtn);
       var sumH=document.createElement("h3"); sumH.textContent="Your order prep list"; menuCard.appendChild(sumH);
       var summary=document.createElement("div"); summary.className="order-summary"; menuCard.appendChild(summary);
       function markMenuCards(){
@@ -2825,16 +2820,6 @@
       var bl=$("bookmark-list"); bl.innerHTML="";
       if(!bookmarks.size) bl.innerHTML="<li class='ps-muted'>No places bookmarked yet.</li>";
       Array.from(bookmarks).forEach(function(id){ var p=PLACES.find(function(x){ return x.id===id; }); if(p){ var li=document.createElement("li"); li.textContent=p.name+", "+p.area; bl.appendChild(li); } });
-      /* Liked places, Nov 24 2026: the Like button on the menu
-         preview saved to peerspect-likes-v1, but Saved never
-         read that list, so liking a place showed nothing
-         anywhere except the button label. Ginko liked a place
-         and found nothing in Saved. Liked places now render
-         here, with an Open button each, like bookmarks. */
-      var ll=$("like-list"); if(ll){ ll.innerHTML="";
-        if(!likes.size) ll.innerHTML="<li class='ps-muted'>No places liked yet.</li>";
-        Array.from(likes).forEach(function(id){ var p=PLACES.find(function(x){ return x.id===id; }); if(p){ var li=document.createElement("li"); li.textContent="♥ "+p.name+", "+p.area+" "; var open=document.createElement("button"); open.type="button"; open.className="ps-btn ps-btn-secondary ps-btn-small"; open.textContent="Open place"; open.addEventListener("click", function(){ showPlace(p.id); }); li.appendChild(open); ll.appendChild(li); } });
-      }
     }
     $("clear-prep").addEventListener("click", function(){ prep=[]; save("peerspect-prep-v1", prep); renderPrep(); });
     /* Your last visits, Nov 24 2026: was one comma-joined
