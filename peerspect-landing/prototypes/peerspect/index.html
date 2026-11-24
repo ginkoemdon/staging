@@ -41,6 +41,28 @@
         --teal-tint:#8ecdc0; --focus:#f6cf6e;
       }
     }
+    /* Card colours preview, Nov 24 2026: Ginko said the card
+       backgrounds felt off-putting, light and dark. Three switchable
+       options (A/B/C) plus Current, picked in the app header.
+       Only --bg/--card/--soft/--line/--line-soft/--tag-bg/--track/
+       --map-bg change; text and accent colours stay as they are, so
+       all text contrast stays AA (verified by calculation: lowest
+       is teal on card in B dark, 5.39:1). Card vs page separation
+       is by border plus shadow, not colour alone. This block sits
+       after the theme blocks, so it wins at equal specificity;
+       the dark variants pair data-theme="dark" with data-cards. */
+    html[data-cards="a"] { --bg:#f4f1ea; --card:#fffefa; --soft:#e9f0ea; --line:#c9c1ac; --line-soft:#e9e4d6; --tag-bg:#f1eee6; --track:#e9e4d6; --map-bg:#eef3ec; --card-shadow:0 2px 10px rgba(26,43,38,.10); }
+    html[data-theme="dark"][data-cards="a"] { --bg:#14201d; --card:#243530; --soft:#2a3f38; --line:#47645a; --line-soft:#2f453d; --tag-bg:#2a3f38; --track:#2f453d; --map-bg:#1d2f2a; --card-shadow:0 2px 10px rgba(0,0,0,.30); }
+    html[data-cards="b"] { --bg:#fdfbf7; --card:#f6efe3; --soft:#eef0e4; --line:#d9cdb2; --line-soft:#efe8d6; --tag-bg:#f3ecdd; --track:#efe8d6; --map-bg:#f0f2e6; --card-shadow:0 1px 4px rgba(26,43,38,.06); }
+    html[data-theme="dark"][data-cards="b"] { --bg:#16302c; --card:#2c4a3f; --soft:#2c4a3f; --line:#4a6a58; --line-soft:#334f44; --tag-bg:#334f44; --track:#334f44; --map-bg:#24403a; --card-shadow:0 1px 4px rgba(0,0,0,.25); }
+    html[data-cards="c"] { --bg:#fdfbf7; --card:#ffffff; --soft:#e8efe9; --line:#b9b2a0; --line-soft:#e3ddca; --tag-bg:#f0ede4; --track:#e3ddca; --map-bg:#eef4ea; --card-shadow:0 2px 12px rgba(26,43,38,.14); }
+    html[data-theme="dark"][data-cards="c"] { --bg:#101c19; --card:#2b3f38; --soft:#2b3f38; --line:#5c7a6c; --line-soft:#33473f; --tag-bg:#33473f; --track:#33473f; --map-bg:#1a2b26; --card-shadow:0 4px 16px rgba(0,0,0,.35); }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"])[data-cards="a"] { --bg:#14201d; --card:#243530; --soft:#2a3f38; --line:#47645a; --line-soft:#2f453d; --tag-bg:#2a3f38; --track:#2f453d; --map-bg:#1d2f2a; --card-shadow:0 2px 10px rgba(0,0,0,.30); }
+      html:not([data-theme="light"])[data-cards="b"] { --bg:#16302c; --card:#2c4a3f; --soft:#2c4a3f; --line:#4a6a58; --line-soft:#334f44; --tag-bg:#334f44; --track:#334f44; --map-bg:#24403a; --card-shadow:0 1px 4px rgba(0,0,0,.25); }
+      html:not([data-theme="light"])[data-cards="c"] { --bg:#101c19; --card:#2b3f38; --soft:#2b3f38; --line:#5c7a6c; --line-soft:#33473f; --tag-bg:#33473f; --track:#33473f; --map-bg:#1a2b26; --card-shadow:0 4px 16px rgba(0,0,0,.35); }
+    }
+    html[data-cards] :is(.ps-card,.ps-panel,.align-card,.menu-card,.quick-card,.biz-card,.biz-stat,.onboard-group,.peer-visual) { box-shadow:var(--card-shadow); }
     * { box-sizing:border-box; }
     html, body { height:100%; }
     body { margin:0; font-family:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size:16px; color:var(--ink); background:var(--bg); line-height:1.6; }
@@ -179,6 +201,15 @@
     .app-header .theme-toggle .theme-icon { display:block; }
     .app-close { width:40px; height:40px; min-width:40px; min-height:40px; border-radius:50%; border:1px solid var(--line); background:var(--card); color:var(--teal-dark); font-size:1.3rem; line-height:1; display:grid; place-items:center; }
     .app-close:hover { background:var(--soft); }
+    /* Card colours picker, Nov 24 2026 (preview only, not part of the
+       product): three card-background options plus Current, so Ginko
+       can compare them on real place cards in light and dark. The
+       pressed button is bold with a teal border and soft background,
+       never colour alone. */
+    .card-theme-picker { display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:10px 0 4px; font-size:.9rem; }
+    .card-theme-picker .card-theme-label { font-weight:700; color:var(--teal-dark); margin-right:2px; }
+    .card-theme-picker button { border:1.5px solid var(--line); background:var(--card); color:var(--ink); border-radius:999px; padding:8px 14px; min-height:44px; font-weight:600; }
+    .card-theme-picker button[aria-pressed="true"] { border:2px solid var(--teal); background:var(--soft); font-weight:700; }
     .web-wrap, .app-wrap { max-width:720px; margin:0 auto; padding:20px 16px 48px; }
     .web-wrap h2 { font-size:1.6rem; }
     .app-controls { display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:12px 0 4px; }
@@ -226,17 +257,9 @@
        chips. Same information as the text it replaces, just drawn.
        Every bar is labelled in words, so nothing is colour alone,
        and fills use var(--teal) so they stay readable in dark mode. */
-    .match-gauge { margin:12px 0 4px; }
-    .match-gauge .gauge-track { height:12px; border-radius:999px; background:var(--track); overflow:hidden; }
-    .match-gauge .gauge-fill { height:100%; background:var(--teal); border-radius:999px; }
-    .match-gauge p { margin:.4rem 0 0; font-weight:700; color:var(--teal-dark); }
     .detail-kv { display:grid; gap:8px; margin:12px 0; }
     .detail-kv div { display:flex; justify-content:space-between; gap:16px; border-bottom:1px solid var(--line-soft); padding:8px 0; }
     .detail-kv dt { font-weight:700; } .detail-kv dd { margin:0; text-align:right; }
-    .factor-bars { display:grid; gap:12px; margin:12px 0; }
-    .factor-bar p { margin:0 0 4px; }
-    .factor-bar .bar-track { height:10px; border-radius:999px; background:var(--track); overflow:hidden; }
-    .factor-bar .bar-fill { height:100%; background:var(--teal); border-radius:999px; }
     .menu-cards { display:grid; gap:12px; margin:12px 0; }
     .menu-card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
     .menu-card .menu-name { font-weight:700; }
@@ -248,6 +271,94 @@
     .peer-visual .peer-fill { height:100%; background:var(--teal); border-radius:999px; }
     .peer-notes { list-style:none; padding:0; margin:12px 0 0; display:grid; gap:8px; }
     .peer-notes li { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--teal); border-radius:12px; padding:12px 16px; font-size:.95rem; }
+    /* Place detail sections, Nov 24 2026: the page reads as labelled
+       cards, top to bottom: At a glance, Why this matches, How it
+       feels right now, Through the day, Menu preview, Peer reports,
+       Your visit. One heading per card, same spacing. Bars are only
+       used where the length is a real count or a real proportion of
+       a stated total, with the number and source written next to it. */
+    .place-section { margin:0 0 16px; }
+    .place-section > h3:first-child { margin:0 0 12px; font-size:1.05rem; color:var(--teal-dark); }
+    .place-section .detail-kv { margin:0; }
+    .place-section .peer-visual { margin:0; border:0; background:transparent; padding:0; }
+    .menu-card.is-added { border:2px solid var(--teal); background:var(--soft); }
+    .order-summary { border-top:1px solid var(--line-soft); margin-top:16px; padding-top:12px; }
+    .order-summary ul { list-style:none; padding:0; margin:8px 0; display:grid; gap:4px; }
+    .order-summary .order-total { font-weight:700; color:var(--teal-dark); margin:.5rem 0 0; }
+    .day-row { margin:0 0 12px; }
+    .day-row p { margin:0 0 4px; }
+    .day-row .day-num { font-weight:800; color:var(--teal-dark); white-space:nowrap; }
+    .day-row .bar-track { height:10px; border-radius:999px; background:var(--track); overflow:hidden; }
+    .day-row .bar-fill { height:100%; background:var(--teal); border-radius:999px; }
+    .visit-head { margin:0 0 8px; }
+    .visit-head strong { color:var(--teal-dark); }
+    .visit-sub { font-weight:700; margin:12px 0 4px; color:var(--teal-dark); }
+    .visit-order { list-style:none; padding:0; margin:8px 0; display:grid; gap:4px; }
+    .visit-order .order-total { font-weight:700; color:var(--teal-dark); margin:.5rem 0 0; }
+    /* Checkout cart, Nov 24 2026: grouped lines with quantity
+       steppers, then Subtotal, Tax, Tip, Total. */
+    .cart-lines { list-style:none; padding:0; margin:0; display:grid; gap:8px; }
+    .cart-line { display:flex; align-items:center; gap:8px; flex-wrap:wrap; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 12px; }
+    .cart-name { flex:1 1 40%; font-weight:600; }
+    .cart-stepper { display:flex; align-items:center; gap:4px; }
+    .cart-qty-btn { min-width:44px; min-height:44px; border-radius:10px; border:1px solid var(--line); background:var(--card); color:var(--ink); font-size:1.1rem; font-weight:700; }
+    .cart-qty { min-width:2.5em; text-align:center; font-weight:700; }
+    .cart-line-total { font-weight:700; color:var(--teal-dark); }
+    .cart-remove { min-height:44px; border:1px solid var(--line); background:transparent; color:var(--muted); border-radius:10px; padding:0 12px; }
+    .cart-money { display:grid; grid-template-columns:1fr auto; gap:6px 12px; margin:12px 0 0; }
+    .cart-money dt { color:var(--muted); }
+    .cart-money dd { margin:0; font-weight:700; text-align:right; }
+    .cart-money .cart-total-row { color:var(--teal-dark); font-weight:800; font-size:1.05rem; }
+    .tip-row { display:flex; gap:6px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
+    .tip-btn { min-height:44px; min-width:44px; padding:0 12px; border-radius:999px; border:1px solid var(--line); background:var(--card); color:var(--ink); font-weight:600; }
+    .tip-btn[aria-pressed="true"] { border:2px solid var(--teal); font-weight:800; outline:2px solid var(--teal); outline-offset:1px; }
+    .tip-amt { font-weight:700; }
+    /* Trust milestones, Nov 24 2026: medals and a trophy drawn in
+       code, with the next milestone highlighted. Locked vs
+       unlocked is shown with text, never colour alone. */
+    .milestone-track { display:grid; gap:12px; margin:12px 0; }
+    @media (min-width:640px){ .milestone-track { grid-template-columns:1fr 1fr; } }
+    .milestone { border:1px solid var(--line); border-radius:16px; padding:14px; background:var(--card); }
+    .milestone.next { border:2px solid var(--teal); padding:18px; }
+    .milestone.next .m-badge svg { width:64px; height:75px; }
+    .milestone.unlocked .m-badge svg { filter:drop-shadow(0 0 6px rgba(242,193,78,.55)); }
+    .milestone.locked .m-badge svg { opacity:.55; }
+    .m-badge { display:block; margin-bottom:8px; }
+    .m-badge svg { width:48px; height:56px; display:block; }
+    .milestone h4 { margin:0 0 4px; }
+    .milestone .m-status { font-weight:700; color:var(--teal-dark); margin:8px 0 0; }
+    .milestone.locked .m-status { color:var(--muted); }
+    .m-next-tag { display:inline-block; font-weight:800; font-size:.8rem; background:var(--honey); color:#3a2a00; border-radius:999px; padding:2px 10px; margin-bottom:6px; }
+    .m-bar { height:10px; border-radius:999px; background:var(--track); overflow:hidden; margin:4px 0 8px; }
+    .m-bar-fill { height:100%; background:var(--teal); border-radius:999px; }
+    /* Note per item line, Nov 24 2026. */
+    .cart-note-wrap { flex:1 1 100%; }
+    .cart-note { margin:4px 0; font-size:.92rem; color:var(--muted); }
+    .cart-note-btn { margin-top:4px; }
+    .note-editor { margin-top:8px; display:grid; gap:8px; }
+    .note-editor label { font-weight:600; font-size:.92rem; display:grid; gap:4px; }
+    .note-editor input { min-height:44px; border:1px solid var(--line); border-radius:10px; padding:0 12px; font-size:1rem; background:var(--card); color:var(--ink); width:100%; }
+    .note-chips { display:flex; gap:6px; flex-wrap:wrap; }
+    /* Budget, Nov 24 2026: per outing, not per place. */
+    .budget-box { border:1px solid var(--line); border-radius:12px; padding:12px; margin:0 0 12px; background:var(--card); }
+    .budget-q { font-weight:700; margin:0 0 8px; }
+    .budget-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .budget-row input { min-height:44px; flex:1 1 120px; border:1px solid var(--line); border-radius:10px; padding:0 12px; font-size:1rem; background:var(--card); color:var(--ink); }
+    .budget-chips { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+    .budget-under { font-weight:700; color:var(--teal-dark); margin:8px 0 0; }
+    .budget-over { font-weight:800; color:var(--ink); margin:8px 0 0; }
+    /* "What you got" log, Nov 24 2026: checklist of the menu,
+       one item at a time, with a "how it was" note and a rating
+       per item. The order note is what to ask for; this note is
+       how it was. */
+    .log-item { border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin:0 0 8px; background:var(--card); }
+    .log-check { display:flex; align-items:center; gap:10px; min-height:44px; font-weight:600; }
+    .log-check input { width:24px; height:24px; flex:0 0 auto; }
+    .log-detail { display:grid; gap:8px; margin-top:8px; }
+    .log-detail label { font-weight:600; font-size:.92rem; display:grid; gap:4px; }
+    .log-detail input[type="text"] { min-height:44px; border:1px solid var(--line); border-radius:10px; padding:0 12px; font-size:1rem; background:var(--card); color:var(--ink); width:100%; }
+    .log-entry { border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin:0 0 8px; background:var(--card); }
+    .log-entry p { margin:0 0 6px; }
     @media (min-width: 700px) { .menu-cards { grid-template-columns:repeat(3, minmax(0,1fr)); } .menu-card { flex-direction:column; align-items:flex-start; } }
     .screen-head p { margin:.2rem 0 .4rem; color:var(--muted); font-size:.96rem; }
     .screen-scroll { padding:8px 0 20px; display:flex; flex-direction:column; gap:16px; }
@@ -396,9 +507,6 @@
     .align-card ul:not(.ps-tags) li { display:flex; gap:10px; align-items:baseline; }
     .align-card li .align-yes { font-weight:700; color:var(--teal-dark); }
     .align-card li .align-no { color:var(--muted); }
-    .align-card .align-dot { flex:0 0 auto; width:.7rem; height:.7rem; border-radius:50%; display:inline-block; }
-    .align-card .align-dot.yes { background:#2f5d3e; }
-    .align-card .align-dot.no { background:var(--line); border:1px solid var(--muted); }
     .align-card .align-summary { margin:.75rem 0 0; padding-top:.75rem; border-top:1px solid var(--line); font-weight:700; color:var(--teal-dark); }
     .align-line { display:block; margin-top:.5rem; font-weight:600; color:var(--teal-dark); }
     .align-line::before { content:"\2713  "; font-weight:700; }
@@ -532,12 +640,13 @@
     #view-app .screen-foot .ps-btn-secondary { background:none; border:0; box-shadow:none; text-decoration:underline; font-weight:600; }
     #view-app .ps-btn-small { padding:10px 14px; min-height:40px; }
     /* Choosing chips match the card tags, Nov 24 2026: same oval pill,
-       same neutral background/border/dark text, same small group-colour
-       dot inside (see dot rules after the uniform tag block). The old
+       same neutral background/border/dark text. The old
        rectangle (12px radius) and solid per-group pressed colours are
        gone, so a chip looks the same in onboarding, in Filters and
        sort, and on a place card. Pressed stays clear without colour:
-       tick + bold + 3px border/outline (line 714). */
+       tick + bold + 3px border/outline (line 714). Nov 24 2026:
+       the small group-colour dots were removed too, Ginko said they
+       did not help. Tags and chips are plain neutral pills now. */
     #view-app .ps-chip { display:inline-flex; align-items:center; gap:6px; background:var(--tag-bg); border:1px solid var(--line); color:var(--ink); border-radius:999px; padding:11px 14px; min-height:44px; font-size:.9rem; font-weight:500; transition:transform .12s ease, background .15s ease; }
     #view-app .ps-chip:active { transform:scale(.97); }
     #view-app .ps-card, #view-app .ps-panel { border-radius:20px; padding:16px; border:1px solid var(--line); box-shadow:0 1px 3px rgba(26,43,38,.08); }
@@ -574,9 +683,10 @@
        #14665a, Context amber #8a4a08. Inclusion reuses the teal-tint
        #8ecdc0 (the lightest, most open colour) and Menu reuses pine
        (Access), so no new brand colour is invented. The same
-       mapping is used for the group left borders, the small
-       group-colour dot inside each chip and tag, the landing
-       pillar tags and the place-card tags. Pressed chips stay
+       mapping is used for the group left borders only now; the dots
+       were removed Nov 24 2026, Ginko said they did not help.
+       The landing pillar tags and the place-card tags are plain
+       neutral pills now. Pressed chips stay
        the same neutral pill as unpressed ones: the tick and
        3px border/outline on pressed chips stay, so selection
        is never colour alone, and no solid per-group colour
@@ -619,9 +729,6 @@
     #view-app .align-card ul:not(.ps-tags) li { display:flex; gap:10px; align-items:baseline; }
     #view-app .align-card li .align-yes { font-weight:700; color:var(--teal-dark); }
     #view-app .align-card li .align-no { color:var(--muted); }
-    #view-app .align-card .align-dot { flex:0 0 auto; width:.7rem; height:.7rem; border-radius:50%; display:inline-block; }
-    #view-app .align-card .align-dot.yes { background:#2f5d3e; }
-    #view-app .align-card .align-dot.no { background:var(--line); border:1px solid var(--muted); }
     #view-app .align-card .align-summary { margin:.75rem 0 0; padding-top:.75rem; border-top:1px solid var(--line); font-weight:700; color:var(--teal-dark); }
     /* "Why this matches" oval tags, Nov 24 2026: the grid rule above
        used to stretch every tag full-width. Tag lists are flex and
@@ -756,15 +863,13 @@
     /* Uniform match tags, Nov 24 2026: Ginko said the different
        colours on every label looked messy, a lot. All tags are now
        the same neutral pill (same background, border and dark text
-       in both themes), and the group colour lives only in a small
-       dot inside the tag. The dot is an extra cue only; the filter
-       text stays, so nothing relies on colour alone. Dot colours
-       use the theme variables, so they stay visible in dark mode
-       too (hardcoded pine/teal/amber would vanish on the dark tag
-       background). This block sits after both per-group colour
+       in both themes), with the filter text and a tick, so nothing
+       relies on colour alone. Nov 24 2026: the small group-colour
+       dots inside the tags were removed too, Ginko said they did
+       not help. This block sits after both per-group colour
        blocks above, same selectors, so it wins. The landing pillar
        tags share this component, so they get the same uniform
-       pill and dot. Muted dashed "Not matched here" tags were
+       pill. Muted dashed "Not matched here" tags were
        already neutral, so they are unchanged. */
     #view-app .ps-tags li.tag-access, #view-app .ps-tags li.tag-sensory,
     #view-app .ps-tags li.tag-env, #view-app .ps-tags li.tag-context,
@@ -773,22 +878,6 @@
     #view-app .ps-tags span.tag-env, #view-app .ps-tags span.tag-context,
     #view-app .ps-tags span.tag-inclusion, #view-app .ps-tags span.tag-menu { background:var(--tag-bg); border:1px solid var(--line); color:var(--ink); font-weight:700; }
     #view-app .ps-tags li[class*="tag-"], #view-app .ps-tags span[class*="tag-"] { display:inline-flex; align-items:center; gap:6px; }
-    .tag-dot, #view-app .tag-dot { flex:0 0 auto; width:.65rem; height:.65rem; border-radius:50%; display:inline-block; box-shadow:0 0 0 1px rgba(26,43,38,.25); }
-    #view-app .ps-tags li.tag-access .tag-dot, #view-app .ps-tags span.tag-access .tag-dot { background:var(--pine); }
-    #view-app .ps-tags li.tag-sensory .tag-dot, #view-app .ps-tags span.tag-sensory .tag-dot { background:var(--honey); }
-    #view-app .ps-tags li.tag-env .tag-dot, #view-app .ps-tags span.tag-env .tag-dot { background:var(--teal); }
-    #view-app .ps-tags li.tag-context .tag-dot, #view-app .ps-tags span.tag-context .tag-dot { background:var(--amber); }
-    #view-app .ps-tags li.tag-inclusion .tag-dot, #view-app .ps-tags span.tag-inclusion .tag-dot { background:var(--teal-tint); }
-    #view-app .ps-tags li.tag-menu .tag-dot, #view-app .ps-tags span.tag-menu .tag-dot { background:var(--pine); }
-    /* Choosing chips carry the same dot as the card tags, Nov 24 2026:
-       same per-group colours, same theme variables, so the dot stays
-       visible in dark mode too. */
-    #view-app .ps-chip[data-group="access"] .tag-dot { background:var(--pine); }
-    #view-app .ps-chip[data-group="sensory"] .tag-dot { background:var(--honey); }
-    #view-app .ps-chip[data-group="environment"] .tag-dot { background:var(--teal); }
-    #view-app .ps-chip[data-group="context"] .tag-dot { background:var(--amber); }
-    #view-app .ps-chip[data-group="inclusion"] .tag-dot { background:var(--teal-tint); }
-    #view-app .ps-chip[data-group="menu"] .tag-dot { background:var(--pine); }
     #view-app .discover-filters { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:12px 16px; }
     #view-app .discover-filters summary { font-weight:700; color:var(--teal-dark); min-height:44px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; list-style:none; }
     #view-app .discover-filters summary::-webkit-details-marker { display:none; }
@@ -1196,6 +1285,13 @@
       <button class="theme-toggle" type="button" data-theme-btn aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">☾</span></button>
       <button class="app-close" id="close-app" type="button" aria-label="Close prototype and return to case study">&times;</button>
     </div>
+    <div class="card-theme-picker" role="group" aria-label="Card colours, preview only">
+      <span class="card-theme-label">Card colours (preview):</span>
+      <button type="button" data-cards-btn="current" aria-pressed="true">Current</button>
+      <button type="button" data-cards-btn="a" aria-pressed="false">A · Clean neutral</button>
+      <button type="button" data-cards-btn="b" aria-pressed="false">B · Soft tinted</button>
+      <button type="button" data-cards-btn="c" aria-pressed="false">C · Editorial</button>
+    </div>
     <main id="main" class="app-main">
       <!-- 0. LANDING — first screen, before onboarding. -->
       <section class="screen landing" id="screen-landing" aria-labelledby="landing-h" hidden>
@@ -1207,7 +1303,7 @@
           <p><strong>Your guide to how places actually feel.</strong></p>
         </div>
         <div class="screen-scroll">
-          <ul class="ps-tags"><li class="tag-access"><span class="tag-dot" aria-hidden="true"></span>Access</li><li class="tag-sensory"><span class="tag-dot" aria-hidden="true"></span>Sensory</li><li class="tag-env"><span class="tag-dot" aria-hidden="true"></span>Environment</li><li class="tag-context"><span class="tag-dot" aria-hidden="true"></span>Context</li></ul>
+          <ul class="ps-tags"><li class="tag-access">Access</li><li class="tag-sensory">Sensory</li><li class="tag-env">Environment</li><li class="tag-context">Context</li></ul>
           <p>Peer reports, anonymous, one question at a time.</p>
           <p class="ps-muted">Demo: sample Montreal establishments only.</p>
         </div>
@@ -1346,7 +1442,7 @@
 
       <!-- 4. SAVED -->
       <section class="screen" id="screen-saved" aria-labelledby="profiles-h" hidden>
-        <div class="screen-head"><h2 id="profiles-h">Saved</h2><p>Profiles, prep list, and bookmarks. Demo only, in this browser.</p></div>
+        <div class="screen-head"><h2 id="profiles-h">Saved</h2><p>Profiles, order prep list, and bookmarks. Demo only, in this browser.</p></div>
         <div class="screen-scroll">
           <section class="ps-panel" aria-labelledby="save-profile-h">
             <h3 id="save-profile-h">Save today's filters</h3>
@@ -1357,9 +1453,9 @@
             <ul id="profile-list"></ul>
           </section>
           <section class="ps-panel" aria-labelledby="prep-h">
-            <h3 id="prep-h">My prep list</h3>
-            <ul id="prep-list"></ul>
-            <button class="ps-btn ps-btn-secondary ps-btn-small" id="clear-prep" type="button">Clear prep list</button>
+            <h3 id="prep-h">My order prep list</h3>
+            <div id="prep-list"></div>
+            <button class="ps-btn ps-btn-secondary ps-btn-small" id="clear-prep" type="button">Clear order prep list</button>
             <h3>Bookmarked places</h3>
             <ul id="bookmark-list"></ul>
           </section>
@@ -1372,6 +1468,9 @@
           <section class="ps-panel" aria-labelledby="trust-h">
             <h3 id="trust-h">Trust, anonymously</h3>
             <p><span class="ps-badge" id="trust-badge">Reliable observer — not earned yet</span></p>
+            <p id="trust-sub"></p>
+            <div id="milestone-track" class="milestone-track"></div>
+            <p class="ps-muted">Milestone thresholds are for this demo only. Counts are local to this device and anonymous: no name, no individual report shown.</p>
             <p class="ps-muted" id="trust-note">Complete a live check-in and have peers confirm it, and you earn trust points. In this demo, your own confirmed reports are counted locally.</p>
             <p><button class="ps-btn ps-btn-secondary ps-btn-small" id="report-misuse" type="button">Report misuse (demo only)</button></p>
             <p id="misuse-note" class="ps-note" hidden>Thanks. In the real app this would go to a moderator, anonymously. In this demo nothing was sent.</p>
@@ -1476,8 +1575,8 @@
        tags:["step-free","seating-comfy","restroom-accessible","gender-neutral-restroom","lighting-dim","lighting-ambient","sound-quiet","crowding-low","smell-neutral","artsy","quiet-chat","coworking","service-patient","service-calm","communication-clear","pronoun-respect","queer-friendly","price-transparent","language-french","language-english","language-spanish","language-arabic","language-italian","menu-physical","menu-preview","menu-accessible","diet-gluten-free","diet-vegan","diet-lactose-free","diet-halal","diet-vegetarian","diet-cultural","online-meetings","temp-comfortable","clean","dog-friendly","asl-service","asl-order","written-order","hearing-loop","order-verbal","order-online","order-ahead","order-takeout","sensory-quiet-nook","sensory-low-hours","sensory-no-flash","sensory-fragrance-free","sensory-no-sudden-noise","vision-contrast-tables","vision-contrast-tableware","vision-even-light","vision-clear-paths","vision-marked-glass","vision-tactile-lines","vision-step-edges","vision-large-print","vision-read-aloud","vision-high-contrast-signs","vision-no-pattern","language-lsq","lsq-order","hearing-face-you","hearing-written-confirm","restroom-sharps","restroom-private","diet-sugar-free","menu-nutrition","menu-free-water"],
        lighting:"Dim, ambient — good contrast at tables", sound:"Soft music, no TV", soundLevel:"Soft", soundSources:["Music, soft","Talking, quiet","Machines, espresso machine, occasional"], crowding:"Usually calm, busier at 10am",
        access:"Step-free entry, accessible restroom, gender-neutral restroom", menuNote:"Physical menu at the counter, plus a preview online. Large print on request.",
-       confirmed:42, day:[["Morning","Calm, bright at the window"],["Midday","Calm, dim and warm"],["Evening","Quiet, soft lighting"]],
-       menu:[{n:"Oat latte",p:"$5.50"},{n:"Croissant, butter",p:"$4.00"},{n:"Soup of the day",p:"$9.00"}],
+       confirmed:42, day:[["Morning","Calm, bright at the window"],["Midday","Calm, dim and warm"],["Evening","Quiet, soft lighting"]], dayCounts:[12,18,12],
+       menu:[{n:"Oat latte",p:"$5.50"},{n:"Flat white",p:"$5.00"},{n:"Herbal tea",p:"$4.50"},{n:"Sparkling water",p:"$3.00"},{n:"Croissant, butter",p:"$4.00"},{n:"Banana bread",p:"$4.50"},{n:"Avocado toast",p:"$11.00"},{n:"Soup of the day",p:"$9.00"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
@@ -1489,8 +1588,8 @@
        tags:["seating-comfy","lighting-bright","lighting-big","sound-music","crowding-busy","retro","nostalgic","socialising","service-fast","communication-clear","price-transparent","language-french","language-english","language-italian","language-creole","menu-qr","menu-preview","written-order","diet-vegetarian","order-verbal","order-call","order-click-collect","order-takeout","sensory-no-flash","vision-contrast-tableware","vision-step-edges","vision-high-contrast-signs","hearing-captions","hearing-written-confirm","diet-sugar-free"],
        lighting:"Bright, big overhead light", sound:"Music and chatter, TV on in the corner", soundLevel:"Loud", soundSources:["Music, loud","Talking, loud","TV, on in the corner"], crowding:"Busy at lunch, lively",
        access:"Step up at the door, no gender-neutral restroom listed", menuNote:"QR-code menu only, preview online. Ask staff for a printed copy.",
-       confirmed:27, day:[["Morning","Bright, lively"],["Midday","Busy, loud"],["Evening","Lively, warm light"]],
-       menu:[{n:"Diner breakfast",p:"$12.00"},{n:"Milkshake",p:"$7.50"},{n:"Grilled cheese",p:"$10.00"}],
+       confirmed:27, day:[["Morning","Bright, lively"],["Midday","Busy, loud"],["Evening","Lively, warm light"]], dayCounts:[7,12,8],
+       menu:[{n:"Diner breakfast",p:"$12.00"},{n:"Coffee, bottomless",p:"$3.50"},{n:"Orange juice",p:"$4.50"},{n:"Grilled cheese",p:"$10.00"},{n:"Poutine",p:"$11.00"},{n:"Club sandwich",p:"$13.00"},{n:"Milkshake",p:"$7.50"},{n:"Pie of the day",p:"$6.50"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines","TV"]},
@@ -1502,8 +1601,8 @@
        tags:["step-free","seating-comfy","lighting-ambient","lighting-dim","sound-quiet","sound-music","crowding-low","bohemian","artsy","coworking","quiet-chat","service-patient","service-calm","pronoun-respect","queer-friendly","staff-representation","price-transparent","language-french","language-english","language-mandarin","language-arabic","menu-physical","menu-preview","menu-accessible","diet-vegan","diet-gluten-free","diet-vegetarian","diet-halal","diet-cultural","online-meetings","temp-comfortable","clean","order-verbal","order-online","order-ahead","order-takeout","sensory-quiet-nook","sensory-no-flash","sensory-fragrance-free","sensory-no-music","sensory-no-sudden-noise","vision-contrast-tables","vision-even-light","vision-clear-paths","vision-large-print","vision-braille","vision-read-aloud","vision-high-contrast-signs","vision-no-pattern","hearing-face-you","hearing-written-confirm","restroom-sharps","restroom-private","diet-sugar-free","menu-free-water"],
        lighting:"Ambient, dim corners, bright reading lamps", sound:"Quiet, occasional soft music", soundLevel:"Quiet", soundSources:["Music, soft, occasional","Talking, quiet","Machines, none noted"], crowding:"Usually calm",
        access:"Step-free entry, comfy seating, staff happy to help", menuNote:"Physical menu, preview online. Tell staff your access needs and they will help.",
-       confirmed:38, day:[["Morning","Calm, good for working"],["Midday","Calm, a little busier"],["Evening","Quiet, bookish"]],
-       menu:[{n:"Herbal tea",p:"$4.50"},{n:"Toast with jam",p:"$5.00"},{n:"Lentil soup",p:"$8.50"}],
+       confirmed:38, day:[["Morning","Calm, good for working"],["Midday","Calm, a little busier"],["Evening","Quiet, bookish"]], dayCounts:[10,16,12],
+       menu:[{n:"Herbal tea",p:"$4.50"},{n:"Drip coffee",p:"$3.50"},{n:"Hot chocolate",p:"$5.00"},{n:"Lemonade",p:"$4.50"},{n:"Toast with jam",p:"$5.00"},{n:"Veggie sandwich",p:"$10.50"},{n:"Lentil soup",p:"$8.50"},{n:"Scone",p:"$4.00"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
@@ -1515,8 +1614,8 @@
        tags:["step-free","restroom-accessible","lighting-bright","lighting-ambient","sound-music","crowding-busy","nostalgic","socialising","coworking","service-patient","communication-clear","price-transparent","language-french","language-english","language-spanish","language-creole","language-mandarin","menu-qr","menu-preview","menu-accessible","diet-vegan","diet-gluten-free","diet-vegetarian","diet-cultural","outdoor-space","airflow","order-verbal","order-call","order-online","order-click-collect","order-takeout","sensory-low-hours","sensory-no-flash","sensory-fragrance-free","sensory-no-music","sensory-no-sudden-noise","vision-contrast-tables","vision-even-light","vision-clear-paths","vision-marked-glass","vision-tactile-lines","vision-large-print","vision-braille","vision-read-aloud","language-lsq","lsq-order","hearing-captions","hearing-face-you","restroom-sharps","restroom-private","diet-sugar-free","menu-nutrition","menu-free-water"],
        lighting:"Bright by day, ambient in the evening", sound:"Music, lively at events", soundLevel:"Lively", soundSources:["Music, lively at events","Talking, loud at events","Machines, none noted"], crowding:"Busy on event days, calm on weekdays",
        access:"Step-free entry, accessible restroom", menuNote:"QR menu, preview online, large print on request.",
-       confirmed:19, day:[["Morning","Bright, calm"],["Midday","Busy at lunch"],["Evening","Event nights are lively"]],
-       menu:[{n:"Espresso",p:"$3.50"},{n:"Salad bowl",p:"$11.00"},{n:"Cake of the day",p:"$6.00"}],
+       confirmed:19, day:[["Morning","Bright, calm"],["Midday","Busy at lunch"],["Evening","Event nights are lively"]], dayCounts:[6,8,5],
+       menu:[{n:"Espresso",p:"$3.50"},{n:"Cappuccino",p:"$5.00"},{n:"Iced tea",p:"$4.50"},{n:"Salad bowl",p:"$11.00"},{n:"Quiche of the day",p:"$10.00"},{n:"Hummus plate",p:"$9.50"},{n:"Cake of the day",p:"$6.00"},{n:"Fruit cup",p:"$5.50"}],
        live:[
          {q:"How loud is it right now?", a:["Quiet","A bit loud","Loud"]},
          {q:"What is the sound right now?", multi:true, a:["Music","Talking","Machines"]},
@@ -1528,10 +1627,232 @@
     function load(key, fallback){ try { var v = JSON.parse(localStorage.getItem(key)); return v == null ? fallback : v; } catch(e){ return fallback; } }
     function save(key, val){ try { localStorage.setItem(key, JSON.stringify(val)); } catch(e){} }
     var selectedFilters = [], activeFilters = new Set(), bookmarks = new Set(load("peerspect-bookmarks-v1", []));
+    var likes = new Set(load("peerspect-likes-v1", []));
+    function priceNum(s){ var n=parseFloat(String(s).replace(/[^0-9.]/g,"")); return isNaN(n)?0:n; }
+    /* Order snapshot, Nov 24 2026: when a visit is saved, the items
+       ordered on that visit are snapshotted with it (item, quantity,
+       price). "What you got" reads from that snapshot, never from
+       the current prep list, which is a different thing. */
+    function snapshotOrder(placeId, placeName){
+      var mine = prep.filter(function(it){ return it.placeId===placeId || it.place===placeName; });
+      var byItem = {}, order = [];
+      mine.forEach(function(it){
+        var k = it.item + "|" + (it.note||"");
+        if(!byItem[k]){ byItem[k] = {item:it.item, qty:0, price:it.price, note:it.note||""}; order.push(byItem[k]); }
+        byItem[k].qty++;
+      });
+      return order;
+    }
+    function orderTotal(order){ var t=0; (order||[]).forEach(function(o){ t += priceNum(o.price)*o.qty; }); return t; }
+    function money(n){ return "$" + n.toFixed(2); }
+    /* Checkout cart, Nov 24 2026: the prep list works like a cart.
+       The same item shows once, with a quantity. Money: Subtotal,
+       Tax, Tip, Total. Tax is the Montreal sample rate, GST 5% +
+       QST 9.975% on the subtotal. Tip is a choice, on the subtotal,
+       and is not taxed. All sample prices in CAD. */
+    var tipRate = load("peerspect-tip-v1", 0);
+    if([0, 0.10, 0.15, 0.20].indexOf(tipRate)<0) tipRate = 0;
+    var orderSummaryRefresh = null;
+    function groupPrep(items){
+      var byKey = {}, out = [];
+      items.forEach(function(it){
+        var k = (it.placeId||it.place) + "|" + it.item + "|" + (it.note||"");
+        if(!byKey[k]){ byKey[k] = {item:it.item, price:it.price, place:it.place, placeId:it.placeId, note:it.note||"", qty:0}; out.push(byKey[k]); }
+        byKey[k].qty++;
+      });
+      return out;
+    }
+    function cartTotals(items){
+      var sub = 0; items.forEach(function(it){ sub += priceNum(it.price); });
+      var tax = sub * (0.05 + 0.09975), tip = sub * tipRate;
+      return {sub:sub, tax:tax, tip:tip, total:sub+tax+tip};
+    }
+    function refreshCarts(){
+      renderPrep();
+      var pd = $("screen-place");
+      if(orderSummaryRefresh && pd && !pd.hidden) orderSummaryRefresh();
+    }
+    function changePrepQty(itemName, placeId, delta, note){
+      note = note||"";
+      if(delta > 0){
+        var src = prep.find(function(it){ return it.item===itemName && it.placeId===placeId && (it.note||"")===note; });
+        if(src) prep.push({item:src.item, price:src.price, place:src.place, placeId:src.placeId, note:src.note});
+      } else {
+        var idx = -1;
+        for(var i=0;i<prep.length;i++){ if(prep[i].item===itemName && prep[i].placeId===placeId && (prep[i].note||"")===note){ idx=i; break; } }
+        if(idx>=0) prep.splice(idx,1);
+      }
+      save("peerspect-prep-v1", prep); refreshCarts();
+    }
+    function removePrepItem(itemName, placeId, note){
+      note = note||"";
+      prep = prep.filter(function(it){ return !(it.item===itemName && it.placeId===placeId && (it.note||"")===note); });
+      save("peerspect-prep-v1", prep); refreshCarts();
+    }
+    /* Budget, Nov 24 2026: per outing, not per place. Saved
+       locally. Clearing the prep list does not clear the budget. */
+    var budget = load("peerspect-budget-v1", null);
+    if(typeof budget!=="number" || budget<=0) budget = null;
+    function setBudget(v){ budget = (typeof v==="number" && v>0) ? Math.round(v*100)/100 : null; save("peerspect-budget-v1", budget); refreshCarts(); }
+    function budgetSection(container){
+      var box=document.createElement("div"); box.className="budget-box";
+      var outing = cartTotals(prep);
+      var h=document.createElement("p"); h.className="budget-q"; h.textContent="What's your budget for this outing?";
+      box.appendChild(h);
+      if(budget==null){
+        var row=document.createElement("div"); row.className="budget-row";
+        var inp=document.createElement("input"); inp.type="number"; inp.min="0"; inp.step="1"; inp.inputMode="decimal";
+        inp.setAttribute("aria-label","Budget in Canadian dollars"); inp.placeholder="$ CAD";
+        row.appendChild(inp);
+        var set=document.createElement("button"); set.type="button"; set.className="ps-btn ps-btn-small"; set.textContent="Set budget";
+        set.addEventListener("click", function(){ var v=parseFloat(inp.value); if(!isNaN(v) && v>0) setBudget(v); else inp.focus(); });
+        row.appendChild(set);
+        box.appendChild(row);
+        var chips=document.createElement("div"); chips.className="budget-chips";
+        [10,15,20,30].forEach(function(v){
+          var c=document.createElement("button"); c.type="button"; c.className="tip-btn"; c.textContent="$"+v;
+          c.setAttribute("aria-label","Set budget to $"+v);
+          c.addEventListener("click", function(){ setBudget(v); });
+          chips.appendChild(c);
+        });
+        box.appendChild(chips);
+      } else {
+        var total = outing.total;
+        var diff = budget - total;
+        var line=document.createElement("p");
+        line.textContent = "Budget " + money(budget) + " · Outing total " + money(total) + " of " + money(budget) + " budget.";
+        box.appendChild(line);
+        var bar=document.createElement("div"); bar.className="m-bar"; bar.setAttribute("role","img");
+        bar.setAttribute("aria-label","Outing total " + money(total) + " of " + money(budget) + " budget");
+        var fill=document.createElement("div"); fill.className="m-bar-fill";
+        fill.style.width = Math.min(100, Math.round(total/budget*100)) + "%";
+        bar.appendChild(fill); box.appendChild(bar);
+        var verdict=document.createElement("p"); verdict.className = diff>=0 ? "budget-under" : "budget-over";
+        verdict.textContent = diff>=0 ? money(diff) + " under budget" : "Over budget — " + money(-diff) + " over budget";
+        box.appendChild(verdict);
+        var actions=document.createElement("div"); actions.className="budget-row";
+        var change=document.createElement("button"); change.type="button"; change.className="ps-btn ps-btn-secondary ps-btn-small"; change.textContent="Change budget";
+        change.addEventListener("click", function(){ setBudget(null); });
+        var clear=document.createElement("button"); clear.type="button"; clear.className="ps-btn ps-btn-secondary ps-btn-small"; clear.textContent="Clear budget";
+        clear.addEventListener("click", function(){ setBudget(null); });
+        actions.appendChild(change); actions.appendChild(clear); box.appendChild(actions);
+      }
+      container.appendChild(box);
+    }
+    function renderCartInto(container, items, opts){
+      container.innerHTML = "";
+      budgetSection(container);
+      var grouped = groupPrep(items);
+      if(!grouped.length){
+        var empty=document.createElement("p"); empty.className="ps-muted";
+        empty.textContent = opts.emptyText || "Nothing yet.";
+        container.appendChild(empty);
+        return;
+      }
+      var list=document.createElement("ul"); list.className="cart-lines";
+      grouped.forEach(function(g){
+        var li=document.createElement("li"); li.className="cart-line";
+        var name=document.createElement("span"); name.className="cart-name";
+        name.textContent = g.item + (opts.showPlace ? " (" + g.place + ")" : "");
+        li.appendChild(name);
+        var stepper=document.createElement("span"); stepper.className="cart-stepper";
+        var minus=document.createElement("button"); minus.type="button"; minus.className="cart-qty-btn"; minus.textContent="−"; minus.setAttribute("aria-label","One fewer " + g.item);
+        minus.addEventListener("click", function(){ changePrepQty(g.item, g.placeId, -1, g.note); });
+        var qty=document.createElement("span"); qty.className="cart-qty"; qty.textContent="x" + g.qty;
+        var plus=document.createElement("button"); plus.type="button"; plus.className="cart-qty-btn"; plus.textContent="+"; plus.setAttribute("aria-label","One more " + g.item);
+        plus.addEventListener("click", function(){ changePrepQty(g.item, g.placeId, 1, g.note); });
+        stepper.appendChild(minus); stepper.appendChild(qty); stepper.appendChild(plus);
+        li.appendChild(stepper);
+        var lineTotal=document.createElement("span"); lineTotal.className="cart-line-total";
+        lineTotal.textContent = money(priceNum(g.price)*g.qty);
+        li.appendChild(lineTotal);
+        var rm=document.createElement("button"); rm.type="button"; rm.className="cart-remove"; rm.textContent="Remove"; rm.setAttribute("aria-label","Remove " + g.item);
+        rm.addEventListener("click", function(){ removePrepItem(g.item, g.placeId, g.note); });
+        li.appendChild(rm);
+        /* Note per item line, Nov 24 2026: saved with the item in
+           the same prep data, shown under the item, carried into
+           the order summary and the visit snapshot. It never
+           changes the price. */
+        var noteWrap=document.createElement("div"); noteWrap.className="cart-note-wrap";
+        if(g.note){
+          var noteP=document.createElement("p"); noteP.className="cart-note"; noteP.textContent="Order note: " + g.note;
+          noteWrap.appendChild(noteP);
+        }
+        var noteBtn=document.createElement("button"); noteBtn.type="button"; noteBtn.className="ps-btn ps-btn-secondary ps-btn-small cart-note-btn";
+        noteBtn.textContent = g.note ? "Edit note" : "Add a note";
+        noteBtn.setAttribute("aria-expanded","false");
+        var editor=document.createElement("div"); editor.className="note-editor"; editor.hidden=true;
+        var lab=document.createElement("label"); lab.textContent="Order note for " + g.item + " (what to ask for)";
+        var noteInput=document.createElement("input"); noteInput.type="text"; noteInput.value=g.note||"";
+        noteInput.setAttribute("aria-label","Order note for " + g.item);
+        noteInput.placeholder="e.g. oat milk, no sweetener";
+        lab.appendChild(noteInput); editor.appendChild(lab);
+        var chips=document.createElement("div"); chips.className="note-chips";
+        ["oat milk","almond milk","soy milk","no sweetener","extra shot","decaf"].forEach(function(chip){
+          var cb=document.createElement("button"); cb.type="button"; cb.className="tip-btn"; cb.textContent=chip;
+          cb.addEventListener("click", function(){
+            var cur=noteInput.value.trim();
+            noteInput.value = cur ? cur.replace(/,\s*$/,"") + ", " + chip : chip;
+            noteInput.focus();
+          });
+          chips.appendChild(cb);
+        });
+        editor.appendChild(chips);
+        var saveNote=document.createElement("button"); saveNote.type="button"; saveNote.className="ps-btn ps-btn-small"; saveNote.textContent="Save note";
+        saveNote.addEventListener("click", function(){
+          var v=noteInput.value.trim();
+          prep.forEach(function(it){ if(it.item===g.item && it.placeId===g.placeId && (it.note||"")===(g.note||"")){ if(v) it.note=v; else delete it.note; } });
+          save("peerspect-prep-v1", prep); refreshCarts();
+        });
+        editor.appendChild(saveNote);
+        noteBtn.addEventListener("click", function(){
+          editor.hidden = !editor.hidden;
+          noteBtn.setAttribute("aria-expanded", editor.hidden ? "false" : "true");
+          if(!editor.hidden) noteInput.focus();
+        });
+        noteWrap.appendChild(noteBtn); noteWrap.appendChild(editor);
+        li.appendChild(noteWrap);
+        list.appendChild(li);
+      });
+      container.appendChild(list);
+      var t = cartTotals(items);
+      var moneyBox=document.createElement("dl"); moneyBox.className="cart-money";
+      function moneyRow(label, value, total){
+        var dt=document.createElement("dt"); dt.textContent=label;
+        var dd=document.createElement("dd"); dd.textContent=value;
+        if(total){ dt.className="cart-total-row"; dd.className="cart-total-row"; }
+        moneyBox.appendChild(dt); moneyBox.appendChild(dd);
+      }
+      moneyRow("Subtotal", money(t.sub));
+      moneyRow("Tax (GST 5% + QST 9.975%)", money(t.tax));
+      var tipDt=document.createElement("dt"); tipDt.textContent="Tip";
+      var tipDd=document.createElement("dd");
+      var tipRow=document.createElement("div"); tipRow.className="tip-row";
+      [[0,"No tip"],[0.10,"10%"],[0.15,"15%"],[0.20,"20%"]].forEach(function(pair){
+        var b=document.createElement("button"); b.type="button"; b.className="tip-btn"; b.textContent=pair[1];
+        b.setAttribute("aria-pressed", tipRate===pair[0] ? "true" : "false");
+        b.addEventListener("click", function(){ tipRate=pair[0]; save("peerspect-tip-v1", tipRate); refreshCarts(); });
+        tipRow.appendChild(b);
+      });
+      var tipAmt=document.createElement("span"); tipAmt.className="tip-amt"; tipAmt.textContent=money(t.tip);
+      tipRow.appendChild(tipAmt);
+      tipDd.appendChild(tipRow);
+      moneyBox.appendChild(tipDt); moneyBox.appendChild(tipDd);
+      moneyRow("Total", money(t.total), true);
+      container.appendChild(moneyBox);
+      var note=document.createElement("p"); note.className="ps-muted";
+      note.textContent="Sample prices in CAD. Tax is GST 5% + QST 9.975% on the subtotal. Tip is on the subtotal and is not taxed.";
+      container.appendChild(note);
+    }
     var prep = load("peerspect-prep-v1", []), profiles = load("peerspect-profiles-v1", []), trust = load("peerspect-trust-v1", {reports:0, confirmed:0});
     var visits = load("peerspect-visits-v1", []);
+    var gotLog = load("peerspect-got-log-v1", []);
     function todayStr(){ return new Date().toISOString().slice(0,10); }
     function ratingLabel(r){ return r==="up" ? "Loved it" : r==="down" ? "Not for me" : r==="meh" ? "So-so" : "No rating yet"; }
+    function ratingVisual(r){
+      var icon = r==="up" ? "👍 " : r==="meh" ? "😐 " : r==="down" ? "👎 " : "";
+      return icon + ratingLabel(r);
+    }
     var currentPlace = null, checkin = null, focusIndex = 0, scored = PLACES.map(function(p){ return {place:p, matches:[]}; });
 
     /* Screens — switch in place, no page scroll */
@@ -1646,7 +1967,6 @@
         sub.keys.forEach(function(key){
           var li = document.createElement("li");
           var b = document.createElement("button"); b.type="button"; b.className="ps-chip"; b.setAttribute("aria-pressed","false"); b.dataset.filter=key; b.dataset.group=g.name.toLowerCase();
-          var dot=document.createElement("span"); dot.className="tag-dot"; dot.setAttribute("aria-hidden","true"); b.appendChild(dot);
           b.appendChild(document.createTextNode(FILTER_LABELS[key]||key));
           b.addEventListener("click", function(){
             var i = selectedFilters.indexOf(key);
@@ -1678,7 +1998,6 @@
     /* Filters */
     function chipFor(key){
       var b = document.createElement("button"); b.type="button"; b.className="ps-chip";
-      var dot=document.createElement("span"); dot.className="tag-dot"; dot.setAttribute("aria-hidden","true"); b.appendChild(dot);
       b.appendChild(document.createTextNode(FILTER_LABELS[key]||key));
       b.dataset.group = GROUP_FOR_KEY[key] || "";
       b.setAttribute("aria-pressed", activeFilters.has(key)?"true":"false");
@@ -1736,10 +2055,11 @@
       return null;
     }
     /* Match display, Nov 23 2026: a compact "5 of 5" score plus the
-       matched filters as oval tags (uniform neutral pill, group
-       colour only as a small dot via tagClass, text label and a
-       tick on every tag, so never colour alone). Nov 24 2026:
-       tags went uniform with a dot, the full colours looked messy.
+       matched filters as oval tags (uniform neutral pill, text
+       label and a tick on every tag, so never colour alone).
+       Nov 24 2026: tags went uniform, the full colours looked
+       messy, and the small group-colour dots were removed the
+       same day, Ginko said they did not help.
        Matched tags are capped at 4, with an "and N more" muted tag.
        matchScore() is the count regardless of the alignment
        threshold; alignmentFor() still decides whether a place
@@ -1754,7 +2074,7 @@
       var shown = m.matched.slice(0,4);
       var open = inline ? '<span role="listitem" class="' : '<li class="';
       var close = inline ? '</span>' : '</li>';
-      var out = shown.map(function(f){ return open + tagClass(f) + '"><span class="tag-dot" aria-hidden="true"></span>✓ ' + (FILTER_LABELS[f]||f) + close; }).join("");
+      var out = shown.map(function(f){ return open + tagClass(f) + '">✓ ' + (FILTER_LABELS[f]||f) + close; }).join("");
       if(m.matched.length > 4) out += open + 'tag-missed">and ' + (m.matched.length-4) + ' more' + close;
       return out;
     }
@@ -1848,7 +2168,7 @@
         '<p class="ps-muted" style="margin:.2rem 0;">' + p.type + ' · ' + p.area + ' · ' + p.transport + '</p>' +
         (function(){ if(!activeFilters.size) return ""; var m = matchScore(p); var matchedTags = m.matched.length ? '<ul class="ps-tags match-tags" aria-label="Filters this place matches">' + matchTagItems(m, false) + '</ul>' : '<p class="ps-muted">None of your filters matched here yet.</p>'; var missed = m.unmatched.length ? '<p class="align-missed-label">Not matched here</p><ul class="ps-tags match-tags" aria-label="Filters this place does not match">' + m.unmatched.map(function(f){ return '<li class="tag-missed">— ' + (FILTER_LABELS[f]||f) + '</li>'; }).join("") + '</ul>' : ""; return '<div class="align-card"><h4>Why this matches <span class="align-count">' + m.count + ' of ' + m.total + '</span></h4>' + matchedTags + missed + (align ? '' : '<p class="align-summary">No strong match yet — ' + m.count + ' of ' + m.total + ' of your filters.</p>') + '</div>'; })() +
         '<ul class="ps-facts"><li><strong>Lighting:</strong> ' + p.lighting + '</li><li><strong>Sound:</strong> ' + (p.soundLevel||'') + ' — ' + p.sound + '</li><li><strong>What you will hear:</strong> ' + (p.soundSources||[]).join("; ") + '</li><li><strong>Crowd:</strong> ' + p.crowding + '</li></ul>' +
-        '<ul class="ps-tags">' + shownTags.map(function(t){ return '<li class="'+tagClass(t)+'"><span class="tag-dot" aria-hidden="true"></span>'+(FILTER_LABELS[t]||t)+'</li>'; }).join("") + '</ul>' +
+        '<ul class="ps-tags">' + shownTags.map(function(t){ return '<li class="'+tagClass(t)+'">'+(FILTER_LABELS[t]||t)+'</li>'; }).join("") + '</ul>' +
         '<p class="ps-muted">Confirmed by ' + p.confirmed + ' peers · Anonymous</p>' +
         '<p><button class="ps-btn" id="focus-open" type="button">Open place</button></p>' +
         '<p><button class="ps-btn ps-btn-secondary" id="focus-bm" type="button">' + (bookmarks.has(p.id)?"★ Bookmarked":"☆ Bookmark") + '</button></p>';
@@ -1882,84 +2202,238 @@
       var p = currentPlace;
       $("place-detail-h").textContent = p.name;
       var body = $("place-detail-body"); body.innerHTML = "";
-      /* Peer reports, visual, Nov 23 2026: the confirmed count as a
-         big number with a bar (bar length is this place's count
-         against the most-confirmed sample place), plus the recent
-         peer notes already in the sample data (the "A peer
-         reported…" lines from this place's check-in questions).
-         No new data. */
-      var maxConfirmed = Math.max.apply(null, PLACES.map(function(q){ return q.confirmed; }));
-      var peerNotes = (p.live||[]).filter(function(q){ return q.c; }).map(function(q){ return q.c; });
-      var peerDiv = document.createElement("div"); peerDiv.className="peer-visual";
-      peerDiv.innerHTML = '<p class="peer-num">' + p.confirmed + ' peer confirmations</p>' +
-        '<div class="peer-bar" role="img" aria-label="' + p.confirmed + ' peer confirmations"><div class="peer-fill" style="width:' + Math.round(p.confirmed/maxConfirmed*100) + '%"></div></div>' +
-        '<p class="ps-muted" style="margin:.25rem 0 0;">Anonymous peer reports for this place.</p>' +
-        (peerNotes.length ? '<ul class="peer-notes">' + peerNotes.map(function(n){ return '<li>“' + n + '”</li>'; }).join("") + '</ul>' : '');
-      body.appendChild(peerDiv);
-      /* Match, visual: a gauge plus the 5 of 5 oval tags. */
+      /* Place detail is built as labelled cards, Nov 24 2026, in
+         this order: At a glance, Why this matches, How it feels
+         right now, Through the day, Menu preview, Peer reports,
+         Your visit. No information is removed, only reorganised. */
+      /* Card 1 — At a glance: area, distance, getting there,
+         access, and the match count in plain words. The match
+         gauge bar is gone, Nov 24 2026: it visualised nothing
+         the text and the oval tags do not already say. */
       var alignDetail = alignmentFor(p);
-      if(alignDetail){
-        var mDetail = matchScore(p);
-        var gauge = document.createElement("div"); gauge.className="match-gauge";
-        gauge.innerHTML = '<div class="gauge-track" role="img" aria-label="Matches ' + mDetail.count + ' of ' + mDetail.total + ' of your filters"><div class="gauge-fill" style="width:' + Math.round(mDetail.count/mDetail.total*100) + '%"></div></div><p>' + mDetail.count + ' of ' + mDetail.total + ' of your filters</p>' + matchOvalsHTML(p);
-        body.appendChild(gauge);
-      }
-      /* Getting there and access, kept short: three rows, no paragraphs. */
+      var glance = document.createElement("section"); glance.className="ps-panel place-section"; glance.setAttribute("aria-label","At a glance");
+      var gH=document.createElement("h3"); gH.textContent="At a glance"; glance.appendChild(gH);
       var dl = document.createElement("dl"); dl.className="detail-kv";
-      dl.innerHTML = '<div><dt>Distance</dt><dd>'+p.distLabel+'</dd></div><div><dt>Getting there</dt><dd>'+p.transport+'</dd></div><div><dt>Access</dt><dd>'+p.access+'</dd></div>';
-      body.appendChild(dl);
-      /* How it feels, as bars: each bar length is drawn from the
-         words already in the sample data (the sound level, the
-         first word of the lighting note, the crowd words), and the
-         words stay as the bar label, so nothing is invented or hidden. */
-      var soundLevel = {"Quiet":1,"Soft":2,"Lively":3,"Loud":4}[p.soundLevel] || 2;
-      var lightLevel = /^Bright/.test(p.lighting) ? 3 : (/^Ambient/.test(p.lighting) ? 2 : 1);
-      var crowdLevel = /Busy/.test(p.crowding) ? 3 : (/busier/i.test(p.crowding) ? 2 : 1);
-      var factors = document.createElement("div"); factors.className="factor-bars";
-      factors.innerHTML =
-        '<div class="factor-bar"><p><strong>Sound:</strong> ' + p.soundLevel + ' — ' + p.sound + '</p><div class="bar-track" role="img" aria-label="Sound level ' + soundLevel + ' of 4"><div class="bar-fill" style="width:' + (soundLevel*25) + '%"></div></div></div>' +
-        '<div class="factor-bar"><p><strong>Light:</strong> ' + p.lighting + '</p><div class="bar-track" role="img" aria-label="Light level ' + lightLevel + ' of 3"><div class="bar-fill" style="width:' + Math.round(lightLevel/3*100) + '%"></div></div></div>' +
-        '<div class="factor-bar"><p><strong>Crowd:</strong> ' + p.crowding + '</p><div class="bar-track" role="img" aria-label="Crowd level ' + crowdLevel + ' of 3"><div class="bar-fill" style="width:' + Math.round(crowdLevel/3*100) + '%"></div></div></div>';
-      body.appendChild(factors);
-      /* Through the day, as bars: one bar per time of day, its
-         length drawn from the busyness words in that entry's own
-         text, and the text stays as the label. */
-      var dayH=document.createElement("h3"); dayH.textContent="Through the day"; body.appendChild(dayH);
-      var dayBars = document.createElement("div"); dayBars.className="factor-bars";
-      dayBars.innerHTML = p.day.map(function(d){
-        var lvl = /Busy/.test(d[1]) ? 3 : (/busier|lively/i.test(d[1]) ? 2 : 1);
-        return '<div class="factor-bar"><p><strong>' + d[0] + ':</strong> ' + d[1] + '</p><div class="bar-track" role="img" aria-label="' + d[0] + ' busyness ' + lvl + ' of 3"><div class="bar-fill" style="width:' + Math.round(lvl/3*100) + '%"></div></div></div>';
-      }).join("");
-      body.appendChild(dayBars);
-      var menuH=document.createElement("h3"); menuH.textContent="Menu preview"; body.appendChild(menuH);
-      var menuNote=document.createElement("p"); menuNote.className="ps-muted"; menuNote.textContent=p.menuNote; body.appendChild(menuNote);
+      var dlHTML = '<div><dt>Area</dt><dd>'+p.area+'</dd></div><div><dt>Distance</dt><dd>'+p.distLabel+'</dd></div><div><dt>Getting there</dt><dd>'+p.transport+'</dd></div><div><dt>Access</dt><dd>'+p.access+'</dd></div>';
+      if(alignDetail){ var mDetail = matchScore(p); dlHTML += '<div><dt>Match</dt><dd>Matches ' + mDetail.count + ' of ' + mDetail.total + ' of your filters</dd></div>'; }
+      dl.innerHTML = dlHTML;
+      glance.appendChild(dl);
+      body.appendChild(glance);
+      /* Card 2 — Why this matches: the matched filters as oval
+         tags, and the ones that did not match, dashed. */
+      if(alignDetail){
+        var why = document.createElement("section"); why.className="ps-panel place-section"; why.setAttribute("aria-label","Why this matches");
+        var wH=document.createElement("h3"); wH.textContent="Why this matches"; why.appendChild(wH);
+        var wDiv=document.createElement("div"); wDiv.innerHTML = matchOvalsHTML(p); why.appendChild(wDiv);
+        body.appendChild(why);
+      }
+      /* Card 3 — How it feels right now: the words only. The old
+         sound, light and crowd bars were drawn from words, not
+         counts, so they are gone, Nov 24 2026. */
+      var feels = document.createElement("section"); feels.className="ps-panel place-section"; feels.setAttribute("aria-label","How it feels right now");
+      var fH=document.createElement("h3"); fH.textContent="How it feels right now"; feels.appendChild(fH);
+      var fDl=document.createElement("dl"); fDl.className="detail-kv";
+      fDl.innerHTML = '<div><dt>Sound</dt><dd>'+p.soundLevel+' — '+p.sound+'</dd></div><div><dt>Light</dt><dd>'+p.lighting+'</dd></div><div><dt>Crowd</dt><dd>'+p.crowding+'</dd></div>';
+      feels.appendChild(fDl);
+      body.appendChild(feels);
+      /* Card 4 — Through the day, its own card: real counts, not
+         word-bars. Each place has dayCounts, peer reports per part
+         of day over the last 14 days, totalling its confirmed
+         count. A bar length IS the count, with the number and the
+         source written next to it. */
+      var dayCard = document.createElement("section"); dayCard.className="ps-panel place-section"; dayCard.setAttribute("aria-label","Through the day");
+      var dayH=document.createElement("h3"); dayH.textContent="Through the day"; dayCard.appendChild(dayH);
+      var daySrc=document.createElement("p"); daySrc.className="ps-muted";
+      daySrc.textContent="Based on " + p.confirmed + " peer reports in the last 14 days (sample data).";
+      dayCard.appendChild(daySrc);
+      p.day.forEach(function(d, i){
+        var n = (p.dayCounts && p.dayCounts[i] != null) ? p.dayCounts[i] : 0;
+        var row=document.createElement("div"); row.className="day-row";
+        row.innerHTML = '<p><strong>' + d[0] + ':</strong> ' + d[1] + ' <span class="day-num">' + n + ' reports</span></p>' +
+          '<div class="bar-track" role="img" aria-label="' + d[0] + ': ' + n + ' of ' + p.confirmed + ' peer reports"><div class="bar-fill" style="width:' + (p.confirmed ? Math.round(n/p.confirmed*100) : 0) + '%"></div></div>';
+        dayCard.appendChild(row);
+      });
+      body.appendChild(dayCard);
+      /* Card 5 — Menu preview, with a Like for the place and a
+         "Your order prep list" summary that updates live. */
+      var menuCard = document.createElement("section"); menuCard.className="ps-panel place-section"; menuCard.setAttribute("aria-label","Menu preview");
+      var menuH=document.createElement("h3"); menuH.textContent="Menu preview"; menuCard.appendChild(menuH);
+      var menuNote=document.createElement("p"); menuNote.className="ps-muted"; menuNote.textContent=p.menuNote; menuCard.appendChild(menuNote);
       var cards=document.createElement("div"); cards.className="menu-cards";
       p.menu.forEach(function(item){
-        var card=document.createElement("article"); card.className="menu-card";
+        var card=document.createElement("article"); card.className="menu-card"; card.dataset.item=item.n;
         var nm=document.createElement("span"); nm.className="menu-name"; nm.textContent=item.n;
         var pr=document.createElement("span"); pr.className="menu-price"; pr.textContent=item.p;
         var add=document.createElement("button"); add.type="button"; add.className="ps-btn ps-btn-secondary ps-btn-small"; add.textContent="Add to my order";
-        add.addEventListener("click", function(){ prep.push({place:p.name, placeId:p.id, item:item.n, price:item.p, date:todayStr()}); save("peerspect-prep-v1", prep); renderPrep(); add.textContent="Added ✓"; setTimeout(function(){ add.textContent="Add to my order"; },1500); });
+        add.addEventListener("click", function(){
+          prep.push({place:p.name, placeId:p.id, item:item.n, price:item.p, date:todayStr()});
+          save("peerspect-prep-v1", prep); renderPrep();
+          card.classList.add("is-added"); add.textContent="Added ✓";
+          setTimeout(function(){ add.textContent="Add to my order"; },1500);
+          renderOrderSummary();
+        });
         card.appendChild(nm); card.appendChild(pr); card.appendChild(add); cards.appendChild(card);
       });
-      body.appendChild(cards);
+      menuCard.appendChild(cards);
+      /* Like, Nov 24 2026: a heart for the place, saved locally
+         like bookmarks, with a visible label, not colour alone. */
+      var likeBtn=document.createElement("button"); likeBtn.type="button"; likeBtn.className="ps-btn ps-btn-secondary ps-btn-small";
+      function paintLike(){ likeBtn.textContent = likes.has(p.id) ? "♥ Liked" : "♡ Like this place"; likeBtn.setAttribute("aria-pressed", likes.has(p.id) ? "true" : "false"); }
+      paintLike();
+      likeBtn.addEventListener("click", function(){ if(likes.has(p.id)) likes.delete(p.id); else likes.add(p.id); save("peerspect-likes-v1", Array.from(likes)); paintLike(); });
+      menuCard.appendChild(likeBtn);
+      var sumH=document.createElement("h3"); sumH.textContent="Your order prep list"; menuCard.appendChild(sumH);
+      var summary=document.createElement("div"); summary.className="order-summary"; menuCard.appendChild(summary);
+      function markMenuCards(){
+        var mine = prep.filter(function(it){ return it.placeId===p.id; });
+        cards.querySelectorAll(".menu-card").forEach(function(c){
+          var has = mine.some(function(it){ return it.item===c.dataset.item; });
+          c.classList.toggle("is-added", has);
+          var b=c.querySelector("button"); if(b && !has) b.textContent="Add to my order";
+        });
+      }
+      function renderOrderSummary(){
+        renderCartInto(summary, prep.filter(function(it){ return it.placeId===p.id; }), {emptyText:"Nothing added yet. Tap “Add to my order” on a menu item."});
+        markMenuCards();
+      }
+      orderSummaryRefresh = renderOrderSummary;
+      renderOrderSummary();
+      body.appendChild(menuCard);
+      /* Card 6 — Peer reports: the confirmed count as a big
+         number, with the source written next to it, plus the
+         recent peer notes already in the sample data. The old
+         count bar is gone, Nov 24 2026: it was a proportion
+         against the most-confirmed sample place, with no stated
+         total next to it. */
+      var peerCard = document.createElement("section"); peerCard.className="ps-panel place-section"; peerCard.setAttribute("aria-label","Peer reports");
+      var peerH=document.createElement("h3"); peerH.textContent="Peer reports"; peerCard.appendChild(peerH);
+      var peerDiv = document.createElement("div"); peerDiv.className="peer-visual";
+      var peerNotes = (p.live||[]).filter(function(q){ return q.c; }).map(function(q){ return q.c; });
+      peerDiv.innerHTML = '<p class="peer-num">' + p.confirmed + ' peer confirmations</p>' +
+        '<p class="ps-muted" style="margin:.25rem 0 0;">Anonymous peer reports for this place, in the last 14 days (sample data).</p>' +
+        (peerNotes.length ? '<ul class="peer-notes">' + peerNotes.map(function(n){ return '<li>“' + n + '”</li>'; }).join("") + '</ul>' : '');
+      peerCard.appendChild(peerDiv);
+      body.appendChild(peerCard);
+      /* Card 7 — Your visit, only for places you have visited.
+         Reads from the order snapshot saved with the visit, never
+         from the current prep list (that was the bug, Nov 24
+         2026: "What you got" just repeated the current order). */
       var lastVisit = null;
       for(var vi=visits.length-1; vi>=0; vi--){ if(visits[vi].placeId===p.id){ lastVisit=visits[vi]; break; } }
-      var lastOrdered = prep.filter(function(it){ return it.placeId===p.id || it.place===p.name; });
-      if(lastVisit || lastOrdered.length){
-        var lt=document.createElement("section"); lt.className="last-time"; lt.setAttribute("aria-label","Last time here");
-        var ltH=document.createElement("h3"); ltH.textContent="Last time here"; lt.appendChild(ltH);
-        if(lastVisit){
-          var ltP=document.createElement("p"); ltP.textContent = lastVisit.date + " — " + ratingLabel(lastVisit.rating); lt.appendChild(ltP);
-          if(lastVisit.answers && lastVisit.answers.length){
-            var ltA=document.createElement("p"); ltA.className="ps-muted"; ltA.textContent = "Your experience: " + lastVisit.answers.slice(0,3).map(function(a){ return a.q+" "+a.a; }).join("; "); lt.appendChild(ltA);
-          }
+      var logEntries = gotLog.filter(function(e){ return e.placeId===p.id; });
+      if(lastVisit || logEntries.length){
+        var vt=document.createElement("section"); vt.className="ps-panel place-section"; vt.setAttribute("aria-label","Your visit");
+        var vtH=document.createElement("h3"); vtH.textContent="Your visit"; vt.appendChild(vtH);
+        var vtHead=document.createElement("p"); vtHead.className="visit-head";
+        vtHead.innerHTML = "<strong>" + lastVisit.date + "</strong> · " + ratingVisual(lastVisit.rating);
+        vt.appendChild(vtHead);
+        if(lastVisit.answers && lastVisit.answers.length){
+          var expH=document.createElement("p"); expH.className="visit-sub"; expH.textContent="Your experience"; vt.appendChild(expH);
+          var expDl=document.createElement("dl"); expDl.className="detail-kv";
+          expDl.innerHTML = lastVisit.answers.map(function(a){ return '<div><dt>'+a.q+'</dt><dd>'+a.a+'</dd></div>'; }).join("");
+          vt.appendChild(expDl);
         }
-        if(lastOrdered.length){
-          var ltO=document.createElement("p"); ltO.textContent = "What you got: " + lastOrdered.map(function(it){ return it.item; }).join(", "); lt.appendChild(ltO);
+        if(lastVisit.order && lastVisit.order.length){
+          var gotH=document.createElement("p"); gotH.className="visit-sub"; gotH.textContent="What you got"; vt.appendChild(gotH);
+          var gotList=document.createElement("ul"); gotList.className="visit-order";
+          lastVisit.order.forEach(function(o){
+            var li=document.createElement("li");
+            li.textContent = o.item + (o.qty>1 ? " x"+o.qty : "") + " — " + money(priceNum(o.price)*o.qty) + (o.note ? " (Order note: " + o.note + ")" : "");
+            gotList.appendChild(li);
+          });
+          var tot=document.createElement("li"); tot.className="order-total"; tot.textContent="Total: " + money(orderTotal(lastVisit.order)); gotList.appendChild(tot);
+          vt.appendChild(gotList);
+          var again=document.createElement("button"); again.type="button"; again.className="ps-btn ps-btn-secondary ps-btn-small"; again.textContent="Order again";
+          again.addEventListener("click", function(){
+            lastVisit.order.forEach(function(o){
+              for(var k=0;k<o.qty;k++){ var e={place:p.name, placeId:p.id, item:o.item, price:o.price, date:todayStr()}; if(o.note) e.note=o.note; prep.push(e); }
+            });
+            save("peerspect-prep-v1", prep); renderPrep(); showPlace(p.id);
+          });
+          vt.appendChild(again);
+        } else {
+          var noOrd=document.createElement("p"); noOrd.className="ps-muted"; noOrd.textContent="No order saved for this visit."; vt.appendChild(noOrd);
         }
-        if(!lastVisit){ var ltN=document.createElement("p"); ltN.className="ps-muted"; ltN.textContent="No check-in yet for this place."; lt.appendChild(ltN); }
-        body.appendChild(lt);
+        /* "Log what you got", Nov 24 2026: a way to document what
+           you got and how it was, so you can see what you liked
+           next time. The archive reads from saved log entries,
+           never from the current prep list. The order note is
+           what to ask for; the log note is how it was. */
+        var logBtn=document.createElement("button"); logBtn.type="button"; logBtn.className="ps-btn"; logBtn.style.minHeight="44px"; logBtn.textContent="Log what you got";
+        vt.appendChild(logBtn);
+        var logForm=null;
+        logBtn.addEventListener("click", function(){
+          if(logForm){ logForm.remove(); logForm=null; logBtn.textContent="Log what you got"; return; }
+          logBtn.textContent="Close logging";
+          logForm=document.createElement("div"); logForm.className="log-form";
+          var lfH=document.createElement("p"); lfH.className="visit-sub"; lfH.textContent="Log what you got — " + todayStr(); logForm.appendChild(lfH);
+          var lfNote=document.createElement("p"); lfNote.className="ps-muted";
+          lfNote.textContent="Tick what you got. Items from your order prep list are ticked already — untick any that do not apply. For each item, say how it was and give it a rating.";
+          logForm.appendChild(lfNote);
+          var prepNames={}; prep.forEach(function(it){ if(it.placeId===p.id) prepNames[it.item]=true; });
+          var rows=[];
+          p.menu.forEach(function(item){
+            var row=document.createElement("div"); row.className="log-item"; row.dataset.item=item.n; row.dataset.price=item.p;
+            var check=document.createElement("label"); check.className="log-check";
+            var cb=document.createElement("input"); cb.type="checkbox";
+            if(prepNames[item.n]) cb.checked=true;
+            var cbText=document.createElement("span"); cbText.textContent=item.n+" — "+item.p;
+            check.appendChild(cb); check.appendChild(cbText); row.appendChild(check);
+            var detail=document.createElement("div"); detail.className="log-detail"; detail.hidden=!cb.checked;
+            var lab=document.createElement("label"); lab.textContent="How was it?";
+            var ni=document.createElement("input"); ni.type="text"; ni.placeholder="e.g. loved it, too sweet, too small";
+            ni.setAttribute("aria-label","How was the " + item.n + "?");
+            lab.appendChild(ni); detail.appendChild(lab);
+            var rateRow=document.createElement("div"); rateRow.className="rate-row";
+            [["up","👍 Liked"],["meh","😐 So-so"],["down","👎 Not for me"]].forEach(function(pair){
+              var rb=document.createElement("button"); rb.type="button"; rb.className="rate-btn"; rb.textContent=pair[1]; rb.setAttribute("aria-pressed","false");
+              rb.addEventListener("click", function(){
+                rateRow.querySelectorAll(".rate-btn").forEach(function(b){ b.setAttribute("aria-pressed","false"); });
+                rb.setAttribute("aria-pressed","true"); row.dataset.rating=pair[0];
+              });
+              rateRow.appendChild(rb);
+            });
+            detail.appendChild(rateRow);
+            row.appendChild(detail);
+            cb.addEventListener("change", function(){ detail.hidden=!cb.checked; });
+            rows.push({row:row, cb:cb, ni:ni, item:item});
+            logForm.appendChild(row);
+          });
+          var saveLog=document.createElement("button"); saveLog.type="button"; saveLog.className="ps-btn"; saveLog.style.minHeight="44px"; saveLog.textContent="Save this visit's log";
+          saveLog.addEventListener("click", function(){
+            var items=[];
+            rows.forEach(function(r){
+              if(!r.cb.checked) return;
+              items.push({item:r.item.n, price:r.item.p, note:r.ni.value.trim(), rating:r.row.dataset.rating||null});
+            });
+            if(!items.length){ saveLog.textContent="Tick at least one item first"; setTimeout(function(){ saveLog.textContent="Save this visit's log"; },2000); return; }
+            gotLog.push({placeId:p.id, place:p.name, date:todayStr(), items:items});
+            save("peerspect-got-log-v1", gotLog);
+            showPlace(p.id);
+          });
+          logForm.appendChild(saveLog);
+          var cancelLog=document.createElement("button"); cancelLog.type="button"; cancelLog.className="ps-btn ps-btn-secondary"; cancelLog.style.minHeight="44px"; cancelLog.textContent="Cancel";
+          cancelLog.addEventListener("click", function(){ logForm.remove(); logForm=null; logBtn.textContent="Log what you got"; });
+          logForm.appendChild(cancelLog);
+          vt.appendChild(logForm);
+        });
+        /* Archive: most recent first. */
+        if(logEntries.length){
+          var arcH=document.createElement("p"); arcH.className="visit-sub"; arcH.textContent="Your log"; vt.appendChild(arcH);
+          var arcNote=document.createElement("p"); arcNote.className="ps-muted"; arcNote.textContent="What you got on earlier visits, and how it was. The order note is what to ask for when ordering; this is how it was."; vt.appendChild(arcNote);
+          logEntries.slice().reverse().forEach(function(en){
+            var enDiv=document.createElement("div"); enDiv.className="log-entry";
+            var enH=document.createElement("p"); enH.innerHTML="<strong>"+en.date+"</strong>"; enDiv.appendChild(enH);
+            var enList=document.createElement("ul"); enList.className="visit-order";
+            en.items.forEach(function(o){
+              var li=document.createElement("li");
+              li.textContent = o.item + " — " + ratingVisual(o.rating||null) + (o.note ? " — How it was: " + o.note : "");
+              enList.appendChild(li);
+            });
+            enDiv.appendChild(enList); vt.appendChild(enDiv);
+          });
+        }
+        body.appendChild(vt);
       }
       var foot = $("place-foot"); foot.innerHTML = "";
       var bm=document.createElement("button"); bm.type="button"; bm.className="ps-btn ps-btn-secondary"; bm.textContent=bookmarks.has(p.id)?"★ Bookmarked":"☆ Bookmark";
@@ -1998,14 +2472,25 @@
       $("profile-name").value=""; renderProfiles();
     });
     function renderPrep(){
-      var ul=$("prep-list"); ul.innerHTML="";
-      if(!prep.length) ul.innerHTML="<li class='ps-muted'>Nothing yet. Open a place and add a menu item.</li>";
-      var byPlace={};
-      prep.forEach(function(item){ (byPlace[item.place]=byPlace[item.place]||[]).push(item); });
-      Object.keys(byPlace).forEach(function(placeName){
-        var h=document.createElement("li"); h.innerHTML="<strong>"+placeName+"</strong>"; ul.appendChild(h);
-        byPlace[placeName].forEach(function(item){ var li=document.createElement("li"); li.textContent=item.item+" — "+item.price; ul.appendChild(li); });
+      var box=$("prep-list");
+      renderCartInto(box, prep, {showPlace:true, emptyText:"Nothing yet. Open a place and add a menu item."});
+      /* Back to menu, Nov 24 2026: one place in the order goes
+         back to that place's Menu preview; more than one place,
+         or none yet, goes to Today to pick a place. Order,
+         budget, tip and notes are all kept, they live in
+         localStorage and are not touched by navigating. */
+      var backBtn=document.createElement("button"); backBtn.type="button"; backBtn.className="ps-btn"; backBtn.style.minHeight="44px"; backBtn.textContent="Add more from the menu";
+      backBtn.addEventListener("click", function(){
+        var placeIds=[]; prep.forEach(function(it){ if(it.placeId && placeIds.indexOf(it.placeId)<0) placeIds.push(it.placeId); });
+        if(placeIds.length===1){
+          showPlace(placeIds[0]);
+          var menu=document.querySelector('[aria-label="Menu preview"]');
+          if(menu) menu.scrollIntoView({block:"start"});
+        } else {
+          showScreen("discover");
+        }
       });
+      box.appendChild(backBtn);
       var bl=$("bookmark-list"); bl.innerHTML="";
       if(!bookmarks.size) bl.innerHTML="<li class='ps-muted'>No places bookmarked yet.</li>";
       Array.from(bookmarks).forEach(function(id){ var p=PLACES.find(function(x){ return x.id===id; }); if(p){ var li=document.createElement("li"); li.textContent=p.name+" — "+p.area; bl.appendChild(li); } });
@@ -2016,17 +2501,110 @@
       if(!visits.length){ ul.innerHTML="<li class='ps-muted'>No visits yet. Check in at a place and it will show up here.</li>"; return; }
       visits.slice().reverse().forEach(function(v){
         var li=document.createElement("li");
-        var ordered = prep.filter(function(it){ return it.placeId===v.placeId || it.place===v.place; }).map(function(it){ return it.item; });
         var text = v.place + " — " + v.date + " — " + ratingLabel(v.rating);
-        if(ordered.length) text += " — Ordered: " + ordered.join(", ");
+        if(v.order && v.order.length){
+          text += " — Ordered: " + v.order.map(function(o){ return o.item + (o.qty>1 ? " x"+o.qty : "") + (o.note ? " (Order note: " + o.note + ")" : ""); }).join(", ");
+          text += " — Total: " + money(orderTotal(v.order));
+        }
         if(v.answers && v.answers.length) text += " — " + v.answers.slice(0,3).map(function(a){ return a.q+" "+a.a; }).join("; ");
         li.textContent = text; ul.appendChild(li);
       });
     }
     $("clear-visits").addEventListener("click", function(){ visits=[]; save("peerspect-visits-v1", visits); renderVisits(); });
+    /* Trust milestones, Nov 24 2026: demo thresholds, counted
+       locally and anonymously. Progress is counted two ways:
+       confirmed reports, and peer cross-checks (answering a
+       "still" question, confirming another peer's report). */
+    var TRUST_MILESTONES = [
+      {key:"first", name:"First report", reports:1, crosschecks:0, icon:"medal"},
+      {key:"reliable", name:"Reliable observer", reports:3, crosschecks:2, icon:"medal"},
+      {key:"trusted", name:"Trusted peer", reports:10, crosschecks:5, icon:"medal"},
+      {key:"guide", name:"Community guide", reports:25, crosschecks:10, icon:"trophy"}
+    ];
+    function countCrosscheck(q){
+      /* A "still" question carries an earlier peer report in q.c.
+         Answering it is a peer cross-check, so it counts. */
+      if(q && q.c){ trust.crosschecks = (trust.crosschecks||0)+1; save("peerspect-trust-v1", trust); }
+    }
+    function milestoneMet(m){ return trust.confirmed>=m.reports && (trust.crosschecks||0)>=m.crosschecks; }
+    function milestoneNeeds(m){
+      return {reports:Math.max(0, m.reports - trust.confirmed), crosschecks:Math.max(0, m.crosschecks - (trust.crosschecks||0))};
+    }
+    function milestoneDistance(m){
+      var n = milestoneNeeds(m), parts = [];
+      if(n.reports) parts.push(n.reports + " more confirmed report" + (n.reports>1?"s":""));
+      if(n.crosschecks) parts.push(n.crosschecks + " more cross-check" + (n.crosschecks>1?"s":""));
+      return parts.length ? parts.join(" and ") + " to go" : "Done";
+    }
+    function milestoneProgressText(m){
+      var parts = [Math.min(trust.confirmed, m.reports) + " of " + m.reports + " report" + (m.reports===1?"":"s")];
+      if(m.crosschecks) parts.push(Math.min(trust.crosschecks||0, m.crosschecks) + " of " + m.crosschecks + " cross-check" + (m.crosschecks===1?"":"s"));
+      return parts.join(", ");
+    }
+    /* Medals and trophies drawn in code, Nov 24 2026, in the
+       PEERSPECT palette. Unlocked: full colour. Locked: muted
+       outline, no fill. No emojis. */
+    function medalSVG(m, unlocked){
+      var ribbon = unlocked ? "#f2c14e" : "none", ribbonStroke = unlocked ? "#8a4a08" : "#8a8a7a";
+      var circle = unlocked ? "#14665a" : "none", circleStroke = unlocked ? "#14665a" : "#8a8a7a";
+      var num = unlocked ? "#fdfbf7" : "#8a8a7a";
+      return '<svg class="m-icon" viewBox="0 0 48 56" aria-hidden="true"><path d="M14 2 L24 24 L34 2 L40 7 L28 28 L20 28 L8 7 Z" fill="' + ribbon + '" stroke="' + ribbonStroke + '" stroke-width="1.5"/><circle cx="24" cy="38" r="15" fill="' + circle + '" stroke="' + circleStroke + '" stroke-width="2"/><text x="24" y="43" text-anchor="middle" font-size="13" font-weight="700" fill="' + num + '">' + m.reports + '</text></svg>';
+    }
+    function trophySVG(unlocked){
+      var fill = unlocked ? "#14665a" : "none", stroke = unlocked ? "#14665a" : "#8a8a7a";
+      var gold = unlocked ? "#f2c14e" : "none", goldStroke = unlocked ? "#8a4a08" : "#8a8a7a";
+      return '<svg class="m-icon" viewBox="0 0 48 56" aria-hidden="true"><path d="M14 6 h20 v10 a10 10 0 0 1 -20 0 Z" fill="' + fill + '" stroke="' + stroke + '" stroke-width="2"/><path d="M14 9 h-5 a6 6 0 0 0 6 8 M34 9 h5 a6 6 0 0 1 -6 8" fill="none" stroke="' + stroke + '" stroke-width="2"/><rect x="22" y="26" width="4" height="8" fill="' + gold + '" stroke="' + goldStroke + '" stroke-width="1.5"/><rect x="13" y="34" width="22" height="7" rx="2" fill="' + gold + '" stroke="' + goldStroke + '" stroke-width="1.5"/></svg>';
+    }
     function renderTrust(){
+      if(typeof trust.crosschecks!=="number") trust.crosschecks=0;
+      if(!trust.milestones) trust.milestones={};
       var b=$("trust-badge");
       b.textContent = trust.confirmed>0 ? "Reliable observer — "+trust.confirmed+" confirmed report(s)" : "Reliable observer — not earned yet";
+      var next = null;
+      TRUST_MILESTONES.forEach(function(m){
+        if(milestoneMet(m) && !trust.milestones[m.key]){ trust.milestones[m.key]=todayStr(); }
+        if(!next && !milestoneMet(m)) next=m;
+      });
+      save("peerspect-trust-v1", trust);
+      var sub=$("trust-sub");
+      var base="Your trust so far: "+trust.confirmed+" confirmed report"+(trust.confirmed===1?"":"s")+" and "+trust.crosschecks+" peer cross-check"+(trust.crosschecks===1?"":"s")+". ";
+      sub.textContent = next ? base+"Next milestone: "+next.name+" at "+next.reports+" confirmed report"+(next.reports===1?"":"s")+(next.crosschecks?" and "+next.crosschecks+" peer cross-check"+(next.crosschecks===1?"":"s"):"")+"."
+                            : base+"All milestones accomplished.";
+      var track=$("milestone-track"); track.innerHTML="";
+      TRUST_MILESTONES.forEach(function(m){
+        var met=milestoneMet(m), isNext = next===m;
+        var card=document.createElement("article");
+        card.className="milestone"+(met?" unlocked":" locked")+(isNext?" next":"");
+        if(isNext){ var tag=document.createElement("span"); tag.className="m-next-tag"; tag.textContent="Next"; card.appendChild(tag); }
+        var icon=document.createElement("span"); icon.className="m-badge";
+        icon.innerHTML = m.icon==="trophy" ? trophySVG(met) : medalSVG(m, met);
+        card.appendChild(icon);
+        var h=document.createElement("h4"); h.textContent=m.name; card.appendChild(h);
+        var need=document.createElement("p"); need.className="ps-muted";
+        need.textContent="Earns at "+m.reports+" confirmed report"+(m.reports===1?"":"s")+(m.crosschecks?" and "+m.crosschecks+" peer cross-check"+(m.crosschecks===1?"":"s"):"")+".";
+        card.appendChild(need);
+        var prog=document.createElement("p");
+        prog.textContent = milestoneProgressText(m);
+        card.appendChild(prog);
+        if(m.reports){
+          var barR=document.createElement("div"); barR.className="m-bar"; barR.setAttribute("role","img");
+          barR.setAttribute("aria-label","Confirmed reports: "+Math.min(trust.confirmed, m.reports)+" of "+m.reports);
+          barR.innerHTML='<div class="m-bar-fill" style="width:'+Math.min(100, Math.round(trust.confirmed/m.reports*100))+'%"></div>';
+          card.appendChild(barR);
+        }
+        if(m.crosschecks){
+          var barC=document.createElement("div"); barC.className="m-bar"; barC.setAttribute("role","img");
+          barC.setAttribute("aria-label","Peer cross-checks: "+Math.min(trust.crosschecks, m.crosschecks)+" of "+m.crosschecks);
+          barC.innerHTML='<div class="m-bar-fill" style="width:'+Math.min(100, Math.round(trust.crosschecks/m.crosschecks*100))+'%"></div>';
+          card.appendChild(barC);
+        }
+        var status=document.createElement("p"); status.className="m-status";
+        if(met) status.textContent="✓ Unlocked"+(trust.milestones[m.key] ? " on "+trust.milestones[m.key] : "");
+        else if(isNext) status.textContent="Next — "+milestoneDistance(m);
+        else status.textContent="Yet to unlock — "+milestoneDistance(m);
+        card.appendChild(status);
+        track.appendChild(card);
+      });
     }
     $("report-misuse").addEventListener("click", function(){ $("misuse-note").hidden=false; });
 
@@ -2141,7 +2719,7 @@
       if(checkin.step>=checkin.questions.length){
         if(!checkin.saved){
           checkin.saved = true;
-          visits.push({place:p.name, placeId:p.id, date:todayStr(), answers:checkin.answers.slice(), rating:null});
+          visits.push({place:p.name, placeId:p.id, date:todayStr(), answers:checkin.answers.slice(), rating:null, order:snapshotOrder(p.id, p.name)});
           save("peerspect-visits-v1", visits); renderVisits();
         }
         var done=document.createElement("p"); done.innerHTML="Thanks — that helps the next person. <span class='ps-badge'>Reliable observer</span>"; box.appendChild(done);
@@ -2191,12 +2769,12 @@
           box.appendChild(b);
         });
         var nextBtn=document.createElement("button"); nextBtn.type="button"; nextBtn.className="ps-btn"; nextBtn.textContent="Next"; nextBtn.disabled=true;
-        nextBtn.addEventListener("click", function(){ if(!picked.length) return; checkin.answers.push({q:current.q, a:picked.join(", ")}); checkin.step+=1; renderCheckin(); });
+        nextBtn.addEventListener("click", function(){ if(!picked.length) return; checkin.answers.push({q:current.q, a:picked.join(", ")}); countCrosscheck(current); checkin.step+=1; renderCheckin(); });
         box.appendChild(nextBtn);
       } else {
         current.a.forEach(function(ans){
           var b=document.createElement("button"); b.type="button"; b.className="ps-answer"; b.textContent=ans;
-          b.addEventListener("click", function(){ checkin.answers.push({q:current.q, a:ans}); checkin.step+=1; renderCheckin(); }); box.appendChild(b);
+          b.addEventListener("click", function(){ checkin.answers.push({q:current.q, a:ans}); countCrosscheck(current); checkin.step+=1; renderCheckin(); }); box.appendChild(b);
         });
       }
       var row=document.createElement("p");
@@ -2307,6 +2885,23 @@
     themeBtns.forEach(function(btn){ btn.addEventListener("click", function(){
       savedTheme = savedTheme === "dark" ? "light" : "dark"; applyTheme(savedTheme);
     }); });
+
+    /* Card colours preview, Nov 24 2026: three switchable options so
+       Ginko can compare them on real place cards in light and dark.
+       Saved on this device, so the choice sticks. "Current" removes
+       the override and goes back to the locked brand palette. */
+    var cardBtns = Array.prototype.slice.call(document.querySelectorAll("[data-cards-btn]"));
+    function applyCards(v){
+      var root = document.documentElement;
+      if(v && v !== "current"){ root.setAttribute("data-cards", v); } else { root.removeAttribute("data-cards"); }
+      try { localStorage.setItem("peerspect-cards-v1", v || "current"); } catch(e){}
+      cardBtns.forEach(function(btn){ btn.setAttribute("aria-pressed", btn.getAttribute("data-cards-btn") === (v || "current") ? "true" : "false"); });
+    }
+    var savedCards = "current";
+    try { savedCards = localStorage.getItem("peerspect-cards-v1") || "current"; } catch(e){}
+    if(["current","a","b","c"].indexOf(savedCards) < 0) savedCards = "current";
+    applyCards(savedCards);
+    cardBtns.forEach(function(btn){ btn.addEventListener("click", function(){ applyCards(btn.getAttribute("data-cards-btn")); }); });
 
     /* Views: web page (default), prototype, expand.
        View 1 is a normal web page with Ginko's menu. View 2 is the
