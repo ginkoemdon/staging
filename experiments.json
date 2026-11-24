@@ -13,6 +13,13 @@
       "description": "Tropical jungle hero",
       "upstream_sha": "a1bc64df0f90f5f45888198255677966e35c526e",
       "staged": "2026-11-24"
+    },
+    {
+      "name": "peerspect-landing",
+      "branch": "experiment/peerspect-landing",
+      "description": "PEERSPECT landing: centred pillar tags, bigger logo",
+      "upstream_sha": "dd4ed2e03d4f75323aa1460c71fe3ac8a7b66a85",
+      "staged": "2026-11-23"
     }
   ],
   "upstream": "ginkoemdon/ginkoemdon.github.io",

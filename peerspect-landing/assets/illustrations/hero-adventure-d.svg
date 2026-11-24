@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 240" role="img" aria-label="A refined journey: layered coloured mountains, a winding path, a stepped building growing upward, and a stylised bloom above it">
+  <rect width="640" height="240" fill="#e3e0d8"/>
+  <path d="M520 52 a36 36 0 1 0 18 62 a28 28 0 1 1 -18 -62z" fill="#f8c05e"/>
+  <g fill="#3b342f"><circle cx="96" cy="48" r="2.5"/><circle cx="150" cy="28" r="1.8"/><circle cx="430" cy="36" r="2.2"/></g>
+  <path d="M120 52 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z" fill="#c9c972"/>
+  <path d="M0 240 L180 108 L300 240 Z" fill="#184b44"/>
+  <path d="M180 108 L216 152 L180 142 L144 152 Z" fill="#f8c05e"/>
+  <path d="M220 240 L420 76 L600 240 Z" fill="#a35f3c"/>
+  <path d="M420 76 L458 122 L420 112 L382 122 Z" fill="#f8c05e"/>
+  <path d="M470 240 L580 148 L640 208 L640 240 Z" fill="#3b342f"/>
+  <path d="M40 216 C 110 200, 150 216, 210 202 S 300 176, 360 180" stroke="#184b44" stroke-width="2" stroke-dasharray="1 8" stroke-linecap="round" fill="none"/>
+  <g>
+    <rect x="360" y="180" width="72" height="28" fill="#3b342f"/>
+    <rect x="372" y="152" width="48" height="28" fill="#184b44"/>
+    <rect x="384" y="124" width="24" height="28" fill="#a35f3c"/>
+    <g stroke="#e3e0d8" stroke-width="1.5"><line x1="384" y1="164" x2="408" y2="164"/><line x1="392" y1="136" x2="400" y2="136"/></g>
+    <path d="M396 124 C 384 108, 384 96, 396 88 C 408 96, 408 108, 396 124z" fill="#c9c972"/>
+    <path d="M396 100 C 386 92, 378 92, 372 98 C 380 104, 390 104, 396 100z" fill="#184b44"/>
+    <path d="M396 100 C 406 92, 414 92, 420 98 C 412 104, 402 104, 396 100z" fill="#184b44"/>
+  </g>
+  <path d="M520 150 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z" fill="#e26c00"/>
+</svg>
