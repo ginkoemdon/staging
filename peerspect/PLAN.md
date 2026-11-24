@@ -61,11 +61,11 @@ Studied from Ginko's Webflow portfolio Featured Works cards (mindfullydesign.web
 
 ## Prototype card styling rule (Nov 23, 2026, Ginko) — all future landing page prototype cards
 Applies to every future landing page prototype card, Featured work and Rough drafts alike. Measured visually from Ginko's Webflow portfolio Featured Works cards (mindfullydesign.webflow.io), screenshots only, desktop 1920px and mobile 500px, Nov 23, 2026. Do not guess from the Webflow backend; re-measure from a screenshot if in doubt.
-- Heading: Poppins, 700, 30px desktop (1.875rem), line-height 34-35px (1.15), colour #3e3327. Mobile: 26px (1.625rem), line-height 1.25.
+- Heading: Krona One, 700, 30px desktop (1.875rem), line-height 34-35px (1.15), colour #3e3327. Mobile: 26px (1.625rem), line-height 1.25. Correction Nov 23, 2026 (Ginko): landing page card headings are Krona, to match the portfolio site's case study cards. Poppins is only for the PEERSPECT case study cards/headings, not the landing page.
 - Body: Poppins, 400, 18px (1.125rem), line-height 27px (1.5), colour #52483d.
 - Year: Poppins, 500, 14px, colour #504945, top-right of the text card.
 - Link: Poppins, 600, 20px (1.25rem), colour #1c1c1c, with a chevron.
-- Tag pill: Poppins, 600, 14px, text #3e3327, amber background #f7bf5e, 1px dark outline, fully rounded, about 27px high, 8px gap between pills.
+- Tag pill: Poppins, 600, 14px, text #3e3327, amber background #f7bf5e, 1px dark outline, fully rounded, about 27px high, 8px gap between pills. Tags must describe what the prototype is for, like the portfolio's tags (e.g. Government, UX Design, Accessibility), not just its status: keep the status tag first (Featured work / Rough draft), then add 3-4 descriptive tags per card.
 - Text card: white #fefefe, radius 12px, padding 48px desktop / 32px mobile, subtle shadow.
 - Image: radius 12px; on desktop the text card overlaps the image by 60px; on mobile the image sits above the text card with a 20px gap and no overlap.
 - Spacing inside the card (desktop): year to heading 35px, heading to body 38px, body to link 66px, link to divider 50px, divider to tags 40px, tags to card bottom about 35px.
