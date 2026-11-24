@@ -183,6 +183,13 @@
        button. */
     .app-header { display:flex; align-items:center; gap:8px; padding:12px 0 4px; }
     .app-header .app-mark { font-family:"Atkinson Hyperlegible", system-ui, sans-serif; font-weight:700; letter-spacing:.04em; color:var(--teal-dark); font-size:1rem; }
+    /* Placeholder logo mark, Nov 24 2026: two overlapping rounded
+       shapes in brand teal, two peers sharing one place. Inline
+       SVG, theme-aware fills, so it reads in light and dark.
+       A placeholder for Ginko to react to, not a final logo. */
+    .app-header .app-logo-mark { width:32px; height:32px; min-width:32px; flex:0 0 auto; display:block; }
+    .app-header .app-logo-mark .lm-a { fill:var(--teal); }
+    .app-header .app-logo-mark .lm-b { fill:var(--teal-dark); }
     .app-header .spacer { flex:1; }
     .app-header .theme-toggle { border:1px solid var(--line); border-radius:50%; padding:0; width:44px; height:44px; min-width:44px; min-height:44px; font-weight:700; background:var(--card); box-shadow:none; display:grid; place-items:center; font-size:1.25rem; line-height:1; }
     .app-header .theme-toggle .theme-icon { display:block; }
@@ -1424,22 +1431,17 @@
   <div class="app-wrap">
   <div class="app" id="peerspect-app">
     <div class="app-header">
+      <svg class="app-logo-mark" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><circle class="lm-a" cx="12" cy="16" r="10"/><circle class="lm-b" cx="21" cy="16" r="10" opacity="0.75"/></svg>
       <span class="app-mark">PEERSPECT</span>
       <span class="spacer"></span>
       <button class="view-size-cycle" id="view-size-cycle" type="button" data-mode="auto" aria-label="Preview size: Auto. Tap to switch to Desktop"><svg class="ico-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="13" height="10" rx="2"/><rect x="13" y="10" width="9" height="10" rx="2"/><path d="M6 18h4"/></svg><svg class="ico-web" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><svg class="ico-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></button>
       <button class="theme-toggle" type="button" data-theme-btn aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">☾</span></button>
       <button class="app-close" id="close-app" type="button" aria-label="Close prototype and return to case study">&times;</button>
     </div>
-    <!-- Selected filter colour, preview only, Nov 24 2026: three
-         switchable options (A/B/C) plus Current. Nothing is
-         locked in; Ginko picks. Saved per device. -->
-    <div class="chip-vibe-picker" role="group" aria-label="Selected filter colour, preview only">
-      <span class="chip-vibe-label">Selected filter colour (preview):</span>
-      <button type="button" data-vibe-btn="current" aria-pressed="true">Current</button>
-      <button type="button" data-vibe-btn="a" aria-pressed="false">A · Vibrant teal</button>
-      <button type="button" data-vibe-btn="b" aria-pressed="false">B · Warm honey</button>
-      <button type="button" data-vibe-btn="c" aria-pressed="false">C · Per-group</button>
-    </div>
+    <!-- Selected filter colour switcher removed from the header,
+         Nov 24 2026. The Current (neutral) style is in use. The
+         A/B/C options stay in the stylesheet and in applyVibe
+         below, so the switcher can be brought back. -->
     <main id="main" class="app-main">
       <!-- 0. LANDING — first screen, before onboarding. -->
       <section class="screen landing" id="screen-landing" aria-labelledby="landing-h" hidden>
@@ -3352,7 +3354,12 @@
     var savedVibe = "current";
     try { savedVibe = localStorage.getItem("peerspect-vibe-v1") || "current"; } catch(e){}
     if(["current","a","b","c"].indexOf(savedVibe) < 0) savedVibe = "current";
-    applyVibe(savedVibe);
+    /* Selected filter colour switcher removed from the header,
+       Nov 24 2026: with no switcher to show, stay on Current
+       (neutral) and do not apply a stored option. The A/B/C
+       option styles and applyVibe stay in the code, so the
+       switcher can be brought back later. */
+    if(vibeBtns.length) applyVibe(savedVibe);
     vibeBtns.forEach(function(btn){ btn.addEventListener("click", function(){ applyVibe(btn.getAttribute("data-vibe-btn")); }); });
 
     /* Views: web page (default), prototype, expand.
