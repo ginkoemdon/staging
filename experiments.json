@@ -34,6 +34,13 @@
       "description": "Landing shows only PEERSPECT and Form to Function; rough drafts live on All prototypes",
       "upstream_sha": "50bf815b2c6d59b0790476190ce4a5898c9d5898",
       "staged": "2026-11-24"
+    },
+    {
+      "name": "hero-adventure-illustration",
+      "branch": "experiment/hero-adventure-illustration",
+      "description": "New smooth hero illustration, pixel jungle as preview-only experiment, Rough concepts page",
+      "upstream_sha": "98e1dae25cc8a2115dcb2c2133be6f3a51ef9f48",
+      "staged": "2026-11-24"
     }
   ],
   "upstream": "ginkoemdon/ginkoemdon.github.io",

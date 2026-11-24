@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Co-Design Synthesis — Ginko's Prototype Playground</title>
+  <meta name="description" content="Co-Design Synthesis prototype: group sample workshop notes into themes, with every theme traced back to its source note. Prototype — sample data." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <style>
+    .sample-badge {
+      display: inline-block; background: var(--sun); border: 1px solid var(--earth);
+      border-radius: 999px; padding: 0.3rem 0.85rem; font-size: 0.8rem; font-weight: 600;
+      margin: 0 0 1rem;
+    }
+    .notes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin: 1rem 0 0; }
+    .note-card {
+      background: var(--cream); border: 1px solid rgba(59, 52, 47, 0.15);
+      border-radius: 24px; padding: 1.25rem 1.5rem;
+      box-shadow: 0 12px 30px rgba(59, 52, 47, 0.08);
+    }
+    .note-card .note-id { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rust-text); }
+    .note-card blockquote { margin: 0.75rem 0; font-size: 1.05rem; line-height: 1.5; }
+    .note-card .speaker { margin: 0; color: var(--muted); font-size: 0.9rem; }
+    .note-card .speaker strong { color: var(--earth); }
+    .synth-controls { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin: 1rem 0; }
+    .filter-btn {
+      border: 2px solid var(--earth); background: transparent; color: var(--earth);
+      border-radius: 999px; padding: 0.55rem 1rem; font-family: "Poppins", sans-serif;
+      font-size: 0.9rem; font-weight: 600; cursor: pointer;
+    }
+    .filter-btn:hover { background: var(--sun); }
+    .filter-btn[aria-pressed="true"] { background: var(--earth); color: var(--egg); }
+    .filter-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .theme-card {
+      background: var(--cream); border: 1px solid rgba(59, 52, 47, 0.15);
+      border-radius: 24px; padding: 1.5rem; margin: 1rem 0;
+      box-shadow: 0 12px 30px rgba(59, 52, 47, 0.08);
+    }
+    .theme-card h3 { margin-top: 0; }
+    .theme-card .count { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--rust-text); }
+    .theme-card blockquote { margin: 0.75rem 0 0.25rem; border-left: 4px solid var(--sun); padding-left: 1rem; }
+    .theme-card .source { margin: 0 0 1rem; color: var(--muted); font-size: 0.9rem; }
+    .theme-card .source a { color: var(--forest); }
+    .gap-box {
+      background: var(--sand); border: 1px solid rgba(59, 52, 47, 0.2);
+      border-radius: 24px; padding: 1.5rem; margin: 1.5rem 0 0;
+    }
+    .gap-box h3 { margin-top: 0; }
+    .gap-box ul { margin: 0.5rem 0 0; }
+    .how-it-works { color: var(--muted); }
+    .how-it-works strong { color: var(--earth); }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <!-- Nav — style copied from Webflow (mindfullydesign.webflow.io), own simple JS, no Webflow JS.
+       Services / About / Resumé are placeholder buttons for now, mirroring the original Webflow menu. -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="logo" href="../../index.html" aria-label="Ginko's Prototype Playground — home">
+        <img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/67b6998f1db3d0b64a9c19e6_apple-touch-icon.png" loading="lazy" width="32" alt="" class="logo-g" />
+        <img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" class="logo-img" />
+      </a>
+      <button class="menu-button" type="button" aria-label="Menu" aria-expanded="false">
+        <span class="menu-icon1"><span class="menu-icon1_line-top"></span><span class="menu-icon1_line-middle"></span><span class="menu-icon1_line-bottom"></span></span>
+      </button>
+      <nav class="nav-links" aria-label="Main">
+        <div class="nav-dropdown">
+          <button class="nav-link nav-toggle" type="button" aria-expanded="false" aria-haspopup="true">Prototypes <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.55806 6.29544C2.46043 6.19781 2.46043 6.03952 2.55806 5.94189L3.44195 5.058C3.53958 4.96037 3.69787 4.96037 3.7955 5.058L8.00001 9.26251L12.2045 5.058C12.3021 4.96037 12.4604 4.96037 12.5581 5.058L13.4419 5.94189C13.5396 6.03952 13.5396 6.19781 13.4419 6.29544L8.17678 11.5606C8.07915 11.6582 7.92086 11.6582 7.82323 11.5606L2.55806 6.29544Z" fill="currentColor"/></svg></button>
+          <div class="nav-dropdown-list">
+            <a class="nav-dropdown-link" href="../peerspect/index.html"><span class="thumb sun">P</span><span><strong>PEERSPECT</strong><span>One of Ginko's prototypes — details to come.</span></span></a>
+            <a class="nav-dropdown-link" href="../kate-ai/index.html"><span class="thumb">AI</span><span><strong>AI prototype for Kate</strong><span>The AI prototype Ginko is putting together for Kate.</span></span></a>
+            <a class="nav-dropdown-link" href="../index.html"><span class="thumb">All</span><span><strong>All prototypes</strong><span>See every prototype subpage in one place.</span></span></a>
+          </div>
+        </div>
+        <a class="nav-link" href="https://mindfullydesign.webflow.io/#offerings">Services</a>
+        <a class="nav-link" href="https://mindfullydesign.webflow.io/about">About</a>
+        <a class="nav-link" href="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/67aea44f506169a16be6fd36_95d3807660de7d4d3415709f6ff2e4eb_Ginko%20Emdon%20-%20Product%20Designer%20-%20Resume%20-%202025.pdf">Resumé</a>
+        <a class="flower-button" href="https://mindfullydesign.webflow.io/" target="_blank" rel="noopener"><span class="button-line-left"></span><span class="button-inner-text">Ginko's Portfolio</span><span class="button-line-right"></span></a>
+      </nav>
+    </div>
+  </header>
+  <div class="wrap">
+
+    <main id="main">
+      <section class="product-shell" style="--product-accent: #5c2340;" aria-labelledby="product-title">
+        <p><a class="back" href="../../index.html">← Back to Ginko's Prototype Playground</a></p>
+        <div class="product-head">
+          <span class="product-mark" aria-hidden="true">C</span>
+          <div>
+            <p class="product-meta">Co-Design Synthesis · A product by Ginko · 2026</p>
+            <h1 id="product-title">Co-Design Synthesis</h1>
+            <p class="product-tagline">Turn a pile of workshop notes into clear themes, so everyone can see what was actually said — and what was missing.</p>
+          </div>
+        </div>
+        <div class="how-to">
+          <h2>How to use this product</h2>
+          <ol>
+            <li><strong>Read the 6 sample notes</strong> — workshop notes about reimagining a public space in Tiohtià:ke / Montréal.</li>
+            <li><strong>Press “Synthesise themes”</strong> — the prototype groups the 6 notes into 3 themes. Use the filter buttons to look at one theme at a time.</li>
+            <li><strong>Check each theme</strong> — every theme shows the exact quote from its source note, so you can trace it back. The box at the end lists what the notes did not cover.</li>
+          </ol>
+          <p style="margin:.5rem 0 0; color: var(--muted);">Sample data only. All names and quotes on this page are invented for this prototype, not real people. No theme is made up to fill a gap — if a theme has no supporting quote, it is not shown. Nothing you do here is sent anywhere.</p>
+        </div>
+      </section>
+
+      <section id="notes">
+        <p class="section-label">Step 1 — Workshop notes</p>
+        <h2>6 sample notes</h2>
+        <p>Reimagining a public space in Tiohtià:ke / Montréal. <span class="sample-badge">Prototype — sample data</span></p>
+        <div class="notes-grid" id="notes-grid" aria-live="polite"></div>
+      </section>
+
+      <section id="themes">
+        <p class="section-label">Step 2 — Synthesis</p>
+        <h2>Themes</h2>
+        <div class="synth-controls">
+          <button class="btn btn-primary" type="button" id="synthesise-btn">Synthesise themes</button>
+          <button class="btn btn-secondary" type="button" id="reset-btn" hidden>Start again</button>
+        </div>
+        <p id="synth-status" class="how-it-works">Press “Synthesise themes” to group the 6 notes above into 3 themes.</p>
+
+        <div class="synth-controls" id="filter-controls" role="group" aria-label="Filter themes" hidden>
+          <button class="filter-btn" type="button" data-filter="all" aria-pressed="true">All themes (3)</button>
+          <button class="filter-btn" type="button" data-filter="memory" aria-pressed="false">Memory &amp; belonging (2)</button>
+          <button class="filter-btn" type="button" data-filter="access" aria-pressed="false">Access &amp; safety (2)</button>
+          <button class="filter-btn" type="button" data-filter="storytelling" aria-pressed="false">Storytelling in place (2)</button>
+        </div>
+
+        <div id="themes-list" aria-live="polite"></div>
+
+        <div class="gap-box" id="gaps-box" hidden>
+          <h3>What was NOT found — needs more discussion</h3>
+          <p>With only 6 sample notes, these themes are provisional. The synthesis did <strong>not</strong> find:</p>
+          <ul>
+            <li><strong>Winter use:</strong> no note talks about how the space should work in winter, or who clears it.</li>
+            <li><strong>Upkeep and cost:</strong> no note mentions maintenance, budget, or who looks after the space over time.</li>
+            <li><strong>Agreement on the monument:</strong> the notes disagree on what should happen to the existing monument — that needs a dedicated discussion, not a vote from these 6 notes.</li>
+            <li><strong>Youth voices:</strong> no sample note is from a young person. Before deciding, gather notes from youth and elders who were not in this sample.</li>
+          </ul>
+          <p>No theme was made up to fill these gaps. If a theme has no supporting quote, it is not shown.</p>
+        </div>
+      </section>
+      <p style="margin-top:1.5rem;"><a href="../../prototypes/index.html">← All prototypes</a></p>
+    </main>
+
+    <footer id="footer" class="footer-component">
+      <div class="footer-top">
+        <a href="../../index.html" class="footer-logo" aria-label="Ginko — home"><img src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/66e242adc4078ba405c213a8_Ginko%20Logo-%20green%20with%20stroke.png" loading="lazy" width="144" alt="Ginko" /></a>
+        <div class="footer-email">
+          <div class="footer-email-label">Hit my line</div>
+          <div class="footer-block">
+            <button class="email-copy" type="button" data-email="mindfullydesign@gmail.com" aria-label="Copy email to clipboard"><span class="email-text">mindfullydesign@gmail.com</span><svg class="copy-icon" width="24" height="24" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="6.20312" y="7.20386" width="16.7972" height="16.7972" fill="transparent" stroke="#0F0602" stroke-width="2"/><rect x="1" y="1.99878" width="16.7972" height="16.7972" fill="#c9c972" stroke="#0F0602" stroke-width="2"/></svg></button>
+            <a class="footer-social" href="https://www.linkedin.com/in/ginkoemdon/" target="_blank" rel="noopener" aria-label="Visit my LinkedIn profile"><img loading="lazy" src="https://cdn.prod.website-files.com/65aa0538768bf69053e3bb51/673c129627b8d3c81d9be887_6491a87dcdb57d5bee063ee7_linkedin-logo-white.svg" alt="Ginko Emdon's LinkedIn profile" /></a>
+          </div>
+        </div>
+      </div>
+      <hr class="footer-divider" />
+      <div class="footer-copyright">
+        <p>made mindfully<br />© 2026 Ginko Emdon</p>
+      </div>
+      <div class="footer-thankyou">
+        <p>✿ thank you for your cyber frolick ✿</p>
+      </div>
+    </footer>
+  </div>
+  <script>
+  (function(){
+    // Nav dropdown + email copy — same small JS as the landing page.
+    var h=document.querySelector('.nav');var b=document.querySelector('.menu-button');if(b&&h){b.addEventListener('click',function(){var o=h.classList.toggle('nav-open');b.setAttribute('aria-expanded',o);});}document.querySelectorAll('.nav-toggle').forEach(function(t){t.addEventListener('click',function(e){e.stopPropagation();var d=t.closest('.nav-dropdown');var o=d.classList.toggle('open');t.setAttribute('aria-expanded',o);});});document.addEventListener('click',function(e){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){if(!d.contains(e.target)){d.classList.remove('open');d.querySelector('.nav-toggle').setAttribute('aria-expanded','false');}});});document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open');});}});document.querySelectorAll('.email-copy').forEach(function(btn){btn.addEventListener('click',function(){var email=btn.getAttribute('data-email');var label=btn.querySelector('.email-text');function done(){if(label){label.textContent='Copied!';setTimeout(function(){label.textContent=email;},2000);}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(email).then(done);}else{var ta=document.createElement('textarea');ta.value=email;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);done();}});});
+
+    // Sample data only — invented for this prototype, not real people or real quotes.
+    var NOTES = [
+      { id: "note-1", speaker: "Maya", role: "Neighbour — sample participant", quote: "My grandmother walked here every morning. I want a place to sit and remember her, not just walk past.", theme: "memory" },
+      { id: "note-2", speaker: "Sam", role: "Urban planner — sample participant", quote: "The paths are too narrow for a wheelchair and a stroller to pass each other. That has to change first.", theme: "access" },
+      { id: "note-3", speaker: "Leah", role: "Community organiser — sample participant", quote: "Let the walls tell the story of this place, in the languages people actually speak here.", theme: "storytelling" },
+      { id: "note-4", speaker: "Jonas", role: "Historian — sample participant", quote: "We should name who was here before the monument went up, and keep that naming visible.", theme: "memory" },
+      { id: "note-5", speaker: "Priya", role: "Parent — sample participant", quote: "I do not feel safe here after dark. Better lighting and a clear view across the square would help.", theme: "access" },
+      { id: "note-6", speaker: "Theo", role: "Artist — sample participant", quote: "A rotating wall for local artists would let the space change with the neighbourhood, instead of staying fixed.", theme: "storytelling" }
+    ];
+    var THEMES = [
+      { key: "memory", title: "Memory & belonging", summary: "The space should hold memory — of people, and of who was here before." },
+      { key: "access", title: "Access & safety", summary: "Everyone should be able to move through the space, and feel safe doing it." },
+      { key: "storytelling", title: "Storytelling in place", summary: "The space itself should tell stories, in many voices, and keep changing." }
+    ];
+
+    var notesGrid = document.getElementById("notes-grid");
+    NOTES.forEach(function(n){
+      var card = document.createElement("article");
+      card.className = "note-card"; card.id = n.id;
+      card.innerHTML = "<p class=\"note-id\">" + n.id.replace("note-", "Note ") + " of 6</p>" +
+        "<blockquote>“" + n.quote + "”</blockquote>" +
+        "<p class=\"speaker\"><strong>" + n.speaker + "</strong> — " + n.role + "</p>";
+      notesGrid.appendChild(card);
+    });
+
+    var synthBtn = document.getElementById("synthesise-btn");
+    var resetBtn = document.getElementById("reset-btn");
+    var statusEl = document.getElementById("synth-status");
+    var filterControls = document.getElementById("filter-controls");
+    var themesList = document.getElementById("themes-list");
+    var gapsBox = document.getElementById("gaps-box");
+    var currentFilter = "all";
+
+    function renderThemes(filter){
+      themesList.innerHTML = "";
+      THEMES.forEach(function(t){
+        if (filter !== "all" && filter !== t.key) return;
+        var notes = NOTES.filter(function(n){ return n.theme === t.key; });
+        var card = document.createElement("article");
+        card.className = "theme-card"; card.setAttribute("data-theme", t.key);
+        var html = "<p class=\"count\">Theme · " + notes.length + " supporting note" + (notes.length === 1 ? "" : "s") + "</p>" +
+          "<h3>" + t.title + "</h3><p>" + t.summary + "</p>";
+        notes.forEach(function(n){
+          // Quote is rendered from the same NOTES data as the note card above — no invented quotes.
+          html += "<blockquote>“" + n.quote + "”</blockquote>" +
+            "<p class=\"source\">— " + n.speaker + ", " + n.role + " · Source: <a href=\"#" + n.id + "\">" + n.id.replace("note-", "Note ") + "</a></p>";
+        });
+        card.innerHTML = html;
+        themesList.appendChild(card);
+      });
+    }
+
+    function setFilter(filter){
+      currentFilter = filter;
+      document.querySelectorAll(".filter-btn").forEach(function(btn){
+        btn.setAttribute("aria-pressed", btn.getAttribute("data-filter") === filter ? "true" : "false");
+      });
+      renderThemes(filter);
+    }
+
+    synthBtn.addEventListener("click", function(){
+      renderThemes("all");
+      statusEl.textContent = "6 notes grouped into 3 themes — 2 notes per theme. Every quote below is copied from its source note above.";
+      filterControls.hidden = false;
+      gapsBox.hidden = false;
+      resetBtn.hidden = false;
+      synthBtn.disabled = true;
+      setFilter("all");
+      document.getElementById("themes-list").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    resetBtn.addEventListener("click", function(){
+      themesList.innerHTML = "";
+      statusEl.textContent = "Press “Synthesise themes” to group the 6 notes above into 3 themes.";
+      filterControls.hidden = true;
+      gapsBox.hidden = true;
+      resetBtn.hidden = true;
+      synthBtn.disabled = false;
+      currentFilter = "all";
+    });
+
+    document.querySelectorAll(".filter-btn").forEach(function(btn){
+      btn.addEventListener("click", function(){ setFilter(btn.getAttribute("data-filter")); });
+    });
+  })();
+  </script>
+</body>
+</html>

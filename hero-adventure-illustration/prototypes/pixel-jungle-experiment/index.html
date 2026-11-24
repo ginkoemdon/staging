@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Pixel Jungle — experiment · Ginko's Prototype Playground</title>
+  <meta name="description" content="A pixel-art tropical jungle experiment, drawn in code. Not part of the live site." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #e3e0d8; color: #3b342f; font-family: "Poppins", sans-serif; line-height: 1.6; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    a { color: #184b44; }
+    .back { display: inline-block; margin-bottom: 1.5rem; }
+    h1 { font-family: "Krona One", sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem); line-height: 1.3; margin: 0 0 0.75rem; }
+    p { max-width: 60ch; }
+    .note { background: #fdfbf7; border: 1px solid rgba(59, 52, 47, 0.25); border-radius: 12px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+    .jungle { margin: 1.5rem 0 0; border: 1px solid rgba(59, 52, 47, 0.25); }
+    .jungle__canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+    .caption { font-size: 0.9rem; color: #52483d; margin-top: 0.75rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p><a class="back" href="../../index.html">← Back to Ginko's Prototype Playground</a></p>
+    <h1>Pixel Jungle — an experiment</h1>
+    <p>A tropical jungle drawn in code, one pixel at a time, following the way Ben Emdon built his pixel meadow. A river streams through the middle, sunlight beams through the canopy, and butterflies fly by day while fireflies glow after dark.</p>
+    <div class="note">
+      <p><strong>Experiment only.</strong> This page is not linked from the landing page or the All prototypes page. It lives here on preview so the pixel scene is kept, not lost, after the hero was replaced with a smooth illustration in Ginko's own style. Day or night follows your device's light or dark setting.</p>
+    </div>
+    <figure class="jungle" data-jungle>
+      <canvas class="jungle__canvas" data-jungle-canvas width="180" height="72" role="img" aria-label="A pixel-art tropical jungle: a river streams through the middle, sunlight beams through the canopy, birds and butterflies above the water, fireflies after dark."></canvas>
+    </figure>
+    <p class="caption">180 × 72 cells, built once from a fixed seed, re-lit day and night over the same shapes. Nothing moves smoothly — clouds step, the river shimmers one shade at a time.</p>
+  </div>
+  <script src="../../assets/js/jungle.js?v=20261124a"></script>
+</body>
+</html>
