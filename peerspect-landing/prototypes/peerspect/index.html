@@ -183,13 +183,20 @@
        button. */
     .app-header { display:flex; align-items:center; gap:8px; padding:12px 0 4px; }
     .app-header .app-mark { font-family:"Atkinson Hyperlegible", system-ui, sans-serif; font-weight:700; letter-spacing:.04em; color:var(--teal-dark); font-size:1rem; }
-    /* Placeholder logo mark, Nov 24 2026: two overlapping rounded
-       shapes in brand teal, two peers sharing one place. Inline
-       SVG, theme-aware fills, so it reads in light and dark.
-       A placeholder for Ginko to react to, not a final logo. */
+    /* App header logo, Nov 24 2026: Logo 2 Map + Thread / Path
+       from logo-exploration.html, cleaned up for 32px. Teal
+       field, a honey thread that is a path from a peer dot to
+       the shared white eye. The field is a fixed deep teal,
+       not var(--teal): in dark mode --teal turns pale and the
+       honey and white would vanish on it. Honey on this teal
+       is 4.1:1, white on teal 6.8:1, dark pupil on white
+       14.7:1, so the mark reads in light and dark. */
     .app-header .app-logo-mark { width:32px; height:32px; min-width:32px; flex:0 0 auto; display:block; }
-    .app-header .app-logo-mark .lm-a { fill:var(--teal); }
-    .app-header .app-logo-mark .lm-b { fill:var(--teal-dark); }
+    .app-header .app-logo-mark .lm-field { fill:#14665a; stroke:#0e4a40; }
+    .app-header .app-logo-mark .lm-thread { stroke:var(--honey); }
+    .app-header .app-logo-mark .lm-dot { fill:#fff; }
+    .app-header .app-logo-mark .lm-eye { fill:#fff; }
+    .app-header .app-logo-mark .lm-pupil { fill:#1d2b28; }
     .app-header .spacer { flex:1; }
     .app-header .theme-toggle { border:1px solid var(--line); border-radius:50%; padding:0; width:44px; height:44px; min-width:44px; min-height:44px; font-weight:700; background:var(--card); box-shadow:none; display:grid; place-items:center; font-size:1.25rem; line-height:1; }
     .app-header .theme-toggle .theme-icon { display:block; }
@@ -287,9 +294,17 @@
        one stretched column. Single column on phone. Later
        cards stay full width below. Equal height per row comes
        from the grid stretch default. */
-    .place-grid { display:grid; gap:16px; margin:0 0 16px; }
-    .place-grid .place-section { margin:0; }
-    @media (min-width: 700px) { .place-grid { grid-template-columns:1fr 1fr; } }
+    /* Width fix, Nov 24 2026: a grid track sized `auto` (or `1fr`,
+       which is minmax(auto, 1fr)) will not shrink below its widest
+       item's content, so the hourly chart strip, 13 bars of 34px,
+       stretched the whole grid to about 520px and the Through the
+       day card spilled off a 390px phone. minmax(0, 1fr) lets the
+       track shrink, and min-width:0 on the items lets them shrink
+       inside it, so the strip scrolls inside its card instead. */
+    .place-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:16px; margin:0 0 16px; }
+    .place-grid > * { min-width:0; }
+    .place-grid .place-section { margin:0; min-width:0; }
+    @media (min-width: 700px) { .place-grid { grid-template-columns:minmax(0,1fr) minmax(0,1fr); } }
     .place-section > h3:first-child { margin:0 0 12px; font-size:1.05rem; color:var(--teal-dark); }
     .place-section .detail-kv { margin:0; }
     .place-section .peer-visual { margin:0; border:0; background:transparent; padding:0; }
@@ -312,12 +327,23 @@
        relies on colour alone; tapping a bar picks that hour.
        The bar for right now is marked with the word Now. The
        strip scrolls sideways on a phone, like Google Maps. */
-    .busy-chart-wrap { min-width:0; }
+    .busy-chart-wrap { min-width:0; width:100%; max-width:100%; }
     .busy-now-line { margin:4px 0 8px; }
-    .busy-hours { display:flex; gap:6px; overflow-x:auto; padding:6px 2px 10px; }
+    /* The strip scrolls sideways inside its card, Nov 24 2026:
+       it is capped at the card width, and a soft fade on the
+       edge that still has more hours tells you it scrolls.
+       The fade is only on the side with more to see, set from
+       wireBusyChart, so it never fades a fully scrolled edge. */
+    .busy-hours { display:flex; gap:6px; overflow-x:auto; padding:6px 2px 10px; width:100%; max-width:100%; box-sizing:border-box; scrollbar-width:thin; }
+    .busy-hours.more-right { -webkit-mask-image:linear-gradient(to right, #000 calc(100% - 28px), transparent 100%); mask-image:linear-gradient(to right, #000 calc(100% - 28px), transparent 100%); }
+    .busy-hours.more-left { -webkit-mask-image:linear-gradient(to left, #000 calc(100% - 28px), transparent 100%); mask-image:linear-gradient(to left, #000 calc(100% - 28px), transparent 100%); }
+    .busy-hours.more-left.more-right { -webkit-mask-image:linear-gradient(to right, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%); mask-image:linear-gradient(to right, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%); }
     .busy-hour-btn { flex:0 0 34px; background:none; border:0; padding:0; cursor:pointer; font:inherit; color:inherit; text-align:center; display:flex; flex-direction:column; align-items:stretch; }
     .busy-hour-btn .busy-now-slot { height:20px; display:flex; align-items:center; justify-content:center; }
-    .busy-now { font-weight:800; color:var(--teal-dark); font-size:.8rem; white-space:nowrap; }
+    /* "Now" fits its 34px hour column at this size, Nov 24 2026:
+       at .8rem it measured 39px wide and spilled onto the
+       next hour's label. */
+    .busy-now { font-weight:800; color:var(--teal-dark); font-size:.72rem; white-space:nowrap; }
     .busy-hour-btn .busy-track { height:110px; display:flex; align-items:flex-end; justify-content:center; }
     .busy-hour-btn .busy-bar { width:26px; max-width:100%; border-radius:6px 6px 0 0; background:var(--teal); min-height:8px; display:block; }
     .busy-hour-btn .busy-hour-label { margin-top:6px; font-size:.85rem; font-weight:600; }
@@ -518,33 +544,41 @@
        and a separate AI suggestions widget that cites the data
        each suggestion comes from. Spaced out, 20px gaps, one
        idea per card. All sample data, labelled as such. */
-    .biz-grid { display:grid; gap:20px; margin:16px 0; }
+    /* Business width fix, Nov 24 2026: same rule as the place
+       grid. The grid here is one implicit `auto` column on
+       phone, so the busyness chart in "How the day feels"
+       sized the whole column to about 520px, and "What peers
+       are noticing" and the AI suggestions spilled with it,
+       because they share that track. minmax(0, 1fr) plus
+       min-width:0 on every card keeps each card at the
+       viewport width, and the chart scrolls inside its card. */
+    .biz-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:20px; margin:16px 0; }
+    .biz-grid > * { min-width:0; }
     .biz-stats { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px; margin:16px 0; }
-    .biz-stat { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px 20px; }
-    .biz-stat .num { font-size:1.6rem; font-weight:700; color:var(--teal-dark); line-height:1.2; margin:0; }
-    .biz-stat p { margin:.25rem 0 0; font-size:.95rem; }
-    .biz-card { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:20px; }
+    .biz-stat { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px 20px; min-width:0; }
+    .biz-card { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:20px; min-width:0; overflow-wrap:break-word; }
     .biz-card h3 { margin-top:0; }
     .biz-ring-row { display:grid; gap:16px; margin:8px 0; }
-    .biz-ring-item { display:flex; gap:16px; align-items:center; }
+    .biz-ring-item { display:flex; gap:16px; align-items:center; min-width:0; }
     .biz-ring-item svg { flex:0 0 auto; }
+    .biz-ring-item > div { min-width:0; }
     .biz-ring-item p { margin:.25rem 0 0; }
     .biz-day { display:grid; gap:12px; }
     .biz-day-item { border-left:6px solid var(--teal); padding:4px 0 4px 12px; }
     .biz-day-item:nth-child(2) { border-left-color:#2f5d3e; }
     .biz-day-item:nth-child(3) { border-left-color:#f2c14e; }
     .biz-hear { display:flex; flex-wrap:wrap; gap:8px; list-style:none; padding:0; margin:12px 0; }
-    .biz-hear li { background:var(--soft); border:1px solid var(--line); border-radius:999px; padding:8px 14px; font-weight:600; font-size:.95rem; }
-    .biz-ai { background:var(--card); border:2px solid var(--teal); border-radius:20px; padding:20px; }
+    .biz-hear li { background:var(--soft); border:1px solid var(--line); border-radius:999px; padding:8px 14px; font-weight:600; font-size:.95rem; max-width:100%; overflow-wrap:break-word; }
+    .biz-ai { background:var(--card); border:2px solid var(--teal); border-radius:20px; padding:20px; min-width:0; overflow-wrap:break-word; }
     .biz-ai .biz-ai-tag { display:inline-block; background:#f2c14e; color:#372c1f; border-radius:999px; padding:.25rem .75rem; font-weight:700; font-size:.85rem; }
-    .biz-sugg { border-top:1px solid var(--line); padding:16px 0 4px; margin-top:16px; }
+    .biz-sugg { border-top:1px solid var(--line); padding:16px 0 4px; margin-top:16px; min-width:0; overflow-wrap:break-word; }
     .biz-sugg:first-of-type { border-top:0; margin-top:8px; }
     .biz-sugg .based { font-size:.9rem; color:var(--muted); margin:.25rem 0 0; }
     /* Rationale dropdown behind each AI suggestion, Nov 24 2026:
        closed by default, chevron flips when open, like Filters
        and sort. Shows only counts and patterns already in the
        sample data for this place, never a name or a report. */
-    .biz-why { margin-top:8px; border-top:1px solid var(--line); padding-top:8px; }
+    .biz-why { margin-top:8px; border-top:1px solid var(--line); padding-top:8px; min-width:0; overflow-wrap:break-word; }
     .biz-why summary { font-weight:700; color:var(--teal-dark); min-height:44px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; list-style:none; }
     .biz-why summary::-webkit-details-marker { display:none; }
     .biz-why summary::after { content:"\25BE"; font-size:1.25rem; line-height:1; color:var(--teal-dark); flex:0 0 auto; transition:transform .15s ease; }
@@ -1531,7 +1565,7 @@
   <div class="app-wrap">
   <div class="app" id="peerspect-app">
     <div class="app-header">
-      <svg class="app-logo-mark" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><circle class="lm-a" cx="12" cy="16" r="10"/><circle class="lm-b" cx="21" cy="16" r="10" opacity="0.75"/></svg>
+      <svg class="app-logo-mark" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="lm-field" x="1.5" y="1.5" width="29" height="29" rx="8"/><path class="lm-thread" d="M8 24 C13 25.5 14.5 14 18.5 12" fill="none" stroke-width="2.5" stroke-linecap="round"/><circle class="lm-dot" cx="8" cy="24" r="2.6"/><circle class="lm-eye" cx="22.5" cy="11" r="4.6"/><circle class="lm-pupil" cx="22.5" cy="11" r="2.1"/></svg>
       <span class="app-mark">PEERSPECT</span>
       <span class="spacer"></span>
       <button class="view-size-cycle" id="view-size-cycle" type="button" data-mode="auto" aria-label="Preview size: Auto. Tap to switch to Desktop"><svg class="ico-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="13" height="10" rx="2"/><rect x="13" y="10" width="9" height="10" rx="2"/><path d="M6 18h4"/></svg><svg class="ico-web" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><svg class="ico-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></button>
@@ -2213,6 +2247,20 @@
 
     /* Screens — switch in place, no page scroll */
     var nav = $("app-nav");
+    /* Scroll reset, Nov 24 2026: every view change starts at the
+       top. The app scrolls as one page normally, but in
+       fullscreen and in the case-study embed the #view-app
+       element itself is the scroller (overflow-y:auto, and
+       max-height:640px in the embed), so window.scrollTo
+       alone does nothing there. Reset both, so a view opened
+       from halfway down another view never inherits the old
+       scroll position. */
+    function resetScroll(){
+      window.scrollTo(0,0);
+      if(document.documentElement) document.documentElement.scrollTop = 0;
+      if(document.body) document.body.scrollTop = 0;
+      var app = $("view-app"); if(app) app.scrollTop = 0;
+    }
     function showScreen(name){
       document.querySelectorAll(".screen").forEach(function(s){
         var on = s.id === "screen-" + name;
@@ -2233,6 +2281,16 @@
          If a check-in is already in progress, keep it, so going
          away and back does not wipe your answers. */
       if(name === "here"){ if(!checkin) startCheckin(); renderCrosscheck(); }
+      /* New view, new scroll position: start at the top. Runs
+         after the renders above, so a taller new view cannot
+         leave you stranded halfway down it. */
+      resetScroll();
+      /* Busyness strips only know their width once visible:
+         refresh the fade and the current-hour position for
+         strips on this screen, Nov 24 2026. */
+      document.querySelectorAll("#screen-" + name + " .busy-hours").forEach(function(strip){
+        if(strip.refreshBusyStrip) strip.refreshBusyStrip();
+      });
     }
     nav.querySelectorAll("button").forEach(function(b){ b.addEventListener("click", function(){ showScreen(b.dataset.screen); }); });
     function finishOnboarding(){ showScreen("discover"); }
@@ -2493,6 +2551,9 @@
       $("view-map-btn").setAttribute("aria-pressed", isMap ? "true" : "false");
       $("view-list-btn").setAttribute("aria-pressed", isMap ? "false" : "true");
       if(isMap) renderMap();
+      /* Map and List are different views of Discover: start at
+         the top when switching between them, Nov 24 2026. */
+      resetScroll();
     }
     /* List card, restored to the ?v=14 content, Nov 24 2026:
        name and match, distance, transport and area, and the
@@ -3495,6 +3556,32 @@
         btns.forEach(function(b, j){ b.setAttribute("aria-pressed", j===i ? "true" : "false"); });
       }
       btns.forEach(function(b, i){ b.addEventListener("click", function(){ show(i); }); });
+      /* Scroll hint and current hour, Nov 24 2026: the strip
+         scrolls inside its card, so bring the chosen hour
+         (right now, or the busiest) into view, and fade only
+         the edge that still has more hours. Runs again when
+         the screen opens, because a strip built while its
+         screen was hidden measures zero width. */
+      var strip = wrap.querySelector(".busy-hours");
+      function updateFade(){
+        if(!strip) return;
+        var canScroll = strip.scrollWidth > strip.clientWidth + 1;
+        strip.classList.toggle("more-right", canScroll && strip.scrollLeft + strip.clientWidth < strip.scrollWidth - 4);
+        strip.classList.toggle("more-left", canScroll && strip.scrollLeft > 4);
+      }
+      if(strip){
+        strip.refreshBusyStrip = function(){
+          var sel = wrap.querySelector(".busy-hour-btn[aria-pressed='true']") || btns[0];
+          if(!sel) return;
+          var sr = strip.getBoundingClientRect(), br = sel.getBoundingClientRect();
+          if(sr.width){
+            strip.scrollLeft = Math.max(0, strip.scrollLeft + (br.left - sr.left) - (strip.clientWidth - br.width) / 2);
+          }
+          updateFade();
+        };
+        strip.addEventListener("scroll", updateFade, {passive:true});
+        strip.refreshBusyStrip();
+      }
     }
 
     /* Business dashboard, Nov 23 2026: a dashboard, not a list of
@@ -3699,7 +3786,7 @@
       if(document.fullscreenElement) document.exitFullscreen().catch(function(){});
       document.body.classList.remove("expanded");
       document.body.classList.remove("fs-mode");
-      window.scrollTo(0,0);
+      resetScroll();
       /* Put the live preview back, so the embeds are there again
          when you return to the case study. */
       if(livePreview && liveSlot) showPreview("discover", {noScroll:true});
@@ -3708,7 +3795,7 @@
       restoreApp();
       viewWeb.hidden = true; viewApp.hidden = false;
       if(!appShown){ appShown = true; showScreen("landing"); }
-      window.scrollTo(0,0);
+      resetScroll();
       /* Fullscreen is the prototype view: request it in this user
          gesture. Wide expanded layout is the fallback when the
          Fullscreen API is unavailable or refused. */
