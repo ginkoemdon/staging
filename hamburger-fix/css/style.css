@@ -330,7 +330,11 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
 .flower-button:hover .button-line-right { width: 20px; }
 
 /* Hero — stylized H1 rule, Nov 24 2026 (Ginko, "stylize"): Krona One,
-   48px desktop, dark fill + 1.2px amber stroke = outlined gold.
+   48px desktop, dark fill + amber stroke = outlined gold.
+   Stroke thickened Nov 24 2026 from 1.2px to 3px to match the Webflow
+   landing page hero H1, whose rendered outline measured 3px on straight
+   stems (exact Webflow CSS value unverified; rendered band includes
+   antialiasing, so the CSS value may be 2px — dial back if too bold).
    Applies to all styled H1s on landing pages. */
 .hero { padding: 6.5rem 0 3rem; }
 .hero h1 {
@@ -338,8 +342,8 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
   font-size: clamp(2rem, 5vw, 3rem); /* 48px max desktop, smaller on mobile */
   line-height: 1.15;
   color: var(--earth); /* dark fill #3b342f */
-  -webkit-text-stroke: 1.2px var(--sun); /* amber rgb(248, 192, 94) */
-  text-stroke: 1.2px var(--sun);
+  -webkit-text-stroke: 3px var(--sun); /* amber rgb(248, 192, 94) */
+  text-stroke: 3px var(--sun);
   paint-order: stroke fill;
   max-width: 1100px;
 }

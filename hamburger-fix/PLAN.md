@@ -73,7 +73,7 @@ Applies to every future landing page prototype card, Featured work and Rough dra
 - Implemented in `css/style.css` (.portfolio-card_heading, .card-content, .ch_card, .list-of-tags .tag-item, .button.is-link.is-icon, and the max-width 991px mobile block).
 
 ## Stylized H1 rule (Nov 24, 2026, Ginko) — all styled H1s on landing pages, and whenever Ginko says "stylize"
-- H1: Krona One, 48px desktop (3rem, clamp down on mobile), dark fill (earth #3b342f) + 1.2px amber stroke rgb(248, 192, 94) / #f8c05e, i.e. outlined gold.
+- H1: Krona One, 48px desktop (3rem, clamp down on mobile), dark fill (earth #3b342f) + 3px amber stroke rgb(248, 192, 94) / #f8c05e, i.e. outlined gold. Thickened Nov 24, 2026 from 1.2px to 3px to match the Webflow landing page hero H1, whose rendered outline measured 3px on straight stems; exact Webflow CSS value unverified (rendered band includes antialiasing, so it may be 2px — dial back if too bold).
 - Second line / subline under it: Krona One, 20px (1.25rem), solid cream rgb(227, 224, 216) / #e3e0d8, no stroke. Cream is the same as egg #e3e0d8, so use ONLY on a dark background, never on egg/light.
 - Example texts Ginko gave with the rule are from her Webflow typography ("Ai is the terrain. I bring the map." / "Cultivating with intention, judgment, and an inclusive designer's vigor."); they identify the treatment, they are NOT automatically Playground copy.
 - Implemented in `css/style.css` (`.hero h1`, `.hero .h1-subline`), applied to the Playground landing hero H1 keeping its current headline. The old sun-highlight on "human exploration" was removed so the outline stays uniform.
