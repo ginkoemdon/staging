@@ -12,7 +12,7 @@ Each cover is illustrative of its prototype, not random:
 - **accessibility-auditor.svg** — AI Accessibility Auditor: a mock page with a checklist, a magnifier over it, and ticks where fixes were approved.
 - **consent-research.svg** — Consent-Aware Research Assistant: a shareable note with a tick on the left, a private note with redacted bars on the right, both feeding a synthesis bar below.
 - **all-prototypes.svg** — All prototypes: a collage of shapes from the other covers, because it links to all of them.
-- **from-form-to-function.svg** — From Form to Function: a dense form panel of many small lines on the left, a single arrow in the middle, and three clean, aligned bars on the right. A dense form becoming clear, ordered steps. Contemporary geometric abstract style: precise rectangles, generous negative space, no faces or doodles. In the app's own standalone palette (pale teal, navy, teal, amber), not the portfolio palette — the app itself has its own branding and stylesheet.
+- **from-form-to-function.svg** — From Form to Function (chosen Nov 25, 2026, option A "Shatter"): on a dark navy background, a dense form panel cracks apart and the pieces fly across and reassemble as three clean step cards. Dramatic, contemporary geometric abstract style, no faces or doodles. In the app's own standalone palette (navy, teal, amber), not the portfolio palette — the app itself has its own branding and stylesheet.
 
 Accessibility: covers are decorative on the cards (`alt=""` in the HTML), because the card title already names the prototype. Each SVG file itself has a `<title>` describing what it shows, for anyone opening the file directly.
 
@@ -28,7 +28,7 @@ Nov 22, 2026 (Ginko): covers must not be the same colour as the site background 
 - **accessibility-auditor.svg** — lime #afa477
 - **consent-research.svg** — earth #3b342f
 - **all-prototypes.svg** — cream #fafafa
-- **from-form-to-function.svg** — pale teal #e6efec (the app's own palette, not a portfolio token)
+- **from-form-to-function.svg** — dark navy #1e293b (the app's own palette, not a portfolio token)
 
 9 covers, 9 different backgrounds, none egg. Where a foreground shape used the new background colour, it was changed to a contrasting palette colour (e.g. PEERSPECT's left peer is now tangerine on sun).
 
