@@ -333,9 +333,11 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
    48px desktop. Treatment INVERTED Nov 25 2026 to match the Webflow
    "Multifaceted & Multidiscilpinary" title (an H2 on a light textured
    background, measured from screenshots, exact Webflow CSS unverified):
-   gold fill #f8c05e + dark brown stroke #372c1f, about 2px measured
-   (2-3px incl. antialiasing). The earlier dark-fill + amber-stroke
-   version did not work on the egg background. Paint order: fill stroke,
+   gold fill #f8c05e + dark brown stroke #372c1f. The Multifaceted
+   title measured about 2px, but Nov 25 2026 Ginko said that looks
+   too thick, so the stroke is back to the original 1.2px from her
+   first rule. The earlier dark-fill + amber-stroke version did
+   not work on the egg background. Paint order: fill stroke,
    so the stroke sits centred on the letter edge, half inside the fill
    and half outside. Applies to all styled H1s on landing pages. */
 .hero { padding: 6.5rem 0 3rem; }
@@ -344,8 +346,8 @@ h3 { font-size: 1.15rem; margin: 0 0 0.5rem; }
   font-size: clamp(2rem, 5vw, 3rem); /* 48px max desktop, smaller on mobile */
   line-height: 1.15;
   color: var(--sun); /* gold fill #f8c05e */
-  -webkit-text-stroke: 2px var(--brown); /* dark brown #372c1f */
-  text-stroke: 2px var(--brown);
+  -webkit-text-stroke: 1.2px var(--brown); /* dark brown #372c1f, original thickness */
+  text-stroke: 1.2px var(--brown);
   paint-order: fill stroke;
   max-width: 1100px;
 }
