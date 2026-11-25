@@ -724,6 +724,24 @@
     .bm-toast { position:fixed; left:50%; bottom:92px; transform:translate(-50%, 8px); background:var(--ink); color:var(--card); border-radius:999px; padding:10px 18px; font-size:.9rem; font-weight:700; box-shadow:0 4px 14px rgba(0,0,0,.3); opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease; z-index:50; max-width:90vw; text-align:center; }
     .bm-toast.show { opacity:1; transform:translate(-50%, 0); }
     @media (prefers-reduced-motion: reduce) { .bm-icon-btn.pop svg { animation:none; } .bm-toast { transition:none; } }
+    /* Bookmarked places as expandable cards, Nov 25 2026: the
+       Saved list used to be plain text (name + area) with no way
+       to see the place without leaving Saved. Each bookmark is
+       now a small card; tap its header to expand it in place,
+       showing the match, address, how it feels right now and a
+       short menu note, plus Open place for the full detail.
+       The header is a real button, 44px minimum, with a drawn
+       chevron that flips when open. */
+    #bookmark-list { list-style:none; margin:12px 0 0; padding:0; display:grid; gap:12px; }
+    .bm-card { border:1px solid var(--line); border-radius:14px; background:var(--card); overflow:hidden; }
+    .bm-card-head { display:flex; align-items:center; gap:12px; width:100%; text-align:left; background:none; border:0; padding:14px 16px; cursor:pointer; font:inherit; color:inherit; min-height:52px; }
+    .bm-card-head:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+    .bm-card-title { font-weight:700; }
+    .bm-card-head .bm-chev { margin-left:auto; flex:0 0 auto; display:inline-flex; transition:transform .2s ease; }
+    .bm-card.open .bm-chev { transform:rotate(180deg); }
+    .bm-card-body { padding:0 16px 16px; display:grid; gap:10px; }
+    .bm-card-body p { margin:0; }
+    .bm-card-actions { display:flex; gap:10px; flex-wrap:wrap; }
     /* Save icon on the All places list cards, Nov 24 2026: the
        icon is a sibling of the whole-card button, never nested
        inside it, pinned to the card's bottom right corner. The
@@ -3349,12 +3367,46 @@
       $("profile-name").value=""; renderProfiles();
     });
     $("profile-name").addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); $("save-profile").click(); } });
+    /* Bookmarked places as expandable cards, Nov 25 2026: the
+       list used to be plain text (name + area) with no way to
+       see the place without leaving Saved. Each bookmark is now
+       a small card; tap its header to expand it in place, with
+       the match, address, how it feels right now and a short
+       menu note, plus Open place for the full place detail.
+       Expanding keeps you on Saved; nothing navigates away
+       until you tap Open place. */
     function renderPrep(){
       var box=$("prep-list");
       renderCartInto(box, prep, {backToMenu:true, emptyText:"Nothing yet. Open a place and add a menu item."});
       var bl=$("bookmark-list"); bl.innerHTML="";
-      if(!bookmarks.size) bl.innerHTML="<li class='ps-muted'>No places bookmarked yet.</li>";
-      Array.from(bookmarks).forEach(function(id){ var p=PLACES.find(function(x){ return x.id===id; }); if(p){ var li=document.createElement("li"); li.textContent=p.name+", "+p.area; bl.appendChild(li); } });
+      if(!bookmarks.size){ bl.innerHTML="<li class='ps-muted'>No places bookmarked yet.</li>"; return; }
+      Array.from(bookmarks).forEach(function(id){
+        var p=PLACES.find(function(x){ return x.id===id; }); if(!p) return;
+        var li=document.createElement("li"); li.className="bm-card";
+        var head=document.createElement("button"); head.type="button"; head.className="bm-card-head"; head.setAttribute("aria-expanded","false");
+        var title=document.createElement("span"); title.className="bm-card-title"; title.textContent=p.name; head.appendChild(title);
+        var meta=document.createElement("span"); meta.className="ps-muted"; meta.textContent=p.area+" · "+p.distLabel; head.appendChild(meta);
+        var chev=document.createElement("span"); chev.className="bm-chev"; chev.setAttribute("aria-hidden","true");
+        chev.innerHTML='<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        head.appendChild(chev);
+        var body=document.createElement("div"); body.className="bm-card-body"; body.hidden=true;
+        var type=document.createElement("p"); type.className="ps-muted"; type.textContent=p.type; body.appendChild(type);
+        var addr=document.createElement("p"); var addrLink=document.createElement("a"); addrLink.href=p.mapsUrl; addrLink.target="_blank"; addrLink.rel="noopener"; addrLink.textContent=p.address; addr.appendChild(addrLink); body.appendChild(addr);
+        var match=document.createElement("div");
+        if(activeFilters.size){ match.innerHTML=matchOvalsHTML(p); }
+        else { match.innerHTML="<p class='ps-muted'>Pick what matters today to see how this place matches.</p>"; }
+        body.appendChild(match);
+        var feels=document.createElement("p"); feels.textContent="Right now, in peers' words: "+p.sound+". "+p.lighting+". "+p.crowding+"."; body.appendChild(feels);
+        if(p.menuNote){ var mn=document.createElement("p"); mn.className="ps-muted"; mn.textContent=p.menuNote; body.appendChild(mn); }
+        var actions=document.createElement("div"); actions.className="bm-card-actions";
+        var open=document.createElement("button"); open.type="button"; open.className="ps-btn"; open.textContent="Open place";
+        open.addEventListener("click", function(){ showPlace(p.id); }); actions.appendChild(open);
+        var remove=document.createElement("button"); remove.type="button"; remove.className="ps-btn ps-btn-secondary"; remove.textContent="Remove bookmark";
+        remove.addEventListener("click", function(){ toggleBookmark(p.id, remove); }); actions.appendChild(remove);
+        body.appendChild(actions);
+        head.addEventListener("click", function(){ var isOpen=li.classList.toggle("open"); body.hidden=!isOpen; head.setAttribute("aria-expanded", isOpen?"true":"false"); });
+        li.appendChild(head); li.appendChild(body); bl.appendChild(li);
+      });
     }
     $("clear-prep").addEventListener("click", function(){ prep=[]; save("peerspect-prep-v1", prep); renderPrep(); });
     /* Your last visits, two views, Nov 24 2026: was one
