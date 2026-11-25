@@ -665,7 +665,8 @@ footer a { color: var(--earth); }
   .hero-art .ha-shimmer, .hero-art .ha-leaf { animation: none !important; opacity: 1 !important; transform: none !important; }
 }
 
-/* Noise overlay, Nov 24 2026: Ginko's Webflow film grain, site-wide.
+/* Noise overlay, Nov 24 2026: Ginko's Webflow film grain, landing
+   pages only since Nov 25 2026 (removed from all prototype pages).
    Same GIF and settings as Webflow (mindfullydesign.webflow.io):
    .noise / .c-noise, fixed, full viewport, 256px tiles, opacity .1,
    background transparent, no clipping, behind everything (z-index 0),

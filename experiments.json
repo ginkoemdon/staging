@@ -46,7 +46,7 @@
       "name": "hamburger-fix",
       "branch": "experiment/hamburger-fix",
       "description": "Hamburger X + menu spacing; Discover dots removed; map expand and zoom; visits list and calendar views; needs wording",
-      "upstream_sha": "5f5fd9502cec05b50b4d98b5e64bb6098eabf2b6",
+      "upstream_sha": "0dbfa6c18f9bb9d7fe2a2f9c149e71cf16e1fd4a",
       "staged": "2026-11-24"
     },
     {
