@@ -5,7 +5,6 @@ All covers are SVG code (not generated images), in Ginko's palette, mid-century 
 Each cover is illustrative of its prototype, not random:
 
 - **peerspect.svg** — PEERSPECT: two peers (sun circle + forest circle, two viewpoints) overlapping, with one shared eye in the middle. Peer + perspective.
-- **kate-ai.svg** — AI prototype for Kate: a speech bubble with an AI spark, and a short clear reply inside. A conversation, not a generic robot.
 - **alt-text-studio.svg** — Alt-Text Studio: the actual demo image — a person with smart glasses reading a book by a window — with alt-text lines below it.
 - **plain-language-gov.svg** — Plain-Language Government AI: dense grey lines on the left (the original government text), an orange arrow, and short clear lines on the right (the plain-language version).
 - **co-design-synthesis.svg** — Co-Design Synthesis: people around a workshop table, with sticky notes above, grouped into three theme bars below.
@@ -22,7 +21,6 @@ Accessibility: covers are decorative on the cards (`alt=""` in the HTML), becaus
 Nov 22, 2026 (Ginko): covers must not be the same colour as the site background (egg #e3e0d8). Each cover has a different background colour, all from the palette:
 
 - **peerspect.svg** — sun #f8c05e
-- **kate-ai.svg** — rust #a35f3c
 - **alt-text-studio.svg** — forest #184b44
 - **plain-language-gov.svg** — lizard #c9c972
 - **co-design-synthesis.svg** — tangerine #e26c00
@@ -32,7 +30,7 @@ Nov 22, 2026 (Ginko): covers must not be the same colour as the site background 
 - **all-prototypes.svg** — cream #fafafa
 - **from-form-to-function.svg** — pale teal #e6efec (the app's own palette, not a portfolio token)
 
-10 covers, 10 different backgrounds, none egg. Where a foreground shape used the new background colour, it was changed to a contrasting palette colour (e.g. PEERSPECT's left peer is now tangerine on sun, Kate's spark is now forest on rust).
+9 covers, 9 different backgrounds, none egg. Where a foreground shape used the new background colour, it was changed to a contrasting palette colour (e.g. PEERSPECT's left peer is now tangerine on sun).
 
 ## Buttons — View prototype
 

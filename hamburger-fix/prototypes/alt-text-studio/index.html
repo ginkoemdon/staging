@@ -399,7 +399,7 @@
       var hasText = text.trim().length > 0;
       var redundant = /\b(image|photo|picture|pic)\s+of\b/i.test(text);
       var guessed = /\b(young|old|elderly|man|woman|boy|girl|male|female)\b/i.test(text);
-      var namesSomeone = /\b(Ginko|Kate|Marco|Elodie|Julie|Julia)\b/.test(text);
+      var namesSomeone = /\b(Ginko|Marco|Elodie|Julie|Julia)\b/.test(text);
       var lengthOk = isDecorative || (hasText && len <= 125);
 
       setCheck("check-has-text", isDecorative || hasText);

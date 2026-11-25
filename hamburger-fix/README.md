@@ -6,7 +6,6 @@ PEERSPECT is one prototype inside it, not the site name. The site was briefly ti
 
 Prototypes so far:
 - PEERSPECT — ./prototypes/peerspect/ (placeholder)
-- AI prototype for Kate — ./prototypes/kate-ai/ (placeholder)
 
 ## Local preview
 

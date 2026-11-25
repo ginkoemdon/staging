@@ -104,6 +104,5 @@ Each prototype has a distinct dark accent (all ≥4.5:1 on egg #e3e0d8, used for
 - AI Accessibility Auditor #1d5c3a (6.02:1 on egg) — changed from plum #5b2a4a in verification, which duplicated Co-Design's plum
 - Consent-Aware Research Assistant #5b21b6 (6.81:1 on egg) — changed from plum #5c2340 in verification, which duplicated Co-Design's plum
 - PEERSPECT #9a4a00 (4.75:1 on egg) — changed from plum #5c2340 in verification, which duplicated Co-Design's plum
-- AI prototype for Kate #7c2d12 (7.10:1 on egg) — changed from navy #24365e in verification, which was too close to Plain-Language's navy #1e3a5f
 
-Verification Nov 22, 2026: all 10 pages + css return 200 locally; every prototype page contains product-shell and "How to use"; no empty title="" in any HTML file; no bright tangerine/rust as small text in css/prototypes. One known exception: Accessibility Auditor contains a second h1, "Welcome to Bloom Studio", inside the mock sample page being audited — that is deliberate broken sample content, not a page heading.
+Verification Nov 22, 2026: all 9 pages + css return 200 locally; every prototype page contains product-shell and "How to use"; no empty title="" in any HTML file; no bright tangerine/rust as small text in css/prototypes. One known exception: Accessibility Auditor contains a second h1, "Welcome to Bloom Studio", inside the mock sample page being audited — that is deliberate broken sample content, not a page heading.
