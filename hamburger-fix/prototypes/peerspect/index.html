@@ -262,8 +262,8 @@
     a { color:var(--teal); }
     button { font:inherit; cursor:pointer; }
     button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
-    /* Screen headings are focused on arrival for screen readers, Nov 27 2026: they are not interactive, so no visible outline (it read as a button border around PEERSPECT on the landing screen). */
-    .screen h2[tabindex="-1"]:focus { outline:none; }
+    /* Headings and other script-focused messages are focused on arrival for screen readers, Nov 27 2026: they are not interactive, so no visible outline (the teal ring kept appearing around PEERSPECT on entry). This must beat the #view-app :focus-visible rule further down, so it carries the #view-app id. Interactive controls keep their ring. */
+    #view-app [tabindex="-1"]:focus { outline:none; }
     /* App shell: a normal page section, full width up to 720px. No fixed
        height, no overflow hidden, no phone frame. */
     .app { max-width:720px; margin:0 auto; background:var(--bg); }
