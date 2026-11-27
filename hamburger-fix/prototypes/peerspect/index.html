@@ -1545,7 +1545,7 @@
             <button class="pg-link pg-toggle" type="button" aria-expanded="false" aria-haspopup="true">Prototypes &#9662;</button>
             <div class="pg-dropdown-list">
               <span class="pg-dropdown-group">Featured</span>
-              <a class="pg-dropdown-link" href="./index.html"><span class="pg-thumb pg-thumb-img pg-thumb-logo-peerspect"><img src="./favicon/logo.svg" alt="" /></span><span><strong>PEERSPECT</strong><span>Your guide to how places actually feel.</span></span></a>
+              <a class="pg-dropdown-link" href="./index.html?app"><span class="pg-thumb pg-thumb-img pg-thumb-logo-peerspect"><img src="./favicon/logo.svg" alt="" /></span><span><strong>PEERSPECT</strong><span>Your guide to how places actually feel.</span></span></a>
               <a class="pg-dropdown-link" href="../from-form-to-function/index.html"><span class="pg-thumb pg-thumb-img pg-thumb-logo-form"><img src="../from-form-to-function/favicon/logo.svg" alt="" /></span><span><strong>Form to Function</strong><span>Turns complicated forms into plain language instructions.</span></span></a>
               <hr class="pg-dropdown-divider" />
               <span class="pg-dropdown-group">Rough concepts</span>
@@ -4336,6 +4336,18 @@
     $("see-prototype-2").addEventListener("click", showApp);
     document.querySelectorAll("[data-open-prototype]").forEach(function(b){ b.addEventListener("click", showApp); });
     $("close-app").addEventListener("click", showWeb);
+    /* Direct link to the prototype: ?app (or #app) opens the app view
+       on load, skipping the case study, in the expanded layout
+       (fullscreen needs a tap, so it is not requested here). The case
+       study itself stays at the plain URL, so it can keep being
+       developed, and every public link points at ?app instead. */
+    if(/[?&]app(?:=|&|$)/.test(location.search) || location.hash === "#app"){
+      restoreApp();
+      viewWeb.hidden = true; viewApp.hidden = false;
+      if(!appShown){ appShown = true; showScreen("landing"); }
+      resetScroll();
+      setExpand(true);
+    }
     function setExpand(on){
       document.body.classList.toggle("expanded", on);
       document.body.classList.toggle("fs-mode", on);
