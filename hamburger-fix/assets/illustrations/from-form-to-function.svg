@@ -33,11 +33,11 @@
   <path d="M-40 90 H840 M-40 180 H840 M-40 270 H840 M-40 360 H840"/>
   <path d="M200 -30 V480 M400 -30 V480 M600 -30 V480"/>
 </g>
-<!-- dense form, left: white panel, tilted, torn in two with a real
-     gap between the halves, so the dark background shows through
-     where it tore -->
+<!-- dense form, left: white panel, tilted, torn in two with just a
+     tiny gap between the halves, like torn paper, so a sliver of
+     the dark background shows through where it tore -->
 <g transform="rotate(-4 180 225)" filter="url(#soft)">
-  <g clip-path="url(#tearL)"><g transform="translate(-9,-3)">
+  <g clip-path="url(#tearL)"><g transform="translate(-3,0)">
     <rect x="60" y="85" width="230" height="280" rx="12" fill="#fdfbf7"/>
     <path d="M60 97 a12 12 0 0 1 12 -12 h206 a12 12 0 0 1 12 12 v30 h-230 z" fill="#14665a"/>
     <rect x="84" y="98" width="110" height="9" rx="4.5" fill="#fdfbf7" opacity=".9"/>
@@ -55,7 +55,7 @@
     <circle cx="272" cy="350" r="13" fill="#f8c05e"/>
     <text x="272" y="356" text-anchor="middle" font-family="system-ui, sans-serif" font-size="17" font-weight="700" fill="#372c1f">?</text>
   </g></g>
-  <g clip-path="url(#tearR)"><g transform="translate(17,7) rotate(1.5 200 225)">
+  <g clip-path="url(#tearR)"><g transform="translate(4,0)">
     <rect x="60" y="85" width="230" height="280" rx="12" fill="#fdfbf7"/>
     <path d="M60 97 a12 12 0 0 1 12 -12 h206 a12 12 0 0 1 12 12 v30 h-230 z" fill="#14665a"/>
     <rect x="84" y="98" width="110" height="9" rx="4.5" fill="#fdfbf7" opacity=".9"/>
@@ -74,9 +74,6 @@
     <text x="272" y="356" text-anchor="middle" font-family="system-ui, sans-serif" font-size="17" font-weight="700" fill="#372c1f">?</text>
   </g></g>
   <!-- small shards caught in the gap -->
-  <rect x="196" y="150" width="14" height="8" rx="2" fill="#fdfbf7" transform="rotate(28 203 154)"/>
-  <rect x="188" y="250" width="11" height="7" rx="2" fill="#f2c14e" transform="rotate(-20 193 253)"/>
-  <rect x="200" y="315" width="12" height="7" rx="2" fill="#2f8a76" transform="rotate(40 206 318)"/>
 </g>
 <!-- fragments flying right, getting cleaner -->
 <g>
