@@ -309,6 +309,8 @@
     .peer-visual .peer-fill { height:100%; background:var(--teal); border-radius:999px; }
     .peer-notes { list-style:none; padding:0; margin:12px 0 0; display:grid; gap:8px; }
     .peer-notes li { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--teal); border-radius:12px; padding:12px 16px; font-size:.95rem; }
+    .peer-notes .peer-meta { margin:0 0 2px; font-size:.8rem; color:var(--muted); }
+    .peer-notes .peer-quote { margin:0; font-size:1.05rem; font-weight:700; color:var(--ink); line-height:1.45; }
     /* Cross-check a peer report, Nov 24 2026: one question per
        tap, anonymous, same trust count as the check-in "still"
        questions. */
@@ -1749,7 +1751,7 @@
       <span class="spacer"></span>
       <button class="view-size-cycle" id="view-size-cycle" type="button" data-mode="auto" aria-label="Preview size: Auto. Tap to switch to Desktop"><svg class="ico-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="13" height="10" rx="2"/><rect x="13" y="10" width="9" height="10" rx="2"/><path d="M6 18h4"/></svg><svg class="ico-web" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><svg class="ico-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></button>
       <button class="theme-toggle" type="button" data-theme-btn aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">☾</span></button>
-      <button class="app-close" id="close-app" type="button" aria-label="Close prototype and return to case study">&times;</button>
+      <button class="app-close" id="close-app" type="button" aria-label="Close prototype and return to Ginko's Prototype Playground">&times;</button>
     </div>
     <!-- Selected filter colour switcher removed from the header,
          Nov 24 2026. The Current (neutral) style is in use. The
@@ -3207,8 +3209,8 @@
          recent peer notes already in the sample data. The old
          count bar is gone, Nov 24 2026: it was a proportion
          against the most-confirmed sample place, with no stated
-         total next to it. Cross-check, Nov 24 2026: each note
-         has a "Cross-check this report" button. Tapping asks
+         total next to it. Peer check, Nov 24 2026: each note
+         has a "Peer check this report" button. Tapping asks
          that report's "still" question once, anonymously —
          "A peer reported 30 minutes ago: the music was soft.
          Is the music still soft right now?" — with answers
@@ -3217,7 +3219,7 @@
          for today, today for yesterday). Answering counts as a
          peer cross-check in the trust data (milestones), bumps
          that report's "Confirmed by X peers" line, and the
-         button becomes "You cross-checked this". */
+         button becomes "You peer-checked this". */
       var peerCard = document.createElement("section"); peerCard.className="ps-panel place-section"; peerCard.setAttribute("aria-label","Peer reports");
       var peerH=document.createElement("h3"); peerH.textContent="Peer reports"; peerCard.appendChild(peerH);
       var peerDiv = document.createElement("div"); peerDiv.className="peer-visual";
@@ -3229,13 +3231,15 @@
         var notesUl=document.createElement("ul"); notesUl.className="peer-notes";
         reportQs.forEach(function(q, qi){
           var li=document.createElement("li");
-          var quote=document.createElement("p"); quote.style.margin="0"; quote.textContent="“"+q.c+"”"; li.appendChild(quote);
+          var rm=q.c.match(/^A peer reported (.+?): (.+)$/);
+          if(rm){ var meta=document.createElement("p"); meta.className="peer-meta"; meta.textContent="A peer reported "+rm[1]; li.appendChild(meta); }
+          var quote=document.createElement("p"); quote.className="peer-quote"; quote.textContent="“"+capFirst(rm?rm[2]:q.c)+"”"; li.appendChild(quote);
           var key=p.id+"|"+qi;
           function confirmedCount(){ return (q.cc||0) + ((crosschecks[key]&&crosschecks[key].count)||0); }
-          function confText(mine){ var n=confirmedCount(); return "Confirmed by "+n+" peer"+(n===1?"":"s")+(mine?" · including your cross-check":""); }
+          function confText(mine){ var n=confirmedCount(); return "Confirmed by "+n+" peer"+(n===1?"":"s")+(mine?" · including your peer check":""); }
           var conf=document.createElement("p"); conf.className="peer-confirmed"; conf.textContent=confText(!!(crosschecks[key]&&crosschecks[key].answered)); li.appendChild(conf);
           var done=!!(crosschecks[key]&&crosschecks[key].answered);
-          var btn=document.createElement("button"); btn.type="button"; btn.className="ps-btn ps-btn-secondary ps-btn-small"; btn.textContent="Cross-check this report"; btn.style.minHeight="44px"; btn.hidden=done;
+          var btn=document.createElement("button"); btn.type="button"; btn.className="ps-btn ps-btn-secondary ps-btn-small"; btn.textContent="Peer check this report"; btn.style.minHeight="44px"; btn.hidden=done;
           li.appendChild(btn);
           var qBox=document.createElement("div"); qBox.className="crosscheck-q"; qBox.hidden=true;
           var qText=document.createElement("p"); qText.innerHTML="<strong>"+q.q+"</strong>"; qBox.appendChild(qText);
@@ -3253,7 +3257,7 @@
             ansRow.appendChild(b);
           });
           li.appendChild(qBox);
-          var crossed=document.createElement("p"); crossed.className="peer-crossed ps-confirm"; crossed.hidden=!done; crossed.textContent="You cross-checked this"; li.appendChild(crossed);
+          var crossed=document.createElement("p"); crossed.className="peer-crossed ps-confirm"; crossed.hidden=!done; crossed.textContent="You peer-checked this"; li.appendChild(crossed);
           btn.addEventListener("click", function(){ qBox.hidden=false; btn.hidden=true; });
           notesUl.appendChild(li);
         });
@@ -3708,7 +3712,7 @@
        "Is this still true?" cross-check. Answering reuses the
        place-detail counting: it counts as a peer cross-check in
        the trust data, bumps that report's confirmation count,
-       and marks it "You cross-checked this". The key matches
+       and marks it "You peer-checked this". The key matches
        place detail (placeId plus the report's index among that
        place's reports), so a cross-check in either place shows
        in the other. */
@@ -3735,7 +3739,7 @@
     function renderCrosscheck(focusKey){
       var box=$("crosscheck-box"); if(!box) return; box.innerHTML="";
       var p = PLACES.find(function(x){ return x.id===hereSelect.value; }) || PLACES[0];
-      var h=document.createElement("h3"); h.textContent="Peer cross-check"; box.appendChild(h);
+      var h=document.createElement("h3"); h.textContent="Peer check"; box.appendChild(h);
       var why=document.createElement("p"); why.className="ps-muted";
       why.textContent="Places change through the day, so checking what a peer reported keeps it trustworthy for the next person who needs it. Your check is anonymous.";
       box.appendChild(why);
@@ -3743,17 +3747,18 @@
       if(!reports.length){
         var none=document.createElement("p"); none.className="ps-muted"; none.textContent="No peer reports to check here yet."; box.appendChild(none); return;
       }
-      var sub=document.createElement("p"); sub.className="ps-muted"; sub.textContent="Most recent reports at "+p.name+". Tap an answer to cross-check one."; box.appendChild(sub);
+      var sub=document.createElement("p"); sub.className="ps-muted"; sub.textContent="Most recent reports at "+p.name+". Tap an answer to peer check one."; box.appendChild(sub);
       var ul=document.createElement("ul"); ul.className="peer-notes";
       reports.forEach(function(r){
         var li=document.createElement("li");
-        var quote=document.createElement("p"); quote.style.margin="0"; quote.textContent="\u201c"+capFirst(r.text)+"\u201d \u00b7 "+r.age; li.appendChild(quote);
+        var meta=document.createElement("p"); meta.className="peer-meta"; meta.textContent="A peer reported "+r.age; li.appendChild(meta);
+        var quote=document.createElement("p"); quote.className="peer-quote"; quote.textContent="\u201c"+capFirst(r.text)+"\u201d"; li.appendChild(quote);
         function confirmedCount(){ return (r.q.cc||0) + ((crosschecks[r.key]&&crosschecks[r.key].count)||0); }
         var conf=document.createElement("p"); conf.className="peer-confirmed";
         var done=!!(crosschecks[r.key]&&crosschecks[r.key].answered);
-        function confText(){ var n=confirmedCount(); return "Confirmed by "+n+" peer"+(n===1?"":"s")+(done?" \u00b7 including your cross-check":""); }
+        function confText(){ var n=confirmedCount(); return "Confirmed by "+n+" peer"+(n===1?"":"s")+(done?" \u00b7 including your peer check":""); }
         conf.textContent=confText(); li.appendChild(conf);
-        var crossed=document.createElement("p"); crossed.className="peer-crossed ps-confirm"; crossed.hidden=!done; crossed.textContent="You cross-checked this"; li.appendChild(crossed);
+        var crossed=document.createElement("p"); crossed.className="peer-crossed ps-confirm"; crossed.hidden=!done; crossed.textContent="You peer-checked this"; li.appendChild(crossed);
         if(!done){
           var qText=document.createElement("p"); qText.innerHTML="<strong>Is this still true?</strong>"; li.appendChild(qText);
           var ansRow=document.createElement("div"); ansRow.className="rate-row"; li.appendChild(ansRow);
@@ -4335,13 +4340,16 @@
     $("see-prototype").addEventListener("click", showApp);
     $("see-prototype-2").addEventListener("click", showApp);
     document.querySelectorAll("[data-open-prototype]").forEach(function(b){ b.addEventListener("click", showApp); });
-    $("close-app").addEventListener("click", showWeb);
-    /* Direct link to the prototype: ?app (or #app) opens the app view
-       on load, skipping the case study, in the expanded layout
-       (fullscreen needs a tap, so it is not requested here). The case
-       study itself stays at the plain URL, so it can keep being
-       developed, and every public link points at ?app instead. */
-    if(/[?&]app(?:=|&|$)/.test(location.search) || location.hash === "#app"){
+    $("close-app").addEventListener("click", function(){ location.href = "../../index.html"; });
+    /* Prototype first, Nov 27 2026: the app is the default view now.
+       Every PEERSPECT link opens the prototype start, plain URL
+       included (?app still works). The case study is not linked
+       anywhere; it opens only with ?case-study, for further
+       development. Expanded layout, no fullscreen on load (it
+       needs a tap). */
+    if(/[?&]case-study(?:=|&|$)/.test(location.search) || location.hash === "#case-study"){
+      showWeb();
+    } else {
       restoreApp();
       viewWeb.hidden = true; viewApp.hidden = false;
       if(!appShown){ appShown = true; showScreen("landing"); }
@@ -4355,7 +4363,6 @@
     document.addEventListener("fullscreenchange", function(){
       var fs = !!document.fullscreenElement;
       setExpand(fs);
-      if(!fs && !viewApp.hidden && appShown) showWeb();
     });
     /* Playground frame behaviour: mobile menu, Prototypes dropdown,
        footer email copy. Same behaviour as the Playground home page. */
@@ -4384,8 +4391,9 @@
         var s = d.querySelector("summary"); if(s) s.setAttribute("aria-expanded", d.open ? "true" : "false");
       }
     }, true);
-    /* Init: web page view first. */
-    showWeb(); showScreen("landing");
+    /* Init: the app view is the default (see above); the case
+       study opens only with ?case-study. */
+    showScreen("landing");
     renderTailored(); renderPlaces(); syncCardViewToggles(); renderAllFilters(); renderProfiles(); renderPrep(); renderVisits(); renderTrust(); renderBiz(); renderCheckinIntro(); renderOnboardQuick(); renderCrosscheck();
   })();
   </script>
