@@ -1532,7 +1532,7 @@
   <!-- View 1: web page view (default). Ginko's Playground menu at the top,
        small and normal, then the PEERSPECT intro and a button to see the
        prototype. This is a normal web page: the whole page scrolls. -->
-  <div id="view-web">
+  <div id="view-web" hidden>
     <header class="pg-nav">
       <div class="pg-nav-inner">
         <a class="logo" href="../../index.html" aria-label="Ginko's Prototype Playground — home">
@@ -1742,7 +1742,7 @@
   </div>
   <!-- View 2: prototype view. No huge header, no Playground banner.
        Only a small controls row: a discreet back link, theme, expand. -->
-  <div id="view-app" hidden>
+  <div id="view-app">
   <div class="app-wrap">
   <div class="app" id="peerspect-app">
     <div class="app-header">
@@ -1759,7 +1759,7 @@
          below, so the switcher can be brought back. -->
     <main id="main" class="app-main">
       <!-- 0. LANDING — first screen, before onboarding. -->
-      <section class="screen landing" id="screen-landing" aria-labelledby="landing-h" hidden>
+      <section class="screen landing" id="screen-landing" aria-labelledby="landing-h">
         <div class="screen-head">
           <div aria-hidden="true">
             <svg width="108" height="108" viewBox="0 0 56 56" role="img" aria-label="PEERSPECT mark: two peers sharing one eye"><circle cx="18" cy="20" r="11" fill="#14665a"/><circle cx="38" cy="20" r="11" fill="#8ecdc0"/><ellipse cx="28" cy="40" rx="16" ry="9" fill="none" stroke="#14665a" stroke-width="2.5"/><circle cx="28" cy="40" r="5" fill="#14665a"/></svg>
@@ -4303,9 +4303,10 @@
       showScreen(name);
       if(!opts.noScroll) smoothScrollTo(livePreview);
     }
-    /* The live preview is always there in High fidelity, so load
-       Discover into it on page load, without scrolling the page. */
-    if(livePreview && liveSlot) showPreview("discover", {noScroll:true});
+    /* The live preview is only for the case study, so load Discover
+       into it on page load only in case-study mode. In app mode the
+       app is already the default view, so skip the embed-and-restore. */
+    if(livePreview && liveSlot && /[?&]case-study(?:=|&|$)/.test(location.search)) showPreview("discover", {noScroll:true});
     function closePreview(){
       restoreApp();
       viewApp.hidden = true;
