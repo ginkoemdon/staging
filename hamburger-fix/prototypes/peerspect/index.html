@@ -232,6 +232,16 @@
     .app-header .app-logo-mark .lm-dot { fill:#fff; }
     .app-header .app-logo-mark .lm-eye { fill:#fff; }
     .app-header .app-logo-mark .lm-pupil { fill:#1d2b28; }
+    /* Big landing logo, Nov 27 2026: the same Map + Thread mark as
+       the header, at 120px on the landing screen, replacing the old
+       Shared Eye mark. Same fills; the thread uses var(--honey)
+       so it follows the theme. */
+    .landing-logo-mark { width:120px; height:120px; display:block; margin:0 auto 8px; }
+    .landing-logo-mark .lm-field { fill:#14665a; stroke:#0e4a40; }
+    .landing-logo-mark .lm-thread { stroke:var(--honey); }
+    .landing-logo-mark .lm-dot { fill:#fff; }
+    .landing-logo-mark .lm-eye { fill:#fff; }
+    .landing-logo-mark .lm-pupil { fill:#1d2b28; }
     .app-header .spacer { flex:1; }
     .app-header .theme-toggle { border:1px solid var(--line); border-radius:50%; padding:0; width:44px; height:44px; min-width:44px; min-height:44px; font-weight:700; background:var(--card); box-shadow:none; display:grid; place-items:center; font-size:1.25rem; line-height:1; }
     .app-header .theme-toggle .theme-icon { display:block; }
@@ -257,6 +267,8 @@
     a { color:var(--teal); }
     button { font:inherit; cursor:pointer; }
     button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+    /* Screen headings are focused on arrival for screen readers, Nov 27 2026: they are not interactive, so no visible outline (it read as a button border around PEERSPECT on the landing screen). */
+    .screen h2[tabindex="-1"]:focus { outline:none; }
     /* App shell: a normal page section, full width up to 720px. No fixed
        height, no overflow hidden, no phone frame. */
     .app { max-width:720px; margin:0 auto; background:var(--bg); }
@@ -1761,9 +1773,7 @@
       <!-- 0. LANDING — first screen, before onboarding. -->
       <section class="screen landing" id="screen-landing" aria-labelledby="landing-h">
         <div class="screen-head">
-          <div aria-hidden="true">
-            <svg width="108" height="108" viewBox="0 0 56 56" role="img" aria-label="PEERSPECT mark: two peers sharing one eye"><circle cx="18" cy="20" r="11" fill="#14665a"/><circle cx="38" cy="20" r="11" fill="#8ecdc0"/><ellipse cx="28" cy="40" rx="16" ry="9" fill="none" stroke="#14665a" stroke-width="2.5"/><circle cx="28" cy="40" r="5" fill="#14665a"/></svg>
-          </div>
+          <svg class="landing-logo-mark" width="120" height="120" viewBox="0 0 32 32" aria-hidden="true"><rect class="lm-field" x="1.5" y="1.5" width="29" height="29" rx="8"/><path class="lm-thread" d="M8 24 C13 25.5 14.5 14 18.5 12" fill="none" stroke-width="2.5" stroke-linecap="round"/><circle class="lm-dot" cx="8" cy="24" r="2.6"/><circle class="lm-eye" cx="22.5" cy="11" r="4.6"/><circle class="lm-pupil" cx="22.5" cy="11" r="2.1"/></svg>
           <h2 id="landing-h">PEERSPECT</h2>
           <p><strong>Your guide to how places actually feel.</strong></p>
         </div>
