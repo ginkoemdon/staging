@@ -55,6 +55,13 @@
       "description": "Hero directions A, B, C for Ginko to pick",
       "upstream_sha": "9923f99ce9a34632ed8e00cb6faa79b39d8e32b6",
       "staged": "2026-11-24"
+    },
+    {
+      "name": "dark-mode",
+      "branch": "experiment/dark-mode",
+      "description": "Nav blur + three themes: Light, Dark brown, Dark graphite",
+      "upstream_sha": "cbf97d24f6cc66ca8e3d4f851173d5a0b152b8ce",
+      "staged": "2026-11-28"
     }
   ],
   "upstream": "ginkoemdon/ginkoemdon.github.io",

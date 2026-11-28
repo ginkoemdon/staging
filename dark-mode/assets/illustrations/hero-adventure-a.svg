@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 240" role="img" aria-label="Option A: a refined celestial map, a crescent moon, a compass rose, and a fine dotted path winding to a distant peak">
+  <rect width="640" height="240" fill="#e3e0d8"/>
+  <g stroke="#3b342f" stroke-width="1.5" fill="none" opacity="0.55">
+    <circle cx="320" cy="120" r="104"/>
+    <circle cx="320" cy="120" r="78"/>
+    <line x1="320" y1="8" x2="320" y2="232"/>
+    <line x1="208" y1="120" x2="432" y2="120"/>
+  </g>
+  <path d="M520 52 a36 36 0 1 0 18 62 a28 28 0 1 1 -18 -62z" fill="#f8c05e"/>
+  <g fill="#3b342f">
+    <circle cx="96" cy="48" r="2.5"/><circle cx="150" cy="28" r="1.8"/><circle cx="430" cy="36" r="2.2"/><circle cx="470" cy="88" r="1.8"/><circle cx="60" cy="96" r="1.8"/>
+  </g>
+  <path d="M120 52 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z" fill="#c9c972"/>
+  <path d="M40 190 Q 120 150 200 176 T 360 168 T 520 150" stroke="#184b44" stroke-width="2" stroke-dasharray="1 8" stroke-linecap="round" fill="none"/>
+  <path d="M360 200 L 440 118 L 520 200 Z" fill="#184b44" opacity="0.9"/>
+  <path d="M440 118 L 470 152 L 440 142 L 410 152 Z" fill="#f8c05e"/>
+  <path d="M470 200 L 540 150 L 600 200 Z" fill="#a35f3c" opacity="0.75"/>
+  <g transform="translate(96 168)" stroke="#3b342f" stroke-width="1.5" fill="none">
+    <circle r="18"/><path d="M0 -18 L0 18 M-18 0 L18 0 M0 -18 L5 -5 L18 0 L5 5 L0 18 L-5 5 L-18 0 L-5 -5 Z"/>
+  </g>
+  <path d="M520 150 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z" fill="#e26c00"/>
+</svg>
